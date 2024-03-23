@@ -9,6 +9,7 @@ export default function Home() {
     <main className='flex'>
       <button onClick={() => setCount(count - 1)}>-</button>
       <div>{count}</div>
+      <div className='w-100 h-200 bg-blue-blue40 '>스타일 테스트 입니다</div>
       <button onClick={() => setCount(count + 1)}>+</button>
     </main>
   );
