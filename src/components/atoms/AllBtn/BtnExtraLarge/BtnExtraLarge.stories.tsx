@@ -16,5 +16,13 @@ type Story = StoryObj<typeof BtnExtraLarge>;
 export const Primary: Story = {
   args: {
     label: 'Inputtext_caption',
+    disabled: false,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'Inputtext_caption',
+    disabled: true,
   },
 };

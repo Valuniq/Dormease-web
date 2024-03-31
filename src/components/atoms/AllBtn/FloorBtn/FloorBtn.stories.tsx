@@ -16,5 +16,13 @@ type Story = StoryObj<typeof FloorBtn>;
 export const Primary: Story = {
   args: {
     label: '1층',
+    disabled: false,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: '1층',
+    disabled: true,
   },
 };

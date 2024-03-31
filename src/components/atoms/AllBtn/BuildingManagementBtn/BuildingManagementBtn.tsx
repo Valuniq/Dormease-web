@@ -4,7 +4,7 @@ const BuildingManagementBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement
   return (
     <button
       {...props}
-      className='w-272 h-22 rounded-5 bg-none hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
+      className='w-272 h-22 rounded-5 bg-transparent hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
     ></button>
   );
 };

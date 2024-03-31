@@ -27,7 +27,7 @@ const SelectFloorDropdown: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonE
           {list.map((data, index) => {
             return (
               <div key={index} className='pt-3 pb-3'>
-                <FloorBtn label={data} onClick={() => onOptionClick(data)} />
+                <FloorBtn label={data} disabled={false} onClick={() => onOptionClick(data)} />
               </div>
             );
           })}

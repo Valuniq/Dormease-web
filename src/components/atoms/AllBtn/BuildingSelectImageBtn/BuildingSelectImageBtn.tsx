@@ -13,7 +13,7 @@ const BuildingSelectImageBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButt
         <ImageBtn />
         <div className='mt-13 w-93 h-24 bg-gray-grayscale20 text-gray-grayscale40 rounded-full'>이미지 수정</div>
       </div>
-      <Image className='group-hover:brightness-50' src={image} alt='Build' layout='fill' objectFit='cover' />
+      <Image className='group-hover:brightness-50 shadow1' src={image} alt='Build' layout='fill' objectFit='cover' />
     </button>
   );
 };

@@ -16,5 +16,13 @@ type Story = StoryObj<typeof GrayBtn>;
 export const Primary: Story = {
   args: {
     label: 'caption',
+    disabled: false,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'caption',
+    disabled: true,
   },
 };

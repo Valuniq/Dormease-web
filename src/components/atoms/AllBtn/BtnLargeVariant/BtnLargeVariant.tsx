@@ -2,12 +2,14 @@ import React from 'react';
 
 type Props = {
   label: string;
+  disabled: boolean;
   variant: 'blue' | 'green' | 'red';
 };
 
 const BtnLargeVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
   label,
   variant,
+  disabled,
   ...props
 }) => {
   const bgColorClass = (variant: string) => {
@@ -24,7 +26,7 @@ const BtnLargeVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonEleme
   };
 
   return (
-    <button {...props} className={`w-115 h-37 rounded-full text-white ${bgColorClass(variant)}`}>
+    <button {...props} disabled={disabled} className={`w-115 h-37 rounded-full text-white ${bgColorClass(variant)}`}>
       {label}
     </button>
   );

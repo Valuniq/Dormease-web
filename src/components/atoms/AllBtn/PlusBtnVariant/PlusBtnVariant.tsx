@@ -3,11 +3,13 @@ import PlusBtn from '../../../../../public/images/PlusBtn.svg';
 
 type Props = {
   label: string;
+  disabled: boolean;
   variant: 'blue' | 'green' | 'red';
 };
 
 const PlusBtnVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
   label,
+  disabled,
   variant,
   ...props
 }) => {
@@ -25,7 +27,11 @@ const PlusBtnVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElemen
   };
 
   return (
-    <button {...props} className={`flex items-center w-130 h-31 rounded-8 text-white ${bgColorClass(variant)}`}>
+    <button
+      {...props}
+      disabled={disabled}
+      className={`flex items-center w-130 h-31 rounded-8 text-white ${bgColorClass(variant)}`}
+    >
       <PlusBtn className='mr-13 ml-7' />
       {label}
     </button>

@@ -13,13 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof RelocationDropdown>;
 
-export const IsOn: Story = {
-  args: {
-    list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)'],
-  },
-};
-
-export const IsOff: Story = {
+export const Primary: Story = {
   args: {
     list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)'],
   },

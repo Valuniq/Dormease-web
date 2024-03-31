@@ -5,7 +5,7 @@ const AddMealticketBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = 
   return (
     <button
       {...props}
-      className='group flex flex-col justify-center items-center w-74 h-74 rounded-8 bg-white hover:bg-gray-grayscale5 active:bg-gray-grayscale10'
+      className='group flex flex-col justify-center items-center w-74 h-74 rounded-8 bg-transparent hover:bg-gray-grayscale5 active:bg-gray-grayscale10'
     >
       <div className='flex justify-center items-center mt-5 w-22 h-22 rounded-3 border-2 border-gray-grayscale50'>
         <PlusBtnBlack />

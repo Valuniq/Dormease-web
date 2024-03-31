@@ -17,6 +17,7 @@ export const BlueBtn: Story = {
   args: {
     label: 'caption',
     variant: 'blue',
+    disabled: false,
   },
 };
 
@@ -24,6 +25,7 @@ export const GreenBtn: Story = {
   args: {
     label: 'caption',
     variant: 'green',
+    disabled: false,
   },
 };
 
@@ -31,6 +33,7 @@ export const RedBtn: Story = {
   args: {
     label: 'caption',
     variant: 'red',
+    disabled: false,
   },
 };
 
@@ -38,6 +41,7 @@ export const GrayBtn: Story = {
   args: {
     label: 'caption',
     variant: 'gray',
+    disabled: false,
   },
 };
 
@@ -45,5 +49,14 @@ export const WhiteBlueBtn: Story = {
   args: {
     label: 'caption',
     variant: 'whiteblue',
+    disabled: false,
+  },
+};
+
+export const WhiteBtn: Story = {
+  args: {
+    label: 'caption',
+    variant: 'white',
+    disabled: false,
   },
 };

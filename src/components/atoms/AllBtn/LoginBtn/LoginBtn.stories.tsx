@@ -16,5 +16,13 @@ type Story = StoryObj<typeof LoginBtn>;
 export const Primary: Story = {
   args: {
     label: '로그인',
+    disabled: false,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: '로그인',
+    disabled: true,
   },
 };

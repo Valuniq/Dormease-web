@@ -6,7 +6,7 @@ const SelectRoomBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ 
   return (
     <button
       {...props}
-      className='flex justify-between items-center w-403 h-52 rounded-r-8 rounded-l-full opacity-0 hover:opacity-100 hover:bg-gray-grayscale5 active:bg-gray-grayscale10'
+      className='flex justify-between items-center w-403 h-52 rounded-r-8 rounded-l-50 opacity-0 hover:opacity-100 hover:bg-gray-grayscale5 active:bg-gray-grayscale10'
     >
       <CloseBtnRed className='ml-21' />
       <KebabMenu className='mr-11' />

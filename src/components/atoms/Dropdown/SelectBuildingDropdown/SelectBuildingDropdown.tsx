@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from '../../../../../public/images/Dropdown.svg';
-import GrayBtn from '../../AllBtn/GrayBtn/GrayBtn';
+import BtnMidVariant from '../../AllBtn/BtnMidVariant/BtnMidVariant';
 
 type Props = {
   label: string;
@@ -27,7 +27,7 @@ const SelectBuildingDropdown: React.FC<Props & React.HtmlHTMLAttributes<HTMLButt
           {list.map((data, index) => {
             return (
               <div key={index} className='pt-10 pb-10'>
-                <GrayBtn label={data} onClick={() => onOptionClick(data)} />
+                <BtnMidVariant label={data} variant='white' disabled={false} onClick={() => onOptionClick(data)} />
               </div>
             );
           })}

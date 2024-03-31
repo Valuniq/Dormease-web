@@ -5,7 +5,7 @@ const DeleteBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...p
   return (
     <button
       {...props}
-      className='flex justify-center items-center w-20 h-20 rounded-full bg-white text-gray-grayscale30 hover:bg-gray-grayscale10 hover:text-gray-grayscale40 active:bg-gray-grayscale20'
+      className='flex justify-center items-center w-20 h-20 rounded-full bg-transparent text-gray-grayscale30 hover:bg-gray-grayscale10 hover:text-gray-grayscale40 active:bg-gray-grayscale20'
     >
       <CloseBtnSmall />
     </button>

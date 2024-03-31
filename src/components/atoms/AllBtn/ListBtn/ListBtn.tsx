@@ -9,7 +9,7 @@ const ListBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = (
     <button
       {...props}
       style={{ width: `${width}px` }}
-      className='h-38 rounded-5 bg-none hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
+      className='h-38 rounded-5 bg-transparent hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
     ></button>
   );
 };

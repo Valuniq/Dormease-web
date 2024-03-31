@@ -16,5 +16,13 @@ type Story = StoryObj<typeof BackBtn>;
 export const Primary: Story = {
   args: {
     label: '이전 내역',
+    disabled: false,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: '이전 내역',
+    disabled: true,
   },
 };
