@@ -13,7 +13,7 @@ const PlusBtnVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElemen
   variant,
   ...props
 }) => {
-  const bgColorClass = (variant: string) => {
+  const bgColorClass = () => {
     switch (variant) {
       case 'blue':
         return 'bg-blue-blue30 disabled:bg-blue-blue20 hover:bg-blue-blue40 active:bg-blue-blue50';
@@ -30,7 +30,7 @@ const PlusBtnVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElemen
     <button
       {...props}
       disabled={disabled}
-      className={`flex items-center w-130 h-31 rounded-8 text-white ${bgColorClass(variant)}`}
+      className={`flex items-center w-130 h-31 rounded-8 text-white hover:hover-transition ${bgColorClass()}`}
     >
       <PlusBtn className='mr-13 ml-7' />
       {label}

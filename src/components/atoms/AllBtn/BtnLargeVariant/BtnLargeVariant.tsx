@@ -28,7 +28,11 @@ const BtnLargeVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonEleme
   };
 
   return (
-    <button {...props} disabled={disabled} className={`w-115 h-37 rounded-full text-white ${bgColorClass()}`}>
+    <button
+      {...props}
+      disabled={disabled}
+      className={`w-115 h-37 rounded-full text-white hover:hover-transition ${bgColorClass()}`}
+    >
       {label}
     </button>
   );

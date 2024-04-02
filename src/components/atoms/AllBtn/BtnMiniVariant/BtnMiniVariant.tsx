@@ -26,7 +26,11 @@ const BtnMiniVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElemen
   };
 
   return (
-    <button {...props} disabled={disabled} className={`w-79 h-34 rounded-full text-white ${bgColorClass(variant)}`}>
+    <button
+      {...props}
+      disabled={disabled}
+      className={`w-79 h-34 rounded-full text-white hover:hover-transition ${bgColorClass(variant)}`}
+    >
       {label}
     </button>
   );
