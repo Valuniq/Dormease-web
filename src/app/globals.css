@@ -10,6 +10,13 @@
 }
 /* 기본 스타일 */
 @import '../styles/variables.css';
+
+@layer components {
+  .hover-transition {
+    @apply transition duration-300 ease-in-out;
+  }
+}
+
 * {
   box-sizing: border-box;
   font-family: 'Pretendard-Regular', sans-serif;
