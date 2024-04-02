@@ -16,5 +16,13 @@ type Story = StoryObj<typeof BuildingInBtn>;
 export const Primary: Story = {
   args: {
     label: 'Caption_btn',
+    selected: false,
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    label: 'Caption_btn',
+    selected: true,
   },
 };

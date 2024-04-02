@@ -14,5 +14,13 @@ export default meta;
 type Story = StoryObj<typeof BuildingManagementBtn>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    selected: false,
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    selected: true,
+  },
 };

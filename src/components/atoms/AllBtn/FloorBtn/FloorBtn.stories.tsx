@@ -17,6 +17,7 @@ export const Primary: Story = {
   args: {
     label: '1층',
     disabled: false,
+    selected: false,
   },
 };
 
@@ -24,5 +25,14 @@ export const Disabled: Story = {
   args: {
     label: '1층',
     disabled: true,
+    selected: false,
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    label: '1층',
+    disabled: true,
+    selected: true,
   },
 };

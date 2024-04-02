@@ -17,6 +17,7 @@ export const Primary: Story = {
   args: {
     label: 'caption',
     disabled: false,
+    selected: false,
   },
 };
 
@@ -24,5 +25,14 @@ export const Disabled: Story = {
   args: {
     label: 'caption',
     disabled: true,
+    selected: false,
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    label: 'caption',
+    disabled: false,
+    selected: true,
   },
 };

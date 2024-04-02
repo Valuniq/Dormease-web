@@ -15,16 +15,16 @@ type Story = StoryObj<typeof SelectBuildingDropdown>;
 
 export const IsOn: Story = {
   args: {
-    label: '명덕관(4인실)',
     isOn: true,
+    select: '명덕관(4인실)',
     list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
   },
 };
 
 export const IsOff: Story = {
   args: {
-    label: '명덕관(4인실)',
     isOn: false,
+    select: '명덕관(4인실)',
     list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
   },
 };

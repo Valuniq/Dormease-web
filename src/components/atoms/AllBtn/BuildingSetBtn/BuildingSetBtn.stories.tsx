@@ -17,6 +17,7 @@ export const Primary: Story = {
   args: {
     label: 'caption',
     detail: false,
+    selected: false,
   },
 };
 
@@ -24,5 +25,6 @@ export const Detail: Story = {
   args: {
     label: 'caption',
     detail: true,
+    selected: false,
   },
 };

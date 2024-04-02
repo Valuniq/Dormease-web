@@ -12,12 +12,12 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
-export const IsOn: Story = {
+export const IsChecked: Story = {
   args: {
-    isOn: true,
+    isChecked: true,
   },
 };
 
-export const IsOff: Story = {
-  args: { isOn: false },
+export const IsNotChecked: Story = {
+  args: { isChecked: false },
 };

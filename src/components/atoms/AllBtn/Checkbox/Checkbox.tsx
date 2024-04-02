@@ -4,19 +4,19 @@ import UnChecked from '../../../../../public/images/UnChecked.png';
 import Image from 'next/image';
 
 type Props = {
-  isOn: boolean;
-  onClick: () => void;
+  isChecked: boolean;
+  setIsChecked: (isChecked: boolean) => void;
 };
 
-const Checkbox: React.FC<Props> = ({ isOn, onClick }) => {
+const Checkbox: React.FC<Props> = ({ isChecked, setIsChecked }) => {
   return (
     <Image
       className='cursor-pointer'
-      src={isOn ? Checked : UnChecked}
-      alt={isOn ? 'Checked' : 'UnChecked'}
+      src={isChecked ? Checked : UnChecked}
+      alt={isChecked ? 'Checked' : 'UnChecked'}
       width={19.5}
       height={19.5}
-      onClick={onClick}
+      onClick={() => setIsChecked(!isChecked)}
     />
   );
 };

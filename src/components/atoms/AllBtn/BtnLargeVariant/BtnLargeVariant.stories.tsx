@@ -18,6 +18,7 @@ export const BlueBtn: Story = {
     label: 'caption',
     variant: 'blue',
     disabled: false,
+    selected: false,
   },
 };
 
@@ -26,6 +27,7 @@ export const GreenBtn: Story = {
     label: 'caption',
     variant: 'green',
     disabled: false,
+    selected: false,
   },
 };
 
@@ -34,5 +36,6 @@ export const RedBtn: Story = {
     label: 'caption',
     variant: 'red',
     disabled: false,
+    selected: false,
   },
 };

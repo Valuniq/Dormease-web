@@ -3,23 +3,23 @@ import Dropdown from '../../../../../public/images/Dropdown.svg';
 import FloorBtn from '../../AllBtn/FloorBtn/FloorBtn';
 
 type Props = {
-  label: string;
   isOn: boolean;
+  select: string;
   list: string[];
-  onOptionClick: (data: string) => void;
+  setSelect: (data: string) => void;
 };
 
 const SelectFloorDropdown: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
-  label,
   isOn,
+  select,
   list,
-  onOptionClick,
+  setSelect,
   ...props
 }) => {
   return (
     <div className='flex flex-col items-center'>
       <button {...props} className='flex justify-center items-center w-75 h-41 rounded-5 bg-gray-grayscale5'>
-        {label}
+        {select}
         <Dropdown className={`${isOn && 'rotate-180'} ml-10`} />
       </button>
       {isOn && (
@@ -27,7 +27,7 @@ const SelectFloorDropdown: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonE
           {list.map((data, index) => {
             return (
               <div key={index} className='pt-3 pb-3'>
-                <FloorBtn label={data} disabled={false} onClick={() => onOptionClick(data)} />
+                <FloorBtn label={data} disabled={false} selected={select === data} onClick={() => setSelect(data)} />
               </div>
             );
           })}

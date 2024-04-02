@@ -16,5 +16,13 @@ type Story = StoryObj<typeof ListBtn>;
 export const Primary: Story = {
   args: {
     width: 1186,
+    selected: false,
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    width: 1186,
+    selected: true,
   },
 };

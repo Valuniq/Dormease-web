@@ -18,5 +18,14 @@ export const Primary: Story = {
   args: {
     label: 'caption',
     menu: MenuIcon,
+    selected: false,
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    label: 'caption',
+    menu: MenuIcon,
+    selected: true,
   },
 };
