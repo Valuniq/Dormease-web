@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import RecoilRootWrapper from '@/components/RecoilWrapper.tsx';
+import RecoilRootWrapper from '@/recoil/RecoilWrapper.tsx';
 
 const inter = Inter({ subsets: ['latin'] });
 
