@@ -1,0 +1,57 @@
+/**
+ * Do not edit directly
+ * Generated on Sat, 23 Mar 2024 19:18:33 GMT
+ */
+
+:root {
+  --colors-white: #ffffff;
+  --colors-black: #000000;
+  --colors-gray-grayscale-5: #f3f3f3;
+  --colors-gray-grayscale-10: #e6e6e6;
+  --colors-gray-grayscale-20: #cccccc;
+  --colors-gray-grayscale-30: #999999;
+  --colors-gray-grayscale-40: #474747;
+  --colors-gray-grayscale-50: #323232;
+  --colors-blue-blue-10: #fafcfe;
+  --colors-blue-blue-20: #a8c5ef;
+  --colors-blue-blue-30: #3678d8;
+  --colors-blue-blue-40: #306abf;
+  --colors-blue-blue-50: #265599;
+  --colors-red-red-10: #e29696;
+  --colors-red-red-20: #d83636;
+  --colors-red-red-30: #bf3030;
+  --colors-red-red-40: #992626;
+  --colors-green-green-10: #95ed8d;
+  --colors-green-green-20: #43d836;
+  --colors-green-green-30: #2f9926;
+  --colors-green-green-40: #277f20;
+  --colors-yellow-memoyellow: #fffdd5;
+  --colors-orange-orange: #ffd7a9;
+  --all: Pretendard;
+  --h0: 45;
+  --h1: 30;
+  --h2: 24;
+  --h3: 22;
+  --h4: 20;
+  --h4-underline: 20;
+  --h4-caption: 20;
+  --btn-cap: 20;
+  --alert-cap: 20;
+  --caption-1: 17;
+  --caption-2: 15;
+  --shadow-1: [object Object];
+  --shadow-2: [object Object];
+  --token-set-order-0: dormease;
+}
+
+.shadow {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.shadow1 {
+  filter: drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.25));
+}
+
+.shadow2 {
+  box-shadow: 0px 2px 5px #000000;
+}
