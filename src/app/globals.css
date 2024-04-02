@@ -21,3 +21,9 @@
   box-sizing: border-box;
   font-family: 'Pretendard-Regular', sans-serif;
 }
+
+@layer components {
+  .hover-transition {
+    @apply transition duration-300 ease-in-out;
+  }
+}
