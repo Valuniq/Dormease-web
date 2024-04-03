@@ -1,15 +1,12 @@
 import React from 'react';
-import KebabMenu from '../../../../../public/images/KebabMenu.svg';
-import CloseBtnRed from '../../../../../public/images/CloseBtnRed.svg';
+import KebabMenu from '@public/images/KebabMenu.svg';
+import CloseBtnRed from '@public/images/CloseBtnRed.svg';
 
 type Props = {
   selected: boolean;
 };
 
-const SelectRoomBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
-  selected = false,
-  ...props
-}) => {
+const SelectRoomBtn = ({ selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

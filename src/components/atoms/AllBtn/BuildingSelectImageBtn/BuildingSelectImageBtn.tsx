@@ -1,12 +1,12 @@
 import React from 'react';
-import ImageBtn from '../../../../../public/images/ImageBtn.svg';
+import ImageBtn from '@public/images/ImageBtn.svg';
 import Image, { StaticImageData } from 'next/image';
 
 type Props = {
   image: StaticImageData;
 };
 
-const BuildingSelectImageBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ image, ...props }) => {
+const BuildingSelectImageBtn = ({ image, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button {...props} className='group relative flex flex-col justify-center items-center w-381 h-247 rounded-8'>
       <div className='absolute inset-0 z-10 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 group-hover:hover-transition'>

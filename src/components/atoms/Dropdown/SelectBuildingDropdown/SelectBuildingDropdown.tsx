@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from '../../../../../public/images/Dropdown.svg';
+import Dropdown from '@public/images/Dropdown.svg';
 import BtnMidVariant from '../../AllBtn/BtnMidVariant/BtnMidVariant';
 
 type Props = {
@@ -10,14 +10,14 @@ type Props = {
   setIsOn: (isOn: boolean) => void;
 };
 
-const SelectBuildingDropdown: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const SelectBuildingDropdown = ({
   isOn,
   list,
   select,
   setSelect,
   setIsOn,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <div className='flex flex-col items-center'>
       <button

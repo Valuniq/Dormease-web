@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from '../../../../../public/images/Dropdown.svg';
+import Dropdown from '@public/images/Dropdown.svg';
 import FloorBtn from '../../AllBtn/FloorBtn/FloorBtn';
 
 type Props = {
@@ -9,13 +9,13 @@ type Props = {
   setSelect: (data: string) => void;
 };
 
-const SelectFloorDropdown: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const SelectFloorDropdown = ({
   isOn,
   select,
   list,
   setSelect,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <div className='flex flex-col items-center'>
       <button {...props} className='flex justify-center items-center w-75 h-41 rounded-5 bg-gray-grayscale5'>

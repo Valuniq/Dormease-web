@@ -1,11 +1,11 @@
 import React from 'react';
-import PlusBtn from '../../../../../public/images/PlusBtn.svg';
+import PlusBtn from '@public/images/PlusBtn.svg';
 
 type Props = {
   label: string;
 };
 
-const BlackListBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ label, ...props }) => {
+const BlackListBtn = ({ label, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

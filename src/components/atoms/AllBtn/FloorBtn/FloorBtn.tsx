@@ -6,12 +6,12 @@ type Props = {
   selected?: boolean;
 };
 
-const FloorBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const FloorBtn = ({
   label,
   disabled,
   selected = false,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

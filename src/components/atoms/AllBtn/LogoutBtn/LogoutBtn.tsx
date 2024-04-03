@@ -4,7 +4,7 @@ type Props = {
   label: string;
 };
 
-const LogoutBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ label, ...props }) => {
+const LogoutBtn = ({ label, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

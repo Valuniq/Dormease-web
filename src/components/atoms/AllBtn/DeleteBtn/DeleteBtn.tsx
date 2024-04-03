@@ -1,7 +1,7 @@
 import React from 'react';
-import CloseBtnSmall from '../../../../../public/images/CloseBtnSmall.svg';
+import CloseBtnSmall from '@public/images/CloseBtnSmall.svg';
 
-const DeleteBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const DeleteBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

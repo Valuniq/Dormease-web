@@ -1,7 +1,7 @@
 import React from 'react';
-import UpDownIcon from '../../../../../public/images/UpDown.svg';
+import UpDownIcon from '@public/images/UpDown.svg';
 
-const UpDown: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const UpDown = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

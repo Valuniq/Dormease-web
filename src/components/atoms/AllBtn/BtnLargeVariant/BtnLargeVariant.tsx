@@ -7,13 +7,13 @@ type Props = {
   variant: 'blue' | 'green' | 'red';
 };
 
-const BtnLargeVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const BtnLargeVariant = ({
   label,
   variant,
   disabled,
   selected = false,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   const bgColorClass = () => {
     switch (variant) {
       case 'blue':

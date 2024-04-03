@@ -1,6 +1,6 @@
 import React from 'react';
-import Checked from '../../../../../public/images/Checked.png';
-import UnChecked from '../../../../../public/images/UnChecked.png';
+import Checked from '@public/images/Checked.png';
+import UnChecked from '@public/images/UnChecked.png';
 import Image from 'next/image';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   setIsChecked: (isChecked: boolean) => void;
 };
 
-const Checkbox: React.FC<Props> = ({ isChecked, setIsChecked }) => {
+const Checkbox = ({ isChecked, setIsChecked }: Props) => {
   return (
     <Image
       className='cursor-pointer'

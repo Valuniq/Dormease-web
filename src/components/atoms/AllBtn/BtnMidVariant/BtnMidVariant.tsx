@@ -7,13 +7,13 @@ type Props = {
   variant: 'blue' | 'green' | 'red' | 'gray' | 'whiteblue' | 'white';
 };
 
-const BtnMidVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const BtnMidVariant = ({
   label,
   disabled,
   variant,
   selected = false,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   const bgColorClass = () => {
     switch (variant) {
       case 'blue':

@@ -7,13 +7,13 @@ type Props = {
   variant: 'blue' | 'red';
 };
 
-const BtnMiniVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const BtnMiniVariant = ({
   label,
   disabled,
   selected = false,
   variant,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   const bgColorClass = (variant: string) => {
     switch (variant) {
       case 'blue':

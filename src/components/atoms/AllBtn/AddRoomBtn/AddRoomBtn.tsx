@@ -1,7 +1,7 @@
 import React from 'react';
-import PlusBtnBig from '../../../../../public/images/PlusBtnBig.svg';
+import PlusBtnBig from '@public/images/PlusBtnBig.svg';
 
-const AddRoomBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const AddRoomBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

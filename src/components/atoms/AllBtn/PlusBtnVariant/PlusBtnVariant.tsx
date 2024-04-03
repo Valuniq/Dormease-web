@@ -1,5 +1,5 @@
 import React from 'react';
-import PlusBtn from '../../../../../public/images/PlusBtn.svg';
+import PlusBtn from '@public/images/PlusBtn.svg';
 
 type Props = {
   label: string;
@@ -7,12 +7,12 @@ type Props = {
   variant: 'blue' | 'green' | 'red';
 };
 
-const PlusBtnVariant: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const PlusBtnVariant = ({
   label,
   disabled,
   variant,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   const bgColorClass = () => {
     switch (variant) {
       case 'blue':
