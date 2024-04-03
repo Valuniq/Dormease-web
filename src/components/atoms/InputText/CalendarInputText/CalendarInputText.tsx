@@ -17,6 +17,7 @@ const CalendarInputText = ({ input, setInput, placeholder }: Props) => {
       className={`${input ? 'border-b-gray-grayscale50' : 'border-b-gray-grayscale20'}  border-b-3 outline-none focus:border-b-gray-grayscale50 px-2 w-911 h-64  text-gray-grayscale50 placeholder:text-gray-grayscale30`}
       type='text'
       value={input}
+      placeholder={placeholder}
       onChange={handleChange}
     />
   );
