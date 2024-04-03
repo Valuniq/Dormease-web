@@ -1,8 +1,8 @@
 import React from 'react';
-import AddBtn from '../../../../../public/images/AddBtn.png';
+import AddBtn from '@public/images/AddBtn.png';
 import Image from 'next/image';
 
-const AddScheduleBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const AddScheduleBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

@@ -5,7 +5,7 @@ type Props = {
   setIsOn: (isOn: boolean) => void;
 };
 
-const RadioBtn: React.FC<Props> = ({ isOn, setIsOn }) => {
+const RadioBtn = ({ isOn, setIsOn }: Props) => {
   return (
     <div
       onClick={() => setIsOn(!isOn)}

@@ -1,11 +1,11 @@
 import React from 'react';
-import FileBtn from '../../../../../public/images/FileBtn.svg';
+import FileBtn from '@public/images/FileBtn.svg';
 
 type Props = {
   label: string;
 };
 
-const CheckFileBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ label, ...props }) => {
+const CheckFileBtn = ({ label, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

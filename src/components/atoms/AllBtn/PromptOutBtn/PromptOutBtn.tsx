@@ -1,7 +1,7 @@
 import React from 'react';
-import CloseBtnRed from '../../../../../public/images/CloseBtnRed.svg';
+import CloseBtnRed from '@public/images/CloseBtnRed.svg';
 
-const PromptOutBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const PromptOutBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

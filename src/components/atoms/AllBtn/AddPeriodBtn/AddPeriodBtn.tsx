@@ -1,7 +1,7 @@
 import React from 'react';
-import PlusBtnBig from '../../../../../public/images/PlusBtnBig.svg';
+import PlusBtnBig from '@public/images/PlusBtnBig.svg';
 
-const AddPeriodBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const AddPeriodBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button {...props} className='group text-white flex flex-col items-center'>
       <div className='flex justify-center items-center w-47 h-47 rounded-full bg-blue-blue30 group-hover:bg-blue-blue40 group-hover:hover-transition group-active:bg-blue-blue50'>

@@ -7,7 +7,7 @@ type Props = {
   setSelect: (isOn: string) => void;
 };
 
-const RelocationDropdown: React.FC<Props> = ({ list, select, setSelect }) => {
+const RelocationDropdown = ({ list, select, setSelect }: Props) => {
   return (
     <div className='flex flex-col items-center w-155 h-306 rounded-8 bg-white shadow'>
       <div className='mt-29 mb-9 text-center'>

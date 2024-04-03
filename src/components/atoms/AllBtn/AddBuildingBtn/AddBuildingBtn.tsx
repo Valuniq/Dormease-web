@@ -1,7 +1,7 @@
 import React from 'react';
-import AddBtnBuild from '../../../../../public/images/AddBtnBuild.svg';
+import AddBtnBuild from '@public/images/AddBtnBuild.svg';
 
-const AddBuildingBtn: React.FC<React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ ...props }) => {
+const AddBuildingBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}
