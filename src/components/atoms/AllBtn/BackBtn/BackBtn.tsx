@@ -1,5 +1,5 @@
 import React from 'react';
-import BackBtnImg from '../../../../../public/images/BackBtn.svg';
+import BackBtnImg from '@public/images/BackBtn.svg';
 
 type Props = {
   label: string;
@@ -7,12 +7,12 @@ type Props = {
   selected?: boolean;
 };
 
-const BackBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const BackBtn = ({
   label,
   disabled,
   selected = false,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

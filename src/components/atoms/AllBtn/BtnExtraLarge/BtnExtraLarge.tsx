@@ -6,12 +6,12 @@ type Props = {
   selected?: boolean;
 };
 
-const BtnExtraLarge: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
+const BtnExtraLarge = ({
   label,
   disabled,
   selected = false,
   ...props
-}) => {
+}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

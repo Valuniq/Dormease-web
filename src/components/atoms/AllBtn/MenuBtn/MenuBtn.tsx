@@ -7,12 +7,7 @@ type Props = {
   selected?: boolean;
 };
 
-const MenuBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
-  label,
-  menu,
-  selected = false,
-  ...props
-}) => {
+const MenuBtn = ({ label, menu, selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

@@ -5,7 +5,7 @@ type Props = {
   disabled: boolean;
 };
 
-const LoginBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({ label, disabled, ...props }) => {
+const LoginBtn = ({ label, disabled, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

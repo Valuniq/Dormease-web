@@ -5,11 +5,7 @@ type Props = {
   selected: boolean;
 };
 
-const ListBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
-  width,
-  selected = false,
-  ...props
-}) => {
+const ListBtn = ({ width, selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

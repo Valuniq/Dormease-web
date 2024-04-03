@@ -5,11 +5,7 @@ type Props = {
   selected: boolean;
 };
 
-const BuildingInBtn: React.FC<Props & React.HtmlHTMLAttributes<HTMLButtonElement>> = ({
-  label,
-  selected = false,
-  ...props
-}) => {
+const BuildingInBtn = ({ label, selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}
