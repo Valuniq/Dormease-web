@@ -2,18 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-}
 /* 기본 스타일 */
 @import '../styles/variables.css';
 
+@font-face {
+  font-family: 'pretendard';
+  src: url('@public/fonts/Pretendard-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('@public/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('@public/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('@public/fonts/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'pretendard';
+  src: url('@public/fonts/Pretendard-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
-  font-family: 'Pretendard-Regular', sans-serif;
+  font-family: 'pretendard', sans-serif;
 }
 
 @layer components {
@@ -27,5 +55,83 @@
   input [type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  .H0 {
+    font-family: 'pretendard';
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .H1 {
+    font-family: 'pretendard';
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800px;
+  }
+
+  .H2 {
+    font-family: 'pretendard';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .H3 {
+    font-family: 'pretendard';
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .H4 {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .H4-under {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .H4-caption {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .Btn-cap {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .alert-cap {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .caption-1 {
+    font-family: 'pretendard';
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .caption-2 {
+    font-family: 'pretendard';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
   }
 }
