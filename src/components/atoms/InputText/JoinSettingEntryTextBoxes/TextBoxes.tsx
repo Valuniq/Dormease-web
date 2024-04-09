@@ -27,13 +27,13 @@ const TextBoxes = ({ input, setInput, placeholder, type }: Props) => {
       case 'textBox3':
         return {
           boxSize: 'w-76',
-          textAlign: '',
-          inputType: 'text',
+          textAlign: 'placeholder:text-center',
+          inputType: 'number',
         };
       case 'textBox4':
         return {
           boxSize: 'w-66',
-          textAlign: '',
+          textAlign: 'placeholder:text-center',
           inputType: 'text',
         };
       case 'textBox5':
@@ -51,7 +51,7 @@ const TextBoxes = ({ input, setInput, placeholder, type }: Props) => {
       case 'textBox7':
         return {
           boxSize: 'w-54',
-          textAlign: '',
+          textAlign: 'placeholder:text-center',
           inputType: 'number',
         };
       case 'textBox7':
@@ -72,7 +72,7 @@ const TextBoxes = ({ input, setInput, placeholder, type }: Props) => {
 
   return (
     <input
-      className={` border-gray-grayscale40 border-[0.5px] outline-none px-8 ${boxSize} ${textAlign}  rounded-8 text-gray-grayscale50 placeholder:text-gray-grayscale30`}
+      className={`${input ? 'border-gray-grayscale50' : 'border-gray-grayscale30'} H4-caption  border-[0.5px] outline-none px-8 ${boxSize} ${textAlign}  rounded-8 text-gray-grayscale50 placeholder:text-gray-grayscale30`}
       placeholder={placeholder}
       type={inputType}
       value={input}

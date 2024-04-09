@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ConfirmPrompt from './ConfirmPrompt';
 
 const meta: Meta<typeof ConfirmPrompt> = {
-  title: 'components/atoms/Prompt/ConfirmPrompt',
+  title: 'components/organisms/Prompt/ConfirmPrompt',
   component: ConfirmPrompt,
   tags: ['autodocs'],
   argTypes: {},
