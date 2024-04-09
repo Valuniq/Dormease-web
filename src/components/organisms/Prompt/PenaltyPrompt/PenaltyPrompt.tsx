@@ -1,33 +1,34 @@
-import Image from 'next/image';
-
-import PromptHeaderLogo from '@public/images/PromptHeaderLogo.png';
-import PromptHeaderOut from '@public/images/PromptHeaderOut.png';
-import PenaltyBox from './PenaltyBox';
+import PenaltyBox, { PenaltyTextBox } from './PenaltyBox';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
+import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
 
 type Props = {
-  onCancel: () => void;
   onConfirm: () => void;
+  onConfirmDisabled: boolean;
+  bonusTextBoxes: PenaltyTextBox[];
+  setBonusTextBoxesTextBoxes: (updateFunction: (prevState: PenaltyTextBox[]) => PenaltyTextBox[]) => void;
+  minusTextBoxes: PenaltyTextBox[];
+  setMinusTextBoxesTextBoxes: (updateFunction: (prevState: PenaltyTextBox[]) => PenaltyTextBox[]) => void;
 };
 
-const PenaltyPrompt = ({ onCancel, onConfirm }: Props) => {
+const PenaltyPrompt = ({
+  bonusTextBoxes,
+  setBonusTextBoxesTextBoxes,
+  minusTextBoxes,
+  setMinusTextBoxesTextBoxes,
+
+  onConfirm,
+  onConfirmDisabled,
+}: Props) => {
   return (
     <div className='w-[1138px] h-686 flex flex-col items-center rounded-8 shadow-xl '>
-      <div className='w-[1138px] h-39 flex justify-between bg-blue-blue30 pl-15 rounded-t-8'>
-        <Image src={PromptHeaderLogo} className='object-contain' width={39} height={11.65} alt='promptHeaderLogo' />
-        <button
-          onClick={() => onCancel}
-          className={`hover:bg-red-red30 bg-blue-blue30 w-39 h-39 flex items-center justify-center rounded-tr-8 hover-transition`}
-        >
-          <Image src={PromptHeaderOut} className='object-contain' width={10} height={10} alt='promptHeaderOut' />
-        </button>
-      </div>
-      <div className='w-full mt-33 mb-5 flex justify-around items-start'>
-        <PenaltyBox type={'bonus'} />
+      <PromptHeader />
+      <div className='w-full pt-33 mb-5 flex justify-around items-start bg-gray-grayscale5'>
+        <PenaltyBox type={'bonus'} textBoxes={bonusTextBoxes} setTextBoxes={setBonusTextBoxesTextBoxes} />
         <div className='w-2 h-546 bg-gray-grayscale20' />
-        <PenaltyBox type={'minus'} />
+        <PenaltyBox type={'minus'} textBoxes={minusTextBoxes} setTextBoxes={setMinusTextBoxesTextBoxes} />
       </div>
-      <BtnMidVariant label={'저장하기'} disabled={false} variant={'blue'} />
+      <BtnMidVariant onClick={onConfirm} label={'저장하기'} disabled={onConfirmDisabled} variant={'blue'} />
     </div>
   );
 };
