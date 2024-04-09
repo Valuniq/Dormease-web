@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Alert from './AlertPrompt';
 
 const meta: Meta<typeof Alert> = {
-  title: 'components/atoms/Prompt/AlertPrompt',
+  title: 'components/organisms/Prompt/AlertPrompt',
   component: Alert,
   tags: ['autodocs'],
   argTypes: {},
@@ -12,5 +12,7 @@ const meta: Meta<typeof Alert> = {
 export default meta;
 
 export const Primary = {
-  args: {},
+  args: {
+    label: '이름을 입력해주세요.',
+  },
 };

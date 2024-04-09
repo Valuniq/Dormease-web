@@ -16,7 +16,7 @@ const SearchTextBox = ({ input, setInput }: Props) => {
       className={`${input ? 'border-gray-grayscale50' : 'border-gray-grayscale30'} focus:border-gray-grayscale40 border-[1.5px] w-380 h-38 flex items-center rounded-5`}
     >
       <input
-        className={`outline-none  px-12 w-292 h-24  text-gray-grayscale50 placeholder:text-gray-grayscale30`}
+        className={`outline-none H4-cation px-12 w-292 h-24  text-gray-grayscale50 placeholder:text-gray-grayscale30`}
         placeholder={'검색어를 입력해주세요.'}
         type='text'
         value={input}

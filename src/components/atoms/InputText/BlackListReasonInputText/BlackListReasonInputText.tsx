@@ -10,7 +10,7 @@ const BlackListReasonInputText = ({ input, setInput }: Props) => {
 
   return (
     <input
-      className={`${input ? 'border-b-gray-grayscale50 ' : 'border-b-gray-grayscale20'} focus:border-b-gray-grayscale50 w-400 h-24 border-b-1 placeholder:text-gray-grayscale30 placeholder:text-center focus:outline-none pb-6 text-gray-grayscale50 `}
+      className={`${input ? 'border-b-gray-grayscale50 ' : 'border-b-gray-grayscale20'} focus:border-b-gray-grayscale50 w-400 h-34 border-b-1 H4 placeholder:text-gray-grayscale30  placeholder:text-center focus:outline-none pb-6 text-gray-grayscale50 `}
       placeholder='사유를 입력해주세요. (최대 30자)'
       type='text'
       value={input}

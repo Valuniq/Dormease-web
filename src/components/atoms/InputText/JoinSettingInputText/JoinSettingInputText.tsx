@@ -14,7 +14,7 @@ const JoinSettingInputText = ({ input, setInput, placeholder }: Props) => {
 
   return (
     <input
-      className={`pb-3 border-b-1 outline-none px-2 w-[1295px] h-28 text-gray-grayscale50 placeholder:text-gray-grayscale30`}
+      className={`H4 pb-3 border-b-1 outline-none px-2 w-[1295px] h-28 text-gray-grayscale50 placeholder:text-gray-grayscale30`}
       placeholder={placeholder}
       type='text'
       value={input}

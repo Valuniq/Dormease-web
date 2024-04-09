@@ -51,8 +51,8 @@
 }
 
 @layer utilities {
-  input [type='number']::-webkit-inner-spin-button,
-  input [type='number']::-webkit-outer-spin-button {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -68,7 +68,7 @@
     font-family: 'pretendard';
     font-size: 30px;
     font-style: normal;
-    font-weight: 800px;
+    font-weight: 800;
   }
 
   .H2 {
