@@ -1,6 +1,6 @@
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import PenaltyHistoryList from '@/components/atoms/Prompt/PenaltyHistoryList/PenaltyHistoryList';
+import PenaltyHistoryListBody from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryListBody';
 import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
 
 type PenaltyList = {
@@ -46,7 +46,7 @@ const PenaltyHistoryPrompt = ({ penaltyLists, isAllChecked, setIsAllChecked, plu
                 {/* 여백용 tr */}
                 <tr className='h-19' />
                 <tr>
-                  <PenaltyHistoryList
+                  <PenaltyHistoryListBody
                     date={p.date}
                     reason={p.reason}
                     score={p.score}

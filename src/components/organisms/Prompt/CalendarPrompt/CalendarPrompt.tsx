@@ -1,7 +1,7 @@
 import AlertBtn from '@/components/atoms/AllBtn/AlertBtn/AlertBtn';
 import CalendarInputText from '@/components/atoms/InputText/CalendarInputText/CalendarInputText';
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
-import ColorDropDown from '@/components/atoms/Prompt/CalendarPrompt/ColorDropDown';
+import ColorDropDown from '@/components/organisms/Prompt/CalendarPrompt/ColorDropDown';
 import Wave from '@public/images/Wave.png';
 import Image from 'next/image';
 

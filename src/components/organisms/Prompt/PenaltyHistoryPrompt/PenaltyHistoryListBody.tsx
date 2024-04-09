@@ -1,6 +1,5 @@
-import { ManifestChunks } from 'next/dist/build/webpack/plugins/flight-manifest-plugin';
 import React from 'react';
-import Checkbox from '../../AllBtn/Checkbox/Checkbox';
+import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 
 type Props = {
   date: string;
