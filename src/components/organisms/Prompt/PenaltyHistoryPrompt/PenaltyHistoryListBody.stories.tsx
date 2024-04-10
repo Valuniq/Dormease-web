@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import PenaltyHistoryList from './PenaltyHistoryListBody';
 
 const meta: Meta<typeof PenaltyHistoryList> = {
-  title: 'components/organisms/Prompt/PenaltyHistoryList',
+  title: 'components/organisms/Prompt/PenaltyHistoryListBody',
   component: PenaltyHistoryList,
   tags: ['autodocs'],
   argTypes: {},
