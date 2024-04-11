@@ -3,10 +3,11 @@ import SearchIcon from '@public/images/SearchIcon.png';
 
 type Props = {
   input: string;
+  placeholder: string;
   setInput: (id: string) => void;
 };
 
-const SearchTextBox = ({ input, setInput }: Props) => {
+const SearchTextBox = ({ input, placeholder, setInput }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -17,7 +18,7 @@ const SearchTextBox = ({ input, setInput }: Props) => {
     >
       <input
         className={`outline-none H4-cation px-12 w-292 h-24  text-gray-grayscale50 placeholder:text-gray-grayscale30`}
-        placeholder={'검색어를 입력해주세요.'}
+        placeholder={placeholder}
         type='text'
         value={input}
         onChange={handleChange}
