@@ -8,7 +8,7 @@ const ResignBtn = ({ label, ...props }: Props & React.HtmlHTMLAttributes<HTMLBut
   return (
     <button
       {...props}
-      className='w-118 h-31 rounded-8 text-white bg-red-red10 hover:bg-red-red20 hover:hover-transition active:bg-red-red30'
+      className='H4 w-118 h-31 rounded-8 text-white bg-red-red20 hover:bg-red-red30 hover:hover-transition active:bg-red-red40'
     >
       {label}
     </button>

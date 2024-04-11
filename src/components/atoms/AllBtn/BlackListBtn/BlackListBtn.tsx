@@ -9,7 +9,7 @@ const BlackListBtn = ({ label, ...props }: Props & React.HtmlHTMLAttributes<HTML
   return (
     <button
       {...props}
-      className='flex items-center w-130 h-31 rounded-8 bg-transparent text-gray-grayscale50 hover:text-white hover:bg-gray-grayscale40 hover:hover-transition active:text-white active:bg-gray-grayscale50'
+      className='H4 flex items-center w-130 h-31 rounded-8 bg-gray-grayscale20 text-gray-grayscale50 hover:text-white hover:bg-gray-grayscale40 hover:hover-transition active:text-white active:bg-gray-grayscale50'
     >
       <PlusBtn className='ml-9 mr-6' />
       {label}

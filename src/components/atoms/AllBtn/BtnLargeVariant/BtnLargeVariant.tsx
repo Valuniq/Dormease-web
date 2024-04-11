@@ -31,7 +31,7 @@ const BtnLargeVariant = ({
     <button
       {...props}
       disabled={disabled}
-      className={`w-115 h-37 rounded-full text-white hover:hover-transition ${bgColorClass()}`}
+      className={`H4 w-115 h-37 rounded-full text-white hover:hover-transition ${bgColorClass()}`}
     >
       {label}
     </button>
