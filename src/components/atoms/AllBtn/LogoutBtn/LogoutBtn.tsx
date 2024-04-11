@@ -8,7 +8,7 @@ const LogoutBtn = ({ label, ...props }: Props & React.HtmlHTMLAttributes<HTMLBut
   return (
     <button
       {...props}
-      className='w-131 h-35 rounded-full text-gray-grayscale50 bg-gray-grayscale10 hover:bg-gray-grayscale20 hover:hover-transition active:bg-gray-grayscale30'
+      className='H4 w-131 h-35 rounded-full text-gray-grayscale50 bg-gray-grayscale10 hover:bg-gray-grayscale20 hover:hover-transition active:bg-gray-grayscale30'
     >
       {label}
     </button>

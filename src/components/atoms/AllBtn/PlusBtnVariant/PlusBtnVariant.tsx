@@ -30,7 +30,7 @@ const PlusBtnVariant = ({
     <button
       {...props}
       disabled={disabled}
-      className={`flex items-center w-130 h-31 rounded-8 text-white hover:hover-transition ${bgColorClass()}`}
+      className={`H4 flex items-center w-130 h-31 rounded-8 text-white hover:hover-transition ${bgColorClass()}`}
     >
       <PlusBtn className='mr-13 ml-7' />
       {label}

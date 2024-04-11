@@ -18,7 +18,7 @@ const SelectFloorDropdown = ({
 }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <div className='flex flex-col items-center'>
-      <button {...props} className='flex justify-center items-center w-75 h-41 rounded-5 bg-gray-grayscale5'>
+      <button {...props} className='H4 flex justify-center items-center w-75 h-41 rounded-5 bg-gray-grayscale5'>
         {select}
         <Dropdown className={`${isOn && 'rotate-180'} ml-10`} />
       </button>
