@@ -10,7 +10,7 @@ const AddMealticketBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonEleme
       <div className='flex justify-center items-center mt-5 w-22 h-22 rounded-3 border-2 border-gray-grayscale50'>
         <PlusBtnBlack />
       </div>
-      <h2 className='mt-5 text-gray-grayscale50'>추가하기</h2>
+      <h2 className='caption-2 mt-5 text-gray-grayscale50'>추가하기</h2>
     </button>
   );
 };

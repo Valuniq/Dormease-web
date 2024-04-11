@@ -23,7 +23,7 @@ const SelectBuildingDropdown = ({
       <button
         {...props}
         onClick={() => setIsOn(!isOn)}
-        className='flex justify-between items-center px-13 w-164 h-41 rounded-5 bg-gray-grayscale5'
+        className='H4 flex justify-between items-center px-13 w-164 h-41 rounded-5 bg-gray-grayscale5'
       >
         {select}
         <Dropdown className={`${isOn && 'rotate-180'}`} />

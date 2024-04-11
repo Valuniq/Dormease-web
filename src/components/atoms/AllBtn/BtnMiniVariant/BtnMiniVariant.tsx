@@ -29,7 +29,7 @@ const BtnMiniVariant = ({
     <button
       {...props}
       disabled={disabled}
-      className={`w-79 h-34 rounded-full text-white hover:hover-transition ${bgColorClass(variant)}`}
+      className={`H4 w-79 h-34 rounded-full text-white hover:hover-transition ${bgColorClass(variant)}`}
     >
       {label}
     </button>

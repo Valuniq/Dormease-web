@@ -32,7 +32,7 @@ export const Disabled: Story = {
 export const Selected: Story = {
   args: {
     label: '1층',
-    disabled: true,
+    disabled: false,
     selected: true,
   },
 };
