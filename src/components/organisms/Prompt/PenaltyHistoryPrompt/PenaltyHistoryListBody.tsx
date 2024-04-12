@@ -1,6 +1,5 @@
-import { ManifestChunks } from 'next/dist/build/webpack/plugins/flight-manifest-plugin';
 import React from 'react';
-import Checkbox from '../../AllBtn/Checkbox/Checkbox';
+import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 
 type Props = {
   date: string;
@@ -28,10 +27,8 @@ const PenaltyHistoryList = ({ date, reason, score, division, isChecked, setIsChe
           {division === 'minus' ? '벌 점' : '상 점'}
         </h1>
       </td>
-      <td>
-        <div className='ml-28'>
-          <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
-        </div>
+      <td className='flex justify-center'>
+        <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
     </>
   );

@@ -3,7 +3,6 @@ import { useState } from 'react';
 type Props = {
   input: string;
   setInput: (id: string) => void;
-
   placeholder: string;
   type: 'text' | 'password';
 };
