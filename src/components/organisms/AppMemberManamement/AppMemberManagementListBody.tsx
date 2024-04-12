@@ -27,7 +27,7 @@ const AppMemberManagementListBody = ({
   return (
     <>
       <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale30'>{index}</h1>
+        <h1 className='H4-caption text-gray-grayscale50'>{index}</h1>
       </td>
       <td className='text-center'>
         <h1 className='H4-caption text-gray-grayscale50'>{name}</h1>
