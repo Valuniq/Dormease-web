@@ -32,9 +32,11 @@ const PenaltyHistoryPrompt = ({ penaltyLists, isAllChecked, setIsAllChecked, plu
               <th className='H4'>사 유</th>
               <th className='H4'>점 수</th>
               <th className='H4'>종 류</th>
-              <th className='flex items-center w-[64.5px] justify-between H4'>
-                전 체
-                <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+              <th>
+                <div className='H4 flex  items-center justify-center text-center w-full'>
+                  <h1 className='mr-4'>전체</h1>
+                  <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+                </div>
               </th>
             </tr>
           </thead>

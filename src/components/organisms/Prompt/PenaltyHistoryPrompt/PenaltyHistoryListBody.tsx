@@ -27,10 +27,8 @@ const PenaltyHistoryList = ({ date, reason, score, division, isChecked, setIsChe
           {division === 'minus' ? '벌 점' : '상 점'}
         </h1>
       </td>
-      <td>
-        <div className='ml-28'>
-          <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
-        </div>
+      <td className='flex justify-center'>
+        <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
     </>
   );

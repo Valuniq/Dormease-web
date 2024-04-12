@@ -1,8 +1,8 @@
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import React from 'react';
 
-type Props = {
-  index: number;
+export type Props = {
+  index: string;
   name: string;
   studentId: string;
   phoneNumber: string;
@@ -52,10 +52,8 @@ const PointManagementListBody = ({
       <td className='text-center'>
         <h1 className='H4-caption text-gray-grayscale50'>{room}</h1>
       </td>
-      <td>
-        <div className='ml-28'>
-          <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
-        </div>
+      <td className='flex justify-center'>
+        <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
     </>
   );
