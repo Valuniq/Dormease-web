@@ -3,16 +3,11 @@ import SearchIcon from '@public/images/SearchIcon.png';
 
 type Props = {
   input: string;
-  placeholder: string;
   setInput: (id: string) => void;
   placeholder: string;
 };
 
-<<<<<<< HEAD
-const SearchTextBox = ({ input, placeholder, setInput }: Props) => {
-=======
 const SearchTextBox = ({ input, setInput, placeholder }: Props) => {
->>>>>>> afb1824864828df45ec53bfde0e253caf440545e
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
