@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ColorDropDown from './ColorDropDown';
 
 const meta: Meta<typeof ColorDropDown> = {
-  title: 'components/atoms/Prompt/ColorDropDown',
+  title: 'components/organisms/Prompt/ColorDropDown',
   component: ColorDropDown,
   tags: ['autodocs'],
   argTypes: {},
