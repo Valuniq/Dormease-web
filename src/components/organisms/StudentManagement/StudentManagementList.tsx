@@ -1,5 +1,5 @@
 import React from 'react';
-import StudentMangementListBody from './StudentMangementListBody';
+import StudentManagementListBody from './StudentManagementListBody';
 import ArrowDown from '@public/images/ArrowDown.svg';
 
 type Props = {
@@ -11,7 +11,6 @@ type Props = {
   onBonusPointClick: (genderDown: boolean) => void;
   minusPointDown: boolean;
   onMinusPointClick: (genderDown: boolean) => void;
-  studentClick: string;
   onStudentClick: (schoolNumber: string) => void;
   list: {
     index: number;
@@ -26,7 +25,7 @@ type Props = {
   }[];
 };
 
-const StudentMangementList = ({
+const StudentManagementList = ({
   list,
   genderDown,
   onGenderClick,
@@ -36,17 +35,16 @@ const StudentMangementList = ({
   onBonusPointClick,
   minusPointDown,
   onMinusPointClick,
-  studentClick,
   onStudentClick,
 }: Props) => {
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
-      <thead className=''>
-        <tr className=''>
-          <th className='H4 text-left pl-8'>번 호</th>
-          <th className='H4'>이 름</th>
-          <th className='H4'>학 번</th>
-          <th className='H4 relative'>
+      <thead className='table w-[1200px]'>
+        <tr>
+          <th className='H4 text-left pl-8 w-[5%]'>번 호</th>
+          <th className='H4 w-[13%]'>이 름</th>
+          <th className='H4 w-[13%]'>학 번</th>
+          <th className='H4 relative w-[13%]'>
             성 별
             <button
               className={`absolute top-1/2 -translate-y-1/2 ${genderDown ? '' : 'rotate-180'}`}
@@ -55,7 +53,7 @@ const StudentMangementList = ({
               <ArrowDown />
             </button>
           </th>
-          <th className='H4 relative'>
+          <th className='H4 relative w-[15%]'>
             건 물
             <button
               className={`absolute top-1/2 -translate-y-1/2 ${buildingDown ? '' : 'rotate-180'}`}
@@ -64,8 +62,8 @@ const StudentMangementList = ({
               <ArrowDown />
             </button>
           </th>
-          <th className='H4'>호 실</th>
-          <th className='H4 relative'>
+          <th className='H4 w-[13%]'>호 실</th>
+          <th className='H4 relative pr-25 w-[10%]'>
             상 점
             <button
               className={`absolute top-1/2 -translate-y-1/2 ${bonusPointDown ? '' : 'rotate-180'}`}
@@ -74,7 +72,7 @@ const StudentMangementList = ({
               <ArrowDown />
             </button>
           </th>
-          <th className='H4 relative'>
+          <th className='H4 relative w-[10%]'>
             벌 점
             <button
               className={`absolute top-1/2 -translate-y-1/2 ${minusPointDown ? '' : 'rotate-180'}`}
@@ -83,15 +81,15 @@ const StudentMangementList = ({
               <ArrowDown />
             </button>
           </th>
-          <th className='H4 text-right pr-22'>학 적</th>
+          <th className='H4 text-right pr-22 w-[8%]'>학 적</th>
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tr className='h-15' />
-      <tbody className=''>
+      <tbody className='block w-[1214px] h-677 overflow-y-auto scrollbar-table'>
+        <tr className='h-15' />
         {list.map((data) => {
           return (
-            <StudentMangementListBody
+            <StudentManagementListBody
               key={data.index}
               index={data.index}
               name={data.name}
@@ -102,7 +100,6 @@ const StudentMangementList = ({
               bonusPoint={data.bonusPoint}
               minusPoint={data.minusPoint}
               schoolStatus={data.schoolStatus}
-              studentClick={studentClick}
               onStudentClick={onStudentClick}
             />
           );
@@ -112,4 +109,4 @@ const StudentMangementList = ({
   );
 };
 
-export default StudentMangementList;
+export default StudentManagementList;

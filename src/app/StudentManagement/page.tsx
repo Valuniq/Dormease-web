@@ -2,7 +2,7 @@ import React from 'react';
 import PlusBtnVariant from '@/components/atoms/AllBtn/PlusBtnVariant/PlusBtnVariant';
 import GrayBtn from '@/components/atoms/AllBtn/GrayBtn/GrayBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
-import StudentMangementList from '@/components/organisms/StudentMangement/StudentMangementList';
+import StudentManagementList from '@/components/organisms/StudentManagement/StudentManagementList';
 
 type Props = {
   input: string;
@@ -15,7 +15,6 @@ type Props = {
   onBonusPointClick: (genderDown: boolean) => void;
   minusPointDown: boolean;
   onMinusPointClick: (genderDown: boolean) => void;
-  studentClick: string;
   onStudentClick: (schoolNumber: string) => void;
   list: {
     index: number;
@@ -41,12 +40,11 @@ const StudentMangement = ({
   onBonusPointClick,
   minusPointDown,
   onMinusPointClick,
-  studentClick,
   onStudentClick,
   list,
 }: Props) => {
   return (
-    <div className='flex flex-col w-[1200px]'>
+    <div className='flex flex-col w-[1225px]'>
       <div className='flex justify-between items-center mb-32'>
         <h1 className='H0 text-gray-grayscale50 text-nowrap'>사생관리</h1>
         <div className='flex gap-19'>
@@ -55,7 +53,7 @@ const StudentMangement = ({
           <GrayBtn label='엑셀 다운로드' disabled={false} />
         </div>
       </div>
-      <StudentMangementList
+      <StudentManagementList
         list={list}
         genderDown={genderDown}
         onGenderClick={onGenderClick}
@@ -65,10 +63,9 @@ const StudentMangement = ({
         onBonusPointClick={onBonusPointClick}
         minusPointDown={minusPointDown}
         onMinusPointClick={onMinusPointClick}
-        studentClick={studentClick}
         onStudentClick={onStudentClick}
       />
-      <div className='flex justify-end'>
+      <div className='flex justify-end mt-13'>
         <PlusBtnVariant label='사생 추가' disabled={false} variant='blue' />
       </div>
     </div>

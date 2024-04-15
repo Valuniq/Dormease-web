@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import StudentMangementListBody from './StudentMangementListBody';
+import StudentManagementListBody from './StudentManagementListBody';
 
-const meta: Meta<typeof StudentMangementListBody> = {
-  title: 'components/organisms/StudentMangement/StudentMangementListBody',
-  component: StudentMangementListBody,
+const meta: Meta<typeof StudentManagementListBody> = {
+  title: 'components/organisms/StudentManagement/StudentManagementListBody',
+  component: StudentManagementListBody,
   tags: ['autodocs'],
   argTypes: {},
 };
 
 export default meta;
 
-type Story = StoryObj<typeof StudentMangementListBody>;
+type Story = StoryObj<typeof StudentManagementListBody>;
 
 export const Primary: Story = {
   args: {
@@ -24,6 +24,5 @@ export const Primary: Story = {
     bonusPoint: 9,
     minusPoint: 9,
     schoolStatus: '재학',
-    studentClick: '99999998',
   },
 };

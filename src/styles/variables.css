@@ -55,3 +55,22 @@
 .shadow2 {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
 }
+
+.scrollbar-table {
+  -ms-overflow-style: none;
+  scrollbar-width: 6px;
+  padding-right: 8px;
+}
+
+.scrollbar-table::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-table::-webkit-scrollbar-thumb {
+  background: var(--colors-gray-grayscale-10);
+  border-radius: 10px;
+}
