@@ -15,7 +15,7 @@ type Props = {
   }[];
 };
 
-const StudentMangement = ({ input, setInput, list }: Props) => {
+const WithdrawalMemberManagement = ({ input, setInput, list }: Props) => {
   return (
     <div className='flex flex-col w-[1145px] relative'>
       <div className='flex items-center mb-32'>
@@ -31,4 +31,4 @@ const StudentMangement = ({ input, setInput, list }: Props) => {
   );
 };
 
-export default StudentMangement;
+export default WithdrawalMemberManagement;
