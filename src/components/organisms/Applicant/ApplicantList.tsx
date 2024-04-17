@@ -13,9 +13,9 @@ type Props = {
 const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props) => {
   return (
     <div>
-      <div className='w-[1250px] h-693 overflox-y-scroll border-b-1 border-b-gray-grayscale50'>
+      <div className='w-[1331px] h-696 overflox-y-scroll border-b-1 border-b-gray-grayscale50'>
         <table className='w-full'>
-          <thead className='border-b-1 border-b-gray-grayscale50'>
+          <thead className='w-full h-66 bg-white sticky top-0 z-1'>
             <tr className='text-gray-grayscale50'>
               <th className='H4'>이름</th>
               <th className='H4'>학번</th>
@@ -33,9 +33,11 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
                 </div>
               </th>
             </tr>
-            <tr className='h-18' />
+            <th colSpan={10}>
+              <div className='w-[1331px] h-18 border-b-1 border-b-gray-grayscale50' />
+            </th>
           </thead>
-          <tbody className=''>
+          <tbody>
             <tr className='h-15' />
             {applicantLists.map((i, index) => (
               <>
