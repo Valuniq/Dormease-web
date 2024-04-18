@@ -2,6 +2,7 @@ import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVari
 import React from 'react';
 
 type Props = {
+  isLastItem: boolean;
   name: string;
   schoolNumber: string;
   phoneNumber: string;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const RefundListBody = ({
+  isLastItem,
   name,
   schoolNumber,
   phoneNumber,
@@ -33,77 +35,27 @@ const RefundListBody = ({
   onStudentClick,
 }: Props) => {
   return (
-    <>
-      <tr
-        className='group w-full H4-caption h-38 text-nowrap align-middle cursor-pointer'
+    <div className={`flex items-center relative ${!isLastItem && 'border-b-1 border-gray-grayscale30'}`}>
+      <div
+        className={`my-8 flex items-center rounded-5 w-full H4-caption h-38 text-nowrap cursor-pointer ${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
         onClick={() => onStudentClick(schoolNumber)}
       >
-        <td
-          className={`rounded-l-5 ${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {name}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {schoolNumber}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {phoneNumber}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {bankName}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {accountNumber}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {period}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {exitDate}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {applicationDate}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {building}
-        </td>
-        <td
-          className={`${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {room}
-        </td>
-        <td
-          className={`rounded-r-5 ${clickSchoolNumber === schoolNumber ? 'bg-gray-grayscale20' : 'group-hover:bg-gray-grayscale10 group-active:bg-gray-grayscale20'}`}
-        >
-          {bedNumber}
-        </td>
-        <td>
-          <BtnMiniVariant
-            label='처리'
-            disabled={!(clickSchoolNumber === schoolNumber)}
-            selected={false}
-            variant='blue'
-          />
-        </td>
-      </tr>
-      <tr className='h-14' />
-    </>
+        <div className='w-[6%]'>{name}</div>
+        <div className='w-[10%]'>{schoolNumber}</div>
+        <div className='w-[12%]'>{phoneNumber}</div>
+        <div className='w-[8%]'>{bankName}</div>
+        <div className='w-[12%]'>{accountNumber}</div>
+        <div className='w-[8%]'>{period}</div>
+        <div className='w-[9%]'>{exitDate}</div>
+        <div className='w-[9%]'>{applicationDate}</div>
+        <div className='w-[12%]'>{building}</div>
+        <div className='w-[7%]'>{room}</div>
+        <div className='w-[7%]'>{bedNumber}</div>
+      </div>
+      <div className='absolute -right-87'>
+        <BtnMiniVariant label='처리' disabled={!(clickSchoolNumber === schoolNumber)} selected={false} variant='blue' />
+      </div>
+    </div>
   );
 };
 

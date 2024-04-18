@@ -21,30 +21,28 @@ type Props = {
 
 const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
   return (
-    <table className='text-nowrap text-center text-gray-grayscale50 w-[1483px]'>
-      <thead className='w-full'>
-        <tr>
-          <th className='H4 border-b-1 pb-15'>이 름</th>
-          <th className='H4 border-b-1 pb-15'>학 번</th>
-          <th className='H4 border-b-1 pb-15'>휴대전화</th>
-          <th className='H4 border-b-1 pb-15'>은행명</th>
-          <th className='H4 border-b-1 pb-15'>계좌번호</th>
-          <th className='H4 border-b-1 pb-15'>기간</th>
-          <th className='H4 border-b-1 pb-15'>퇴사 예정일</th>
-          <th className='H4 border-b-1 pb-15'>신청날짜</th>
-          <th className='H4 border-b-1 pb-15'>건 물</th>
-          <th className='H4 border-b-1 pb-15'>호 실</th>
-          <th className='H4 border-b-1 pb-15'>침대번호</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody className='w-full'>
-        <tr className='h-15 relative' />
+    <div className='text-nowrap text-center text-gray-grayscale50 c'>
+      <div className='flex w-full border-b-1 pb-15'>
+        <div className='H4 w-[6%]'>이 름</div>
+        <div className='H4 w-[10%]'>학 번</div>
+        <div className='H4 w-[12%]'>휴대전화</div>
+        <div className='H4 w-[8%]'>은행명</div>
+        <div className='H4 w-[12%]'>계좌번호</div>
+        <div className='H4 w-[8%]'>기간</div>
+        <div className='H4 w-[9%]'>퇴사 예정일</div>
+        <div className='H4 w-[9%]'>신청날짜</div>
+        <div className='H4 w-[12%]'>건 물</div>
+        <div className='H4 w-[7%]'>호 실</div>
+        <div className='H4 w-[7%]'>침대번호</div>
+      </div>
+      <div className='w-full'>
         {list.map((data, index) => {
+          const isLastItem = index === list.length - 1;
           return (
             <>
               <RefundListBody
                 key={index}
+                isLastItem={isLastItem}
                 name={data.name}
                 schoolNumber={data.schoolNumber}
                 phoneNumber={data.phoneNumber}
@@ -59,12 +57,12 @@ const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
                 clickSchoolNumber={clickSchoolNumber}
                 onStudentClick={onStudentClick}
               />
-              <tr className='h-14' />
+              {isLastItem && <div className='mt-13 border-b-1 border-gray-grayscale50'></div>}
             </>
           );
         })}
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 };
 
