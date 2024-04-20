@@ -41,7 +41,7 @@ const StudentManagementList = ({
     <table className='text-nowrap text-center text-gray-grayscale50'>
       <thead className='table w-[1200px]'>
         <tr>
-          <th className='H4 text-left pl-8 w-[5%]'>번 호</th>
+          <th className='H4 w-[5%]'>번 호</th>
           <th className='H4 w-[13%]'>이 름</th>
           <th className='H4 w-[13%]'>학 번</th>
           <th className='H4 relative w-[13%]'>
@@ -63,7 +63,7 @@ const StudentManagementList = ({
             </button>
           </th>
           <th className='H4 w-[13%]'>호 실</th>
-          <th className='H4 relative pr-25 w-[10%]'>
+          <th className='H4 relative w-[10%]'>
             상 점
             <button
               className={`absolute top-1/2 -translate-y-1/2 ${bonusPointDown ? '' : 'rotate-180'}`}
@@ -81,11 +81,11 @@ const StudentManagementList = ({
               <ArrowDown />
             </button>
           </th>
-          <th className='H4 text-right pr-22 w-[8%]'>학 적</th>
+          <th className='H4 w-[8%]'>학 적</th>
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='block w-[1214px] h-677 overflow-y-auto scrollbar-table'>
+      <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
         <tr className='h-15' />
         {list.map((data) => {
           return (

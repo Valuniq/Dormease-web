@@ -25,6 +25,41 @@ const list = [
   {
     index: 999,
     name: '김김김김',
+    schoolNumber: '99999998',
+    bonusPoint: 9,
+    minusPoint: 9,
+    date: '2024.02.30',
+  },
+  {
+    index: 999,
+    name: '김김김김',
+    schoolNumber: '99999999',
+    bonusPoint: 9,
+    minusPoint: 9,
+    date: '2024.02.30',
+  },
+  {
+    index: 999,
+    name: '김김김김',
+    schoolNumber: '99999999',
+    bonusPoint: 9,
+    minusPoint: 9,
+    date: '2024.02.30',
+  },
+];
+
+const listScroll = [
+  {
+    index: 999,
+    name: '김김김김',
+    schoolNumber: '99999998',
+    bonusPoint: 9,
+    minusPoint: 9,
+    date: '2024.02.30',
+  },
+  {
+    index: 999,
+    name: '김김김김',
     schoolNumber: '99999999',
     bonusPoint: 9,
     minusPoint: 9,
@@ -163,6 +198,12 @@ const list = [
 export const Primary: Story = {
   args: {
     list: list,
+  },
+};
+
+export const Scroll: Story = {
+  args: {
+    list: listScroll,
   },
 };
 

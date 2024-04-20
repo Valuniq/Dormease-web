@@ -12,7 +12,7 @@ type Props = {
 const WithdrawalMemberManagementListBody = ({ index, name, schoolNumber, bonusPoint, minusPoint, date }: Props) => {
   return (
     <>
-      <tr className='table rounded-5 w-full H4-caption h-38 text-nowrap relative align-middle cursor-pointer'>
+      <tr className='table rounded-5 w-[1090px] H4-caption h-38 text-nowrap relative align-middle cursor-pointer'>
         <td className='w-[8%]'>{index}</td>
         <td className='w-[22%]'>{name}</td>
         <td className='w-[20%]'>{schoolNumber}</td>

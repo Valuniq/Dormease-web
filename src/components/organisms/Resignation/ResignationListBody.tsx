@@ -31,7 +31,7 @@ const ResignationListBody = ({
   return (
     <>
       <tr
-        className={`table rounded-5 w-full H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
+        className={`table rounded-5 w-[1200px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
         onClick={() => onStudentClick(schoolNumber)}
       >
         <td className='w-[10%]'>{name}</td>

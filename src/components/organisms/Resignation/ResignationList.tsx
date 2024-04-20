@@ -43,7 +43,7 @@ const ResignationList = ({ list, onStudentClick, setIsChecked, isAllChecked, set
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='block h-677 overflow-y-auto scrollbar-table'>
+      <tbody className='block w-[1214px] h-677 overflow-y-auto scrollbar-table'>
         {list && list.length > 0 ? (
           <>
             <tr className='h-15' />

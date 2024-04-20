@@ -27,9 +27,7 @@ const WithdrawalMemberManagementList = ({ list }: Props) => {
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody
-        className={`block h-677 overflow-y-auto scrollbar-table ${list.length > 12 ? 'w-[1104px]' : 'w-[1090px]'}`}
-      >
+      <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
         {list && list.length > 0 ? (
           <>
             <tr className='h-15' />

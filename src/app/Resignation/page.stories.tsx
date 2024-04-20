@@ -58,6 +58,53 @@ const list = [
     depositRefund: false,
     isChecked: false,
   },
+];
+
+const listScroll = [
+  {
+    name: '김김김김',
+    schoolNumber: '99999998',
+    building: '명덕관(4인실)',
+    roomNumber: '999호',
+    exitDate: '24.00.00',
+    hasKey: false,
+    submissionDate: '24.00.00',
+    depositRefund: true,
+    isChecked: true,
+  },
+  {
+    name: '김김김김',
+    schoolNumber: '99999999',
+    building: '명덕관(4인실)',
+    roomNumber: '999호',
+    exitDate: '24.00.00',
+    hasKey: true,
+    submissionDate: '24.00.00',
+    depositRefund: false,
+    isChecked: false,
+  },
+  {
+    name: '김김김김',
+    schoolNumber: '99999999',
+    building: '명덕관(4인실)',
+    roomNumber: '999호',
+    exitDate: '24.00.00',
+    hasKey: true,
+    submissionDate: '24.00.00',
+    depositRefund: false,
+    isChecked: false,
+  },
+  {
+    name: '김김김김',
+    schoolNumber: '99999999',
+    building: '명덕관(4인실)',
+    roomNumber: '999호',
+    exitDate: '24.00.00',
+    hasKey: true,
+    submissionDate: '24.00.00',
+    depositRefund: false,
+    isChecked: false,
+  },
   {
     name: '김김김김',
     schoolNumber: '99999999',
@@ -166,9 +213,15 @@ export const Primary: Story = {
   },
 };
 
-export const NoneList: Story = {
+export const Scroll: Story = {
   args: {
     clickSchoolNumber: '99999998',
+    list: listScroll,
+  },
+};
+
+export const NoneList: Story = {
+  args: {
     list: [],
   },
 };
