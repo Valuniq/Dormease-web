@@ -16,9 +16,9 @@ const WithdrawalMemberManagementListBody = ({ index, name, schoolNumber, bonusPo
         <td className='w-[8%]'>{index}</td>
         <td className='w-[22%]'>{name}</td>
         <td className='w-[20%]'>{schoolNumber}</td>
-        <td className='w-[20%]'>{bonusPoint}</td>
+        <td className='w-[17%]'>{bonusPoint}</td>
         <td className='w-[18%]'>{minusPoint}</td>
-        <td className='pr-15 w-[12%]'>{date}</td>
+        <td className='w-[15%]'>{date}</td>
       </tr>
       <tr className='h-14' />
     </>

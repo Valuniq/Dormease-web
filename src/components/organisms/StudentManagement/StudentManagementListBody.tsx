@@ -39,7 +39,7 @@ const StudentManagementListBody = ({
         <td className='w-[13%]'>{room}</td>
         <td className='pr-25 w-[10%]'>{bonusPoint}</td>
         <td className='w-[10%]'>{minusPoint}</td>
-        <td className='pr-24 text-right w-[8%]'>{schoolStatus}</td>
+        <td className='pr-30 text-right w-[8%]'>{schoolStatus}</td>
       </tr>
       <tr className='h-14' />
     </>

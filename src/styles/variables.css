@@ -58,7 +58,6 @@
 
 .scrollbar-table {
   -ms-overflow-style: none;
-  scrollbar-width: 6px;
 }
 
 .scrollbar-table::-webkit-scrollbar {
