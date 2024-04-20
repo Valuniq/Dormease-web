@@ -142,7 +142,16 @@ const StudentManagementDetail = ({
 
   return (
     <div className='flex text-left items-center flex-grow'>
-      <h4 className='H4-caption min-w-205 text-gray-grayscale50'>{label}</h4>
+      <h4 className='H4-caption min-w-205 text-gray-grayscale50 relative'>
+        {isEdit && label === '이름' ? (
+          <>
+            {label}
+            <p className='H4 text-red-red20 inline-block absolute bottom-3 ml-2'>*</p>
+          </>
+        ) : (
+          label
+        )}
+      </h4>
       <div className={`${right ? 'flex items-center flex-grow justify-end' : 'flex items-center'}`}>
         {renderContent()}
       </div>
