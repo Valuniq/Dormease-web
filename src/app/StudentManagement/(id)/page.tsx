@@ -75,9 +75,11 @@ const page = ({
   return (
     <div className='flex flex-col relative w-[1200px]'>
       <h3 className='H3 text-gray-grayscale50 text-center mb-6'>개인정보</h3>
-      <div className='absolute right-0 -top-8'>
-        <BtnMiniVariant label='수정' disabled={false} selected={false} variant='blue' />
-      </div>
+      {!isEdit && (
+        <div className='absolute right-0 -top-8'>
+          <BtnMiniVariant label='수정' disabled={false} selected={false} variant='blue' />
+        </div>
+      )}
       <div className='flex border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
         <div className='flex-1 flex flex-col pr-170'>
           <StudentManagementDetail label='이름' text={name} value={name} />

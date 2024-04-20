@@ -6,21 +6,95 @@ import ArrowDown from '@public/images/ArrowDown.svg';
 import RelocationDropdown from '@/components/atoms/Dropdown/RelocationDropdown/RelocationDropdown';
 import PointBar from '@/components/atoms/InputText/PointBar/PointBar';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
+import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 
 type Props = {
   isEdit?: boolean;
-  label: string;
-  text?: string | number;
+  label?: string;
+  text?: string | number | null;
   value?: string | number | boolean | File | null;
-  type?: 'file' | 'checkbox' | 'string' | 'building' | 'roomNumber' | 'bedNumber';
+  type?: 'file' | 'checkbox' | 'string' | 'radio' | 'building' | 'roomNumber' | 'bedNumber';
   setIsChecked?: (isChecked: boolean) => void;
-  input?: string;
+  input?: string | null;
   setInput?: (id: string) => void;
   right?: boolean;
   isBuilding?: boolean;
   list?: string[];
   select?: string;
   setSelect?: (isOn: string) => void;
+  setIsOn?: (isOn: boolean) => void;
+};
+
+const FileEdit = ({ text }: Props) => {
+  return (
+    <>
+      <CheckFileBtn label='파일수정' />
+      <div className='border-b-1 h-30 border-gray-grayscale40 ml-10 w-123 H4 text-gray-grayscale50 overflow-hidden text-nowrap'>
+        {text}
+      </div>
+    </>
+  );
+};
+
+const CheckboxEdit = ({ text, value, setIsChecked }: Props) => {
+  return (
+    <>
+      <div className='H4 text-gray-grayscale50 mr-12'>{text === 'O' || text === 'X' ? 'O' : '수령'}</div>
+      {typeof value === 'boolean' && setIsChecked && <Checkbox isChecked={value} setIsChecked={setIsChecked} />}
+    </>
+  );
+};
+
+const StringEdit = ({ input, setInput }: Props) => {
+  return <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} />}</>;
+};
+
+const RadioEdit = ({ value, setIsOn }: Props) => {
+  return (
+    <div className='w-260 flex justify-center gap-70'>
+      {setIsOn && (
+        <>
+          <RadioBtn isOn={value === '남성'} setIsOn={setIsOn} label='남성' />
+          <RadioBtn isOn={value === '여성'} setIsOn={setIsOn} label='여성' />
+        </>
+      )}
+    </div>
+  );
+};
+
+const BuildingEdit = ({ text, isBuilding, list, select, setSelect }: Props) => {
+  return (
+    <div className='flex relative'>
+      <h4 className='H4 text-gray-grayscale50 mr-5'>{text ? text : '건물 선택'}</h4>
+      <button className={`${isBuilding && 'rotate-90'}`}>
+        <ArrowDown />
+      </button>
+      {isBuilding && setSelect && (
+        <div className='absolute left-full bottom-0'>
+          <RelocationDropdown list={list || []} select={select || ''} setSelect={setSelect} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const RoomNumberEdit = ({ input, setInput }: Props) => {
+  return (
+    <div className='flex items-center'>
+      {setInput && <PointBar input={input || ''} setInput={setInput} />}
+      <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>호</h4>
+      <BtnMiniVariant label='재배치' disabled={false} selected={false} variant='blue' />
+    </div>
+  );
+};
+
+const BedNumberEdit = ({ input, setInput }: Props) => {
+  return (
+    <div className='flex items-center'>
+      {setInput && <PointBar input={input || ''} setInput={setInput} readonly />}
+      <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>번</h4>
+    </div>
+  );
 };
 
 const StudentManagementDetail = ({
@@ -37,53 +111,40 @@ const StudentManagementDetail = ({
   list,
   select,
   setSelect,
+  setIsOn,
 }: Props) => {
+  const renderContent = () => {
+    if (isEdit) {
+      switch (type) {
+        case 'file':
+          return <FileEdit text={text} />;
+        case 'checkbox':
+          return <CheckboxEdit text={text} value={value} setIsChecked={setIsChecked} />;
+        case 'string':
+          return <StringEdit input={input} setInput={setInput} />;
+        case 'radio':
+          return <RadioEdit value={value} setIsOn={setIsOn} />;
+        case 'building':
+          return <BuildingEdit text={text} isBuilding={isBuilding} list={list} select={select} setSelect={setSelect} />;
+        case 'roomNumber':
+          return <RoomNumberEdit input={input} setInput={setInput} />;
+        case 'bedNumber':
+          return <BedNumberEdit input={input} setInput={setInput} />;
+        default:
+          return null;
+      }
+    } else if (type === 'file') {
+      return <CheckFileBtn label='파일보기' />;
+    } else {
+      return <h4 className='H4 text-gray-grayscale50'>{text}</h4>;
+    }
+  };
+
   return (
     <div className='flex text-left items-center flex-grow'>
       <h4 className='H4-caption min-w-205 text-gray-grayscale50'>{label}</h4>
       <div className={`${right ? 'flex items-center flex-grow justify-end' : 'flex items-center'}`}>
-        {isEdit && type === 'file' ? (
-          <>
-            <CheckFileBtn label='파일수정' />
-            <div className='border-b-1 border-gray-grayscale40 ml-10 w-123 H4 text-gray-grayscale50 overflow-hidden text-nowrap'>
-              {text}
-            </div>
-          </>
-        ) : isEdit && type === 'checkbox' && typeof value === 'boolean' && setIsChecked ? (
-          <>
-            <div className='H4 text-gray-grayscale50 mr-12'>{text === 'O' || text === 'X' ? 'O' : '수령'}</div>
-            <Checkbox isChecked={value} setIsChecked={setIsChecked} />
-          </>
-        ) : isEdit && type === 'string' && typeof input === 'string' && setInput ? (
-          <MediumInputText placeholder='' input={input} setInput={setInput} />
-        ) : isEdit && type === 'building' ? (
-          <div className='flex relative'>
-            <h4 className='H4 text-gray-grayscale50 mr-2'>{text}</h4>
-            <button className={`${isBuilding && 'rotate-90'}`}>
-              <ArrowDown />
-            </button>
-            {isBuilding && list && typeof select === 'string' && setSelect && (
-              <div className='absolute left-full bottom-0'>
-                <RelocationDropdown list={list} select={select} setSelect={setSelect} />
-              </div>
-            )}
-          </div>
-        ) : isEdit && type === 'roomNumber' && typeof input === 'string' && setInput ? (
-          <div className='flex items-center'>
-            <PointBar input={input} setInput={setInput} />
-            <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>호</h4>
-            <BtnMiniVariant label='재배치' disabled={false} selected={false} variant='blue' />
-          </div>
-        ) : isEdit && type === 'bedNumber' && typeof input === 'string' && setInput ? (
-          <div className='flex items-center'>
-            <PointBar input={input} setInput={setInput} readonly />
-            <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>번</h4>
-          </div>
-        ) : type === 'file' ? (
-          <CheckFileBtn label='파일보기' />
-        ) : (
-          <h4 className='H4 text-gray-grayscale50'>{text}</h4>
-        )}
+        {renderContent()}
       </div>
     </div>
   );
