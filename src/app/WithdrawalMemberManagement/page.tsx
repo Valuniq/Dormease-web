@@ -22,9 +22,11 @@ const WithdrawalMemberManagement = ({ input, setInput, list }: Props) => {
         <div className='flex justify-center w-[1090px]'>
           <h1 className='H0 text-gray-grayscale50 text-nowrap'>탈퇴 회원 관리</h1>
         </div>
-        <div className='absolute right-0'>
-          <SearchTextBox input={input} placeholder='이름 또는 학번' setInput={setInput} />
-        </div>
+        {list && list.length > 0 && (
+          <div className='absolute right-0'>
+            <SearchTextBox input={input} placeholder='이름 또는 학번' setInput={setInput} />
+          </div>
+        )}
       </div>
       <WithdrawalMemberManagementList list={list} />
     </div>

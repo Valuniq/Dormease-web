@@ -19,7 +19,7 @@ type Props = {
   accountNumber: string;
 };
 
-const Resignation = ({
+const page = ({
   name,
   major,
   schoolNumber,
@@ -65,4 +65,4 @@ const Resignation = ({
   );
 };
 
-export default Resignation;
+export default page;
