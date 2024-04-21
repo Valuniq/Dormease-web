@@ -72,3 +72,37 @@
   background: var(--colors-gray-grayscale-10);
   border-radius: 10px;
 }
+
+.underline {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.balloon {
+  position: relative;
+  background-color: #f7f7f7;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  padding: 10px 10px 0;
+}
+
+.balloon::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -10px;
+  border: 10px solid transparent;
+  border-bottom-color: #cccccc;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -8.9px;
+  border: 9px solid transparent;
+  border-bottom-color: #f7f7f7;
+}
