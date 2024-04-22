@@ -9,7 +9,7 @@ type Props = {
 
 const RelocationDropdown = ({ list, select, setSelect }: Props) => {
   return (
-    <div className='flex flex-col items-center w-155 h-306 rounded-8 bg-white shadow'>
+    <div className='flex flex-col items-center w-155 pb-14 rounded-8 bg-white shadow'>
       <div className='mt-29 mb-9 text-center'>
         {list.map((data, index) => {
           return (
