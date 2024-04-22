@@ -15,9 +15,10 @@ type Story = StoryObj<typeof RadioBtn>;
 export const IsOn: Story = {
   args: {
     isOn: true,
+    label: '검토중',
   },
 };
 
 export const IsOff: Story = {
-  args: { isOn: false },
+  args: { isOn: false, label: '검토중' },
 };

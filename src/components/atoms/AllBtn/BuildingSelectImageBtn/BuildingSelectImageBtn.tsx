@@ -16,7 +16,7 @@ const BuildingSelectImageBtn = ({ image, ...props }: Props & React.HtmlHTMLAttri
         </div>
       </div>
       <Image
-        className='group-hover:brightness-50 group-hover:hover-transition shadow1'
+        className='group-hover:brightness-50 group-hover:hover-transition shadow1 rounded-8'
         src={image}
         alt='Build'
         layout='fill'

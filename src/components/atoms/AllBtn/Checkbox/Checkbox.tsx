@@ -16,7 +16,10 @@ const Checkbox = ({ isChecked, setIsChecked }: Props) => {
       alt={isChecked ? 'Checked' : 'UnChecked'}
       width={19.5}
       height={19.5}
-      onClick={() => setIsChecked(!isChecked)}
+      onClick={(event) => {
+        event.stopPropagation();
+        setIsChecked(!isChecked);
+      }}
     />
   );
 };
