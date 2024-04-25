@@ -61,11 +61,9 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
               ))}
             </>
           ) : (
-            <tr>
-              <td colSpan={10}>
-                <NoneList />
-              </td>
-            </tr>
+            <td className='h-500' colSpan={10}>
+              <NoneList />
+            </td>
           )}
         </tbody>
       </table>

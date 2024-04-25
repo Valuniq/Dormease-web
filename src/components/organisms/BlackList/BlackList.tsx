@@ -59,7 +59,7 @@ const BlackList = ({ blackLists, isAllChecked, setIsAllChecked, isEdit, setIsEdi
               ))}
             </>
           ) : (
-            <td colSpan={8}>
+            <td className='h-500' colSpan={8}>
               <NoneList />
             </td>
           )}
