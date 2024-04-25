@@ -29,38 +29,24 @@ const BlackListBody = ({
   isEdit,
 }: Props) => {
   return (
-    <>
+    <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+      <td className='text-center'>{index}</td>
+      <td className='text-center'>{name}</td>
+      <td className='text-center'>{studentId}</td>
+      <td className='text-center'>{phoneNumber}</td>
+      <td className='text-center'>{minus}점</td>
       <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>{index}</h1>
+        {isEdit ? (
+          <BlackListReasonInputText input={reason} setInput={setReason} />
+        ) : (
+          <BlackListReasonInputText input={reason} />
+        )}
       </td>
-      <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>{name}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>{studentId}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>{phoneNumber}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>{minus}점</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>
-          {isEdit ? (
-            <BlackListReasonInputText input={reason} setInput={setReason} />
-          ) : (
-            <BlackListReasonInputText input={reason} />
-          )}
-        </h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4 text-gray-grayscale50'>{registrationDate}</h1>
-      </td>
+      <td className='text-center'>{registrationDate}</td>
       <td className='flex justify-center'>
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
-    </>
+    </tr>
   );
 };
 

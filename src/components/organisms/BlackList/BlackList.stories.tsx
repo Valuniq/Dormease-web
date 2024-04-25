@@ -13,7 +13,40 @@ export default meta;
 
 type Story = StoryObj<typeof BlackList>;
 
-export const Primary: Story = {
+export const primary: Story = {
+  args: {
+    blackLists: [
+      {
+        index: '001',
+        name: '이보현',
+        studentId: '60190814',
+        phoneNumber: '010-1234-1234',
+        minus: '342',
+        reason: '말안들음',
+        setReason: () => {},
+        registrationDate: '23.12.12',
+        isChecked: true,
+        setIsChecked: () => {},
+        isEdit: false,
+      },
+      {
+        index: '001',
+        name: '이보현',
+        studentId: '60190814',
+        phoneNumber: '010-1234-1234',
+        minus: '342',
+        reason: '말안들음',
+        setReason: () => {},
+        registrationDate: '23.12.12',
+        isChecked: true,
+        setIsChecked: () => {},
+        isEdit: false,
+      },
+    ],
+  },
+};
+
+export const scroll: Story = {
   args: {
     blackLists: [
       {
@@ -371,7 +404,7 @@ export const Primary: Story = {
   },
 };
 
-export const isEmpty: Story = {
+export const noData: Story = {
   args: {
     blackLists: [],
   },
