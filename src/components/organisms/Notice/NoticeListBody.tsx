@@ -24,7 +24,7 @@ const NoticeListBody = ({ index, title, writer, registrationDate, isExistedFile,
               {index} <Image className=' object-contain ml-2 ' src={pinIcon} width={13} height={19.61} alt='pinIcon' />
             </div>
           ) : (
-            <td className='text-center'>{index}</td>
+            <> {index}</>
           )}
         </td>
         <td className='text-center'>{slicedTitle}</td>
