@@ -1,8 +1,13 @@
 import MediumInputText from '@/components/atoms/InputText/MediumInputText/MediumInputText';
 import React from 'react';
 
-const DistanceScore = () => {
-  const scores = Array.from({ length: 10 }, (_, index) => index * 0.5);
+type Props = {
+  scores: number[];
+  inputs: string[];
+  setInput: (index: number, value: string) => void;
+};
+
+const DistanceScore = ({ scores, inputs, setInput }: Props) => {
   return (
     <table className=' border-1 border-gray-grayscale50'>
       <tbody className='H4 text-gray-grayscale50 '>
@@ -15,8 +20,8 @@ const DistanceScore = () => {
             <td className='w-333 text-center'>
               <MediumInputText
                 placeholder={'거리 점수 사유를 입력해주세요.'}
-                input={''}
-                setInput={(input: string) => {}}
+                input={inputs[index] || ''}
+                setInput={(input) => setInput(index, input)}
               />
             </td>
           </tr>
