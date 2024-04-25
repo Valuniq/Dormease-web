@@ -1,7 +1,8 @@
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import Image from 'next/image';
+
 import React from 'react';
-import SortImg from '@public/images/DropDownBtn.png';
+import NoneList from '../NoneList/NoneList';
+
 import ApplicantListBody, { Props as ApplicantListBodyType } from './ApplicantListBody';
 
 type Props = {
@@ -12,36 +13,36 @@ type Props = {
 
 const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props) => {
   return (
-    <div>
-      <div className='w-[1331px] h-696 overflox-y-scroll border-b-1 border-b-gray-grayscale50'>
-        <table className='w-full'>
-          <thead className='w-full h-66 bg-white sticky top-0 z-1'>
-            <tr className='text-gray-grayscale50'>
-              <th className='H4'>이름</th>
-              <th className='H4'>학번</th>
-              <th className='H4'>성별</th>
-              <th className='H4'>신청건물</th>
-              <th className='H4'>본거주지</th>
-              <th className='H4'>등본파일</th>
-              <th className='H4'>우선선발</th>
-              <th className='H4'>배정건물</th>
-              <th className='H4'>합격여부</th>
-              <th>
-                <div className='H4 flex  items-center justify-center text-center w-full'>
-                  <h1 className='mr-4'>전체</h1>
-                  <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
-                </div>
-              </th>
-            </tr>
-            <th colSpan={10}>
-              <div className='w-[1331px] h-18 border-b-1 border-b-gray-grayscale50' />
+    <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
+      <table className='w-[1305px]'>
+        <thead className='w-full h-36 bg-white sticky top-0 z-1'>
+          <tr className='text-gray-grayscale50'>
+            <th className='H4'>이름</th>
+            <th className='H4'>학번</th>
+            <th className='H4'>성별</th>
+            <th className='H4'>신청건물</th>
+            <th className='H4'>본거주지</th>
+            <th className='H4'>등본파일</th>
+            <th className='H4'>우선선발</th>
+            <th className='H4'>배정건물</th>
+            <th className='H4'>합격여부</th>
+            <th>
+              <div className='H4 flex  items-center justify-center text-center w-full'>
+                <h1 className='mr-4'>전체</h1>
+                <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+              </div>
             </th>
-          </thead>
-          <tbody>
-            <tr className='h-15' />
-            {applicantLists.map((i, index) => (
-              <>
-                <tr key={index}>
+          </tr>
+          <th colSpan={10}>
+            <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
+          </th>
+        </thead>
+        <tbody className='overflow-y-scroll'>
+          {applicantLists && applicantLists.length > 0 ? (
+            <>
+              <tr className='h-15' />
+              {applicantLists.map((i) => (
+                <>
                   <ApplicantListBody
                     name={i.name}
                     studentId={i.studentId}
@@ -55,13 +56,19 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
                     isChecked={i.isChecked}
                     setIsChecked={i.setIsChecked}
                   />
-                </tr>
-                <tr className='h-15' />
-              </>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                  <tr className='h-15' />
+                </>
+              ))}
+            </>
+          ) : (
+            <tr>
+              <td colSpan={10}>
+                <NoneList />
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

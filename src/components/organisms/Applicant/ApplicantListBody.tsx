@@ -7,11 +7,11 @@ export type Props = {
   gender: string;
   applicationBuilding: string;
   residence: string;
-  // certifiedFile은 임시로 null로 해둠
+  // File은 임시로 null로 해둠
   certifiedFile: File | null;
-  prioritySelection: boolean;
+  prioritySelection: File | null;
   assignedBuilding: string | null;
-  isPassed: boolean | null;
+  isPassed: 'pass' | 'out' | 'movingPass';
   isChecked: boolean;
   setIsChecked: (isChecked: boolean) => void;
 };
@@ -29,20 +29,15 @@ const ApplicantListBody = ({
   isChecked,
   setIsChecked,
 }: Props) => {
+  const statusText =
+    isPassed === 'pass' ? '합격' : isPassed === 'out' ? '탈락' : isPassed === 'movingPass' ? '이동합격' : '-';
+  const statusColor = isPassed === 'pass' ? 'text-blue-blue30' : isPassed === 'out' ? 'text-red-red20' : '';
   return (
-    <>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{name}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{studentId}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{gender}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{applicationBuilding}</h1>
-      </td>
+    <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+      <td className='text-center'>{name}</td>
+      <td className='text-center'>{studentId}</td>
+      <td className='text-center'>{gender}</td>
+      <td className='text-center'>{applicationBuilding}</td>
       <td className='text-center flex justify-center'>
         <div className='w-286'>
           <h1
@@ -53,22 +48,14 @@ const ApplicantListBody = ({
           </h1>
         </div>
       </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{certifiedFile ? certifiedFile.name : '-'}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{prioritySelection ? 'O' : 'X'}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{assignedBuilding ? assignedBuilding : '-'}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{isPassed ? isPassed : '-'}</h1>
-      </td>
+      <td className='text-center'>{certifiedFile ? certifiedFile.name : '-'}</td>
+      <td className='text-center'>{prioritySelection ? 'O' : 'X'}</td>
+      <td className='text-center'>{assignedBuilding && assignedBuilding.length > 0 ? assignedBuilding : '-'}</td>
+      <td className={`text-center ${statusColor}`}>{statusText}</td>
       <td className='flex justify-center'>
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
-    </>
+    </tr>
   );
 };
 
