@@ -14,5 +14,20 @@ export default meta;
 type Story = StoryObj<typeof StandardSetting>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    isSmokingOn: true,
+    setIsSmokingOn: () => {},
+    isSamePeriodOn: false,
+    setIsSamePeriodOn: () => {},
+    isPointOn: false,
+    setIsPointOn: () => {},
+    isPriorityOn: true,
+    setIsPriorityOn: () => {},
+    isMovingOn: false,
+    setIsMovingOn: () => {},
+
+    scores: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5],
+    inputs: [],
+    setInput: () => {},
+  },
 };
