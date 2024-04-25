@@ -11,7 +11,7 @@ export type Props = {
   isPinned: boolean;
 };
 
-const NoticeListBody = ({ index, title, writer, registrationDate, isExistedFile, views, isPinned }: Props) => {
+const FAQListBody = ({ index, title, writer, registrationDate, isExistedFile, views, isPinned }: Props) => {
   const slicedTitle = title.length > 35 ? title.slice(0, 35) + '...' : title;
   return (
     <>
@@ -37,4 +37,4 @@ const NoticeListBody = ({ index, title, writer, registrationDate, isExistedFile,
   );
 };
 
-export default NoticeListBody;
+export default FAQListBody;
