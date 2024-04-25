@@ -93,7 +93,7 @@ const AppMemberManagementList = ({
               ))}
             </>
           ) : (
-            <td colSpan={7}>
+            <td className='h-500' colSpan={7}>
               <NoneList />
             </td>
           )}
