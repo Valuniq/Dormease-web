@@ -27,35 +27,19 @@ const PointManagementListBody = ({
   setIsChecked,
 }: Props) => {
   return (
-    <>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{index}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{name}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{studentId}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{phoneNumber}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{plus}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{minus}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{building}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{room}</h1>
-      </td>
+    <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+      <td className='text-center'>{index}</td>
+      <td className='text-center'>{name}</td>
+      <td className='text-center'>{studentId}</td>
+      <td className='text-center'>{phoneNumber}</td>
+      <td className='text-center'>{plus}</td>
+      <td className='text-center'>{minus}</td>
+      <td className='text-center'>{building}</td>
+      <td className='text-center'>{room}</td>
       <td className='flex justify-center'>
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
-    </>
+    </tr>
   );
 };
 
