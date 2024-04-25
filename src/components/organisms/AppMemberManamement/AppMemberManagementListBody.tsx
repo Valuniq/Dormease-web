@@ -6,54 +6,22 @@ export type Props = {
   name: string;
   studentId: string;
   phoneNumber: string;
-  personalAgree: boolean;
-  thirdAgree: boolean;
   plus: string;
   minus: string;
   creationDate: string;
 };
 
-const AppMemberManagementListBody = ({
-  index,
-  name,
-  studentId,
-  phoneNumber,
-  personalAgree,
-  thirdAgree,
-  plus,
-  minus,
-  creationDate,
-}: Props) => {
+const AppMemberManagementListBody = ({ index, name, studentId, phoneNumber, plus, minus, creationDate }: Props) => {
   return (
-    <>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{index}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{name}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{studentId}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{phoneNumber}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{personalAgree ? 'O' : 'X'}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{thirdAgree ? 'O' : 'X'}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{plus}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{minus}</h1>
-      </td>
-      <td className='text-center'>
-        <h1 className='H4-caption text-gray-grayscale50'>{creationDate}</h1>
-      </td>
-    </>
+    <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+      <td className='text-center'>{index}</td>
+      <td className='text-center'>{name}</td>
+      <td className='text-center'>{studentId}</td>
+      <td className='text-center'>{phoneNumber}</td>
+      <td className='text-center'>{plus}</td>
+      <td className='text-center'>{minus}</td>
+      <td className='text-center'>{creationDate}</td>
+    </tr>
   );
 };
 

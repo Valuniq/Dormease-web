@@ -1,6 +1,6 @@
 type Props = {
   input: string;
-  setInput: (input: string) => void;
+  setInput?: (input: string) => void;
 };
 
 const BlackListReasonInputText = ({ input, setInput }: Props) => {
