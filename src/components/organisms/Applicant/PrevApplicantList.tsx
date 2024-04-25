@@ -24,16 +24,16 @@ const PrevApplicantList = ({ prevApplicantLists }: Props) => {
           </th>
         </thead>
         <tbody className='overflow-y-scroll'>
+          <tr className='h-15' />
           {prevApplicantLists && prevApplicantLists.length > 0 ? (
             <>
               {prevApplicantLists.map((i, index) => (
                 <>
-                  <tr className='h-15' />
                   <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
                     <td className='text-center'>{i.title}</td>
                     <td className='text-center'>{i.registrationDate}</td>
                   </tr>
-                  <tr className='h-15' />
+                  <tr className='h-15' />{' '}
                 </>
               ))}
             </>
