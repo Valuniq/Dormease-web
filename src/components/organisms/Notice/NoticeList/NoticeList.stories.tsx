@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import NoticeList from './NoticeList';
 
 const meta: Meta<typeof NoticeList> = {
-  title: 'components/organisms/NoticeList',
+  title: 'components/organisms/NoticeList/NoticeList',
   component: NoticeList,
   tags: ['autodocs'],
   argTypes: {},

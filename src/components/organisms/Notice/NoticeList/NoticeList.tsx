@@ -1,5 +1,6 @@
 import React from 'react';
-import NoneList from '../NoneList/NoneList';
+import NoneList from '../../NoneList/NoneList';
+
 import NoticeListBody, { Props as noticeList } from './NoticeListBody';
 
 type Props = {
