@@ -1,26 +1,23 @@
+import UseTextEditorConfirm from '@/hooks/UseTextEditorConfirm';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import React, { useState, useEffect } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 Quill.register('modules/ImageResize', ImageResize);
 
-const QuillComponent: React.FC = () => {
+type Props = {
+  width?: string;
+  height?: string;
+  onSave: () => void; // 에디터 변경 사항 저장 함수
+};
+
+const QuillComponent = ({ width, height, onSave }: Props) => {
   const [editorHtml, setEditorHtml] = useState<string>('');
   const [isEditorModified, setIsEditorModified] = useState<boolean>(false);
 
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (isEditorModified) {
-        event.preventDefault();
-        event.returnValue = '';
-      }
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [isEditorModified]);
+  UseTextEditorConfirm('변경 사항이 저장되지 않았습니다. 페이지를 벗어나시겠습니까?', () => {
+    if (isEditorModified) onSave();
+  });
 
   const handleEditorChange = (content: string) => {
     setEditorHtml(content);
@@ -65,7 +62,14 @@ const QuillComponent: React.FC = () => {
 
   return (
     <div>
-      <ReactQuill theme='snow' value={editorHtml} onChange={handleEditorChange} modules={modules} formats={formats} />
+      <ReactQuill
+        style={{ width, height }}
+        theme='snow'
+        value={editorHtml}
+        onChange={handleEditorChange}
+        modules={modules}
+        formats={formats}
+      />
     </div>
   );
 };
