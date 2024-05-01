@@ -2,8 +2,8 @@ import React from 'react';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 
 type Props = {
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date;
+  endDate?: Date;
   setStartDate: (startDate: Date) => void;
   setEndDate: (endDate: Date) => void;
   handlePosting: () => void;
