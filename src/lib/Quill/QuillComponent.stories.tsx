@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuillComponent from './QuillComponent';
 
 const meta: Meta<typeof QuillComponent> = {
-  title: 'app/lib/Quill/QuillComponent',
+  title: 'lib/Quill/QuillComponent',
   component: QuillComponent,
   tags: ['autodocs'],
   argTypes: {},
