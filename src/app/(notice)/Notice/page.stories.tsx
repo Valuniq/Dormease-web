@@ -17,7 +17,7 @@ export const Primary: Story = {
   args: {
     pageNum: 1,
     pageTotalNum: 3,
-    noticeList: [
+    noticeLists: [
       {
         index: '1',
         title: '2024-1 전자식권 사용방법 안내(식당/편의점/카페)',

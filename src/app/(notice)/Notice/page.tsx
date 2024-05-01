@@ -8,17 +8,17 @@ type Props = {
   pageNum: number;
   pageTotalNum: number;
   setPageNum: (navigation: 'prev' | 'next') => void;
-  noticeList: noticeList[];
+  noticeLists: noticeList[];
 };
 
-const page = ({ pageNum, pageTotalNum, setPageNum, noticeList }: Props) => {
+const page = ({ pageNum, pageTotalNum, setPageNum, noticeLists }: Props) => {
   return (
     <div className='w-[1200px] flex flex-col items-center'>
       <h1 className='H0 text-gray-grayscale50'>공지사항</h1>
       <div className='ml-auto mb-15'>
         <BtnLargeVariant label={'작성하기'} disabled={false} variant={'blue'} />
       </div>
-      <NoticeList noticeLists={noticeList} />
+      <NoticeList noticeLists={noticeLists} />
       <div className='mt-27 flex justify-center'>
         <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={setPageNum} />
       </div>
