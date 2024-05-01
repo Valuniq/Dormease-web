@@ -61,16 +61,14 @@ const QuillComponent = ({ width, height, onSave }: Props) => {
   ];
 
   return (
-    <div>
-      <ReactQuill
-        style={{ width, height }}
-        theme='snow'
-        value={editorHtml}
-        onChange={handleEditorChange}
-        modules={modules}
-        formats={formats}
-      />
-    </div>
+    <ReactQuill
+      style={{ width, height }}
+      theme='snow'
+      value={editorHtml}
+      onChange={handleEditorChange}
+      modules={modules}
+      formats={formats}
+    />
   );
 };
 
