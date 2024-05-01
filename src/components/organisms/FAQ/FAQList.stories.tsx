@@ -15,7 +15,7 @@ type Story = StoryObj<typeof FAQList>;
 
 export const Primary: Story = {
   args: {
-    FAQLists: [
+    faqLists: [
       {
         index: '1',
         title: '2024-1 전자식권 사용방법 안내(식당/편의점/카페)',
@@ -58,7 +58,7 @@ export const Primary: Story = {
 
 export const scroll: Story = {
   args: {
-    FAQLists: [
+    faqLists: [
       {
         index: '1',
         title: '2024-1 전자식권 사용방법 안내(식당/편의점/카페)',
@@ -191,6 +191,6 @@ export const scroll: Story = {
 
 export const noData: Story = {
   args: {
-    FAQLists: [],
+    faqLists: [],
   },
 };
