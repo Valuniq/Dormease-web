@@ -24,7 +24,7 @@ type file = {
   handleDelete: () => void;
 };
 
-const NoticeWrite = ({ title, setTitle, writer, isPinned, setIsPinned, fileLists, handleAllDelete }: Props) => {
+const NoticeWriting = ({ title, setTitle, writer, isPinned, setIsPinned, fileLists, handleAllDelete }: Props) => {
   return (
     <div className='w-[1200px] px-12'>
       <div className='flex items-center py-30 border-t-1 border-t-gray-grayscale50'>
@@ -43,9 +43,9 @@ const NoticeWrite = ({ title, setTitle, writer, isPinned, setIsPinned, fileLists
         <h1 className='text-nowrap H4 text-gray-grayscale40'>{writer}</h1>
       </div>
       <div className='flex items-center py-23 mb-50'>
-        <h1 className='h-430 items-center flex mr-51 text-nowrap H4 text-gray-grayscale50'>내 용</h1>
+        <h1 className=' h-430 items-center flex mr-51 text-nowrap H4 text-gray-grayscale50'>내 용</h1>
         <QuillComponent
-          width='fit-content'
+          width='100%'
           height='430px'
           onSave={function (): void {
             throw new Error('Function not implemented.');
@@ -69,4 +69,4 @@ const NoticeWrite = ({ title, setTitle, writer, isPinned, setIsPinned, fileLists
   );
 };
 
-export default NoticeWrite;
+export default NoticeWriting;
