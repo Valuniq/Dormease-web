@@ -1,17 +1,8 @@
+import { noticeList } from '@/types/notice';
 import pinIcon from '@public/images/pinIcon.png';
 import Image from 'next/image';
 
-export type Props = {
-  index: string;
-  title: string;
-  writer: string;
-  registrationDate: string;
-  isExistedFile: boolean;
-  views: number;
-  isPinned: boolean;
-};
-
-const NoticeListBody = ({ index, title, writer, registrationDate, isExistedFile, views, isPinned }: Props) => {
+const NoticeListBody = ({ index, title, writer, registrationDate, isExistedFile, views, isPinned }: noticeList) => {
   const slicedTitle = title.length > 35 ? title.slice(0, 35) + '...' : title;
   return (
     <>

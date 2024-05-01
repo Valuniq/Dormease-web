@@ -1,13 +1,9 @@
 import React from 'react';
 import NoneList from '../../NoneList/NoneList';
+import NoticeListBody from './NoticeListBody';
+import { noticeLists } from '@/types/notice';
 
-import NoticeListBody, { Props as noticeList } from './NoticeListBody';
-
-type Props = {
-  noticeLists: noticeList[];
-};
-
-const NoticeList = ({ noticeLists }: Props) => {
+const NoticeList = ({ noticeLists }: noticeLists) => {
   const pinnedNotices = noticeLists.filter((notice) => notice.isPinned);
   const unPinnedNotices = noticeLists.filter((notice) => !notice.isPinned);
   return (
