@@ -1,14 +1,11 @@
+import { faqLists } from '@/types/faq';
 import React from 'react';
 import NoneList from '../NoneList/NoneList';
-import FAQListBody, { Props as faqList } from './FAQListBody';
+import FAQListBody from './FAQListBody';
 
-type Props = {
-  FAQLists: faqList[];
-};
-
-const FAQList = ({ FAQLists }: Props) => {
-  const pinnedFAQ = FAQLists.filter((faq) => faq.isPinned);
-  const unPinnedFAQ = FAQLists.filter((faq) => !faq.isPinned);
+const FAQList = ({ faqLists }: faqLists) => {
+  const pinnedFAQ = faqLists.filter((faq) => faq.isPinned);
+  const unPinnedFAQ = faqLists.filter((faq) => !faq.isPinned);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1200px]'>
@@ -27,34 +24,34 @@ const FAQList = ({ FAQLists }: Props) => {
         </thead>
         <tbody className='overflow-y-scroll'>
           <tr className='h-15' />
-          {FAQLists && FAQLists.length > 0 ? (
+          {faqLists && faqLists.length > 0 ? (
             <>
               {/* 고정된 FAQ 먼저 렌더링 */}
-              {pinnedFAQ.map((notice) => (
+              {pinnedFAQ.map((faq) => (
                 <>
                   <FAQListBody
-                    index={notice.index}
-                    title={notice.title}
-                    writer={notice.writer}
-                    registrationDate={notice.registrationDate}
-                    isExistedFile={notice.isExistedFile}
-                    views={notice.views}
-                    isPinned={notice.isPinned}
+                    index={faq.index}
+                    title={faq.title}
+                    writer={faq.writer}
+                    registrationDate={faq.registrationDate}
+                    isExistedFile={faq.isExistedFile}
+                    views={faq.views}
+                    isPinned={faq.isPinned}
                   />
                   <tr className='h-15' />
                 </>
               ))}
               {/* 고정되지 않은 FAQ 렌더링 */}
-              {unPinnedFAQ.map((notice) => (
+              {unPinnedFAQ.map((faq) => (
                 <>
                   <FAQListBody
-                    index={notice.index}
-                    title={notice.title}
-                    writer={notice.writer}
-                    registrationDate={notice.registrationDate}
-                    isExistedFile={notice.isExistedFile}
-                    views={notice.views}
-                    isPinned={notice.isPinned}
+                    index={faq.index}
+                    title={faq.title}
+                    writer={faq.writer}
+                    registrationDate={faq.registrationDate}
+                    isExistedFile={faq.isExistedFile}
+                    views={faq.views}
+                    isPinned={faq.isPinned}
                   />
                   <tr className='h-15' />
                 </>

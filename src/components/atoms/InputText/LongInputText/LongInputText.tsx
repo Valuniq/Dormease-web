@@ -4,7 +4,7 @@ type Props = {
   setInput: (input: string) => void;
 };
 
-const LoginInputText = ({ placeholder, input, setInput }: Props) => {
+const LongInputText = ({ placeholder, input, setInput }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -20,4 +20,4 @@ const LoginInputText = ({ placeholder, input, setInput }: Props) => {
   );
 };
 
-export default LoginInputText;
+export default LongInputText;

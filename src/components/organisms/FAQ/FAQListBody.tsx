@@ -1,17 +1,8 @@
+import { faqList } from '@/types/faq';
 import pinIcon from '@public/images/pinIcon.png';
 import Image from 'next/image';
 
-export type Props = {
-  index: string;
-  title: string;
-  writer: string;
-  registrationDate: string;
-  isExistedFile: boolean;
-  views: number;
-  isPinned: boolean;
-};
-
-const FAQListBody = ({ index, title, writer, registrationDate, isExistedFile, views, isPinned }: Props) => {
+const FAQListBody = ({ index, title, writer, registrationDate, isExistedFile, views, isPinned }: faqList) => {
   const slicedTitle = title.length > 35 ? title.slice(0, 35) + '...' : title;
   return (
     <>
