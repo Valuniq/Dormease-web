@@ -43,6 +43,7 @@ const config: Config = {
       },
       blue: {
         blue10: 'var(--colors-blue-blue-10)',
+        blue15: 'var(--colors-blue-blue-15)',
         blue20: 'var(--colors-blue-blue-20)',
         blue30: 'var(--colors-blue-blue-30)',
         blue40: 'var(--colors-blue-blue-40)',
