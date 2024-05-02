@@ -1,6 +1,7 @@
 import React from 'react';
 import RefundList from '@/components/organisms/Refund/RefundList';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
+import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 
 type Props = {
   clickSchoolNumber: string;
@@ -28,7 +29,20 @@ const Refund = ({ list, onStudentClick, clickSchoolNumber, pageNum, pageTotalNum
     <div className='flex flex-col w-[1396px]'>
       <div className='flex justify-between items-center mb-32'>
         <h1 className='H0 text-gray-grayscale50 text-nowrap'>환불 신청</h1>
-        <div></div>
+        <DatePicker
+          title='환불 신청 기간'
+          startDate={undefined}
+          endDate={undefined}
+          setStartDate={function (startDate: Date): void {
+            throw new Error('Function not implemented.');
+          }}
+          setEndDate={function (endDate: Date): void {
+            throw new Error('Function not implemented.');
+          }}
+          handlePosting={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
       </div>
       <RefundList list={list} clickSchoolNumber={clickSchoolNumber} onStudentClick={onStudentClick} />
       <div className='mt-27 flex justify-center'>

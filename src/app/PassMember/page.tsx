@@ -25,6 +25,7 @@ const page = () => {
 
       <div className='mb-40 flex items-center ml-auto'>
         <DatePicker
+          title='룸메이트 신청기간'
           startDate={undefined}
           endDate={undefined}
           setStartDate={function (startDate: Date): void {

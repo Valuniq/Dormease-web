@@ -2,10 +2,11 @@ type Props = {
   input: string;
   setInput: (id: string) => void;
   placeholder: string;
+  readOnly?: boolean;
   type: 'textBox1' | 'textBox2' | 'textBox3' | 'textBox4' | 'textBox5' | 'textBox6' | 'textBox7' | 'textBox8';
 };
 
-const TextBoxes = ({ input, setInput, placeholder, type }: Props) => {
+const TextBoxes = ({ input, setInput, placeholder, readOnly, type }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -51,7 +52,7 @@ const TextBoxes = ({ input, setInput, placeholder, type }: Props) => {
       case 'textBox7':
         return {
           boxSize: 'w-54',
-          textAlign: 'placeholder:text-center',
+          textAlign: 'placeholder:text-center text-center',
           inputType: 'number',
         };
       case 'textBox7':
@@ -76,6 +77,7 @@ const TextBoxes = ({ input, setInput, placeholder, type }: Props) => {
       placeholder={placeholder}
       type={inputType}
       value={input}
+      readOnly={readOnly}
       onChange={handleChange}
     />
   );
