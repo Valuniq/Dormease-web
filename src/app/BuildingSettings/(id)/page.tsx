@@ -67,7 +67,7 @@ const BuildingManagement = ({
             <hr className='w-331 border-gray-grayscale50 mt-15 mb-8' />
             <div className='flex flex-col mr-15 gap-12'>
               <RoomBtn
-                selected={false}
+                selected={true}
                 floorInput={''}
                 setFloorInput={function (id: string): void {
                   throw new Error('Function not implemented.');
@@ -76,8 +76,9 @@ const BuildingManagement = ({
                 setEndInput={function (id: string): void {
                   throw new Error('Function not implemented.');
                 }}
-                isOne={false}
+                isOne={true}
                 pressOkBtn={false}
+                hovered={false}
               />
               <RoomBtn
                 selected={false}
@@ -91,6 +92,21 @@ const BuildingManagement = ({
                 }}
                 isOne={false}
                 pressOkBtn={false}
+                hovered={true}
+              />
+              <RoomBtn
+                selected={true}
+                floorInput={''}
+                setFloorInput={function (id: string): void {
+                  throw new Error('Function not implemented.');
+                }}
+                endInput={''}
+                setEndInput={function (id: string): void {
+                  throw new Error('Function not implemented.');
+                }}
+                isOne={false}
+                pressOkBtn={false}
+                hovered={false}
               />
             </div>
             <div className='h-13'></div>
@@ -103,10 +119,30 @@ const BuildingManagement = ({
             <h1 className='H1 text-blue-blue30'>필터</h1>
             <div>
               <div className='flex gap-22'>
-                <BuildingSetBtn label='남자/여자' detail={false} selected={selectFilter === 1} />
-                <BuildingSetBtn label='호실 타입' detail={false} selected={selectFilter === 2} />
-                <BuildingSetBtn label='열쇠 수령 여부' detail={false} selected={selectFilter === 3} />
-                <BuildingSetBtn label='비활성화' detail={false} selected={selectFilter === 4} />
+                <BuildingSetBtn
+                  label='남자/여자'
+                  detail={false}
+                  selected={selectFilter === 1}
+                  done={completedFilter.includes(1)}
+                />
+                <BuildingSetBtn
+                  label='호실 타입'
+                  detail={false}
+                  selected={selectFilter === 2}
+                  done={completedFilter.includes(2)}
+                />
+                <BuildingSetBtn
+                  label='열쇠 수령 여부'
+                  detail={false}
+                  selected={selectFilter === 3}
+                  done={completedFilter.includes(3)}
+                />
+                <BuildingSetBtn
+                  label='비활성화'
+                  detail={false}
+                  selected={selectFilter === 4}
+                  done={completedFilter.includes(4)}
+                />
               </div>
               <div className='h-53 flex gap-15 justify-end items-end '>
                 {selectFilter === 1 ? (

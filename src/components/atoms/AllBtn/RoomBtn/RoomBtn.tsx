@@ -29,12 +29,18 @@ const RoomBtn = ({
   return (
     <button
       {...props}
-      className='group flex justify-between items-center w-403 h-52 rounded-r-8 rounded-l-50 hover:bg-gray-grayscale5 hover:hover-transition'
+      className={`group flex justify-between items-center w-403 h-52 rounded-r-8 rounded-l-50 ${
+        !isOne ? (hovered ? 'bg-gray-grayscale5' : 'hover:bg-gray-grayscale5 hover:hover-transition') : ''
+      } `}
     >
       <CloseBtnRed
-        className={`ml-21 ${!hovered && 'opacity-0 group-hover:opacity-100 group-hover:hover-transition'}`}
+        className={`ml-21 opacity-0 ${
+          !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
+        }`}
       />
-      <div className={`flex items-center ${selected && 'bg-blue-blue15 py-9 px-14 rounded-8'}`}>
+      <div
+        className={`flex items-center ${selected ? (hovered ? '' : 'bg-blue-blue15 py-9 px-14 rounded-8 group-hover:bg-gray-grayscale5 group-hover:hover-transition:') : ''}`}
+      >
         <TextBoxes input={floorInput} setInput={setFloorInput} placeholder='층' type='textBox7' />
         <h5 className='Caption2 text-gray-grayscale50 ml-4 mr-17'>층</h5>
         <TextBoxes input='1' setInput={(id) => {}} placeholder='시작' type='textBox7' readOnly={true} />
@@ -52,7 +58,11 @@ const RoomBtn = ({
           />
         )}
       </div>
-      <KebabMenu className={`mr-11 ${!hovered && 'opacity-0 group-hover:opacity-100 group-hover:hover-transition'}`} />
+      <KebabMenu
+        className={`mr-11 opacity-0 ${
+          !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
+        }`}
+      />
     </button>
   );
 };

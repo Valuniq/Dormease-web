@@ -2,6 +2,7 @@ import React from 'react';
 import ResignationList from '@/components/organisms/Resignation/ResignationList';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
+import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 
 type Props = {
   clickSchoolNumber: string;
@@ -34,7 +35,21 @@ const Resignation = ({
     <div className='flex flex-col w-[1200px]'>
       <div className='flex justify-between items-center mb-32'>
         <h1 className='H0 text-gray-grayscale50 text-nowrap'>퇴사 확인서 제출 명단</h1>
-        <div>
+        <div className='flex gap-38 items-end'>
+          <DatePicker
+            title='제출 기간'
+            startDate={undefined}
+            endDate={undefined}
+            setStartDate={function (startDate: Date): void {
+              throw new Error('Function not implemented.');
+            }}
+            setEndDate={function (endDate: Date): void {
+              throw new Error('Function not implemented.');
+            }}
+            handlePosting={function (): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
           <BtnLargeVariant label='삭제' disabled={!clickSchoolNumber} variant='red' />
         </div>
       </div>

@@ -18,7 +18,7 @@ export const Primary: Story = {
   args: {
     listClick: 2,
     image: BuildingImgEx,
-    selectFilter: 1,
+    selectFilter: 3,
     completedFilter: [1, 2],
     list: [
       {
@@ -177,6 +177,8 @@ export const NoneList: Story = {
   args: {
     listClick: 2,
     image: undefined,
+    selectFilter: 0,
+    completedFilter: [],
     list: [],
     building: '명덕관',
     floor: 1,
