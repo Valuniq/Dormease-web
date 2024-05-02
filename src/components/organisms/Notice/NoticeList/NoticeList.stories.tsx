@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import FAQList from './FAQList';
+import NoticeList from './NoticeList';
 
-const meta: Meta<typeof FAQList> = {
-  title: 'components/organisms/FAQList',
-  component: FAQList,
+const meta: Meta<typeof NoticeList> = {
+  title: 'components/organisms/NoticeList/NoticeList',
+  component: NoticeList,
   tags: ['autodocs'],
   argTypes: {},
 };
 
 export default meta;
 
-type Story = StoryObj<typeof FAQList>;
+type Story = StoryObj<typeof NoticeList>;
 
 export const Primary: Story = {
   args: {
-    faqLists: [
+    noticeLists: [
       {
         index: '1',
         title: '2024-1 전자식권 사용방법 안내(식당/편의점/카페)',
@@ -58,7 +58,7 @@ export const Primary: Story = {
 
 export const scroll: Story = {
   args: {
-    faqLists: [
+    noticeLists: [
       {
         index: '1',
         title: '2024-1 전자식권 사용방법 안내(식당/편의점/카페)',
@@ -191,6 +191,6 @@ export const scroll: Story = {
 
 export const noData: Story = {
   args: {
-    faqLists: [],
+    noticeLists: [],
   },
 };
