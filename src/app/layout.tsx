@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import RecoilRootWrapper from '@/recoil/RecoilWrapper.tsx';
+import Navigation from '@/components/organisms/Navigation/Navigation';
+import Header from '@/components/organisms/Header/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,8 +23,18 @@ export default function RootLayout({
         {/* react-quill CSS 파일 링크 */}
         <link rel='stylesheet' href='https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css' />
       </head>
-      <body className={inter.className}>
-        <RecoilRootWrapper>{children}</RecoilRootWrapper>
+      <body className='flex flex-col'>
+        <div className='mb-30 fixed top-0 w-full'>
+          <Header />
+        </div>
+        <div className='flex align-start ml-19 mt-132'>
+          <nav className='mr-101 '>
+            <Navigation />
+          </nav>
+          <div className='mt-7'>
+            <RecoilRootWrapper>{children}</RecoilRootWrapper>
+          </div>
+        </div>
       </body>
     </html>
   );
