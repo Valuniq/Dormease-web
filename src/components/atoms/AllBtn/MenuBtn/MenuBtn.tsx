@@ -4,10 +4,10 @@ import Image, { StaticImageData } from 'next/image';
 type Props = {
   label: string;
   menu: StaticImageData;
-  selected?: boolean;
+  selected: boolean;
 };
 
-const MenuBtn = ({ label, menu, selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
+const MenuBtn = ({ label, menu, selected, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <div className='flex'>
       <button

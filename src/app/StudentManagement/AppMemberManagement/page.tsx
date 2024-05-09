@@ -1,3 +1,4 @@
+'use client';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import AppMemberManagementList from '@/components/organisms/AppMemberManamement/AppMemberManagementList';
 

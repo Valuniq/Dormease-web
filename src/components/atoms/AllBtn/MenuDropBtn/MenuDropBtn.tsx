@@ -3,11 +3,10 @@ import Image, { StaticImageData } from 'next/image';
 
 type Props = {
   label: string;
-  menu: StaticImageData;
   selected?: boolean;
 };
 
-const MenuBtn = ({ label, menu, selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
+const MenuBtn = ({ label, selected = false, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       {...props}

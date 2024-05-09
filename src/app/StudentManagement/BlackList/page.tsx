@@ -1,3 +1,4 @@
+'use client';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 import BlackList from '@/components/organisms/BlackList/BlackList';

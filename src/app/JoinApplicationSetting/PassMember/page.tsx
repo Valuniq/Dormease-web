@@ -1,3 +1,4 @@
+'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';

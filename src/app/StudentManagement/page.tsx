@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import PlusBtnVariant from '@/components/atoms/AllBtn/PlusBtnVariant/PlusBtnVariant';
 import GrayBtn from '@/components/atoms/AllBtn/GrayBtn/GrayBtn';

@@ -19,18 +19,19 @@ const BuildingSettings = ({ list, onAddBuilding, onBuildingOutClick, onBuildingS
     <div className='flex flex-col w-[1200px]'>
       <h1 className='H0 text-gray-grayscale50 text-center mb-35'>건물 설정</h1>
       <div className='w-[1250px] grid grid-cols-3 gap-30 max-h-790 overflow-y-auto scrollbar-table'>
-        {list.map((data) => {
-          return (
-            <BuildingSettingsBody
-              key={data.buildingId}
-              buildingId={data.buildingId}
-              buildingName={data.buildingName}
-              image={data.image}
-              onBuildingOutClick={onBuildingOutClick}
-              onBuildingSettingsDetail={onBuildingSettingsDetail}
-            />
-          );
-        })}
+        {list &&
+          list.map((data) => {
+            return (
+              <BuildingSettingsBody
+                key={data.buildingId}
+                buildingId={data.buildingId}
+                buildingName={data.buildingName}
+                image={data.image}
+                onBuildingOutClick={onBuildingOutClick}
+                onBuildingSettingsDetail={onBuildingSettingsDetail}
+              />
+            );
+          })}
         <AddBuildingBtn onClick={onAddBuilding} />
       </div>
     </div>
