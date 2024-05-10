@@ -1,16 +1,59 @@
 'use client';
-import { countState } from '@/recoil';
-import { useRecoilState } from 'recoil';
+import { signIn } from '@/apis/Auth';
+import LoginForm from '@/components/organisms/LoginForm/LoginForm';
+import { UserLoginRequest } from '@/types/user';
+import LoginBackgroundImg from '@public/images/LoginBackgroundImg.png';
+import LoginLogo from '@public/logo/LoginLogo.png';
 
-export default function Home() {
-  const [count, setCount] = useRecoilState(countState);
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import { useState } from 'react';
+
+const Page = () => {
+  const [loginId, setLoginId] = useState('');
+  const [password, setPassword] = useState('');
+  const isDisabled = !loginId || !password;
+  const router = useRouter();
+  // 로그인 처리 함수
+  const handleLogin = async ({ loginId, password }: UserLoginRequest) => {
+    try {
+      const response = await signIn({ loginId, password });
+
+      if (response) {
+        alert('로그인 성공');
+        router.push('dashboard/StudentManagement');
+      } else {
+        alert('로그인 실패');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('로그인 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
-    <main className='flex'>
-      <button onClick={() => setCount(count - 1)}>-</button>
-      <div>{count}</div>
-      <div className='w-100 h-200 bg-blue-blue40 '>스타일 테스트 입니다</div>
-      <button onClick={() => setCount(count + 1)}>+</button>
-    </main>
+    <div
+      style={{
+        backgroundImage: `url(${LoginBackgroundImg.src})`,
+        width: '100%',
+        height: '100vh',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+      className='overflow-y-hidden flex flex-col items-center justify-center'
+    >
+      <Image src={LoginLogo} width={372} height={136.5} className='object-cover mb-43' alt='login logo' />
+      <LoginForm
+        loginId={loginId}
+        setLoginId={setLoginId}
+        password={password}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+        loginBtnDisabled={isDisabled}
+      />
+    </div>
   );
-}
+};
+
+export default Page;
