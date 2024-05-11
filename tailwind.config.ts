@@ -81,10 +81,12 @@ const config: Config = {
       caption1: 'var(--caption-1)',
       caption2: 'var(--caption-2)',
     },
-
     shadow1: 'var(--shadow-1)',
     shadow2: 'var(--shadow-2)',
     tokenSetOrder0: 'var(--token-set-order-0)',
+    zIndex: {
+      header: '100',
+    },
   },
   plugins: [require('tailwindcss'), require('autoprefixer')],
 };

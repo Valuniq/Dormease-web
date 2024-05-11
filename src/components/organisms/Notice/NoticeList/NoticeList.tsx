@@ -4,8 +4,8 @@ import NoticeListBody from './NoticeListBody';
 import { noticeLists } from '@/types/notice';
 
 const NoticeList = ({ noticeLists }: noticeLists) => {
-  const pinnedNotices = noticeLists.filter((notice) => notice.isPinned);
-  const unPinnedNotices = noticeLists.filter((notice) => !notice.isPinned);
+  const pinnedNotices = noticeLists && noticeLists.filter((notice) => notice.isPinned);
+  const unPinnedNotices = noticeLists && noticeLists.filter((notice) => !notice.isPinned);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1200px]'>

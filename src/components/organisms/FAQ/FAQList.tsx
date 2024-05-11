@@ -4,8 +4,8 @@ import NoneList from '../NoneList/NoneList';
 import FAQListBody from './FAQListBody';
 
 const FAQList = ({ faqLists }: faqLists) => {
-  const pinnedFAQ = faqLists.filter((faq) => faq.isPinned);
-  const unPinnedFAQ = faqLists.filter((faq) => !faq.isPinned);
+  const pinnedFAQ = faqLists && faqLists.filter((faq) => faq.isPinned);
+  const unPinnedFAQ = faqLists && faqLists.filter((faq) => !faq.isPinned);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1200px]'>

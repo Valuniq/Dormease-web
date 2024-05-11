@@ -1,3 +1,4 @@
+'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import PointManagementList from '@/components/organisms/PointManagement/PointManagementList';

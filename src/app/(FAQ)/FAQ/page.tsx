@@ -1,3 +1,4 @@
+'use client';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import FAQList from '@/components/organisms/FAQ/FAQList';

@@ -1,3 +1,4 @@
+'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import StandardSetting from '@/components/organisms/StandardSetting/StandardSetting';
 import React from 'react';

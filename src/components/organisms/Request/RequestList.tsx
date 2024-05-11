@@ -27,19 +27,21 @@ const RequestList = ({ list, onRequestClick }: Props) => {
       </thead>
       <tbody>
         <tr className='h-15' />
-        {list.map((data) => {
-          return (
-            <RequestListBody
-              key={data.index}
-              index={data.index}
-              title={data.title}
-              name={data.name}
-              date={data.date}
-              progression={data.progression}
-              onRequestClick={onRequestClick}
-            />
-          );
-        })}
+        {/* // TODO empty list 처리 필요 */}
+        {list &&
+          list.map((data) => {
+            return (
+              <RequestListBody
+                key={data.index}
+                index={data.index}
+                title={data.title}
+                name={data.name}
+                date={data.date}
+                progression={data.progression}
+                onRequestClick={onRequestClick}
+              />
+            );
+          })}
       </tbody>
     </table>
   );

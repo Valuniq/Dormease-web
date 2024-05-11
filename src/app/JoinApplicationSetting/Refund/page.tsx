@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import RefundList from '@/components/organisms/Refund/RefundList';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';

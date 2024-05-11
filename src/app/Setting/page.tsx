@@ -1,3 +1,4 @@
+'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import ChangeIDPWInputText from '@/components/atoms/InputText/ChangeIDPWInputText/ChangeIDPWInputText';
 import React from 'react';
