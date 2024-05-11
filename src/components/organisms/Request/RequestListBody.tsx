@@ -13,7 +13,7 @@ const RequestListBody = ({ index, title, name, date, progression, onRequestClick
   return (
     <>
       <tr
-        className='table rounded-5 w-full H4-caption h-38 align-middle cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
+        className='table rounded-5 w-[1200px] H4-caption h-38 align-middle cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
         onClick={() => onRequestClick(index)}
       >
         <td className='w-[8%]'>{index}</td>

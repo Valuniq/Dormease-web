@@ -117,8 +117,6 @@ const list = [
 
 export const Primary: Story = {
   args: {
-    pageNum: 1,
-    pageTotalNum: 3,
     list: list,
   },
 };
