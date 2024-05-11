@@ -85,9 +85,8 @@ const StudentManagementList = ({
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
+      <tbody className='w-[1214px] block max-h-677 overflow-y-auto scrollbar-table'>
         <tr className='h-15' />
-        {/* // TODO empty list 수정 필요 */}
         {list &&
           list.map((data) => {
             return (

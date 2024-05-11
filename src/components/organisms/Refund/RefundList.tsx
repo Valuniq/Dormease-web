@@ -36,7 +36,6 @@ const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
         <div className='H4 w-[7%]'>침대번호</div>
       </div>
       <div className='w-full'>
-        {/* // TODO empty list 처리 */}
         {list &&
           list.map((data, index) => {
             const isLastItem = index === list.length - 1;

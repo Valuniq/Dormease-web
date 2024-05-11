@@ -2,7 +2,7 @@
 
 import CustomCalendar from '@/components/organisms/Calendar/CustomCalendar';
 
-const Calendar = () => {
+const ScheduleManagement = () => {
   return (
     <div>
       <CustomCalendar />
@@ -10,4 +10,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default ScheduleManagement;
