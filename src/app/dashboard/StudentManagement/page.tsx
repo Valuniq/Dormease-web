@@ -1,10 +1,11 @@
 'use client';
-
-import React from 'react';
+import React, { ReactElement } from 'react';
 import PlusBtnVariant from '@/components/atoms/AllBtn/PlusBtnVariant/PlusBtnVariant';
 import GrayBtn from '@/components/atoms/AllBtn/GrayBtn/GrayBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import StudentManagementList from '@/components/organisms/StudentManagement/StudentManagementList';
+
+import Page from '../../page';
 
 type Props = {
   input: string;

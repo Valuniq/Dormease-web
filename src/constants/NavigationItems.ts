@@ -8,9 +8,9 @@ import RequestIcon from '@public/images/navigation/Request.png';
 import MealTicketManagementIcon from '@public/images/navigation/MealTicketManagement.png';
 import SettingIcon from '@public/images/navigation/Setting.png';
 
-const StudentManagementRoutes = '/StudentManagement';
-const JoinApplicationSettingRoutes = '/JoinApplicationSetting';
-const BuildingManagementRoutes = '/BuildingManagement';
+const StudentManagementRoutes = '/dashboard/StudentManagement';
+const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
+const BuildingManagementRoutes = '/dashboard/BuildingManagement';
 
 export const NavigationItems = [
   {
@@ -22,7 +22,7 @@ export const NavigationItems = [
       { label: '상/벌점 관리', routes: `${StudentManagementRoutes}/PointManagement` },
       { label: '앱 회원관리', routes: `${StudentManagementRoutes}/AppMemberManagement` },
       { label: '블랙리스트', routes: `${StudentManagementRoutes}/BlackList` },
-      { label: '탈퇴회원관리', routes: `${StudentManagementRoutes}/Resignation` },
+      { label: '탈퇴회원관리', routes: `${StudentManagementRoutes}/WithdrawalMemberManagement` },
     ],
   },
   {
@@ -49,32 +49,32 @@ export const NavigationItems = [
   },
   {
     label: '일정 관리',
-    routes: '/ScheduleManagement',
+    routes: '/dashboard/ScheduleManagement',
     icon: ScheduleManagementIcon,
   },
   {
     label: '공지 사항',
-    routes: '/Notice',
+    routes: '/dashboard/Notice',
     icon: NoticeIcon,
   },
   {
     label: 'FAQ',
-    routes: '/FAQ',
+    routes: '/dashboard/FAQ',
     icon: FAQIcon,
   },
   {
     label: '요청 사항',
-    routes: '/Request',
+    routes: '/dashboard/Request',
     icon: RequestIcon,
   },
   {
     label: '식권 관리',
-    routes: '/',
+    routes: '/dashboard/',
     icon: MealTicketManagementIcon,
   },
   {
     label: '설정',
-    routes: '/Setting',
+    routes: '/dashboard/Setting',
     icon: SettingIcon,
   },
 ];
