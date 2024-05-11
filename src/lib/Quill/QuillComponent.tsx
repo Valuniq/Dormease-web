@@ -1,3 +1,4 @@
+'use client';
 import UseTextEditorConfirm from '@/hooks/UseTextEditorConfirm';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import React, { useState, useEffect } from 'react';

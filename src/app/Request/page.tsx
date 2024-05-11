@@ -1,3 +1,4 @@
+'use client';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import RequestList from '@/components/organisms/Request/RequestList';
 import React from 'react';

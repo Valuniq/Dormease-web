@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import loginLogo from '@public/images/LoginLogo.png';
+import loginLogo from '@public/logo/LoginLogo.png';
 import LoginInputText from '@/components/atoms/InputText/LoginInputText/LoginInputText';
 import LoginBtn from '@/components/atoms/AllBtn/LoginBtn/LoginBtn';
 

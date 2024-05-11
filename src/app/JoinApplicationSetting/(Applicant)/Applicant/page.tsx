@@ -1,3 +1,4 @@
+'use client';
 import BackBtn from '@/components/atoms/AllBtn/BackBtn/BackBtn';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';

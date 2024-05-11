@@ -87,23 +87,25 @@ const StudentManagementList = ({
       </thead>
       <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
         <tr className='h-15' />
-        {list.map((data) => {
-          return (
-            <StudentManagementListBody
-              key={data.index}
-              index={data.index}
-              name={data.name}
-              schoolNumber={data.schoolNumber}
-              gender={data.gender}
-              building={data.building}
-              room={data.room}
-              bonusPoint={data.bonusPoint}
-              minusPoint={data.minusPoint}
-              schoolStatus={data.schoolStatus}
-              onStudentClick={onStudentClick}
-            />
-          );
-        })}
+        {/* // TODO empty list 수정 필요 */}
+        {list &&
+          list.map((data) => {
+            return (
+              <StudentManagementListBody
+                key={data.index}
+                index={data.index}
+                name={data.name}
+                schoolNumber={data.schoolNumber}
+                gender={data.gender}
+                building={data.building}
+                room={data.room}
+                bonusPoint={data.bonusPoint}
+                minusPoint={data.minusPoint}
+                schoolStatus={data.schoolStatus}
+                onStudentClick={onStudentClick}
+              />
+            );
+          })}
       </tbody>
     </table>
   );

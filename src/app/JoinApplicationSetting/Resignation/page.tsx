@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import ResignationList from '@/components/organisms/Resignation/ResignationList';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
