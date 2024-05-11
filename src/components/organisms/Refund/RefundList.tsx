@@ -1,5 +1,6 @@
 import React from 'react';
 import RefundListBody from './RefundListBody';
+import NoneList from '../NoneList/NoneList';
 
 type Props = {
   clickSchoolNumber: string;
@@ -36,32 +37,39 @@ const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
         <div className='H4 w-[7%]'>침대번호</div>
       </div>
       <div className='w-full'>
-        {list &&
-          list.map((data, index) => {
-            const isLastItem = index === list.length - 1;
-            return (
-              <>
-                <RefundListBody
-                  key={index}
-                  isLastItem={isLastItem}
-                  name={data.name}
-                  schoolNumber={data.schoolNumber}
-                  phoneNumber={data.phoneNumber}
-                  bankName={data.bankName}
-                  accountNumber={data.accountNumber}
-                  period={data.period}
-                  exitDate={data.exitDate}
-                  applicationDate={data.applicationDate}
-                  building={data.building}
-                  room={data.room}
-                  bedNumber={data.bedNumber}
-                  clickSchoolNumber={clickSchoolNumber}
-                  onStudentClick={onStudentClick}
-                />
-                {isLastItem && <div className='mt-13 border-b-1 border-gray-grayscale50'></div>}
-              </>
-            );
-          })}
+        {list ? (
+          <>
+            {list.map((data, index) => {
+              const isLastItem = index === list.length - 1;
+              return (
+                <>
+                  <RefundListBody
+                    key={index}
+                    isLastItem={isLastItem}
+                    name={data.name}
+                    schoolNumber={data.schoolNumber}
+                    phoneNumber={data.phoneNumber}
+                    bankName={data.bankName}
+                    accountNumber={data.accountNumber}
+                    period={data.period}
+                    exitDate={data.exitDate}
+                    applicationDate={data.applicationDate}
+                    building={data.building}
+                    room={data.room}
+                    bedNumber={data.bedNumber}
+                    clickSchoolNumber={clickSchoolNumber}
+                    onStudentClick={onStudentClick}
+                  />
+                  {isLastItem && <div className='mt-13 border-b-1 border-gray-grayscale50'></div>}
+                </>
+              );
+            })}
+          </>
+        ) : (
+          <div className='h-600'>
+            <NoneList />
+          </div>
+        )}
       </div>
     </div>
   );

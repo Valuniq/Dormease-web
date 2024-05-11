@@ -1,6 +1,7 @@
 import React from 'react';
 import StudentManagementListBody from './StudentManagementListBody';
 import ArrowDown from '@public/images/ArrowDown.svg';
+import NoneList from '../NoneList/NoneList';
 
 type Props = {
   genderDown: boolean;
@@ -85,26 +86,31 @@ const StudentManagementList = ({
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='w-[1214px] block max-h-677 overflow-y-auto scrollbar-table'>
-        <tr className='h-15' />
-        {list &&
-          list.map((data) => {
-            return (
-              <StudentManagementListBody
-                key={data.index}
-                index={data.index}
-                name={data.name}
-                schoolNumber={data.schoolNumber}
-                gender={data.gender}
-                building={data.building}
-                room={data.room}
-                bonusPoint={data.bonusPoint}
-                minusPoint={data.minusPoint}
-                schoolStatus={data.schoolStatus}
-                onStudentClick={onStudentClick}
-              />
-            );
-          })}
+      <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
+        {list ? (
+          <>
+            <tr className='h-15' />
+            {list.map((data) => {
+              return (
+                <StudentManagementListBody
+                  key={data.index}
+                  index={data.index}
+                  name={data.name}
+                  schoolNumber={data.schoolNumber}
+                  gender={data.gender}
+                  building={data.building}
+                  room={data.room}
+                  bonusPoint={data.bonusPoint}
+                  minusPoint={data.minusPoint}
+                  schoolStatus={data.schoolStatus}
+                  onStudentClick={onStudentClick}
+                />
+              );
+            })}
+          </>
+        ) : (
+          <NoneList />
+        )}
       </tbody>
     </table>
   );
