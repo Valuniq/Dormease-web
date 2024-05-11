@@ -1,39 +1,55 @@
+'use client';
+import { signIn } from '@/apis/Auth';
+import LoginForm from '@/components/organisms/LoginForm/LoginForm';
+import { UserLoginRequest } from '@/types/user';
+import LoginBackgroundImg from '@public/images/LoginBackgroundImg.png';
+import LoginLogo from '@public/logo/LoginLogo.png';
 import Image from 'next/image';
-import React from 'react';
-import loginLogo from '@public/logo/LoginLogo.png';
-import LoginInputText from '@/components/atoms/InputText/LoginInputText/LoginInputText';
-import LoginBtn from '@/components/atoms/AllBtn/LoginBtn/LoginBtn';
+import { useState } from 'react';
 
-const page = () => {
+const Page = () => {
+  const [loginId, setLoginId] = useState('');
+  const [password, setPassword] = useState('');
+  const isDisabled = !loginId || !password;
+
+  // 로그인 처리 함수
+  const handleLogin = async ({ loginId, password }: UserLoginRequest) => {
+    try {
+      const response = await signIn({ loginId, password });
+
+      if (response) {
+        alert('로그인 성공');
+      } else {
+        alert('로그인 실패');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('로그인 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
-    <div className='flex flex-col justify-center items-center'>
-      <Image src={loginLogo} width={372} height={136.5} alt='login' className='object-contain mb-43' />
-      <div className='w-510 h-426 bg-white rounded-[12.35px] shadow-lg flex flex-col items-center justify-center'>
-        <h1 className='H1 text-gray-grayscale50 mb-31'>도미즈 관리자 로그인</h1>
-        <div className='mb-19'>
-          <LoginInputText
-            input={''}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
-            placeholder={'아이디'}
-            type={'text'}
-          />
-        </div>
-        <div className='mb-61'>
-          <LoginInputText
-            input={''}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
-            placeholder={'비밀번호'}
-            type={'password'}
-          />
-        </div>{' '}
-        <LoginBtn label={'로그인'} disabled={false} />
-      </div>
+    <div
+      style={{
+        backgroundImage: `url(${LoginBackgroundImg.src})`,
+        width: '100%',
+        height: '100vh',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+      className='overflow-y-hidden flex flex-col items-center justify-center'
+    >
+      <Image src={LoginLogo} width={372} height={136.5} className='object-cover mb-43' alt='login logo' />
+      <LoginForm
+        loginId={loginId}
+        setLoginId={setLoginId}
+        password={password}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+        loginBtnDisabled={isDisabled}
+      />
     </div>
   );
 };
 
-export default page;
+export default Page;
