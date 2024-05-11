@@ -5,17 +5,18 @@ import { useState } from 'react';
 
 type Props = {
   isOn: boolean;
+  onColorDropdownClick: () => void;
   select: string;
   setSelect: (select: string) => void;
   setIsOn: (isOn: boolean) => void;
 };
 
-const ColorDropDown = ({ isOn, select, setSelect, setIsOn }: Props) => {
+const ColorDropDown = ({ isOn, onColorDropdownClick, select, setSelect, setIsOn }: Props) => {
   const [hoverColor, setHoverColor] = useState<string | null>(null);
 
   const handleColorSelect = (color: string) => {
     setSelect(color);
-    setIsOn(false); // 드롭다운 닫기
+    setIsOn(false);
   };
 
   const colorList = [
@@ -29,7 +30,10 @@ const ColorDropDown = ({ isOn, select, setSelect, setIsOn }: Props) => {
   return (
     <div>
       <button onClick={() => setIsOn(!isOn)}>
-        <div className='H4-caption w-101 h-30 rounded-20 bg-gray-grayscale5 flex items-center justify-center '>
+        <div
+          className={`H4-caption w-101 h-30 rounded-20 flex items-center justify-center ${colorList.find((color) => color.name === select)?.value}`}
+          onClick={onColorDropdownClick}
+        >
           색상
           <Image
             width={13}
@@ -45,7 +49,7 @@ const ColorDropDown = ({ isOn, select, setSelect, setIsOn }: Props) => {
           {colorList.map((color, index) => (
             <ul key={index} className='mr-24'>
               <li
-                className={`shadow-inner  w-58 h-58 rounded-full cursor-pointer ${color.value}`}
+                className={`shadow-inner w-58 h-58 rounded-full cursor-pointer ${color.value}`}
                 onClick={() => handleColorSelect(color.name)}
                 onMouseEnter={() => setHoverColor(color.name)}
                 onMouseLeave={() => setHoverColor(null)}

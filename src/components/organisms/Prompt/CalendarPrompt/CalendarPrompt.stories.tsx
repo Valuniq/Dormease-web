@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import CalendarPrompt from './CalendarPrompt';
+import CalendarPromptAdd from './CalendarPromptAdd';
 
-const meta: Meta<typeof CalendarPrompt> = {
-  title: 'components/organisms/Prompt/CalendarPrompt',
-  component: CalendarPrompt,
+const meta: Meta<typeof CalendarPromptAdd> = {
+  title: 'components/organisms/Prompt/CalendarPromptAdd',
+  component: CalendarPromptAdd,
   tags: ['autodocs'],
   argTypes: {},
 };
 
 export default meta;
 
-type Story = StoryObj<typeof CalendarPrompt>;
+type Story = StoryObj<typeof CalendarPromptAdd>;
 
 export const Primary: Story = {
   args: {},

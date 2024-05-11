@@ -11,7 +11,7 @@ const TextBoxes = ({ input, setInput, placeholder, readOnly, type }: Props) => {
     setInput(e.target.value);
   };
 
-  const getClassByType = (type: string) => {
+  const getClassByType = (type: Props['type']) => {
     switch (type) {
       case 'textBox1':
         return {
@@ -28,7 +28,7 @@ const TextBoxes = ({ input, setInput, placeholder, readOnly, type }: Props) => {
       case 'textBox3':
         return {
           boxSize: 'w-76',
-          textAlign: 'placeholder:text-center',
+          textAlign: 'placeholder:text-center text-center',
           inputType: 'number',
         };
       case 'textBox4':
@@ -55,7 +55,7 @@ const TextBoxes = ({ input, setInput, placeholder, readOnly, type }: Props) => {
           textAlign: 'placeholder:text-center text-center',
           inputType: 'number',
         };
-      case 'textBox7':
+      case 'textBox8':
         return {
           boxSize: 'w-111',
           textAlign: '',
