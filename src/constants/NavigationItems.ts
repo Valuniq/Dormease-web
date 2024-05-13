@@ -8,7 +8,7 @@ import RequestIcon from '@public/images/navigation/Request.png';
 import MealTicketManagementIcon from '@public/images/navigation/MealTicketManagement.png';
 import SettingIcon from '@public/images/navigation/Setting.png';
 
-const StudentManagementRoutes = '/dashboard/StudentManagement';
+export const StudentManagementRoutes = '/dashboard/StudentManagement';
 const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
 const BuildingManagementRoutes = '/dashboard/BuildingManagement';
 

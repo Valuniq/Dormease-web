@@ -1,6 +1,7 @@
 'use client';
 import { signIn } from '@/apis/Auth';
 import LoginForm from '@/components/organisms/LoginForm/LoginForm';
+import { StudentManagementRoutes } from '@/constants/navigationItems';
 import { UserLoginRequest } from '@/types/user';
 import LoginBackgroundImg from '@public/images/LoginBackgroundImg.png';
 import LoginLogo from '@public/logo/LoginLogo.png';
@@ -22,7 +23,7 @@ const Page = () => {
 
       if (response) {
         alert('로그인 성공');
-        router.push('dashboard/StudentManagement');
+        router.push(StudentManagementRoutes);
       } else {
         alert('로그인 실패');
       }
