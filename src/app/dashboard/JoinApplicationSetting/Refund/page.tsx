@@ -46,9 +46,11 @@ const Refund = ({ list, onStudentClick, clickSchoolNumber, pageNum, pageTotalNum
         />
       </div>
       <RefundList list={list} clickSchoolNumber={clickSchoolNumber} onStudentClick={onStudentClick} />
-      <div className='mt-27 flex justify-center'>
-        <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={setPageNum} />
-      </div>
+      {list && (
+        <div className='mt-27 flex justify-center'>
+          <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={setPageNum} />
+        </div>
+      )}
     </div>
   );
 };
