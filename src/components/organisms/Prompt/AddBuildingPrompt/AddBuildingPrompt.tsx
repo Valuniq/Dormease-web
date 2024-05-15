@@ -1,33 +1,57 @@
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import Line from '@public/images/AddBuildingLine.png';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
 import BuildingSelectImageBtn from '@/components/atoms/AllBtn/BuildingSelectImageBtn/BuildingSelectImageBtn';
+import { useRef, useState } from 'react';
 
 type Props = {
   onBuildingOutClick: () => void;
   onAddBuilding: () => void;
-  onAddPicture: () => void;
-  selectImage: StaticImageData;
   input: string;
   setInput: (input: string) => void;
+  selectImage: File | null;
+  setSelectImage: (selectImage: File | null) => void;
 };
 
 const AddBuildingPrompt = ({
   onBuildingOutClick,
   onAddBuilding,
-  onAddPicture,
-  selectImage,
   input,
   setInput,
+  selectImage,
+  setSelectImage,
 }: Props) => {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState('');
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 10) {
+      e.target.value = e.target.value.slice(0, 10);
+    }
     setInput(e.target.value);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+
+    const file = e.target.files[0];
+
+    const imageUrl = URL.createObjectURL(file);
+    setImageUrl(imageUrl);
+    setSelectImage(file);
+  };
+
+  const onAddPicture = () => {
+    inputFileRef.current?.click();
+  };
+
   return (
-    <div className='relative w-454 h-681 shadow-2xl rounded-8 flex flex-col items-center'>
+    <div className='relative w-454 h-681 shadow-2xl rounded-8 flex flex-col items-center bg-white'>
       <button onClick={onBuildingOutClick}>
         <BuildingOutBtn className='absolute right-8 top-8' />
       </button>
@@ -49,10 +73,18 @@ const AddBuildingPrompt = ({
         <h1 className='H1'>건물사진</h1>
         <div className='mt-45 w-381 h-241 flex items-center justify-center bg-gray-grayscale5 rounded-8'>
           {selectImage ? (
-            <BuildingSelectImageBtn image={selectImage} onClick={onAddPicture} />
+            <BuildingSelectImageBtn image={imageUrl} onClick={onAddPicture} />
           ) : (
             <BtnLargeVariant label={'사진 추가'} disabled={false} variant={'blue'} onClick={onAddPicture} />
           )}
+          <input
+            id='fileInput'
+            type='file'
+            accept='image/*'
+            style={{ display: 'none', visibility: 'hidden' }}
+            ref={inputFileRef}
+            onChange={handleFileChange}
+          />
         </div>
       </div>
       <Image src={Line} width={415.5} height={1} className='mt-32 mb-19' alt='line' />
