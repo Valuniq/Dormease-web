@@ -16,16 +16,16 @@ module.exports = (phase) => {
       return config;
     },
 
-    async rewrites() {
-      return isDevelopment
-        ? [
-            {
-              source: '/:path*',
-              destination: 'http://13.209.177.109:8080/:path*',
-            },
-          ]
-        : [];
-    },
+    // async rewrites() {
+    //   return isDevelopment
+    //     ? [
+    //         {
+    //           source: '/:path*',
+    //           destination: 'http://13.209.177.109:8080/:path*',
+    //         },
+    //       ]
+    //     : [];
+    // },
   };
 
   return nextConfig;
