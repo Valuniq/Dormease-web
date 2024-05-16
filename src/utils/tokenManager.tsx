@@ -91,7 +91,7 @@ const removeTokenAll = () => {
 };
 
 const getAccessToken = () => {
-  return cookie.load(ACCESS_TOKEN);
+  return ACCESS_TOKEN;
 };
 
 const getRefreshToken = () => {
