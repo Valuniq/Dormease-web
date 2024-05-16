@@ -9,6 +9,7 @@ import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPr
 import { buildingList } from '@/types/building';
 import React, { useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import { useRouter } from 'next/navigation';
 
 const BuildingSettings = () => {
   const [lists, setLists] = useState<buildingList[]>();
@@ -17,6 +18,7 @@ const BuildingSettings = () => {
   const [input, setInput] = useState('');
   const [selectImage, setSelectImage] = useState<File | null>(null);
   const [selectedId, setSeletedId] = useState<number | null>(null);
+  const router = useRouter();
 
   const { data, error } = useSWR('/api/v1/web/dormitory/setting', getBuildingLists);
 
@@ -65,10 +67,6 @@ const BuildingSettings = () => {
     }
   };
 
-  const onBuildingSettingsDetail = (dormitoryId: number) => {
-    console.log(dormitoryId);
-  };
-
   return (
     <div className='flex flex-col w-[1200px]'>
       <h1 className='H0 text-gray-grayscale50 text-center mb-35'>건물 설정</h1>
@@ -85,7 +83,9 @@ const BuildingSettings = () => {
                   setSeletedId(data.id);
                   setDeleteModal(true);
                 }}
-                onBuildingSettingsDetail={() => onBuildingSettingsDetail(data.id)}
+                onBuildingSettingsDetail={() =>
+                  router.push(`/dashboard/BuildingManagement/BuildingSettings/${data.id}`)
+                }
               />
             );
           })}

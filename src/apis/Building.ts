@@ -1,5 +1,5 @@
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTc5MTgxNCwiZXhwIjoxNzE1NzkzNjE0fQ.AKxiAAWIVFtGjH-oPDV_WRdCH6ehEbWrZVgfyB2spFmFLsxDSBK_o4Vc-12IMwVSY5KWNrFAmFqkKVGk-0kkIg';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTg3MDE2OCwiZXhwIjoxNzE1ODcxOTY4fQ.9nhY78ME6CoTpBdkUb3RWNtxX21UCw6h4qqDnOIwom17uc06Fz_2GoykaeREC25NxN7w1sW4yNX5dGE4YQyFTQ';
 
 export const getBuildingLists = async (url: string) => {
   const res = await fetch(url, {
