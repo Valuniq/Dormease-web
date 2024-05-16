@@ -8,7 +8,6 @@ import BuildingSetBtn from '@/components/atoms/AllBtn/BuildingSetBtn/BuildingSet
 import RoomBtn from '@/components/atoms/AllBtn/RoomBtn/RoomBtn';
 import BuildingNameInputText from '@/components/atoms/InputText/BuildingNameInputText/BuildingNameInputText';
 import BuildingSettingsList from '@/components/organisms/BuildingSettings/BuildingSettingsList';
-import { StaticImageData } from 'next/image';
 import React from 'react';
 
 type Props = {
@@ -29,7 +28,7 @@ type Props = {
   selectFilter: number;
   completedFilter: number[];
 
-  image: StaticImageData;
+  image: string | null;
   building: string;
   floor: number;
   roomCountStart: number;
