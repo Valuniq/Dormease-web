@@ -4,6 +4,9 @@ module.exports = (phase) => {
   const isDevelopment = phase === PHASE_DEVELOPMENT_SERVER;
   const nextConfig = {
     reactStrictMode: true,
+    images: {
+      domains: ['example.com', 'dormease-s3-bucket.s3.amazonaws.com'],
+    },
     webpack: (config) => {
       config.module.rules.push({
         test: /\.svg$/,
