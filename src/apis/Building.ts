@@ -1,5 +1,5 @@
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTg3MDE2OCwiZXhwIjoxNzE1ODcxOTY4fQ.9nhY78ME6CoTpBdkUb3RWNtxX21UCw6h4qqDnOIwom17uc06Fz_2GoykaeREC25NxN7w1sW4yNX5dGE4YQyFTQ';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTk1NDkxMiwiZXhwIjoxNzE1OTU2NzEyfQ.qNcXnfJWl95wSCJEyEMNw6ZKyxysiAfeWNJmtw1JmvHt83jGsvGC3uoNU85pwppkhS9XGS-HvrK0hV7RPUH_Bw';
 
 export const getBuildingLists = async (url: string) => {
   const res = await fetch(url, {
@@ -24,7 +24,7 @@ export const postAddBuilding = async (name: string, image: File | null): Promise
     formData.append('image', new Blob([]));
   }
 
-  const res = await fetch(`/api/v1/web/dormitory/setting`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting`, {
     method: 'POST',
     headers: {
       Authorization: `bearer ${accessToken}`,
@@ -43,7 +43,7 @@ export const postAddBuilding = async (name: string, image: File | null): Promise
 };
 
 export const deleteBuilding = async (dormitoryId: number): Promise<{ message: string }> => {
-  const res = await fetch(`/api/v1/web/dormitory/setting/${dormitoryId}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

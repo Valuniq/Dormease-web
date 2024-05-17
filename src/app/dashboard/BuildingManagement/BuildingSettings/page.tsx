@@ -20,7 +20,7 @@ const BuildingSettings = () => {
   const [selectedId, setSeletedId] = useState<number | null>(null);
   const router = useRouter();
 
-  const { data, error } = useSWR('/api/v1/web/dormitory/setting', getBuildingLists);
+  const { data, error } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting`, getBuildingLists);
 
   useEffect(() => {
     if (data) {
@@ -35,7 +35,7 @@ const BuildingSettings = () => {
       const response = await postAddBuilding(input, selectImage);
 
       if (response) {
-        mutate('/api/v1/web/dormitory/setting');
+        mutate(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting`);
         setModal(!modal);
         setInput('');
         setSelectImage(null);
@@ -54,7 +54,7 @@ const BuildingSettings = () => {
         const response = await deleteBuilding(dormitoryId);
 
         if (response) {
-          mutate('/api/v1/web/dormitory/setting');
+          mutate(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting`);
           setDeleteModal(false);
           setSeletedId(null);
         } else {
