@@ -1,7 +1,9 @@
-const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTk1NDkxMiwiZXhwIjoxNzE1OTU2NzEyfQ.qNcXnfJWl95wSCJEyEMNw6ZKyxysiAfeWNJmtw1JmvHt83jGsvGC3uoNU85pwppkhS9XGS-HvrK0hV7RPUH_Bw';
+import { buildingAddDelete, buildingLists } from '@/types/building';
 
-export const getBuildingLists = async (url: string) => {
+const accessToken =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTk2NDkwNCwiZXhwIjoxNzE1OTY2NzA0fQ.zjG2LC5GPKVM69P9oCtD59VpP2KE1HnvTzz0NGX7-YrtMu23mRbWaTQt-GWnxwG5NnvetGVnDQIuyPSqP6oSNw';
+
+export const getBuildingLists = async (url: string): Promise<buildingLists> => {
   const res = await fetch(url, {
     method: 'GET',
     headers: {
@@ -15,7 +17,7 @@ export const getBuildingLists = async (url: string) => {
   return res.json();
 };
 
-export const postAddBuilding = async (name: string, image: File | null): Promise<{ message: string }> => {
+export const postAddBuilding = async (name: string, image: File | null): Promise<buildingAddDelete> => {
   const formData = new FormData();
   formData.append('registerDormitoryReq', new Blob([JSON.stringify({ name: name })], { type: 'application/json' }));
   if (image !== null) {
@@ -42,7 +44,7 @@ export const postAddBuilding = async (name: string, image: File | null): Promise
   return data;
 };
 
-export const deleteBuilding = async (dormitoryId: number): Promise<{ message: string }> => {
+export const deleteBuilding = async (dormitoryId: number): Promise<buildingAddDelete> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
     method: 'DELETE',
     headers: {
