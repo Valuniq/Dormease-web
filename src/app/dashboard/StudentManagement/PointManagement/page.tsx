@@ -8,14 +8,9 @@ const page = async () => {
   console.log(pointsMemberList.information.dataList);
 
   return (
-    <div className='w-[1250px]'>
-      <div className='flex items-center justify-between mb-40'>
-        <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
-      </div>
-      <Suspense fallback={<h1>로딩 중</h1>}>
-        <PointManagementTemplate list={pointsMemberList.information.dataList} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<h1>로딩 중</h1>}>
+      <PointManagementTemplate list={pointsMemberList.information.dataList} />
+    </Suspense>
   );
 };
 

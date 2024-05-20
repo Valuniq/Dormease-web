@@ -7,8 +7,9 @@ import { PointMemberResponseDataList } from '@/types/pointManagement';
 
 const index = ({ list }: { list: PointMemberResponseDataList[] }) => {
   return (
-    <div className='w-full'>
-      <div className='mx-auto'>
+    <div className='w-[1250px]'>
+      <div className='flex items-center justify-between mb-40'>
+        <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
         <SearchTextBox
           placeholder='이름 또는 학번'
           input={''}
@@ -17,6 +18,7 @@ const index = ({ list }: { list: PointMemberResponseDataList[] }) => {
           }}
         />
       </div>
+      <div className='w-full bg-red-red40 ml-auto '></div>
       <PointManagementList
         pointManagementLists={list}
         isAllChecked={false}
