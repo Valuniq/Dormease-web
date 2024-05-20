@@ -1,12 +1,14 @@
+'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import Image from 'next/image';
 import React from 'react';
 import SortImg from '@public/images/DropDownBtn.png';
-import PointManagementListBody, { Props as PointManagementListBodyType } from './PointManagementListBody';
+import PointManagementListBody from './PointManagementListBody';
 import NoneList from '../NoneList/NoneList';
+import { PointMemberResponseDataList } from '@/types/pointManagement';
 
 type Props = {
-  pointManagementLists: PointManagementListBodyType[];
+  pointManagementLists: PointMemberResponseDataList[];
   isAllChecked: boolean;
   setIsAllChecked: (isAllChecked: boolean) => void;
   plusSort: boolean; // true-오름차순, false-내림차순
@@ -24,6 +26,7 @@ const PointManagementList = ({
   minusSort,
   setMinusSort,
 }: Props) => {
+  console.log(pointManagementLists);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1250px]'>
@@ -66,37 +69,43 @@ const PointManagementList = ({
               </div>
             </th>
           </tr>
-          <th colSpan={9}>
-            <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
-          </th>
+          <tr>
+            <th colSpan={9}>
+              <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
+            </th>
+          </tr>
         </thead>
         <tbody className='overflow-y-scroll'>
           {pointManagementLists && pointManagementLists.length > 0 ? (
-            <>
-              <tr className='h-15' />
-              {pointManagementLists.map((i) => (
+            <tr>
+              {pointManagementLists.map((i, key) => (
                 <>
+                  <tr className='h-15' />
                   <PointManagementListBody
-                    index={i.index}
-                    name={i.name}
-                    studentId={i.studentId}
-                    phoneNumber={i.phoneNumber}
-                    plus={i.plus}
-                    minus={i.minus}
-                    building={i.building}
-                    room={i.room}
-                    isChecked={i.isChecked}
-                    setIsChecked={i.setIsChecked}
+                    index={key}
+                    data={{
+                      id: i.id,
+                      name: i.name,
+                      studentNumber: i.studentNumber,
+                      phoneNumber: i.phoneNumber,
+                      bonusPoint: i.bonusPoint,
+                      minusPoint: i.minusPoint,
+                      dormitory: i.dormitory,
+                      room: i.room,
+                    }}
+                    isChecked={false}
+                    setIsChecked={function (isChecked: boolean): void {}}
                   />
-
                   <tr className='h-15' />
                 </>
               ))}
-            </>
+            </tr>
           ) : (
-            <td className='h-500' colSpan={9}>
-              <NoneList />
-            </td>
+            <tr>
+              <td className='h-500' colSpan={9}>
+                <NoneList />
+              </td>
+            </tr>
           )}
         </tbody>
       </table>
