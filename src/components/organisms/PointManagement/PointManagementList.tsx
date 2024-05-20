@@ -63,7 +63,7 @@ const PointManagementList = ({
             <th className='H4'>건물</th>
             <th className='H4'>호실</th>
             <th>
-              <div className='H4 flex  items-center justify-center text-center w-full'>
+              <div className='H4 flex items-center justify-center text-center w-full'>
                 <h1 className='mr-4'>전체</h1>
                 <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
               </div>
@@ -75,39 +75,40 @@ const PointManagementList = ({
             </th>
           </tr>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          {pointManagementLists && pointManagementLists.length > 0 ? (
-            <tr>
-              {pointManagementLists.map((i, key) => (
-                <>
-                  <tr className='h-15' />
-                  <PointManagementListBody
-                    index={key}
-                    data={{
-                      id: i.id,
-                      name: i.name,
-                      studentNumber: i.studentNumber,
-                      phoneNumber: i.phoneNumber,
-                      bonusPoint: i.bonusPoint,
-                      minusPoint: i.minusPoint,
-                      dormitory: i.dormitory,
-                      room: i.room,
-                    }}
-                    isChecked={false}
-                    setIsChecked={function (isChecked: boolean): void {}}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-            </tr>
-          ) : (
+
+        {pointManagementLists && pointManagementLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-14' />
+            {pointManagementLists.map((i, key) => (
+              <>
+                <PointManagementListBody
+                  index={key}
+                  data={{
+                    id: i.id,
+                    name: i.name,
+                    studentNumber: i.studentNumber,
+                    phoneNumber: i.phoneNumber,
+                    bonusPoint: i.bonusPoint,
+                    minusPoint: i.minusPoint,
+                    dormitory: i.dormitory,
+                    room: i.room,
+                  }}
+                  isChecked={false}
+                  setIsChecked={function (isChecked: boolean): void {}}
+                />
+                <tr className='h-14' />
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody className='overflow-y-scroll'>
             <tr>
               <td className='h-500' colSpan={9}>
                 <NoneList />
               </td>
             </tr>
-          )}
-        </tbody>
+          </tbody>
+        )}
       </table>
     </div>
   );

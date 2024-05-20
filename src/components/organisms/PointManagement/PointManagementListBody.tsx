@@ -21,7 +21,7 @@ const PointManagementListBody = ({ index, data, isChecked, setIsChecked }: Props
       <td className='text-center'>{data.minusPoint}</td>
       <td className='text-center'>{data.dormitory}</td>
       <td className='text-center'>{data.room}</td>
-      <td className='flex justify-center'>
+      <td className='h-38 flex justify-center items-center my-auto'>
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
     </tr>
