@@ -1,7 +1,7 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import Image from 'next/image';
-import React from 'react';
+import React, { Fragment } from 'react';
 import SortImg from '@public/images/DropDownBtn.png';
 import PointManagementListBody from './PointManagementListBody';
 import NoneList from '../NoneList/NoneList';
@@ -75,14 +75,13 @@ const PointManagementList = ({
             </th>
           </tr>
         </thead>
-
         {pointManagementLists && pointManagementLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-14' />
             {pointManagementLists.map((i, key) => (
-              <>
+              <Fragment key={i.id}>
                 <PointManagementListBody
-                  index={key}
+                  index={key + 1}
                   data={{
                     id: i.id,
                     name: i.name,
@@ -97,7 +96,7 @@ const PointManagementList = ({
                   setIsChecked={function (isChecked: boolean): void {}}
                 />
                 <tr className='h-14' />
-              </>
+              </Fragment>
             ))}
           </tbody>
         ) : (
