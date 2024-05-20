@@ -3,10 +3,9 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import PointManagementList from '@/components/organisms/PointManagement/PointManagementList';
 import React from 'react';
-import { Props as PointManagementListBodyType } from '@/components/organisms/PointManagement/PointManagementListBody';
+import { PointMemberResponseDataList } from '@/types/pointManagement';
 
-const index = ({ list }: { list: PointManagementListBodyType[] }) => {
-  console.log(list);
+const index = ({ list }: { list: PointMemberResponseDataList[] }) => {
   return (
     <div>
       <SearchTextBox
@@ -19,17 +18,11 @@ const index = ({ list }: { list: PointManagementListBodyType[] }) => {
       <PointManagementList
         pointManagementLists={list}
         isAllChecked={false}
-        setIsAllChecked={function (isAllChecked: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
+        setIsAllChecked={function (isAllChecked: boolean): void {}}
         plusSort={false}
-        setPlusSort={function (plusSort: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
+        setPlusSort={function (plusSort: boolean): void {}}
         minusSort={false}
-        setMinusSort={function (minusSort: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
+        setMinusSort={function (minusSort: boolean): void {}}
       />
       <div className='mt-13 flex items-center justify-between'>
         <BtnMidVariant label={'리스트 관리'} disabled={false} variant={'gray'} />
