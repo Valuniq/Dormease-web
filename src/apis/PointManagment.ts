@@ -1,7 +1,7 @@
 import { PointListResponse, PointMemberResponse } from '@/types/pointManagement';
 
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjMwMjgxOCwiZXhwIjoxNzE2MzA0NjE4fQ.XQKeYhqnoAHhBsah15Ww6kdWcrzAqQ_Shn2kJQ_SCM-MMwfP_w5VB-rXgPBWeRs_Vc-0KJfV5FE-8ILUunS34A';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjMxMTcyOSwiZXhwIjoxNzE2MzEzNTI5fQ.Ruh_nxITds3x2GmHZZNSDMlOgRXjTI_nvFp5sEaO5kn4V5Xetsemd_HZ_CLFkuN8f9JLfohFm-D0vnSsn3FUUw';
 
 // * 사생 목록 조회
 export const getPointMemberList = async (page: number): Promise<PointMemberResponse> => {
@@ -35,6 +35,23 @@ export const getPointsDetail = async (): Promise<PointListResponse> => {
   }
   const response = await res.json();
   return response as PointListResponse;
+};
+
+// * 상/벌점 리스트 삭제
+export const deletePointsDetail = async (pointId: number) => {
+  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points/detail/${pointId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${accessToken}`,
+    },
+  });
+  if (!res.ok) {
+    console.log(res);
+    throw new Error('Failed');
+  }
+  const response = await res.json();
+  return response;
 };
 
 // * 사생 상벌점 부여
