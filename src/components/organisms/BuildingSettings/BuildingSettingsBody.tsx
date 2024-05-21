@@ -19,9 +19,8 @@ const BuildingSettingsBody = ({ id, name, imageUrl, onBuildingOutClick, onBuildi
           className='rounded-8 cursor-pointer'
           src={imageUrl}
           alt={name}
-          objectFit='fill'
-          width={381}
-          height={241}
+          layout='fill'
+          objectFit='cover'
           onClick={() => onBuildingSettingsDetail(id)}
         />
       )}
