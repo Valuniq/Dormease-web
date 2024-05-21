@@ -4,7 +4,7 @@ import { UserLoginRequest, UserLoginResponse } from '@/types/user';
 import tokenManager from '@/utils/tokenManager';
 
 export const signIn = async ({ loginId, password }: UserLoginRequest): Promise<UserLoginResponse> => {
-  const res = await fetch(`/api/v1/auth/sign-in`, {
+  const res = await fetch(`http://13.209.177.109:8080/api/v1/auth/sign-in`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
