@@ -1,6 +1,6 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import { selectedMemberIdForPoint } from '@/recoil';
+import { selectedMemberIdForPointState } from '@/recoil';
 import { PointMemberResponseDataList } from '@/types/pointManagement';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -12,7 +12,7 @@ export type Props = {
 
 const PointManagementListBody = ({ index, data }: Props) => {
   const [isChecked, setIsChecked] = useState(false);
-  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPoint);
+  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
   const handleSetIsChecked = (isChecked: boolean) => {
     setIsChecked(isChecked);
     if (isChecked) {

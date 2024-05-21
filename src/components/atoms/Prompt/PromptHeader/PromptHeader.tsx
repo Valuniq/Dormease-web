@@ -2,12 +2,13 @@
 import Image from 'next/image';
 import PromptHeaderLogo from '@public/images/PromptHeaderLogo.png';
 import PromptHeaderOut from '@public/images/PromptHeaderOut.png';
-import React from 'react';
-import { modalState } from '@/recoil';
+import React, { useEffect } from 'react';
+import { modalState, promptClientBonusState, promptClientMinusState } from '@/recoil';
 import { useRecoilState } from 'recoil';
 
 const PromptHeader = ({ bgColor }: { bgColor?: string }) => {
   const [isOpened, setIsOpened] = useRecoilState(modalState);
+
   return (
     <div className={`${bgColor ? bgColor : 'bg-blue-blue30'} w-full h-39  flex justify-between pl-15 rounded-t-8`}>
       <Image src={PromptHeaderLogo} className='object-contain' width={39} height={11.65} alt='promptHeaderLogo' />

@@ -6,7 +6,7 @@ import SortImg from '@public/images/DropDownBtn.png';
 import PointManagementListBody from './PointManagementListBody';
 import NoneList from '../NoneList/NoneList';
 import { PointMemberResponseDataList } from '@/types/pointManagement';
-import { selectedMemberIdForPoint } from '@/recoil/pointManagement';
+import { selectedMemberIdForPointState } from '@/recoil/pointManagement';
 import { useRecoilState } from 'recoil';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const PointManagementList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, setMinusSort }: Props) => {
-  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPoint);
+  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
   const [isAllChecked, setIsAllChecked] = useState(false);
   useEffect(() => {
     if (isAllChecked) {
