@@ -23,7 +23,6 @@ const PointManagementListBody = ({ index, data }: Props) => {
       setSelectedMemberId((prev) => prev?.filter((id) => id !== data.id) || null);
     }
   };
-  console.log(selectedMemberId, isChecked);
   return (
     <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
       <td className='text-center'>{index}</td>

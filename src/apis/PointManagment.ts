@@ -1,7 +1,7 @@
-import { PointMemberResponse } from '@/types/pointManagement';
+import { PointListResponse, PointMemberResponse } from '@/types/pointManagement';
 
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjI3Nzg2OCwiZXhwIjoxNzE2Mjc5NjY4fQ.iVVN4Lt-fUmCU5Lza0G3OWqU6ZL_1Cmrf0jKDCOxMIp8JxMTqt76ZP0MDCDZFVwAPTspGxn-qZkUDP-phpESfw';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjMwMjgxOCwiZXhwIjoxNzE2MzA0NjE4fQ.XQKeYhqnoAHhBsah15Ww6kdWcrzAqQ_Shn2kJQ_SCM-MMwfP_w5VB-rXgPBWeRs_Vc-0KJfV5FE-8ILUunS34A';
 
 // * 사생 목록 조회
 export const getPointMemberList = async (page: number): Promise<PointMemberResponse> => {
@@ -21,7 +21,7 @@ export const getPointMemberList = async (page: number): Promise<PointMemberRespo
 };
 
 // * 상/벌점 리스트 조회
-export const getPointsDetail = async () => {
+export const getPointsDetail = async (): Promise<PointListResponse> => {
   const res = await fetch('http://13.209.177.109:8080/api/v1/web/points/detail', {
     method: 'GET',
     headers: {
@@ -34,7 +34,7 @@ export const getPointsDetail = async () => {
     throw new Error('Failed');
   }
   const response = await res.json();
-  return response.information;
+  return response as PointListResponse;
 };
 
 // * 사생 상벌점 부여

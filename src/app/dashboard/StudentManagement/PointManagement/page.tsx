@@ -1,15 +1,19 @@
-import { getPointMemberList } from '@/apis/PointManagment';
+import { getPointMemberList, getPointsDetail } from '@/apis/PointManagment';
 import PointManagementTemplate from '@/components/templates/pointManagement/index';
 import { Suspense } from 'react';
 
 const page = async () => {
-  const pointsMemberList = await getPointMemberList(1);
-  console.log(pointsMemberList);
-  console.log(pointsMemberList.information.dataList);
+  const pointManagementLists = await getPointMemberList(1);
+  const pointLists = await getPointsDetail();
+  console.log('pointManagementList', pointManagementLists);
+  console.log('pointLists', pointLists);
 
   return (
     <Suspense fallback={<h1>로딩 중</h1>}>
-      <PointManagementTemplate list={pointsMemberList.information.dataList} />
+      <PointManagementTemplate
+        pointManagementLists={pointManagementLists.information.dataList}
+        pointLists={pointLists.information}
+      />
     </Suspense>
   );
 };
