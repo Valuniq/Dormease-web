@@ -32,7 +32,7 @@ export type PointListResponse = {
 };
 
 export type PointListResponseInfo = {
-  pointId?: number;
+  pointId: number;
   content?: string;
   score?: number;
   pointType?: 'BONUS' | 'MINUS';

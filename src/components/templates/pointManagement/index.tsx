@@ -2,9 +2,15 @@
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import PointManagementList from '@/components/organisms/PointManagement/PointManagementList';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { PointListResponseInfo, PointMemberResponseDataList } from '@/types/pointManagement';
-import { penaltyPromptBonusList, penaltyPromptMinusList, selectedMemberIdForPoint } from '@/recoil/pointManagement';
+import {
+  promptBonusState,
+  promptClientBonusState,
+  promptClientMinusState,
+  promptMinusState,
+  selectedMemberIdForPointState,
+} from '@/recoil/pointManagement';
 import { useRecoilState } from 'recoil';
 import PenaltyPrompt from '@/components/organisms/Prompt/PenaltyPrompt/PenaltyPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -17,13 +23,18 @@ const index = ({
   pointManagementLists: PointMemberResponseDataList[];
   pointLists: PointListResponseInfo[];
 }) => {
-  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPoint);
+  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
   const [isOpened, setIsOpened] = useRecoilState(modalState);
-  const [bonusLists, setBonusLists] = useRecoilState(penaltyPromptBonusList);
-  const [minusLists, setMinusLists] = useRecoilState(penaltyPromptMinusList);
+  const [bonusLists, setBonusLists] = useRecoilState(promptBonusState);
+  const [minusLists, setMinusLists] = useRecoilState(promptMinusState);
+  const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
+  const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
+
   useEffect(() => {
     setBonusLists(pointLists.filter((i) => i.pointType === 'BONUS'));
     setMinusLists(pointLists.filter((i) => i.pointType === 'MINUS'));
+    setTempBonusLists([{ content: '', score: 0, pointType: 'BONUS', pointId: -1 }]);
+    setTempMinusLists([{ content: '', score: 0, pointType: 'MINUS', pointId: -1 }]);
   }, [isOpened]);
 
   return (
