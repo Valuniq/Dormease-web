@@ -1,8 +1,9 @@
 import { PointMemberResponse } from '@/types/pointManagement';
 
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjE4NzQ2NywiZXhwIjoxNzE2MTg5MjY3fQ.IWifmwyu44GRmhLoYoHLivdOzcgMtMd_X6zmh3PFSYyByDPavv8Lnl6pond84IdE9F3rFDjMPTo0jUiHA3S-dA';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjI3Nzg2OCwiZXhwIjoxNzE2Mjc5NjY4fQ.iVVN4Lt-fUmCU5Lza0G3OWqU6ZL_1Cmrf0jKDCOxMIp8JxMTqt76ZP0MDCDZFVwAPTspGxn-qZkUDP-phpESfw';
 
+// * 사생 목록 조회
 export const getPointMemberList = async (page: number): Promise<PointMemberResponse> => {
   const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points?pages=${page}`, {
     method: 'GET',
@@ -19,6 +20,7 @@ export const getPointMemberList = async (page: number): Promise<PointMemberRespo
   return response as PointMemberResponse;
 };
 
+// * 상/벌점 리스트 조회
 export const getPointsDetail = async () => {
   const res = await fetch('http://13.209.177.109:8080/api/v1/web/points/detail', {
     method: 'GET',
@@ -33,4 +35,25 @@ export const getPointsDetail = async () => {
   }
   const response = await res.json();
   return response.information;
+};
+
+// * 사생 상벌점 부여
+export const postMemberPoint = async (residentId: number, pointType: string, points: { pointId: number }[]) => {
+  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points/${residentId}?pointType=${pointType}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(points),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.error('[Error response in postMemberPoint]', errorData);
+    throw new Error('Failed to assign points');
+  }
+
+  const response = await res.json();
+  return response;
 };

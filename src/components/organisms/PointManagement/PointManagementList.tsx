@@ -1,32 +1,35 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import Image from 'next/image';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import SortImg from '@public/images/DropDownBtn.png';
 import PointManagementListBody from './PointManagementListBody';
 import NoneList from '../NoneList/NoneList';
 import { PointMemberResponseDataList } from '@/types/pointManagement';
+import { selectedMemberIdForPoint } from '@/recoil/pointManagement';
+import { useRecoilState } from 'recoil';
 
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];
-  isAllChecked: boolean;
-  setIsAllChecked: (isAllChecked: boolean) => void;
   plusSort: boolean; // true-오름차순, false-내림차순
   setPlusSort: (plusSort: boolean) => void;
   minusSort: boolean;
   setMinusSort: (minusSort: boolean) => void;
 };
 
-const PointManagementList = ({
-  pointManagementLists,
-  isAllChecked,
-  setIsAllChecked,
-  plusSort,
-  setPlusSort,
-  minusSort,
-  setMinusSort,
-}: Props) => {
-  console.log(pointManagementLists);
+const PointManagementList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, setMinusSort }: Props) => {
+  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPoint);
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  useEffect(() => {
+    if (isAllChecked) {
+      // 모든 학생의 ID를 Recoil 상태에 저장
+      const allMemberIds = pointManagementLists.map((member) => member.id);
+      setSelectedMemberId(allMemberIds);
+    } else {
+      // 전체 선택이 해제되면, Recoil 상태를 비움
+      setSelectedMemberId([]);
+    }
+  }, [isAllChecked, pointManagementLists, setSelectedMemberId]);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1250px]'>
@@ -92,8 +95,6 @@ const PointManagementList = ({
                     dormitory: i.dormitory,
                     room: i.room,
                   }}
-                  isChecked={false}
-                  setIsChecked={function (isChecked: boolean): void {}}
                 />
                 <tr className='h-14' />
               </Fragment>

@@ -4,8 +4,11 @@ import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchText
 import PointManagementList from '@/components/organisms/PointManagement/PointManagementList';
 import React from 'react';
 import { PointMemberResponseDataList } from '@/types/pointManagement';
+import { selectedMemberIdForPoint } from '@/recoil/pointManagement';
+import { useRecoilState } from 'recoil';
 
 const index = ({ list }: { list: PointMemberResponseDataList[] }) => {
+  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPoint);
   return (
     <div className='w-[1250px]'>
       <div className='flex items-center justify-between mb-40'>
@@ -21,8 +24,6 @@ const index = ({ list }: { list: PointMemberResponseDataList[] }) => {
       <div className='w-full bg-red-red40 ml-auto '></div>
       <PointManagementList
         pointManagementLists={list}
-        isAllChecked={false}
-        setIsAllChecked={function (isAllChecked: boolean): void {}}
         plusSort={false}
         setPlusSort={function (plusSort: boolean): void {}}
         minusSort={false}
@@ -30,7 +31,7 @@ const index = ({ list }: { list: PointMemberResponseDataList[] }) => {
       />
       <div className='mt-13 flex items-center justify-between'>
         <BtnMidVariant label={'리스트 관리'} disabled={false} variant={'gray'} />
-        <BtnMidVariant label={'상/벌점 부여'} disabled={false} variant={'blue'} />
+        <BtnMidVariant label={'상/벌점 부여'} disabled={selectedMemberId.length == 0} variant={'blue'} />
       </div>
     </div>
   );
