@@ -1,12 +1,22 @@
-import { penaltyPromptBonusList, selectedMemberIdForPoint, penaltyPromptMinusList } from './pointManagement';
+import {
+  deletedPointInfoState,
+  promptBonusState,
+  promptClientBonusState,
+  promptClientMinusState,
+  promptMinusState,
+  selectedMemberIdForPointState,
+} from './pointManagement';
 import { countState } from './count';
 import { userAuthState } from './user';
 import { modalState } from './modal';
 export {
   countState,
   userAuthState,
-  selectedMemberIdForPoint,
-  penaltyPromptBonusList,
-  penaltyPromptMinusList,
+  selectedMemberIdForPointState,
+  promptBonusState,
+  promptMinusState,
   modalState,
+  deletedPointInfoState,
+  promptClientBonusState,
+  promptClientMinusState,
 };
