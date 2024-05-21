@@ -1,9 +1,9 @@
-import { withdrawalLists } from '@/types/withdrawal';
+import { WithdrawalMemberResponse } from '@/types/withdrawal';
 
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTk2MDI1OCwiZXhwIjoxNzE1OTYyMDU4fQ.mqaEjf0Z698RoxpLo0eVPJ7PVh8EJTKRKhjX43yxnTIRtpjwEZ7vObDKjXK1hWMLeE0l5ULJ-YVaksKaw6v5mQ';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE2Mjc0NTA2LCJleHAiOjE3MTYyNzYzMDZ9.JdtbfFKm-kaAthDxrON6E0NYfhaI9Pm-0bSmFbLvGrzWx1-i4qY5Vx5Mmc7pZdO2PM4wA5VnN3aZxvXR-vKWiA';
 
-export const getWithdrawalLists = async (page: number): Promise<withdrawalLists> => {
+export const getWithdrawalLists = async (page: number): Promise<WithdrawalMemberResponse> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/users/management/delete?page=${page}`, {
     method: 'GET',
     headers: {
@@ -16,12 +16,12 @@ export const getWithdrawalLists = async (page: number): Promise<withdrawalLists>
     throw new Error(`Server responded with status ${res.status}`);
   }
 
-  const data: withdrawalLists = await res.json();
+  const data: WithdrawalMemberResponse = await res.json();
 
   return data;
 };
 
-export const getWithdrawalSearch = async (page: number, keyword: string): Promise<withdrawalLists> => {
+export const getWithdrawalSearch = async (page: number, keyword: string): Promise<WithdrawalMemberResponse> => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/users/management/delete/search?page=${page}&keyword=${keyword}`,
     {
@@ -37,7 +37,7 @@ export const getWithdrawalSearch = async (page: number, keyword: string): Promis
     throw new Error(`Server responded with status ${res.status}`);
   }
 
-  const data: withdrawalLists = await res.json();
+  const data: WithdrawalMemberResponse = await res.json();
 
   return data;
 };

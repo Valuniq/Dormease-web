@@ -1,10 +1,10 @@
 import React from 'react';
 import WithdrawalMemberManagementListBody from './WithdrawalMemberManagementListBody';
 import NoneList from '../NoneList/NoneList';
-import { withdrawalList } from '@/types/withdrawal';
+import { WithdrawalMemberResponseDataList } from '@/types/withdrawal';
 
 type Props = {
-  list: withdrawalList[];
+  list: WithdrawalMemberResponseDataList[];
 };
 
 const WithdrawalMemberManagementList = ({ list }: Props) => {
