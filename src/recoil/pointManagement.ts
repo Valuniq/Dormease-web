@@ -38,3 +38,26 @@ export const deletedPointInfoState = atom<PointListResponseInfo[]>({
   key: 'deletedPointInfoState',
   default: [{ content: '', score: 0, pointType: 'MINUS', pointId: -1 }],
 });
+
+export type TPointManagementModalState = {
+  pointDetail: boolean;
+  pointDetailConfirm: boolean;
+  history: boolean;
+  historyConfirm: boolean;
+  givePoint: boolean;
+  giveBonusPointConfirm: boolean;
+  givtMinusPointConfirm: boolean;
+};
+
+export const pointManagementModalState = atom<TPointManagementModalState>({
+  key: 'pointManagementModalState',
+  default: {
+    pointDetail: false,
+    pointDetailConfirm: false,
+    history: false,
+    historyConfirm: false,
+    givePoint: false,
+    giveBonusPointConfirm: false,
+    givtMinusPointConfirm: false,
+  },
+});

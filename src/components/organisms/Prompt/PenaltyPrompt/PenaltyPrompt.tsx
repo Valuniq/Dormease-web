@@ -2,22 +2,18 @@
 import PenaltyBox from './PenaltyBox';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { PointListResponseInfo } from '@/types/pointManagement';
 import { promptBonusState, promptClientBonusState, promptClientMinusState, promptMinusState } from '@/recoil';
 import { useEffect } from 'react';
 import { usePointDetailValidation } from '@/hooks/usePointDetailValidation';
 
-type Props = {
-  onConfirm: () => void;
-  onConfirmDisabled: boolean;
-};
-
-const PenaltyPrompt = ({ onConfirm, onConfirmDisabled }: Props) => {
-  const [bonusLists, setBonusLists] = useRecoilState(promptBonusState);
-  const [minusLists, setMinusLists] = useRecoilState(promptMinusState);
-  const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
-  const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
+const PenaltyPrompt = () => {
+  const bonusLists = useRecoilValue(promptBonusState);
+  const minusLists = useRecoilValue(promptMinusState);
+  const tempBonusLists = useRecoilValue(promptClientBonusState);
+  const tempMinusLists = useRecoilValue(promptClientMinusState);
+  const handleConfirm = () => {};
   const handleSaveDisabled = usePointDetailValidation([bonusLists, minusLists, tempBonusLists, tempMinusLists]);
   useEffect(() => {
     handleSaveDisabled();
@@ -33,7 +29,7 @@ const PenaltyPrompt = ({ onConfirm, onConfirmDisabled }: Props) => {
         <PenaltyBox type={'MINUS'} />
       </div>
       <div className='mb-23 mt-5'>
-        <BtnMidVariant onClick={onConfirm} label={'저장하기'} disabled={!handleSaveDisabled()} variant={'blue'} />
+        <BtnMidVariant onClick={handleConfirm} label={'저장하기'} disabled={!handleSaveDisabled()} variant={'blue'} />
       </div>
     </div>
   );
