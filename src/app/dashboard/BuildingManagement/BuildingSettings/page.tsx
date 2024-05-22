@@ -76,10 +76,6 @@ const BuildingSettings = () => {
     }
   };
 
-  const onBuildingSettingsDetail = (dormitoryId: number) => {
-    console.log(dormitoryId);
-  };
-
   return (
     <Suspense fallback={<h1>로딩 중</h1>}>
       <div className='flex flex-col w-[1200px]'>

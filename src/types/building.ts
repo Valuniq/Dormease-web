@@ -16,3 +16,19 @@ export type BuildingAddDeleteResponse = {
     message: string;
   };
 };
+
+export type BuildingSettingsDetailResponse = {
+  check: boolean;
+  information: {
+    id: number;
+    name: string;
+    imageUrl: File | null;
+    floorAndRoomNumberRes: BuildingSettingsDetailResponseFloorAndRoomNumberRes[];
+  };
+};
+
+export type BuildingSettingsDetailResponseFloorAndRoomNumberRes = {
+  floor: number;
+  startRoomNumber: number;
+  endRoomNumber: number;
+};

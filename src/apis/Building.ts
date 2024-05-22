@@ -1,7 +1,7 @@
-import { BuildingAddDeleteResponse, BuildingSettingsResponse } from '@/types/building';
+import { BuildingAddDeleteResponse, BuildingSettingsResponse, BuildingSettingsDetailResponse } from '@/types/building';
 
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE2MjgwNTE4LCJleHAiOjE3MTYyODIzMTh9.6V6LdYt92tAZIOxxrAiRNK8L9e6bWk1GU44aZQ8PKKQ89hxyVugrqR3o0DjZQn_Qhx9jwj1xAsl-rXUCoU7TeA';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE2MzUxMzA0LCJleHAiOjE3MTYzNTMxMDR9.aYskJ5J-RihLgDIXWzWBfi8ugd8EXvQgGJxTJqzAkxqX7Sj66FIdZvd1d_KLyOtKa3RSRsWhLAK--SnxBCGHMA';
 
 export const getBuildingLists = async (url: string): Promise<BuildingSettingsResponse> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
@@ -61,6 +61,24 @@ export const deleteBuilding = async (dormitoryId: number): Promise<BuildingAddDe
   }
 
   const data: BuildingAddDeleteResponse = await res.json();
+
+  return data;
+};
+
+export const getBuildingDetail = async (dormitoryId: number): Promise<BuildingSettingsDetailResponse> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Server responded with status ${res.status}`);
+  }
+
+  const data: BuildingSettingsDetailResponse = await res.json();
 
   return data;
 };
