@@ -1,5 +1,6 @@
 import {
   deletedPointInfoState,
+  pointManagementModalState,
   promptBonusState,
   promptClientBonusState,
   promptClientMinusState,
@@ -8,15 +9,15 @@ import {
 } from './pointManagement';
 import { countState } from './count';
 import { userAuthState } from './user';
-import { modalState } from './modal';
+
 export {
   countState,
   userAuthState,
   selectedMemberIdForPointState,
   promptBonusState,
   promptMinusState,
-  modalState,
   deletedPointInfoState,
   promptClientBonusState,
   promptClientMinusState,
+  pointManagementModalState,
 };

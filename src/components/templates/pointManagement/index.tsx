@@ -3,9 +3,8 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import PointManagementList from '@/components/organisms/PointManagement/PointManagementList';
 import React, { useEffect } from 'react';
-import { PointListResponseInfo, PointMemberResponseDataList } from '@/types/pointManagement';
+import { PointListResponseInfo, PointMemberResponseDataList, ResidentPointResponse } from '@/types/pointManagement';
 import {
-  pointManagementModalState,
   promptBonusState,
   promptClientBonusState,
   promptClientMinusState,
@@ -16,6 +15,10 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import PenaltyPrompt from '@/components/organisms/Prompt/PenaltyPrompt/PenaltyPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
+import PenaltyHistoryPrompt from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
+import { getPointsByResidentId } from '@/apis/PointManagment';
+import page from '@/app/page';
+import useSWR from 'swr';
 
 const index = ({
   pointManagementLists,
@@ -29,7 +32,7 @@ const index = ({
   const [minusLists, setMinusLists] = useRecoilState(promptMinusState);
   const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
   const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
-  const { isOpened, handleOpenModal, handleCloseModal } = usePointManagementModal();
+  const { isOpened, handleOpenModal } = usePointManagementModal();
 
   useEffect(() => {
     setBonusLists(pointLists.filter((i) => i.pointType === 'BONUS'));
@@ -38,17 +41,23 @@ const index = ({
     setTempMinusLists([{ content: '', score: 0, pointType: 'MINUS', pointId: -1 }]);
   }, [isOpened.pointDetail]);
 
+  console.log(selectedMemberId);
+
   return (
     <>
-      {isOpened.pointDetail && <BackDrop children={<PenaltyPrompt />} isOpen={isOpened.pointDetail} />}
-
+      {isOpened.pointDetail && (
+        <BackDrop children={<PenaltyPrompt closeModalName={'pointDetail'} />} isOpen={isOpened.pointDetail} />
+      )}
+      {isOpened.givePoint && (
+        <BackDrop children={<PenaltyPrompt closeModalName={'givePoint'} />} isOpen={isOpened.givePoint} />
+      )}
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>
           <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
           <SearchTextBox
             placeholder='이름 또는 학번'
             input={''}
-            setInput={function (id: string): void {
+            setInput={function (): void {
               throw new Error('Function not implemented.');
             }}
           />
@@ -57,9 +66,9 @@ const index = ({
         <PointManagementList
           pointManagementLists={pointManagementLists}
           plusSort={false}
-          setPlusSort={function (plusSort: boolean): void {}}
+          setPlusSort={function (): void {}}
           minusSort={false}
-          setMinusSort={function (minusSort: boolean): void {}}
+          setMinusSort={function (): void {}}
         />
         <div className='mt-13 flex items-center justify-between'>
           <BtnMidVariant
@@ -69,7 +78,7 @@ const index = ({
             variant={'gray'}
           />
           <BtnMidVariant
-            onClick={() => console.log('흥')}
+            onClick={() => handleOpenModal('givePoint')}
             label={'상/벌점 부여'}
             disabled={selectedMemberId.length == 0}
             variant={'blue'}

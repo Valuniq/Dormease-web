@@ -1,29 +1,40 @@
+'use client';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import PenaltyHistoryListBody from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryListBody';
 import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
+import { ResidentPointResponseUserPointDetailRes } from '@/types/pointManagement';
+import { TPointManagementModalState } from '@/recoil/pointManagement';
 
-type PenaltyList = {
-  date: string;
-  reason: string;
-  score: string;
-  division: 'minus' | 'plus';
-  isChecked: boolean;
-  setIsChecked: (isChecked: boolean) => void;
-};
+// type PenaltyList = {
+//   date: string;
+//   reason: string;
+//   score: string;
+//   division: 'minus' | 'plus';
+//   isChecked: boolean;
+//   setIsChecked: (isChecked: boolean) => void;
+// };
 
 type Props = {
-  penaltyLists: PenaltyList[];
+  penaltyLists: ResidentPointResponseUserPointDetailRes[];
   plusSum: number;
   minusSum: number;
   isAllChecked: boolean;
   setIsAllChecked: (isAllChecked: boolean) => void;
+  closeModalName: keyof TPointManagementModalState;
 };
 
-const PenaltyHistoryPrompt = ({ penaltyLists, isAllChecked, setIsAllChecked, plusSum, minusSum }: Props) => {
+const PenaltyHistoryPrompt = ({
+  penaltyLists,
+  isAllChecked,
+  setIsAllChecked,
+  plusSum,
+  minusSum,
+  closeModalName,
+}: Props) => {
   return (
-    <div className='w-767 h-422 flex flex-col items-center rounded-8 shadow-xl '>
-      <PromptHeader />
+    <div className='bg-white w-767 h-422 flex flex-col items-center rounded-8 shadow-xl '>
+      <PromptHeader closeModalName={closeModalName} />
       <div className='w-709 pt-18 h-309 overflow-auto border-b-1 border-b-[#323232]'>
         <table className='w-full'>
           <thead className='text-gray-grayscale40'>
@@ -40,21 +51,18 @@ const PenaltyHistoryPrompt = ({ penaltyLists, isAllChecked, setIsAllChecked, plu
               </th>
             </tr>
           </thead>
-          {/* 여백용 tr */}
-          <tr className='h-10' />
-          <tbody className='border-t-1 border-t-[#323232]'>
+
+          <tbody className='  border-t-1 border-t-[#323232]'>
             {penaltyLists.map((p, index) => (
               <>
                 {/* 여백용 tr */}
                 <tr className='h-19' />
-                <tr>
+                <tr key={index}>
                   <PenaltyHistoryListBody
-                    date={p.date}
-                    reason={p.reason}
+                    date={p.createdAt}
+                    reason={p.content}
                     score={p.score}
-                    division={p.division}
-                    isChecked={p.isChecked}
-                    setIsChecked={p.setIsChecked}
+                    division={p.pointType === 0 ? 'BONUS' : 'MINUS'}
                   />
                 </tr>
               </>

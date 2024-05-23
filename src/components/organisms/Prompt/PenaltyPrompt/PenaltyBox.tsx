@@ -15,7 +15,6 @@ const PenaltyBox = ({ type }: Props) => {
   const [minusLists, setMinusLists] = useRecoilState(promptMinusState);
   const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
   const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
-
   const [hoveredPointId, setHoveredPointId] = useState<number>();
   const handleMouseEnter = (tempId: number) => {
     setHoveredPointId(tempId);

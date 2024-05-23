@@ -1,4 +1,4 @@
-import { PointListResponse, PointMemberResponse } from '@/types/pointManagement';
+import { PageDetailInfo, PointListResponse, PointMemberResponse, ResidentPointResponse } from '@/types/pointManagement';
 
 const accessToken =
   'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjMxMTcyOSwiZXhwIjoxNzE2MzEzNTI5fQ.Ruh_nxITds3x2GmHZZNSDMlOgRXjTI_nvFp5sEaO5kn4V5Xetsemd_HZ_CLFkuN8f9JLfohFm-D0vnSsn3FUUw';
@@ -73,4 +73,30 @@ export const postMemberPoint = async (residentId: number, pointType: string, poi
 
   const response = await res.json();
   return response;
+};
+
+// * 사생 상/벌점 내역 상세 조회
+export const getPointsByResidentId = async ({
+  residentId,
+  page,
+}: {
+  residentId: number;
+  page: PageDetailInfo;
+}): Promise<ResidentPointResponse> => {
+  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points/${residentId}?page=${page.currentPage}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.error('[Error response in getPointsByResidentId]', errorData);
+    throw new Error('Failed to assign points');
+  }
+
+  const response = await res.json();
+  return response as ResidentPointResponse;
 };

@@ -2,12 +2,12 @@
 export type PointMemberResponse = {
   check: boolean;
   information: {
-    pageInfo: PointMemberResponsePageInfo;
+    pageInfo: PageDetailInfo;
     dataList: PointMemberResponseDataList[];
   };
 };
 
-export type PointMemberResponsePageInfo = {
+export type PageDetailInfo = {
   currentPage: number;
   totalPage: number;
   pageSize: number;
@@ -36,4 +36,20 @@ export type PointListResponseInfo = {
   content?: string;
   score?: number;
   pointType?: 'BONUS' | 'MINUS';
+};
+
+// * 사생 상벌점 내역 조회
+export type ResidentPointResponse = {
+  pagdInfo: PageDetailInfo;
+  userPointDetailRes: ResidentPointResponseUserPointDetailRes[];
+  bonusPoint: number;
+  minusPoint: number;
+};
+
+export type ResidentPointResponseUserPointDetailRes = {
+  userPointId: number;
+  content: string;
+  createdAt: string;
+  score: number;
+  pointType: number;
 };
