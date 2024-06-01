@@ -1,19 +1,14 @@
 import React from 'react';
 import BuildingManagementListBody from './BuildingManagementListBody';
 import NoneList from '../NoneList/NoneList';
+import { BuildingManagementRoomResponseInformation } from '@/types/buildingm';
 
 type Props = {
+  roomList: BuildingManagementRoomResponseInformation[] | undefined;
   listClick: number;
   onListClick: (roomId: number) => void;
   onStudentClick: (schoolNumber: string) => void;
   selectStudents: String[];
-  list: {
-    roomId: number;
-    roomNumber: number;
-    roomSize: number;
-    gender: string;
-    currentPeople: number;
-  }[];
   studentList: {
     schoolNumber: string;
     name: string;
@@ -22,7 +17,7 @@ type Props = {
 };
 
 const BuildingManagementList = ({
-  list,
+  roomList,
   studentList,
   selectStudents,
   listClick,
@@ -41,14 +36,14 @@ const BuildingManagementList = ({
         <tr className='h-12 border-b-1' />
       </thead>
       <tbody className='block w-[748px] h-695 overflow-y-auto scrollbar-table'>
-        {list && list.length > 0 ? (
+        {roomList && roomList.length > 0 ? (
           <>
             <tr className='h-12' />
-            {list.map((data) => {
+            {roomList.map((data) => {
               return (
                 <BuildingManagementListBody
-                  key={data.roomId}
-                  roomId={data.roomId}
+                  key={data.id}
+                  roomId={data.id}
                   roomNumber={data.roomNumber}
                   roomSize={data.roomSize}
                   gender={data.gender}

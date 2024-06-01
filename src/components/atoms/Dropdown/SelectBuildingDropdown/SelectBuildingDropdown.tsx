@@ -1,21 +1,22 @@
 import React from 'react';
 import Dropdown from '@public/images/Dropdown.svg';
 import BtnMidVariant from '../../AllBtn/BtnMidVariant/BtnMidVariant';
+import { BuildingManagementResponseInformation } from '@/types/buildingm';
 
 type Props = {
+  list: BuildingManagementResponseInformation[];
   isOn: boolean;
-  list: string[];
-  select: string;
-  setSelect: (select: string) => void;
   setIsOn: (isOn: boolean) => void;
+  select: BuildingManagementResponseInformation;
+  setSelect: (id: number, name: string) => void;
 };
 
 const SelectBuildingDropdown = ({
-  isOn,
   list,
+  isOn,
+  setIsOn,
   select,
   setSelect,
-  setIsOn,
   ...props
 }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
@@ -25,7 +26,7 @@ const SelectBuildingDropdown = ({
         onClick={() => setIsOn(!isOn)}
         className='H4 flex justify-between items-center px-13 w-164 h-41 rounded-5 bg-gray-grayscale5'
       >
-        {select}
+        {select.name}
         <Dropdown className={`${isOn && 'rotate-180'}`} />
       </button>
       {isOn && (
@@ -34,11 +35,14 @@ const SelectBuildingDropdown = ({
             return (
               <div key={index} className='pt-10 pb-10'>
                 <BtnMidVariant
-                  label={data}
+                  label={data.name}
                   variant='white'
                   disabled={false}
-                  selected={select === data}
-                  onClick={() => setSelect(data)}
+                  selected={select.id === data.id}
+                  onClick={() => {
+                    setSelect(data.id, data.name);
+                    setIsOn(!isOn);
+                  }}
                 />
               </div>
             );
