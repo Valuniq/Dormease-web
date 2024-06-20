@@ -45,12 +45,8 @@ const index = ({
 
   return (
     <>
-      {isOpened.pointDetail && (
-        <BackDrop children={<PenaltyPrompt closeModalName={'pointDetail'} />} isOpen={isOpened.pointDetail} />
-      )}
-      {isOpened.givePoint && (
-        <BackDrop children={<PenaltyPrompt closeModalName={'givePoint'} />} isOpen={isOpened.givePoint} />
-      )}
+      {isOpened.pointDetail && <BackDrop children={<PenaltyPrompt />} isOpen={isOpened.pointDetail} />}
+      {isOpened.givePoint && <BackDrop children={<PenaltyPrompt />} isOpen={isOpened.givePoint} />}
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>
           <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
