@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/constants/path';
 import { PageDetailInfo, PointListResponse, PointMemberResponse, ResidentPointResponse } from '@/types/pointManagement';
 
 const accessToken =
@@ -5,7 +6,7 @@ const accessToken =
 
 // * 사생 목록 조회
 export const getPointMemberList = async (page: number): Promise<PointMemberResponse> => {
-  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points?pages=${page}`, {
+  const res = await fetch(`${BASE_URL}/api/v1/web/points?pages=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export const getPointMemberList = async (page: number): Promise<PointMemberRespo
 
 // * 상/벌점 리스트 조회
 export const getPointsDetail = async (): Promise<PointListResponse> => {
-  const res = await fetch('http://13.209.177.109:8080/api/v1/web/points/detail', {
+  const res = await fetch('${BASE_URL}/api/v1/web/points/detail', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ export const getPointsDetail = async (): Promise<PointListResponse> => {
 
 // * 상/벌점 리스트 삭제
 export const deletePointsDetail = async (pointId: number) => {
-  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points/detail/${pointId}`, {
+  const res = await fetch(`${BASE_URL}/api/v1/web/points/detail/${pointId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ export const deletePointsDetail = async (pointId: number) => {
 
 // * 사생 상벌점 부여
 export const postMemberPoint = async (residentId: number, pointType: string, points: { pointId: number }[]) => {
-  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points/${residentId}?pointType=${pointType}`, {
+  const res = await fetch(`${BASE_URL}/api/v1/web/points/${residentId}?pointType=${pointType}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ export const getPointsByResidentId = async ({
   residentId: number;
   page: PageDetailInfo;
 }): Promise<ResidentPointResponse> => {
-  const res = await fetch(`http://13.209.177.109:8080/api/v1/web/points/${residentId}?page=${page.currentPage}`, {
+  const res = await fetch(`${BASE_URL}/api/v1/web/points/${residentId}?page=${page.currentPage}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
