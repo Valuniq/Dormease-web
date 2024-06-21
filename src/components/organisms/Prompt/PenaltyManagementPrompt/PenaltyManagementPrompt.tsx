@@ -2,13 +2,12 @@
 import PenaltyBox from './PenaltyBox';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { PointListResponseInfo } from '@/types/pointManagement';
+import { useRecoilValue } from 'recoil';
 import { promptBonusState, promptClientBonusState, promptClientMinusState, promptMinusState } from '@/recoil';
 import { useEffect } from 'react';
 import { usePointDetailValidation } from '@/hooks/usePointDetailValidation';
 
-const PenaltyPrompt = () => {
+const PenaltyManagementPrompt = () => {
   const bonusLists = useRecoilValue(promptBonusState);
   const minusLists = useRecoilValue(promptMinusState);
   const tempBonusLists = useRecoilValue(promptClientBonusState);
@@ -21,7 +20,7 @@ const PenaltyPrompt = () => {
   return (
     <div className='w-[1138px] h-686 overflow-y-scroll flex flex-col items-center rounded-8 shadow-xl bg-gray-grayscale5 '>
       <div className='w-[1138px] fixed'>
-        <PromptHeader />
+        <PromptHeader modalName={'pointManagement'} />
       </div>
       <div className='w-full pt-72 mb-5 flex justify-around items-start'>
         <PenaltyBox type={'BONUS'} />
@@ -35,4 +34,4 @@ const PenaltyPrompt = () => {
   );
 };
 
-export default PenaltyPrompt;
+export default PenaltyManagementPrompt;

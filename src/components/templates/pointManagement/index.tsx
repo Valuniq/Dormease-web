@@ -12,9 +12,10 @@ import {
   selectedMemberIdForPointState,
 } from '@/recoil/pointManagement';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import PenaltyPrompt from '@/components/organisms/Prompt/PenaltyPrompt/PenaltyPrompt';
+import PenaltyManagementPrompt from '@/components/organisms/Prompt/PenaltyManagementPrompt/PenaltyManagementPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
+import PenaltyGivePrompt from '@/components/organisms/Prompt/PenaltyGivePrompt/PenaltyGivePrompt';
 
 const index = ({
   pointManagementLists,
@@ -35,14 +36,16 @@ const index = ({
     setMinusLists(pointLists.filter((i) => i.pointType === 'MINUS'));
     setTempBonusLists([{ content: '', score: 0, pointType: 'BONUS', pointId: -1 }]);
     setTempMinusLists([{ content: '', score: 0, pointType: 'MINUS', pointId: -1 }]);
-  }, [isOpened.pointDetail]);
+  }, [isOpened.pointManagement]);
 
   console.log(selectedMemberId);
 
   return (
     <>
-      {isOpened.pointDetail && <BackDrop children={<PenaltyPrompt />} isOpen={isOpened.pointDetail} />}
-      {isOpened.givePoint && <BackDrop children={<PenaltyPrompt />} isOpen={isOpened.givePoint} />}
+      {isOpened.pointManagement && (
+        <BackDrop children={<PenaltyManagementPrompt />} isOpen={isOpened.pointManagement} />
+      )}
+      {isOpened.pointGive && <BackDrop children={<PenaltyGivePrompt />} isOpen={isOpened.pointGive} />}
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>
           <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
@@ -64,13 +67,13 @@ const index = ({
         />
         <div className='mt-13 flex items-center justify-between'>
           <BtnMidVariant
-            onClick={() => handleOpenModal('pointDetail')}
+            onClick={() => handleOpenModal('pointManagement')}
             label={'리스트 관리'}
             disabled={false}
             variant={'gray'}
           />
           <BtnMidVariant
-            onClick={() => handleOpenModal('givePoint')}
+            onClick={() => handleOpenModal('pointGive')}
             label={'상/벌점 부여'}
             disabled={selectedMemberId.length == 0}
             variant={'blue'}

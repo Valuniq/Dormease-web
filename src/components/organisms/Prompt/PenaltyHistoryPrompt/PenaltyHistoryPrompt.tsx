@@ -6,35 +6,18 @@ import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
 import { ResidentPointResponseUserPointDetailRes } from '@/types/pointManagement';
 import { TPointManagementModalState } from '@/recoil/pointManagement';
 
-// type PenaltyList = {
-//   date: string;
-//   reason: string;
-//   score: string;
-//   division: 'minus' | 'plus';
-//   isChecked: boolean;
-//   setIsChecked: (isChecked: boolean) => void;
-// };
-
 type Props = {
   penaltyLists: ResidentPointResponseUserPointDetailRes[];
   plusSum: number;
   minusSum: number;
   isAllChecked: boolean;
   setIsAllChecked: (isAllChecked: boolean) => void;
-  closeModalName: keyof TPointManagementModalState;
 };
 
-const PenaltyHistoryPrompt = ({
-  penaltyLists,
-  isAllChecked,
-  setIsAllChecked,
-  plusSum,
-  minusSum,
-  closeModalName,
-}: Props) => {
+const PenaltyHistoryPrompt = ({ penaltyLists, isAllChecked, setIsAllChecked, plusSum, minusSum }: Props) => {
   return (
     <div className='bg-white w-767 h-422 flex flex-col items-center rounded-8 shadow-xl '>
-      <PromptHeader closeModalName={closeModalName} />
+      <PromptHeader modalName={'pointHistory'} />
       <div className='w-709 pt-18 h-309 overflow-auto border-b-1 border-b-[#323232]'>
         <table className='w-full'>
           <thead className='text-gray-grayscale40'>
