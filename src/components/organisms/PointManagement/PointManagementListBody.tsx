@@ -8,9 +8,10 @@ import { useRecoilState } from 'recoil';
 export type Props = {
   index: number;
   data: PointMemberResponseDataList;
+  onClick: () => void;
 };
 
-const PointManagementListBody = ({ index, data }: Props) => {
+const PointManagementListBody = ({ index, data, onClick }: Props) => {
   const [isChecked, setIsChecked] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
   const handleSetIsChecked = (isChecked: boolean) => {
@@ -24,7 +25,10 @@ const PointManagementListBody = ({ index, data }: Props) => {
     }
   };
   return (
-    <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+    <tr
+      onClick={onClick}
+      className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'
+    >
       <td className='text-center'>{index}</td>
       <td className='text-center'>{data.name}</td>
       <td className='text-center'>{data.studentNumber}</td>

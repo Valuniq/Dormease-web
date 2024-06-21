@@ -16,6 +16,7 @@ import PenaltyManagementPrompt from '@/components/organisms/Prompt/PenaltyManage
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
 import PenaltyGivePrompt from '@/components/organisms/Prompt/PenaltyGivePrompt/PenaltyGivePrompt';
+import PenaltyHistoryPrompt from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
 
 const index = ({
   pointManagementLists,
@@ -46,6 +47,7 @@ const index = ({
         <BackDrop children={<PenaltyManagementPrompt />} isOpen={isOpened.pointManagement} />
       )}
       {isOpened.pointGive && <BackDrop children={<PenaltyGivePrompt />} isOpen={isOpened.pointGive} />}
+
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>
           <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
