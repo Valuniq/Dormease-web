@@ -15,10 +15,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import PenaltyPrompt from '@/components/organisms/Prompt/PenaltyPrompt/PenaltyPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
-import PenaltyHistoryPrompt from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
-import { getPointsByResidentId } from '@/apis/PointManagment';
-import page from '@/app/page';
-import useSWR from 'swr';
 
 const index = ({
   pointManagementLists,
