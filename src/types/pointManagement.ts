@@ -33,9 +33,9 @@ export type PointListResponse = {
 
 export type PointListResponseInfo = {
   pointId: number;
-  content?: string;
-  score?: number;
-  pointType?: 'BONUS' | 'MINUS';
+  content: string;
+  score: number;
+  pointType: 'BONUS' | 'MINUS';
 };
 
 // * 사생 상벌점 내역 조회
