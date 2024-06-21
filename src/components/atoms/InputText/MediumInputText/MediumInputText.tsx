@@ -4,12 +4,12 @@ import React from 'react';
 type Props = {
   placeholder: string;
   input: string;
-  setInput: (input: string) => void;
+  setInput?: (input: string) => void;
 };
 
 const MediumInputText = ({ placeholder, input, setInput }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    setInput && setInput(e.target.value);
   };
 
   return (

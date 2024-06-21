@@ -1,16 +1,16 @@
 import { BASE_URL } from '@/constants/path';
 import { PageDetailInfo, PointListResponse, PointMemberResponse, ResidentPointResponse } from '@/types/pointManagement';
 
-const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNjMxMTcyOSwiZXhwIjoxNzE2MzEzNTI5fQ.Ruh_nxITds3x2GmHZZNSDMlOgRXjTI_nvFp5sEaO5kn4V5Xetsemd_HZ_CLFkuN8f9JLfohFm-D0vnSsn3FUUw';
+export const accessTokenForTest =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxODk5MzM5MSwiZXhwIjoxNzE4OTk1MTkxfQ.g7ymGt8faV_3IZ_yjKh3tUD1WQpccwTu2UEE6bn9ECbMRewj94itc7ijKQPabofXnp3Vv8BE7TOTfzuJ5xd10w';
 
 // * 사생 목록 조회
 export const getPointMemberList = async (page: number): Promise<PointMemberResponse> => {
-  const res = await fetch(`${BASE_URL}/api/v1/web/points?pages=${page}`, {
+  const res = await fetch(`${BASE_URL}/api/v1/web/points?page=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `bearer ${accessToken}`,
+      Authorization: `bearer ${accessTokenForTest}`,
     },
   });
   if (!res.ok) {
@@ -23,11 +23,11 @@ export const getPointMemberList = async (page: number): Promise<PointMemberRespo
 
 // * 상/벌점 리스트 조회
 export const getPointsDetail = async (): Promise<PointListResponse> => {
-  const res = await fetch('${BASE_URL}/api/v1/web/points/detail', {
+  const res = await fetch(`${BASE_URL}/api/v1/web/points/detail`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `bearer ${accessToken}`,
+      Authorization: `bearer ${accessTokenForTest}`,
     },
   });
   if (!res.ok) {
@@ -44,7 +44,7 @@ export const deletePointsDetail = async (pointId: number) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `bearer ${accessToken}`,
+      Authorization: `bearer ${accessTokenForTest}`,
     },
   });
   if (!res.ok) {
@@ -61,7 +61,7 @@ export const postMemberPoint = async (residentId: number, pointType: string, poi
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessTokenForTest}`,
     },
     body: JSON.stringify(points),
   });
@@ -88,7 +88,7 @@ export const getPointsByResidentId = async ({
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessTokenForTest}`,
     },
   });
 
