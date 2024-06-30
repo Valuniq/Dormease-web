@@ -51,3 +51,21 @@ export type BuildingManagementMemoResponse = {
     message: string;
   };
 };
+
+export type BuildingRoomInAssignedResponse = {
+  check: boolean;
+  information: BuildingRoomInAssignedResponseInformation[];
+};
+
+export type BuildingRoomInAssignedResponseInformation = {
+  id: number;
+  studentNumber: string;
+  name: string;
+  phoneNumber: string;
+  assigned: boolean;
+};
+
+export type BuildingRoomManualRequest = {
+  roomId: number;
+  residentIds: number[];
+};

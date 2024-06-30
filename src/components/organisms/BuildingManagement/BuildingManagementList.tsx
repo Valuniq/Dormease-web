@@ -1,28 +1,29 @@
 import React from 'react';
 import BuildingManagementListBody from './BuildingManagementListBody';
 import NoneList from '../NoneList/NoneList';
-import { BuildingManagementRoomResponseInformation } from '@/types/buildingm';
+import {
+  BuildingManagementRoomResponseInformation,
+  BuildingRoomInAssignedResponseInformation,
+} from '@/types/buildingm';
 
 type Props = {
   roomList: BuildingManagementRoomResponseInformation[] | undefined;
   listClick: number;
   onListClick: (roomId: number) => void;
-  onStudentClick: (schoolNumber: string) => void;
-  selectStudents: String[];
-  studentList: {
-    schoolNumber: string;
-    name: string;
-    phoneNumber: string;
-  }[];
+  onStudentClick: (selectStudent: number) => void;
+  studentList: BuildingRoomInAssignedResponseInformation[];
+  editAssign: boolean;
+  roomManual?: (roomId: number) => void;
 };
 
 const BuildingManagementList = ({
   roomList,
   studentList,
-  selectStudents,
   listClick,
   onListClick,
   onStudentClick,
+  editAssign,
+  roomManual,
 }: Props) => {
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
@@ -51,8 +52,9 @@ const BuildingManagementList = ({
                   listClick={listClick}
                   onListClick={onListClick}
                   onStudentClick={onStudentClick}
-                  selectStudents={selectStudents}
-                  list={studentList}
+                  studentList={studentList}
+                  editAssign={editAssign}
+                  roomManual={roomManual}
                 />
               );
             })}

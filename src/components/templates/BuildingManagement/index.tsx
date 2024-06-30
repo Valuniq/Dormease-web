@@ -4,6 +4,8 @@ import {
   getBuildingFloorList,
   getBuildingInfoList,
   getBuildingRoomList,
+  getRoomAssignedList,
+  getRoomNotAssignedList,
   putBuildingMemo,
 } from '@/apis/BuildingManagement';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
@@ -13,11 +15,14 @@ import SelectFloorDropdown from '@/components/atoms/Dropdown/SelectFloorDropdown
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import BuildingManagementList from '@/components/organisms/BuildingManagement/BuildingManagementList';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import {
   BuildingManagementFloorResponseInformation,
   BuildingManagementInfoResponseInformation,
   BuildingManagementResponseInformation,
   BuildingManagementRoomResponseInformation,
+  BuildingRoomInAssignedResponseInformation,
+  BuildingRoomManualRequest,
 } from '@/types/buildingm';
 import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
@@ -46,6 +51,17 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
   });
   const [memoText, setMemoText] = useState(buildingInfo.memo);
   const [memoModal, setMemoModal] = useState(false);
+  const [listClick, setListClick] = useState(0);
+  const [roomAssignedList, setRoomAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
+  const [roomNotAssignedList, setRoomNotAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
+  const [studentList, setStudentList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
+  const [editAssign, setEditAssign] = useState(false);
+  const [saveModal, setSaveModal] = useState(false);
+  const [roomsManual, setRoomsManual] = useState<BuildingRoomManualRequest[]>();
+
+  useEffect(() => {
+    setStudentList(roomAssignedList.concat(roomNotAssignedList));
+  }, [roomAssignedList, roomNotAssignedList]);
 
   //건물 정보 불러오기
   const fetchBuildingInfo = async (id: number) => {
@@ -103,6 +119,55 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
         setMemoModal(!memoModal);
       }
     }
+  };
+
+  //특정 호실 사생 조회
+  const getRoomAssigned = async (roomId: number) => {
+    const roomAssignedList = await getRoomAssignedList(roomId);
+    if (roomAssignedList.check) {
+      setRoomAssignedList(roomAssignedList.information);
+      if (editAssign && (roomAssignedList.information.length > 0 || roomNotAssignedList.length > 0)) {
+        setListClick(roomId);
+      } else if (roomAssignedList.information.length > 0) {
+        setListClick(roomId);
+      } else {
+        setListClick(0);
+      }
+    } else {
+      setRoomAssignedList([]);
+    }
+  };
+
+  //미배정 사생 조회
+  const getRoomNotAssigned = async (id: number) => {
+    const roomNotAssignedList = await getRoomNotAssignedList(id);
+    if (roomNotAssignedList.check) {
+      setRoomNotAssignedList(roomNotAssignedList.information);
+    } else {
+      setRoomNotAssignedList([]);
+    }
+  };
+
+  //클릭했을 때 assigned 값 변경
+  const onStudentClick = (selectStudent: number) => {
+    setStudentList((prevList) =>
+      prevList.map((student) => (student.id === selectStudent ? { ...student, assigned: !student.assigned } : student)),
+    );
+  };
+
+  //수기 방배정을 위한 배정된 데이터 저장
+  const roomManual = (roomId: number) => {
+    const assignedStudentIds = studentList.filter((student) => student.assigned).map((student) => student.id);
+
+    const roomAssignment: BuildingRoomManualRequest = {
+      roomId: roomId,
+      residentIds: assignedStudentIds,
+    };
+
+    setRoomsManual((prevRooms) => {
+      const updatedRooms = (prevRooms || []).filter((room) => room.roomId !== roomId);
+      return [...updatedRooms, roomAssignment];
+    });
   };
 
   return (
@@ -171,20 +236,55 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
             </div>
             <div className='border-r-1 mx-29 h-790'></div>
             <div className='mt-20'>
-              <BuildingManagementList
-                listClick={0}
-                onListClick={function (listClick: number): void {
-                  throw new Error('Function not implemented.');
-                }}
-                onStudentClick={function (schoolNumber: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                selectStudents={[]}
-                roomList={roomList}
-                studentList={[]}
-              />
+              {editAssign ? (
+                <BuildingManagementList
+                  listClick={listClick}
+                  onListClick={(roomId) => {
+                    if (listClick === roomId) {
+                      setListClick(0);
+                    } else {
+                      getRoomAssigned(roomId);
+                    }
+                  }}
+                  onStudentClick={onStudentClick}
+                  roomList={roomList}
+                  studentList={studentList}
+                  editAssign={editAssign}
+                  roomManual={roomManual}
+                />
+              ) : (
+                <BuildingManagementList
+                  listClick={listClick}
+                  onListClick={(roomId) => {
+                    if (listClick === roomId) {
+                      setListClick(0);
+                    } else {
+                      getRoomAssigned(roomId);
+                    }
+                  }}
+                  onStudentClick={() => {
+                    //사생관리 만든 후에 사생관리_상세 내용으로 이동 수정 필요
+                    //router.push(`/dashboard/StudentManagement/${id}`)
+                  }}
+                  roomList={roomList}
+                  studentList={roomAssignedList}
+                  editAssign={editAssign}
+                />
+              )}
               <div className='flex justify-end mt-21'>
-                <BtnMidVariant label='수기배정' disabled={false} variant='blue' />
+                <BtnMidVariant
+                  label={editAssign ? '저장' : '수기배정'}
+                  disabled={false}
+                  variant='blue'
+                  onClick={() => {
+                    if (editAssign) {
+                      setSaveModal(!saveModal);
+                    } else {
+                      setListClick(0);
+                      setEditAssign(!editAssign);
+                    }
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -195,10 +295,13 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
                 select={selectBuilding}
                 list={buildingList}
                 setSelect={(id, name) => {
+                  setEditAssign(false);
                   setSelectBuilding({ id, name });
                   getFloor(id);
                   setFloorIsOn(false);
                   fetchBuildingInfo(id);
+                  getRoomNotAssigned(id);
+                  setListClick(0);
                 }}
                 setIsOn={() => setBuildingIsOn(!buildingIsOn)}
               />
@@ -210,16 +313,28 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
                 setSelect={(floor) => {
                   setSelectFloor(floor);
                   getRoom(selectBuilding.id, floor);
+                  setListClick(0);
                 }}
               />
             </div>
           </div>
           {memoModal && (
             <BackDrop isOpen={memoModal}>
-              <AlertPrompt
-                variant={'blue'}
-                label={'메모가 저장되었습니다.'}
-                onConfirm={() => setMemoModal(!memoModal)}
+              <AlertPrompt variant='blue' label='메모가 저장되었습니다.' onConfirm={() => setMemoModal(!memoModal)} />
+            </BackDrop>
+          )}
+          {saveModal && (
+            <BackDrop isOpen={saveModal}>
+              <ConfirmPrompt
+                variant='blue'
+                label='배정된 호실을 저장하시겠습니까?'
+                onConfirm={() => {
+                  //저장 API 작업
+                  setSaveModal(!saveModal);
+                  setEditAssign(!editAssign);
+                  setListClick(0);
+                }}
+                onCancel={() => setSaveModal(!saveModal)}
               />
             </BackDrop>
           )}

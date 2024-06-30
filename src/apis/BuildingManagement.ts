@@ -4,10 +4,11 @@ import {
   BuildingManagementFloorResponse,
   BuildingManagementRoomResponse,
   BuildingManagementMemoResponse,
+  BuildingRoomInAssignedResponse,
 } from '@/types/buildingm';
 
 const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE3Mjc0ODgyLCJleHAiOjE3MTcyNzY2ODJ9.e6m4rTunzY6w3bOPmUCAfh_YoU_oE49665QTj4LwQIpAJNg1qPrPbxHMZKZllqgITeBVz2xJt_K6UXGkSWbpYQ';
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE5NzYzNjg2LCJleHAiOjE3MTk3NjU0ODZ9.dIzXicB5rNhhgPe5ewJ4eVzfD6OCZrxfrEsDaIlontSM-Jwf6ssrM3wYa7KxEKUOA7YGigiEvuIkdUnHTigylA';
 
 export const getBuildingNameList = async (): Promise<BuildingManagementResponse> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/management`, {
@@ -35,10 +36,6 @@ export const getBuildingInfoList = async (dormitoryId: number): Promise<Building
       Authorization: `bearer ${accessToken}`,
     },
   });
-
-  // if (!res.ok) {
-  //   throw new Error(`Server responded with status ${res.status}`);
-  // }
 
   const data: BuildingManagementInfoResponse = await res.json();
 
@@ -100,6 +97,40 @@ export const putBuildingMemo = async (dormitoryId: number, memo: string): Promis
   });
 
   const data: BuildingManagementMemoResponse = await res.json();
+
+  return data;
+};
+
+export const getRoomAssignedList = async (roomId: number): Promise<BuildingRoomInAssignedResponse> => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/management/rooms/${roomId}/assigned`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    },
+  );
+
+  const data: BuildingRoomInAssignedResponse = await res.json();
+
+  return data;
+};
+
+export const getRoomNotAssignedList = async (dormitoryId: number): Promise<BuildingRoomInAssignedResponse> => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/management/rooms/${dormitoryId}/not-assigned`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `bearer ${accessToken}`,
+      },
+    },
+  );
+
+  const data: BuildingRoomInAssignedResponse = await res.json();
 
   return data;
 };
