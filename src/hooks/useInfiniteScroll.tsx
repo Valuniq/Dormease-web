@@ -1,58 +1,35 @@
-import { useEffect, useState } from 'react';
-import useSWRInfinite from 'swr/infinite';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+// src/components/InfiniteScroll.tsx
+import React, { useEffect, ReactNode } from 'react';
 
-const fetcher = (url: string) =>
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
-    },
-  }).then((res) => res.json());
+/**
+ * 무한 스크롤 컴포넌트
+ * @param children - 렌더링할 자식 요소
+ * @param isLoading - 데이터 로딩 중인지 여부
+ * @param isReachingEnd - 마지막 페이지인지 여부
+ * @param loadMore - 다음 페이지 데이터를 로드하는 함수
+ */
+interface InfiniteScrollProps {
+  children: ReactNode;
+  isLoading: boolean;
+  isReachingEnd: boolean;
+  loadMore: () => void;
+}
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL; // BASE_URL 설정
-
-type PageInfo = {
-  currentPage: number;
-  totalPage: number;
-  pageSize: number;
-  totalElements: number;
-};
-
-type ResponseData<T> = {
-  pageInfo: PageInfo;
-  dataList: T[];
-};
-
-// 제네릭을 사용하여 다양한 데이터 타입에 대해 사용할 수 있도록 설정
-export const useInfiniteScroll = <T,>(endpoint: string, pageSize: number = 10) => {
-  const getKey = (pageIndex: number, previousPageData: ResponseData<T> | null) => {
-    if (previousPageData && pageIndex >= previousPageData.pageInfo.totalPage) return null;
-    return `${BASE_URL}${endpoint}?page=${pageIndex + 1}`;
-  };
-
-  const { data, size, setSize, error } = useSWRInfinite<ResponseData<T>>(getKey, fetcher);
-
-  const [items, setItems] = useState<T[]>([]);
-
-  const isLoadingInitialData = !data && !error;
-  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
-  const isEmpty = data?.[0]?.dataList.length === 0;
-  const isReachingEnd = isEmpty || (data && data[size - 1]?.dataList.length < pageSize);
-
-  const loadMoreRef = useIntersectionObserver(() => {
-    if (!isLoadingMore && !isReachingEnd) {
-      setSize(size + 1);
-    }
-  });
-
+const InfiniteScroll = ({ children, isLoading, isReachingEnd, loadMore }: InfiniteScrollProps) => {
   useEffect(() => {
-    if (data) {
-      const allItems = data.map((page) => page.dataList).flat();
-      setItems(allItems);
-    }
-  }, [data]);
+    const handleScroll = () => {
+      if (isLoading || isReachingEnd) return;
 
-  return { items, isLoadingMore: isLoadingMore ?? false, isReachingEnd: isReachingEnd ?? false, loadMoreRef, error };
+      if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50) {
+        loadMore();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLoading, isReachingEnd, loadMore]);
+
+  return <>{children}</>;
 };
+
+export default InfiniteScroll;

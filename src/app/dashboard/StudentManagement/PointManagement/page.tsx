@@ -1,20 +1,21 @@
 'use client';
 
-import { usePointMemberList, usePointsDetail } from '@/apis/PointManagment';
+import { useInfinitePointMemberList, usePointsDetail } from '@/apis/PointManagment';
 import PointManagementTemplate from '@/components/templates/pointManagement/index';
+import InfiniteScroll from '@/hooks/useInfiniteScroll';
+
 import { PointMemberResponseDataList, PointListResponseInfo } from '@/types/pointManagement';
 
 const PointManagementPage = () => {
   const {
-    data: pointManagementData,
+    pointManagementData,
     error: pointManagementError,
-    isLoading: pointManagementLoading,
-  } = usePointMemberList(1);
+    isLoadingMore,
+    size,
+    setSize,
+    isReachingEnd,
+  } = useInfinitePointMemberList();
   const { data: pointData, error: pointError, isLoading: pointLoading } = usePointsDetail();
-
-  if (pointManagementLoading || pointLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (pointManagementError || pointError) {
     console.error('Error fetching point management data:', pointManagementError);
@@ -22,10 +23,21 @@ const PointManagementPage = () => {
     return <div>Error loading data</div>;
   }
 
-  const pointManagementLists: PointMemberResponseDataList[] = pointManagementData?.information.dataList ?? [];
   const pointLists: PointListResponseInfo[] = pointData?.information ?? [];
 
-  return <PointManagementTemplate pointManagementLists={pointManagementLists} pointLists={pointLists} />;
+  return (
+    <InfiniteScroll
+      isLoading={isLoadingMore || pointLoading}
+      isReachingEnd={isReachingEnd}
+      loadMore={() => setSize(size + 1)}
+    >
+      <PointManagementTemplate
+        pointManagementLists={pointManagementData as PointMemberResponseDataList[]}
+        pointLists={pointLists}
+      />
+      {isLoadingMore && <div>Loading more...</div>}
+    </InfiniteScroll>
+  );
 };
 
 export default PointManagementPage;
