@@ -1,44 +1,31 @@
 'use client';
-import { getPointMemberList, getPointsDetail } from '@/apis/PointManagment';
+
+import { usePointMemberList, usePointsDetail } from '@/apis/PointManagment';
 import PointManagementTemplate from '@/components/templates/pointManagement/index';
-import { ACCESS_TOKEN } from '@/constants/tokenKey';
-import { PointMemberResponse, PointListResponse } from '@/types/pointManagement';
-import tokenManager from '@/utils/tokenManager';
-import { Suspense, useEffect, useState } from 'react';
+import { PointMemberResponseDataList, PointListResponseInfo } from '@/types/pointManagement';
 
-const page = () => {
-  const [pointManagementLists, setPointManagementLists] = useState<PointMemberResponse['information']['dataList']>([]);
-  const [pointLists, setPointLists] = useState<PointListResponse['information']>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+const PointManagementPage = () => {
+  const {
+    data: pointManagementData,
+    error: pointManagementError,
+    isLoading: pointManagementLoading,
+  } = usePointMemberList(1);
+  const { data: pointData, error: pointError, isLoading: pointLoading } = usePointsDetail();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const pointManagementData = await getPointMemberList(1);
-        const pointData = await getPointsDetail();
-        setPointManagementLists(pointManagementData.information.dataList);
-        setPointLists(pointData.information);
-        setLoading(false);
-      } catch (err) {
-        setError(err as Error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
+  if (pointManagementLoading || pointLoading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    console.log(tokenManager.getToken(ACCESS_TOKEN));
-    return <div>Error loading data: {error.message}</div>;
+  if (pointManagementError || pointError) {
+    console.error('Error fetching point management data:', pointManagementError);
+    console.error('Error fetching point data:', pointError);
+    return <div>Error loading data</div>;
   }
+
+  const pointManagementLists: PointMemberResponseDataList[] = pointManagementData?.information.dataList ?? [];
+  const pointLists: PointListResponseInfo[] = pointData?.information ?? [];
 
   return <PointManagementTemplate pointManagementLists={pointManagementLists} pointLists={pointLists} />;
 };
 
-export default page;
+export default PointManagementPage;
