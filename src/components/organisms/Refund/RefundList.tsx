@@ -6,10 +6,11 @@ import { RefundRequestmentResponseDataList } from '@/types/refund';
 type Props = {
   clickSchoolNumber: number;
   onStudentClick: (schoolNumber: number) => void;
+  onDeleteRefund: () => void;
   list: RefundRequestmentResponseDataList[];
 };
 
-const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
+const RefundList = ({ list, clickSchoolNumber, onDeleteRefund, onStudentClick }: Props) => {
   return (
     <div className='text-nowrap text-center text-gray-grayscale50 c'>
       <div className='flex w-full border-b-1 pb-15'>
@@ -49,6 +50,7 @@ const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
                     bedNumber={data.bedNumber}
                     clickSchoolNumber={clickSchoolNumber}
                     onStudentClick={onStudentClick}
+                    onDeleteRefund={onDeleteRefund}
                   />
                   {isLastItem && <div className='mt-13 border-b-1 border-gray-grayscale50'></div>}
                 </>

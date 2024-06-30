@@ -43,3 +43,21 @@ export const postPeriod = async (startDate: string, endDate: string, periodType:
 
   return data;
 };
+
+export const deleteRefundRequestment = async (residentId: number): Promise<PeriodResponse> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/refundRequestment/${residentId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Server responded with status ${res.status}`);
+  }
+
+  const data: PeriodResponse = await res.json();
+
+  return data;
+};

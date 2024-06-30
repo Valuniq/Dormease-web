@@ -5,6 +5,7 @@ type Props = {
   isLastItem: boolean;
   clickSchoolNumber: number;
   onStudentClick: (schoolNumber: number) => void;
+  onDeleteRefund: () => void;
 
   refundRequestmentId: number;
   residentName: string;
@@ -24,6 +25,7 @@ const RefundListBody = ({
   isLastItem,
   clickSchoolNumber,
   onStudentClick,
+  onDeleteRefund,
   refundRequestmentId,
   residentName,
   studentNumber,
@@ -61,6 +63,7 @@ const RefundListBody = ({
           disabled={!(clickSchoolNumber === refundRequestmentId)}
           selected={false}
           variant='blue'
+          onClick={onDeleteRefund}
         />
       </div>
     </div>

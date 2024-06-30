@@ -21,6 +21,7 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [dateModal, setDateModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const { data, error } = useSWR(`/api/v1/web/refundRequestment/residents?page=${pageNum}`, getRefundRequestment);
 
@@ -57,6 +58,8 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
     }
   };
 
+  const onDeleteRefund = async () => {};
+
   return (
     <>
       <div className='flex flex-col w-[1396px]'>
@@ -71,7 +74,12 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
             handlePosting={() => setDateModal(!dateModal)}
           />
         </div>
-        <RefundList list={refundList} clickSchoolNumber={clickSchoolNumber} onStudentClick={onStudentClick} />
+        <RefundList
+          list={refundList}
+          clickSchoolNumber={clickSchoolNumber}
+          onStudentClick={onStudentClick}
+          onDeleteRefund={() => setDeleteModal(!deleteModal)}
+        />
         {refundList && (
           <div className='mt-27 flex justify-center'>
             <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={handlePageNum} />
@@ -85,6 +93,16 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
             label='환불 신청 기간을 게시하시겠습니까?'
             onConfirm={onSaveDate}
             onCancel={() => setDateModal(!dateModal)}
+          />
+        </BackDrop>
+      )}
+      {deleteModal && (
+        <BackDrop isOpen={deleteModal}>
+          <ConfirmPrompt
+            variant='blue'
+            label='선택한 인원에 대해 환불을 진행하겠습니까?'
+            onConfirm={onDeleteRefund}
+            onCancel={() => setDeleteModal(!deleteModal)}
           />
         </BackDrop>
       )}
