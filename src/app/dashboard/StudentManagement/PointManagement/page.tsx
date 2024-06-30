@@ -1,21 +1,44 @@
+'use client';
 import { getPointMemberList, getPointsDetail } from '@/apis/PointManagment';
 import PointManagementTemplate from '@/components/templates/pointManagement/index';
-import { Suspense } from 'react';
+import { ACCESS_TOKEN } from '@/constants/tokenKey';
+import { PointMemberResponse, PointListResponse } from '@/types/pointManagement';
+import tokenManager from '@/utils/tokenManager';
+import { Suspense, useEffect, useState } from 'react';
 
-const page = async () => {
-  const pointManagementLists = await getPointMemberList(1);
-  const pointLists = await getPointsDetail();
-  console.log('pointManagementList', pointManagementLists);
-  console.log('pointLists', pointLists);
+const page = () => {
+  const [pointManagementLists, setPointManagementLists] = useState<PointMemberResponse['information']['dataList']>([]);
+  const [pointLists, setPointLists] = useState<PointListResponse['information']>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  return (
-    <Suspense fallback={<h1>로딩 중</h1>}>
-      <PointManagementTemplate
-        pointManagementLists={pointManagementLists.information.dataList}
-        pointLists={pointLists.information}
-      />
-    </Suspense>
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const pointManagementData = await getPointMemberList(1);
+        const pointData = await getPointsDetail();
+        setPointManagementLists(pointManagementData.information.dataList);
+        setPointLists(pointData.information);
+        setLoading(false);
+      } catch (err) {
+        setError(err as Error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    console.log(tokenManager.getToken(ACCESS_TOKEN));
+    return <div>Error loading data: {error.message}</div>;
+  }
+
+  return <PointManagementTemplate pointManagementLists={pointManagementLists} pointLists={pointLists} />;
 };
 
 export default page;
