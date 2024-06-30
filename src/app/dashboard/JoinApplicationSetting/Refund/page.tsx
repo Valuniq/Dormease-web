@@ -1,31 +1,41 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RefundList from '@/components/organisms/Refund/RefundList';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
+import useSWR, { mutate } from 'swr';
+import { getRefundRequestment } from '@/apis/refund';
+import { RefundRequestmentResponseDataList } from '@/types/refund';
 
 type Props = {
-  clickSchoolNumber: string;
-  onStudentClick: (schoolNumber: string) => void;
-  pageNum: number;
-  pageTotalNum: number;
-  setPageNum: (navigation: 'prev' | 'next') => void;
-  list: {
-    name: string;
-    schoolNumber: string;
-    phoneNumber: string;
-    bankName: string;
-    accountNumber: string;
-    period: string;
-    exitDate: string;
-    applicationDate: string;
-    building: string;
-    room: string;
-    bedNumber: string;
-  }[];
+  clickSchoolNumber: number;
+  onStudentClick: (schoolNumber: number) => void;
 };
 
-const Refund = ({ list, onStudentClick, clickSchoolNumber, pageNum, pageTotalNum, setPageNum }: Props) => {
+const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
+  const [refundList, setRefundList] = useState<RefundRequestmentResponseDataList[]>([]);
+  const [pageNum, setPageNum] = useState(1);
+  const [pageTotalNum, setPageTotalNum] = useState(0);
+
+  const { data, error } = useSWR(`/api/v1/web/refundRequestment/residents?page=${pageNum}`, getRefundRequestment);
+
+  useEffect(() => {
+    if (data) {
+      setRefundList(data.information.dataList);
+      setPageTotalNum(data.information.pageInfo.totalPage);
+    } else {
+      console.log(error);
+    }
+  }, [data, error]);
+
+  const handlePageNum = (navigation: 'prev' | 'next') => {
+    if (navigation === 'prev') {
+      setPageNum(pageNum - 1);
+    } else {
+      setPageNum(pageNum + 1);
+    }
+  };
+
   return (
     <div className='flex flex-col w-[1396px]'>
       <div className='flex justify-between items-center mb-32'>
@@ -45,10 +55,10 @@ const Refund = ({ list, onStudentClick, clickSchoolNumber, pageNum, pageTotalNum
           }}
         />
       </div>
-      <RefundList list={list} clickSchoolNumber={clickSchoolNumber} onStudentClick={onStudentClick} />
-      {list && (
+      <RefundList list={refundList} clickSchoolNumber={clickSchoolNumber} onStudentClick={onStudentClick} />
+      {refundList && (
         <div className='mt-27 flex justify-center'>
-          <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={setPageNum} />
+          <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={handlePageNum} />
         </div>
       )}
     </div>

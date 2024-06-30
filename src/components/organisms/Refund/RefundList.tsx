@@ -1,23 +1,12 @@
 import React from 'react';
 import RefundListBody from './RefundListBody';
 import NoneList from '../NoneList/NoneList';
+import { RefundRequestmentResponseDataList } from '@/types/refund';
 
 type Props = {
-  clickSchoolNumber: string;
-  onStudentClick: (schoolNumber: string) => void;
-  list: {
-    name: string;
-    schoolNumber: string;
-    phoneNumber: string;
-    bankName: string;
-    accountNumber: string;
-    period: string;
-    exitDate: string;
-    applicationDate: string;
-    building: string;
-    room: string;
-    bedNumber: string;
-  }[];
+  clickSchoolNumber: number;
+  onStudentClick: (schoolNumber: number) => void;
+  list: RefundRequestmentResponseDataList[];
 };
 
 const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
@@ -46,16 +35,17 @@ const RefundList = ({ list, clickSchoolNumber, onStudentClick }: Props) => {
                   <RefundListBody
                     key={index}
                     isLastItem={isLastItem}
-                    name={data.name}
-                    schoolNumber={data.schoolNumber}
+                    refundRequestmentId={data.refundRequestmentId}
+                    residentName={data.residentName}
+                    studentNumber={data.studentNumber}
                     phoneNumber={data.phoneNumber}
                     bankName={data.bankName}
                     accountNumber={data.accountNumber}
-                    period={data.period}
+                    term={data.term}
                     exitDate={data.exitDate}
-                    applicationDate={data.applicationDate}
-                    building={data.building}
-                    room={data.room}
+                    createDate={data.createDate}
+                    dormitoryName={data.dormitoryName}
+                    roomNumber={data.roomNumber}
                     bedNumber={data.bedNumber}
                     clickSchoolNumber={clickSchoolNumber}
                     onStudentClick={onStudentClick}
