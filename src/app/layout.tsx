@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import RecoilRootWrapper from '@/recoil/RecoilWrapper';
-import Navigation from '@/components/organisms/Navigation/Navigation';
-import Header from '@/components/organisms/Header/Header';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

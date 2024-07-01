@@ -8,7 +8,7 @@ import RequestIcon from '@public/images/navigation/Request.png';
 import MealTicketManagementIcon from '@public/images/navigation/MealTicketManagement.png';
 import SettingIcon from '@public/images/navigation/Setting.png';
 
-const StudentManagementRoutes = '/dashboard/StudentManagement';
+export const StudentManagementRoutes = '/dashboard/StudentManagement';
 const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
 const BuildingManagementRoutes = '/dashboard/BuildingManagement';
 
@@ -33,6 +33,7 @@ export const NavigationItems = [
       { label: '입사 신청 설정', routes: JoinApplicationSettingRoutes },
       { label: '기준 설정', routes: `${JoinApplicationSettingRoutes}/StandardSetting` },
       { label: '신청자 명단', routes: `${JoinApplicationSettingRoutes}/Applicant` },
+      { label: '입금 확인 명단', routes: `${JoinApplicationSettingRoutes}/DepositConfirmation` },
       { label: '합격자 명단', routes: `${JoinApplicationSettingRoutes}/PassMember` },
       { label: '환불 신청', routes: `${JoinApplicationSettingRoutes}/Refund` },
       { label: '퇴사 확인서', routes: `${JoinApplicationSettingRoutes}/Resignation` },

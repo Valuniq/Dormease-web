@@ -86,6 +86,7 @@ const config: Config = {
     tokenSetOrder0: 'var(--token-set-order-0)',
     zIndex: {
       header: '100',
+      backdrop: '110',
     },
   },
   plugins: [require('tailwindcss'), require('autoprefixer')],

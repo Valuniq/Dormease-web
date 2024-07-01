@@ -1,17 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { RecoilRoot } from 'recoil';
 
-import PenaltyPrompt from './PenaltyPrompt';
+import PenaltyManagementPrompt from './PenaltyManagementPrompt';
 
-const meta: Meta<typeof PenaltyPrompt> = {
-  title: 'components/organisms/Prompt/PenaltyPrompt',
-  component: PenaltyPrompt,
+const meta: Meta<typeof PenaltyManagementPrompt> = {
+  title: 'components/organisms/Prompt/PenaltyManagementPrompt/PenaltyManagementPrompt',
+  component: PenaltyManagementPrompt,
   tags: ['autodocs'],
   argTypes: {},
+  decorators: [
+    (Story) => (
+      <RecoilRoot>
+        <Story />
+      </RecoilRoot>
+    ),
+  ],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof PenaltyPrompt>;
+type Story = StoryObj<typeof PenaltyManagementPrompt>;
 
 export const Primary: Story = {
   args: {
