@@ -4,7 +4,7 @@ import LoginForm from '@/components/organisms/LoginForm/LoginForm';
 import { StudentManagementRoutes } from '@/constants/navigationItems';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import { accessTokenState, refreshTokenState } from '@/recoil/user';
-import { UserLoginRequest } from '@/types/user';
+
 import tokenManager from '@/utils/tokenManager';
 import LoginBackgroundImg from '@public/images/LoginBackgroundImg.png';
 import LoginLogo from '@public/logo/LoginLogo.png';
