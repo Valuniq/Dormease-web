@@ -1,43 +1,54 @@
-import { WithdrawalMemberResponse } from '@/types/withdrawal';
+import { WithdrawalMemberResponse, WithdrawalMemberResponseDataList } from '@/types/withdrawal';
+import { BASE_URL } from '@/constants/path';
+import swrWithToken from '@/utils/swrWithToken';
+import useSWRInfinite from 'swr/infinite';
 
-const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE2Mjc0NTA2LCJleHAiOjE3MTYyNzYzMDZ9.JdtbfFKm-kaAthDxrON6E0NYfhaI9Pm-0bSmFbLvGrzWx1-i4qY5Vx5Mmc7pZdO2PM4wA5VnN3aZxvXR-vKWiA';
+export const useWithdrawalLists = () => {
+  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse) => {
+    if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
+    return `${BASE_URL}/api/v1/web/users/management/delete?page=${pageIndex + 1}`;
+  };
 
-export const getWithdrawalLists = async (page: number): Promise<WithdrawalMemberResponse> => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/users/management/delete?page=${page}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `bearer ${accessToken}`,
-    },
-  });
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalMemberResponse>(getKey, swrWithToken);
 
-  if (!res.ok) {
-    throw new Error(`Server responded with status ${res.status}`);
-  }
+  const withdrawalData: WithdrawalMemberResponseDataList[] = data
+    ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalMemberResponseDataList[])
+    : [];
 
-  const data: WithdrawalMemberResponse = await res.json();
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isEmpty = data?.[0]?.information.dataList.length === 0;
+  const isReachingEnd =
+    isEmpty ||
+    (data &&
+      data[data.length - 1]?.information.pageInfo.currentPage ===
+        data[data.length - 1]?.information.pageInfo.totalPage) ||
+    false;
 
-  return data;
+  return { withdrawalData, error, isLoadingMore, size, setSize, isReachingEnd };
 };
 
-export const getWithdrawalSearch = async (page: number, keyword: string): Promise<WithdrawalMemberResponse> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/users/management/delete/search?page=${page}&keyword=${keyword}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${accessToken}`,
-      },
-    },
-  );
+export const useWithdrawalSearch = (keyword: string) => {
+  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse) => {
+    if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
+    return `${BASE_URL}/api/v1/web/users/management/delete/search?page=${pageIndex + 1}&keyword=${keyword}`;
+  };
 
-  if (!res.ok) {
-    throw new Error(`Server responded with status ${res.status}`);
-  }
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalMemberResponse>(getKey, swrWithToken);
 
-  const data: WithdrawalMemberResponse = await res.json();
+  const withdrawalSearchData: WithdrawalMemberResponseDataList[] = data
+    ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalMemberResponseDataList[])
+    : [];
 
-  return data;
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isEmpty = data?.[0]?.information.dataList.length === 0;
+  const isReachingEnd =
+    isEmpty ||
+    (data &&
+      data[data.length - 1]?.information.pageInfo.currentPage ===
+        data[data.length - 1]?.information.pageInfo.totalPage) ||
+    false;
+
+  return { withdrawalSearchData, error, isLoadingMore, size, setSize, isReachingEnd };
 };

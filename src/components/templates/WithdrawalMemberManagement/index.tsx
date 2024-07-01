@@ -1,36 +1,18 @@
 'use client';
 
-import { getWithdrawalSearch } from '@/apis/Withdrawal';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import WithdrawalMemberManagementList from '@/components/organisms/WithdrawalMemberManagement/WithdrawalMemberManagementList';
-import { WithdrawalMemberResponse } from '@/types/withdrawal';
-import { useCallback, useEffect, useState } from 'react';
+import { WithdrawalMemberResponseDataList } from '@/types/withdrawal';
 
-const WithdrawalMemberManagementTemplate = ({ list }: { list: WithdrawalMemberResponse }) => {
-  const [pageNum, setPageNum] = useState(1);
-  const [input, setInput] = useState('');
-  const [lists, setLists] = useState(list.information.dataList);
-
-  const handleWithdrawalSearch = useCallback(async () => {
-    try {
-      const response = await getWithdrawalSearch(pageNum, input);
-
-      if (response) {
-        setLists(response.information.dataList);
-      } else {
-        console.log('실패');
-      }
-    } catch (error) {
-      console.error(error);
-      console.log('오류가 발생했습니다.');
-    }
-  }, [input, pageNum]);
-
-  useEffect(() => {
-    setPageNum(1);
-    handleWithdrawalSearch();
-  }, [handleWithdrawalSearch, input]);
-
+const WithdrawalMemberManagementTemplate = ({
+  list,
+  input,
+  setInput,
+}: {
+  list: WithdrawalMemberResponseDataList[];
+  input: string;
+  setInput: (value: string) => void;
+}) => {
   return (
     <div className='flex flex-col w-[1145px] relative'>
       <div className='flex items-center mb-32'>
@@ -43,7 +25,7 @@ const WithdrawalMemberManagementTemplate = ({ list }: { list: WithdrawalMemberRe
           </div>
         )}
       </div>
-      <WithdrawalMemberManagementList list={lists} />
+      <WithdrawalMemberManagementList list={list} />
     </div>
   );
 };
