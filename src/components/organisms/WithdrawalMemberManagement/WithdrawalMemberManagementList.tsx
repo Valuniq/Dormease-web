@@ -1,16 +1,10 @@
 import React from 'react';
 import WithdrawalMemberManagementListBody from './WithdrawalMemberManagementListBody';
 import NoneList from '../NoneList/NoneList';
+import { WithdrawalMemberResponseDataList } from '@/types/withdrawal';
 
 type Props = {
-  list: {
-    index: number;
-    name: string;
-    schoolNumber: string;
-    bonusPoint: number;
-    minusPoint: number;
-    date: string;
-  }[];
+  list: WithdrawalMemberResponseDataList[];
 };
 
 const WithdrawalMemberManagementList = ({ list }: Props) => {
@@ -28,19 +22,19 @@ const WithdrawalMemberManagementList = ({ list }: Props) => {
         <tr className='h-15 border-b-1' />
       </thead>
       <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
-        {list && list.length > 0 ? (
+        {list ? (
           <>
             <tr className='h-15' />
             {list.map((data) => {
               return (
                 <WithdrawalMemberManagementListBody
-                  key={data.index}
-                  index={data.index}
+                  key={data.id}
+                  id={data.id}
                   name={data.name}
-                  schoolNumber={data.schoolNumber}
+                  studentNumber={data.studentNumber}
                   bonusPoint={data.bonusPoint}
                   minusPoint={data.minusPoint}
-                  date={data.date}
+                  deletedAt={data.deletedAt}
                 />
               );
             })}

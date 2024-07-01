@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Checked from '@public/images/Checked.png';
 import UnChecked from '@public/images/UnChecked.png';

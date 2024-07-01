@@ -19,7 +19,7 @@ const BackDrop = ({ children, isOpen }: Props) => {
   }, [isOpen]);
 
   return (
-    <div className='fixed top-0 left-0 w-full h-full bg-[#00000040] z-100 flex justify-center items-center'>
+    <div className='fixed z-backdrop top-0 left-0 w-full h-full bg-[#00000040] z-100 flex justify-center items-center'>
       {children ?? null}
     </div>
   );

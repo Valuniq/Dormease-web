@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import PromptHeaderLogo from '@public/images/PromptHeaderLogo.png';
 import PromptHeaderOut from '@public/images/PromptHeaderOut.png';
