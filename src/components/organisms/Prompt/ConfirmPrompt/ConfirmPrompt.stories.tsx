@@ -27,7 +27,7 @@ export const Red_ConfirmPrompt: Story = {
   },
 };
 
-export const green_ConfirmPrompt: Story = {
+export const Green_ConfirmPrompt: Story = {
   args: {
     variant: 'green',
     label: '설명을 입력하세요.',

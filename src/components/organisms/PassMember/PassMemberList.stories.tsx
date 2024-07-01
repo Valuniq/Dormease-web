@@ -53,7 +53,7 @@ export const Primary: Story = {
   },
 };
 
-export const scroll: Story = {
+export const Scroll: Story = {
   args: {
     passMemberLists: [
       {
@@ -258,6 +258,6 @@ export const scroll: Story = {
   },
 };
 
-export const noData: Story = {
+export const NoData: Story = {
   args: {},
 };

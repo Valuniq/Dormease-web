@@ -13,7 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof AppMemberManagementList>;
 
-export const primary: Story = {
+export const Primary: Story = {
   args: {
     appMemberManagementLists: [
       {
@@ -38,7 +38,7 @@ export const primary: Story = {
   },
 };
 
-export const scroll: Story = {
+export const Scroll: Story = {
   args: {
     appMemberManagementLists: [
       {

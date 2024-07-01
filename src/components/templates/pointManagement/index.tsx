@@ -21,7 +21,7 @@ import PenaltyManagementPrompt from '@/components/organisms/Prompt/PointManageme
 import AlertPrompt from '@/components/organisms/Prompt/PointManagement/AlertPrompt/AlertPrompt';
 import { postPointsDetail } from '@/apis/PointManagment';
 
-const index = ({
+const Index = ({
   pointManagementLists,
   pointLists,
 }: {
@@ -62,21 +62,24 @@ const index = ({
   return (
     <>
       {isOpened.pointManagement && (
-        <BackDrop children={<PenaltyManagementPrompt />} isOpen={isOpened.pointManagement} />
+        <BackDrop isOpen={isOpened.pointManagement}>
+          <PenaltyManagementPrompt />
+        </BackDrop>
       )}
-      {isOpened.pointGive && <BackDrop children={<PenaltyGivePrompt />} isOpen={isOpened.pointGive} />}
+      {isOpened.pointGive && (
+        <BackDrop isOpen={isOpened.pointGive}>
+          <PenaltyGivePrompt />
+        </BackDrop>
+      )}
       {isOpened.pointManagementConfirm && (
-        <BackDrop
-          children={
-            <AlertPrompt
-              variant={'blue'}
-              label={'상/벌점 리스트를 저장하시겠습니까?'}
-              modalName={'pointManagementConfirm'}
-              onConfirm={handleConfirm}
-            />
-          }
-          isOpen={isOpened.pointManagementConfirm}
-        />
+        <BackDrop isOpen={isOpened.pointManagementConfirm}>
+          <AlertPrompt
+            variant={'blue'}
+            label={'상/벌점 리스트를 저장하시겠습니까?'}
+            modalName={'pointManagementConfirm'}
+            onConfirm={handleConfirm}
+          />
+        </BackDrop>
       )}
 
       <div className='w-[1250px]'>
@@ -117,4 +120,4 @@ const index = ({
   );
 };
 
-export default index;
+export default Index;

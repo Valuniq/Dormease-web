@@ -13,7 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof ApplicantList>;
 
-export const primary: Story = {
+export const Primary: Story = {
   args: {
     applicantLists: [
       {
@@ -46,7 +46,7 @@ export const primary: Story = {
   },
 };
 
-export const scroll: Story = {
+export const Scroll: Story = {
   args: {
     applicantLists: [
       {
@@ -222,7 +222,7 @@ export const scroll: Story = {
   },
 };
 
-export const noData: Story = {
+export const NoData: Story = {
   args: {
     applicantLists: [],
   },
