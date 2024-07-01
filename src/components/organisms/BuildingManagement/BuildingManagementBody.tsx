@@ -25,9 +25,9 @@ const BuildingManagementBody = ({ studentList, onStudentClick, editAssign, roomS
   return (
     <>
       <div className='absolute z-10 text-gray-grayscale50 mt-10 left-115'>
-        <div className='balloon caption-2'>
+        <div className='balloon caption-2 max-h-256 overflow-y-auto noscrollbar-table'>
           <table>
-            <tbody className='max-h-256 overflow-y-auto scrollbar-table'>
+            <tbody>
               {studentList.map((data) => {
                 return (
                   <>
