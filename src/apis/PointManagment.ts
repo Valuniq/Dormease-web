@@ -1,6 +1,5 @@
 import { BASE_URL } from '@/constants/path';
 import {
-  PageDetailInfo,
   PointListResponse,
   PointMemberResponse,
   PointMemberResponseDataList,
@@ -9,6 +8,7 @@ import {
 import useSWR from 'swr';
 import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
+import { PageInfo } from '@/types/pageInfo';
 
 /**
  * 무한 스크롤을 위한 사생 목록 조회 훅
@@ -67,7 +67,7 @@ export const postMemberPoint = async (residentId: number, pointType: string, poi
 };
 
 // * 사생 상/벌점 내역 상세 조회
-export const usePointsByResidentId = (residentId: number, page: PageDetailInfo) => {
+export const usePointsByResidentId = (residentId: number, page: PageInfo) => {
   const { data, error } = useSWR<ResidentPointResponse>(
     `${BASE_URL}/api/v1/web/points/${residentId}?page=${page.currentPage}`,
     swrWithToken,
