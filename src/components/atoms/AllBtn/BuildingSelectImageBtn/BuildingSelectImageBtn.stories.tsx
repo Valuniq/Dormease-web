@@ -16,6 +16,7 @@ type Story = StoryObj<typeof BuildingSelectImageBtn>;
 
 export const Primary: Story = {
   args: {
-    image: BuildingImgEx,
+    // build 에러 주석 처리
+    // image: BuildingImgEx,
   },
 };

@@ -26,28 +26,31 @@ const RequestList = ({ list, onRequestClick }: Props) => {
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
-        {list ? (
-          <>
-            <tr className='h-15' />
-            {list.map((data) => {
-              return (
-                <RequestListBody
-                  key={data.index}
-                  index={data.index}
-                  title={data.title}
-                  name={data.name}
-                  date={data.date}
-                  progression={data.progression}
-                  onRequestClick={onRequestClick}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <NoneList />
-        )}
-      </tbody>
+
+      {list ? (
+        <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
+          <tr className='h-15' />
+          {list.map((data) => {
+            return (
+              <RequestListBody
+                key={data.index}
+                index={data.index}
+                title={data.title}
+                name={data.name}
+                date={data.date}
+                progression={data.progression}
+                onRequestClick={onRequestClick}
+              />
+            );
+          })}
+        </tbody>
+      ) : (
+        <tbody>
+          <td className='h-full'>
+            <NoneList colspan={5} />
+          </td>
+        </tbody>
+      )}
     </table>
   );
 };

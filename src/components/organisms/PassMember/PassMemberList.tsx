@@ -26,33 +26,34 @@ const PassMemberList = ({ passMemberLists }: Props) => {
             <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
           </th>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          <tr className='h-15' />
-          {passMemberLists && passMemberLists.length > 0 ? (
-            <>
-              {passMemberLists.map((i) => (
-                <>
-                  <PassMemberListBody
-                    degree={i.degree}
-                    name={i.name}
-                    studentId={i.studentId}
-                    gender={i.gender}
-                    isSmoking={i.isSmoking}
-                    appliedRoommate={i.appliedRoommate}
-                    bedNumber={i.bedNumber}
-                    room={i.room}
-                    assignment={i.assignment}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-            </>
-          ) : (
-            <td className='h-500' colSpan={9}>
-              <NoneList />
+
+        {passMemberLists && passMemberLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-15' />
+            {passMemberLists.map((i) => (
+              <>
+                <PassMemberListBody
+                  degree={i.degree}
+                  name={i.name}
+                  studentId={i.studentId}
+                  gender={i.gender}
+                  isSmoking={i.isSmoking}
+                  appliedRoommate={i.appliedRoommate}
+                  bedNumber={i.bedNumber}
+                  room={i.room}
+                  assignment={i.assignment}
+                />
+                <tr className='h-15' />
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <td className='h-full'>
+              <NoneList colspan={9} />
             </td>
-          )}
-        </tbody>
+          </tbody>
+        )}
       </table>
     </div>
   );

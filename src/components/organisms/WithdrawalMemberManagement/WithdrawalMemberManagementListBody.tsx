@@ -1,4 +1,4 @@
-import { withdrawalList } from '@/types/withdrawal';
+import { WithdrawalMemberResponseDataList } from '@/types/withdrawal';
 import React from 'react';
 
 const WithdrawalMemberManagementListBody = ({
@@ -8,7 +8,7 @@ const WithdrawalMemberManagementListBody = ({
   bonusPoint,
   minusPoint,
   deletedAt,
-}: withdrawalList) => {
+}: WithdrawalMemberResponseDataList) => {
   return (
     <>
       <tr className='table rounded-5 w-[1090px] H4-caption h-38 text-nowrap relative align-middle cursor-pointer'>

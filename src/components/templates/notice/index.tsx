@@ -1,14 +1,15 @@
 'use client';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
-import { noticeList } from '@/types/notice';
+import { noticeResponseDataList } from '@/types/notice';
+
 import React from 'react';
 
 type Props = {
   pageNum: number;
   pageTotalNum: number;
   //   setPageNum: (navigation: 'prev' | 'next') => void;
-  noticeLists: noticeList[];
+  noticeLists: noticeResponseDataList[];
 };
 
 const index = ({ pageNum, pageTotalNum, noticeLists }: Props) => {

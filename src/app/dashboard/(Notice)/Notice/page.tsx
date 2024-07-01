@@ -6,7 +6,7 @@ import NoticeList from '@/components/organisms/Notice/NoticeList/NoticeList';
 
 import React from 'react';
 
-const NotificationsPage = () => {
+const Page = () => {
   const { notificationsData, error, isLoadingMore, size, setSize, isReachingEnd } = useInfiniteNotifications();
 
   if (error) return <div>Failed to load</div>;
@@ -34,4 +34,4 @@ const NotificationsPage = () => {
   );
 };
 
-export default NotificationsPage;
+export default Page;

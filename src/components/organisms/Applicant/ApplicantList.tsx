@@ -37,35 +37,37 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
             <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
           </th>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          {applicantLists && applicantLists.length > 0 ? (
-            <>
-              <tr className='h-15' />
-              {applicantLists.map((i) => (
-                <>
-                  <ApplicantListBody
-                    name={i.name}
-                    studentId={i.studentId}
-                    gender={i.gender}
-                    applicationBuilding={i.applicationBuilding}
-                    residence={i.residence}
-                    certifiedFile={i.certifiedFile}
-                    prioritySelection={i.prioritySelection}
-                    assignedBuilding={i.assignedBuilding}
-                    isPassed={i.isPassed}
-                    isChecked={i.isChecked}
-                    setIsChecked={i.setIsChecked}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-            </>
-          ) : (
-            <td className='h-500' colSpan={10}>
-              <NoneList />
+
+        {applicantLists && applicantLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-15' />
+            {applicantLists.map((i) => (
+              <>
+                <ApplicantListBody
+                  name={i.name}
+                  studentId={i.studentId}
+                  gender={i.gender}
+                  applicationBuilding={i.applicationBuilding}
+                  residence={i.residence}
+                  certifiedFile={i.certifiedFile}
+                  prioritySelection={i.prioritySelection}
+                  assignedBuilding={i.assignedBuilding}
+                  isPassed={i.isPassed}
+                  isChecked={i.isChecked}
+                  setIsChecked={i.setIsChecked}
+                />
+                <tr className='h-15' />
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            {' '}
+            <td className='h-full'>
+              <NoneList colspan={10} />
             </td>
-          )}
-        </tbody>
+          </tbody>
+        )}
       </table>
     </div>
   );
