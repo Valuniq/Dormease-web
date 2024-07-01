@@ -1,4 +1,3 @@
-import { UrlWithStringQuery } from 'url';
 import { PageInfo } from './pageInfo';
 
 // export type noticeList = {
@@ -48,7 +47,7 @@ export type noticeDetailResponse = {
 
 export type noticeDetailResponseBlockResList = {
   blockId: number;
-  imageUrl: UrlWithStringQuery;
+  imageUrl: string;
   sequence: number;
   content: string;
 };

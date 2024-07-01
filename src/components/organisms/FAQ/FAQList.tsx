@@ -1,11 +1,15 @@
-import { faqLists } from '@/types/faq';
+import { faqResponseDataList } from '@/types/faq';
 import React from 'react';
 import NoneList from '../NoneList/NoneList';
 import FAQListBody from './FAQListBody';
 
-const FAQList = ({ faqLists }: faqLists) => {
-  const pinnedFAQ = faqLists && faqLists.filter((faq) => faq.isPinned);
-  const unPinnedFAQ = faqLists && faqLists.filter((faq) => !faq.isPinned);
+type faqListProps = {
+  faqLists: faqResponseDataList[];
+};
+
+const FAQList = ({ faqLists }: faqListProps) => {
+  const pinnedFAQ = faqLists && faqLists.filter((faq) => faq.pinned);
+  const unPinnedFAQ = faqLists && faqLists.filter((faq) => !faq.pinned);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1200px]'>
@@ -18,51 +22,52 @@ const FAQList = ({ faqLists }: faqLists) => {
             <th className='H4'>첨부파일</th>
             <th className='H4'>조회수</th>
           </tr>
-          <th colSpan={6}>
-            <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
-          </th>
+          <tr>
+            <th colSpan={6}>
+              <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
+            </th>
+          </tr>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          <tr className='h-15' />
-          {faqLists && faqLists.length > 0 ? (
-            <>
-              {/* 고정된 FAQ 먼저 렌더링 */}
-              {pinnedFAQ.map((faq) => (
-                <>
-                  <FAQListBody
-                    index={faq.index}
-                    title={faq.title}
-                    writer={faq.writer}
-                    registrationDate={faq.registrationDate}
-                    isExistedFile={faq.isExistedFile}
-                    views={faq.views}
-                    isPinned={faq.isPinned}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-              {/* 고정되지 않은 FAQ 렌더링 */}
-              {unPinnedFAQ.map((faq) => (
-                <>
-                  <FAQListBody
-                    index={faq.index}
-                    title={faq.title}
-                    writer={faq.writer}
-                    registrationDate={faq.registrationDate}
-                    isExistedFile={faq.isExistedFile}
-                    views={faq.views}
-                    isPinned={faq.isPinned}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-            </>
-          ) : (
-            <td className='h-500' colSpan={6}>
-              <NoneList />
-            </td>
-          )}
-        </tbody>
+
+        {faqLists && faqLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-15' />
+            {/* 고정된 FAQ 먼저 렌더링 */}
+            {pinnedFAQ.map((faq) => (
+              <>
+                <FAQListBody
+                  index={faq.notificationId}
+                  title={faq.title}
+                  writer={faq.writer}
+                  registrationDate={faq.createdDate}
+                  isExistedFile={faq.existFile}
+                  // views={faq.views}
+                  isPinned={faq.pinned}
+                />
+                <tr className='h-15' />
+              </>
+            ))}
+            {/* 고정되지 않은 FAQ 렌더링 */}
+            {unPinnedFAQ.map((faq) => (
+              <>
+                <FAQListBody
+                  index={faq.notificationId}
+                  title={faq.title}
+                  writer={faq.writer}
+                  registrationDate={faq.createdDate}
+                  isExistedFile={faq.existFile}
+                  // views={faq.views}
+                  isPinned={faq.pinned}
+                />
+                <tr className='h-15' />
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody className='h-full '>
+            <NoneList colspan={6} />
+          </tbody>
+        )}
       </table>
     </div>
   );
