@@ -1,28 +1,50 @@
 'use client';
 import { signIn } from '@/apis/Auth';
 import LoginForm from '@/components/organisms/LoginForm/LoginForm';
+import { StudentManagementRoutes } from '@/constants/navigationItems';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
+import { accessTokenState, refreshTokenState } from '@/recoil/user';
 import { UserLoginRequest } from '@/types/user';
+import tokenManager from '@/utils/tokenManager';
 import LoginBackgroundImg from '@public/images/LoginBackgroundImg.png';
 import LoginLogo from '@public/logo/LoginLogo.png';
-
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 const Page = () => {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const isDisabled = !loginId || !password;
   const router = useRouter();
-  // 로그인 처리 함수
-  const handleLogin = async ({ loginId, password }: UserLoginRequest) => {
+  const setAccessToken = useSetRecoilState(accessTokenState);
+  const setRefreshToken = useSetRecoilState(refreshTokenState);
+
+  const handleLogin = async ({ loginId, password }: { loginId: string; password: string }) => {
     try {
       const response = await signIn({ loginId, password });
 
       if (response) {
+        const accessToken = response.information.accessToken;
+        const refreshToken = response.information.refreshToken;
+
+        // Recoil 상태 업데이트
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+
+        // 로컬 스토리지에 토큰 저장
+        tokenManager.saveToken(ACCESS_TOKEN, accessToken);
+        tokenManager.saveToken(REFRESH_TOKEN, refreshToken);
+
+        // 상태 및 로컬 스토리지 확인
+        console.log('Access Token (Recoil):', accessToken);
+        console.log('Refresh Token (Recoil):', refreshToken);
+        console.log('Access Token (LocalStorage):', tokenManager.getToken(ACCESS_TOKEN));
+        console.log('Refresh Token (LocalStorage):', tokenManager.getToken(REFRESH_TOKEN));
+
         alert('로그인 성공');
-        router.push('dashboard/StudentManagement');
+        router.push(StudentManagementRoutes);
       } else {
         alert('로그인 실패');
       }

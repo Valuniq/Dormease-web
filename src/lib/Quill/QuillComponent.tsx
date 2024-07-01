@@ -1,5 +1,5 @@
 'use client';
-import UseTextEditorConfirm from '@/hooks/UseTextEditorConfirm';
+import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import React, { useState, useEffect } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
@@ -16,7 +16,7 @@ const QuillComponent = ({ width, height, onSave }: Props) => {
   const [editorHtml, setEditorHtml] = useState<string>('');
   const [isEditorModified, setIsEditorModified] = useState<boolean>(false);
 
-  UseTextEditorConfirm('변경 사항이 저장되지 않았습니다. 페이지를 벗어나시겠습니까?', () => {
+  useTextEditorConfirm('변경 사항이 저장되지 않았습니다. 페이지를 벗어나시겠습니까?', () => {
     if (isEditorModified) onSave();
   });
 
