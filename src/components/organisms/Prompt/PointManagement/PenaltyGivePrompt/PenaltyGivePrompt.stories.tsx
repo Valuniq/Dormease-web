@@ -23,7 +23,7 @@ type Story = StoryObj<typeof PenaltyGivePrompt>;
 
 export const Primary: Story = {};
 
-export const onConfirmDisabled: Story = {
+export const OnConfirmDisabled: Story = {
   args: {
     bonusTextBoxes: [
       { label: '착하다', score: '10' },

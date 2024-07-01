@@ -5,33 +5,7 @@ import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeV
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 
-type Props = {
-  clickSchoolNumber: string;
-  onStudentClick: (schoolNumber: string) => void;
-  setIsChecked: (isChecked: boolean) => void;
-  isAllChecked: boolean;
-  setIsAllChecked: (isChecked: boolean) => void;
-  list: {
-    name: string;
-    schoolNumber: string;
-    building: string;
-    roomNumber: string;
-    exitDate: string;
-    hasKey: boolean;
-    submissionDate: string;
-    depositRefund: boolean;
-    isChecked: boolean;
-  }[];
-};
-
-const Resignation = ({
-  list,
-  clickSchoolNumber,
-  onStudentClick,
-  setIsChecked,
-  isAllChecked,
-  setIsAllChecked,
-}: Props) => {
+const Resignation = () => {
   return (
     <div className='flex flex-col w-[1200px]'>
       <div className='flex justify-between items-center mb-32'>
@@ -51,19 +25,19 @@ const Resignation = ({
               throw new Error('Function not implemented.');
             }}
           />
-          <BtnLargeVariant label='삭제' disabled={!clickSchoolNumber} variant='red' />
+          <BtnLargeVariant label='삭제' disabled={!false} variant='red' />
         </div>
       </div>
       <ResignationList
-        list={list}
-        onStudentClick={onStudentClick}
-        setIsChecked={setIsChecked}
-        isAllChecked={isAllChecked}
-        setIsAllChecked={setIsAllChecked}
+        list={[]}
+        onStudentClick={(schoolNumber: string) => schoolNumber}
+        setIsChecked={(isChecked: boolean) => isChecked}
+        isAllChecked={false}
+        setIsAllChecked={(isChecked: boolean) => isChecked}
       />
       <div className='mt-21 flex justify-end gap-14'>
-        <BtnMidVariant label='지급불가' disabled={!clickSchoolNumber} variant='blue' />
-        <BtnMidVariant label='지급하기' disabled={!clickSchoolNumber} variant='red' />
+        <BtnMidVariant label='지급불가' disabled={!false} variant='blue' />
+        <BtnMidVariant label='지급하기' disabled={!false} variant='red' />
       </div>
     </div>
   );

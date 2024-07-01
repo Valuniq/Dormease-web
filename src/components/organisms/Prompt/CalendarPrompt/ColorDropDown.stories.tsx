@@ -13,19 +13,19 @@ export default meta;
 
 type Story = StoryObj<typeof ColorDropDown>;
 
-export const isOn: Story = {
+export const IsOn: Story = {
   args: {
     isOn: true,
   },
 };
 
-export const isOff: Story = {
+export const IsOff: Story = {
   args: {
     isOn: false,
   },
 };
 
-export const isSelected: Story = {
+export const IsSelected: Story = {
   args: {
     isOn: true,
     select: 'red',

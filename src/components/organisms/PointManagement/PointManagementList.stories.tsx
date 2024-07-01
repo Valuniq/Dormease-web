@@ -13,7 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof PointManagementList>;
 
-export const primary: Story = {
+export const Primary: Story = {
   args: {
     pointManagementLists: [
       {
@@ -44,7 +44,7 @@ export const primary: Story = {
   },
 };
 
-export const scroll: Story = {
+export const Scroll: Story = {
   args: {
     pointManagementLists: [
       {
@@ -255,7 +255,7 @@ export const scroll: Story = {
   },
 };
 
-export const noData: Story = {
+export const NoData: Story = {
   args: {
     pointManagementLists: [],
   },

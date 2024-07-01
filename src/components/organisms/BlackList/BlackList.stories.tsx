@@ -13,7 +13,7 @@ export default meta;
 
 type Story = StoryObj<typeof BlackList>;
 
-export const primary: Story = {
+export const Primary: Story = {
   args: {
     blackLists: [
       {
@@ -46,7 +46,7 @@ export const primary: Story = {
   },
 };
 
-export const scroll: Story = {
+export const Scroll: Story = {
   args: {
     blackLists: [
       {
@@ -404,7 +404,7 @@ export const scroll: Story = {
   },
 };
 
-export const noData: Story = {
+export const NoData: Story = {
   args: {
     blackLists: [],
   },

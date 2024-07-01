@@ -5,73 +5,16 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import BlackListBtn from '@/components/atoms/AllBtn/BlackListBtn/BlackListBtn';
 import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 
-type Props = {
-  name: string;
-  schoolNumber: string;
-  major: string;
-  grade: number;
-  schoolStatus: string;
-  gender: string;
-  phoneNumber: string;
-  address: string;
-  certifiedFile: File | null;
-  prioritySelection: File | null;
-  foodCount: number;
-  isSmoking: boolean;
-  dormitoryPayment: boolean;
-  hasKey: boolean;
-  bounsPoint: number;
-  minusPoint: number;
-  personalInfoConsent: boolean;
-  thirdPartyConsent: boolean;
-  bankName: string;
-  accountNumber: string;
-  emergencyContact: string;
-  emergencyRelation: string;
+const Page = () => {
+  const isEdit = false;
+  const isSmoking = false;
+  const dormitoryPayment = false;
+  const hasKey = false;
+  const personalInfoConsent = false;
+  const thirdPartyConsent = false;
+  const isRoommateApplied = false;
+  const isBuilding = false;
 
-  building: string;
-  roomNumber: number;
-  bedNumber: number;
-  period: string;
-  isRoommateApplied: boolean;
-  roommateInformation: string;
-
-  isEdit: boolean;
-  isBuilding: boolean;
-};
-
-const page = ({
-  name,
-  schoolNumber,
-  major,
-  grade,
-  schoolStatus,
-  gender,
-  phoneNumber,
-  address,
-  certifiedFile,
-  prioritySelection,
-  foodCount,
-  isSmoking,
-  dormitoryPayment,
-  hasKey,
-  bounsPoint,
-  minusPoint,
-  personalInfoConsent,
-  thirdPartyConsent,
-  bankName,
-  accountNumber,
-  emergencyContact,
-  emergencyRelation,
-  building,
-  roomNumber,
-  bedNumber,
-  period,
-  isRoommateApplied,
-  roommateInformation,
-  isEdit,
-  isBuilding,
-}: Props) => {
   return (
     <div className='flex flex-col relative w-[1200px]'>
       <h3 className='H3 text-gray-grayscale50 text-center mb-6'>개인정보</h3>
@@ -82,23 +25,17 @@ const page = ({
       )}
       <div className='flex border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
         <div className='flex-1 flex flex-col pr-170'>
-          <StudentManagementDetail label='이름' text={name} value={name} />
-          <StudentManagementDetail label='학번' text={schoolNumber} value={schoolNumber} />
-          <StudentManagementDetail label='학과' text={major} value={major} />
-          <StudentManagementDetail label='학년' text={grade + '학년'} value={grade} />
-          <StudentManagementDetail label='학적' text={schoolStatus} value={schoolStatus} />
-          <StudentManagementDetail label='성별' text={gender} value={gender} />
-          <StudentManagementDetail label='휴대전화' text={phoneNumber} value={phoneNumber} />
-          <StudentManagementDetail label='본거주지' text={address} value={address} />
-          <StudentManagementDetail label='등본' isEdit={isEdit} type='file' text='파일이름' value={certifiedFile} />
-          <StudentManagementDetail
-            label='우선선발'
-            isEdit={isEdit}
-            type='file'
-            text='파일이름'
-            value={prioritySelection}
-          />
-          <StudentManagementDetail label='식수' text={foodCount + '식'} value={foodCount} />
+          <StudentManagementDetail label='이름' text={''} value={''} />
+          <StudentManagementDetail label='학번' text={''} value={''} />
+          <StudentManagementDetail label='학과' text={''} value={''} />
+          <StudentManagementDetail label='학년' text={1 + '학년'} value={1} />
+          <StudentManagementDetail label='학적' text={''} value={''} />
+          <StudentManagementDetail label='성별' text={''} value={''} />
+          <StudentManagementDetail label='휴대전화' text={''} value={''} />
+          <StudentManagementDetail label='본거주지' text={''} value={''} />
+          <StudentManagementDetail label='등본' isEdit={isEdit} type='file' text='파일이름' value={null} />
+          <StudentManagementDetail label='우선선발' isEdit={isEdit} type='file' text='파일이름' value={null} />
+          <StudentManagementDetail label='식수' text={1 + '식'} value={1} />
         </div>
         <div className='flex-1 flex flex-col'>
           <StudentManagementDetail right={isEdit} label='흡연여부' text={isSmoking ? 'O' : 'X'} value={isSmoking} />
@@ -124,8 +61,8 @@ const page = ({
               throw new Error('Function not implemented.');
             }}
           />
-          <StudentManagementDetail right={isEdit} label='상점' text={bounsPoint} value={bounsPoint} />
-          <StudentManagementDetail right={isEdit} label='벌점' text={minusPoint} value={minusPoint} />
+          <StudentManagementDetail right={isEdit} label='상점' text={1} value={1} />
+          <StudentManagementDetail right={isEdit} label='벌점' text={1} value={1} />
           <StudentManagementDetail
             right={isEdit}
             label='개인정보 동의'
@@ -143,9 +80,9 @@ const page = ({
             isEdit={isEdit}
             type='string'
             label='은행명'
-            text={bankName}
-            value={bankName}
-            input={bankName}
+            text={'bankName'}
+            value={'bankName'}
+            input={'bankName'}
             setInput={function (id: string): void {
               throw new Error('Function not implemented.');
             }}
@@ -155,9 +92,9 @@ const page = ({
             isEdit={isEdit}
             type='string'
             label='계좌번호'
-            text={accountNumber}
-            value={accountNumber}
-            input={accountNumber}
+            text={'accountNumber'}
+            value={'accountNumber'}
+            input={'accountNumber'}
             setInput={function (id: string): void {
               throw new Error('Function not implemented.');
             }}
@@ -167,9 +104,9 @@ const page = ({
             isEdit={isEdit}
             type='string'
             label='비상연락처'
-            text={emergencyContact}
-            value={emergencyContact}
-            input={emergencyContact}
+            text={'emergencyContact'}
+            value={'emergencyContact'}
+            input={'emergencyContact'}
             setInput={function (id: string): void {
               throw new Error('Function not implemented.');
             }}
@@ -179,9 +116,9 @@ const page = ({
             isEdit={isEdit}
             type='string'
             label='비상연락처 관계'
-            text={emergencyRelation}
-            value={emergencyRelation}
-            input={emergencyRelation}
+            text={'emergencyRelation'}
+            value={'emergencyRelation'}
+            input={'emergencyRelation'}
             setInput={function (id: string): void {
               throw new Error('Function not implemented.');
             }}
@@ -204,8 +141,8 @@ const page = ({
                 throw new Error('Function not implemented.');
               }}
               label='건물'
-              text={building}
-              value={building}
+              text={'building'}
+              value={'building'}
             />
             <StudentManagementDetail
               isEdit={isEdit}
@@ -215,8 +152,8 @@ const page = ({
                 throw new Error('Function not implemented.');
               }}
               label='호실'
-              text={roomNumber + '호'}
-              value={roomNumber}
+              text={'roomNumber' + '호'}
+              value={'roomNumber'}
             />
             <StudentManagementDetail
               isEdit={isEdit}
@@ -226,18 +163,18 @@ const page = ({
                 throw new Error('Function not implemented.');
               }}
               label='침대번호'
-              text={bedNumber + '번'}
-              value={bedNumber}
+              text={'bedNumber' + '번'}
+              value={'bedNumber'}
             />
           </div>
           <div className='flex-1 flex flex-col pr-46'>
-            <StudentManagementDetail label='거주기간' text={period} value={period} />
+            <StudentManagementDetail label='거주기간' text={'period'} value={'period'} />
             <StudentManagementDetail
               label='룸메이트 신청'
               text={isRoommateApplied ? 'O' : 'X'}
               value={isRoommateApplied}
             />
-            <StudentManagementDetail label='인원 정보' text={roommateInformation} value={roommateInformation} />
+            <StudentManagementDetail label='인원 정보' text={'roommateInformation'} value={'roommateInformation'} />
           </div>
         </div>
       </div>
@@ -254,4 +191,4 @@ const page = ({
   );
 };
 
-export default page;
+export default Page;

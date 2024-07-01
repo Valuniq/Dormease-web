@@ -37,20 +37,17 @@ const PointManagementList = ({ pointManagementLists, plusSort, setPlusSort, minu
   return (
     <>
       {isOpened.pointHistory && (
-        <BackDrop
-          children={
-            <PenaltyHistoryPrompt
-              penaltyLists={[]}
-              plusSum={0}
-              minusSum={0}
-              isAllChecked={false}
-              setIsAllChecked={function (isAllChecked: boolean): void {
-                throw new Error('Function not implemented.');
-              }}
-            />
-          }
-          isOpen={isOpened.pointHistory}
-        />
+        <BackDrop isOpen={isOpened.pointHistory}>
+          <PenaltyHistoryPrompt
+            penaltyLists={[]}
+            plusSum={0}
+            minusSum={0}
+            isAllChecked={false}
+            setIsAllChecked={function (isAllChecked: boolean): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
+        </BackDrop>
       )}
       <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
         <table className='w-[1250px]'>
