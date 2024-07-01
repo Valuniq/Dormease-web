@@ -1,11 +1,12 @@
 'use client';
 import PenaltyBox from './PenaltyBox';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
+
 import { useRecoilValue } from 'recoil';
 import { promptBonusState, promptClientBonusState, promptClientMinusState, promptMinusState } from '@/recoil';
 import { useEffect } from 'react';
 import { usePointDetailValidation } from '@/hooks/usePointDetailValidation';
+import PromptHeader from '../PromptHeader/PromptHeader';
 
 const PenaltyGivePrompt = () => {
   const bonusLists = useRecoilValue(promptBonusState);

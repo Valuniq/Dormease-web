@@ -1,10 +1,11 @@
 'use client';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import PenaltyHistoryListBody from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryListBody';
-import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
+
 import { ResidentPointResponseUserPointDetailRes } from '@/types/pointManagement';
 import { TPointManagementModalState } from '@/recoil/pointManagement';
+import PromptHeader from '../PromptHeader/PromptHeader';
+import PenaltyHistoryListBody from './PenaltyHistoryListBody';
 
 type Props = {
   penaltyLists: ResidentPointResponseUserPointDetailRes[];

@@ -9,8 +9,8 @@ import { PointMemberResponseDataList } from '@/types/pointManagement';
 import { selectedMemberIdForPointState } from '@/recoil/pointManagement';
 import { useRecoilState } from 'recoil';
 import BackDrop from '../BackDrop/Backdrop';
-import PenaltyHistoryPrompt from '../Prompt/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
+import PenaltyHistoryPrompt from '../Prompt/PointManagement/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
 
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];

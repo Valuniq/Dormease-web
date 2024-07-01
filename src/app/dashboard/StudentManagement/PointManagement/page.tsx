@@ -2,9 +2,10 @@
 
 import { useInfinitePointMemberList, usePointsDetail } from '@/apis/PointManagment';
 import PointManagementTemplate from '@/components/templates/pointManagement/index';
+import { BASE_URL } from '@/constants/path';
 import InfiniteScroll from '@/hooks/useInfiniteScroll';
-
 import { PointMemberResponseDataList, PointListResponseInfo } from '@/types/pointManagement';
+import { mutate } from 'swr';
 
 const PointManagementPage = () => {
   const {
@@ -24,6 +25,12 @@ const PointManagementPage = () => {
   }
 
   const pointLists: PointListResponseInfo[] = pointData?.information ?? [];
+
+  // 데이터 갱신 시 SWR 캐시를 업데이트
+  const refreshData = () => {
+    mutate(`${BASE_URL}/api/v1/web/points`);
+    mutate(`${BASE_URL}/api/v1/web/points/detail`);
+  };
 
   return (
     <InfiniteScroll

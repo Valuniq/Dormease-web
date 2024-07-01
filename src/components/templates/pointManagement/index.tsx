@@ -5,18 +5,21 @@ import PointManagementList from '@/components/organisms/PointManagement/PointMan
 import React, { useEffect } from 'react';
 import { PointListResponseInfo, PointMemberResponseDataList, ResidentPointResponse } from '@/types/pointManagement';
 import {
+  pointManagementModalState,
   promptBonusState,
   promptClientBonusState,
   promptClientMinusState,
   promptMinusState,
   selectedMemberIdForPointState,
 } from '@/recoil/pointManagement';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import PenaltyManagementPrompt from '@/components/organisms/Prompt/PenaltyManagementPrompt/PenaltyManagementPrompt';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
-import PenaltyGivePrompt from '@/components/organisms/Prompt/PenaltyGivePrompt/PenaltyGivePrompt';
-import PenaltyHistoryPrompt from '@/components/organisms/Prompt/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
+import PenaltyGivePrompt from '@/components/organisms/Prompt/PointManagement/PenaltyGivePrompt/PenaltyGivePrompt';
+import PenaltyManagementPrompt from '@/components/organisms/Prompt/PointManagement/PenaltyManagementPrompt/PenaltyManagementPrompt';
+import AlertPrompt from '@/components/organisms/Prompt/PointManagement/AlertPrompt/AlertPrompt';
+import { postPointsDetail } from '@/apis/PointManagment';
 
 const index = ({
   pointManagementLists,
@@ -31,6 +34,21 @@ const index = ({
   const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
   const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
   const { isOpened, handleOpenModal } = usePointManagementModal();
+  const setPointManagementModal = useSetRecoilState(pointManagementModalState);
+  const handleConfirm = async () => {
+    console.log(tempBonusLists);
+    console.log(bonusLists);
+    try {
+      const filteredBonusLists = tempBonusLists.filter((list) => list.content && list.score > 0);
+      const filteredMinusLists = tempMinusLists.filter((list) => list.content && list.score > 0);
+      const response = await postPointsDetail(filteredBonusLists, filteredMinusLists);
+      console.log('상벌점 내역 등록 성공:', response);
+      setPointManagementModal((prev) => ({ ...prev, pointManagement: false, pointManagementConfirm: false }));
+      // 데이터 새로고침 로직 추가
+    } catch (error) {
+      console.error('상벌점 내역 등록 실패:', error);
+    }
+  };
 
   useEffect(() => {
     setBonusLists(pointLists.filter((i) => i.pointType === 'BONUS'));
@@ -47,6 +65,19 @@ const index = ({
         <BackDrop children={<PenaltyManagementPrompt />} isOpen={isOpened.pointManagement} />
       )}
       {isOpened.pointGive && <BackDrop children={<PenaltyGivePrompt />} isOpen={isOpened.pointGive} />}
+      {isOpened.pointManagementConfirm && (
+        <BackDrop
+          children={
+            <AlertPrompt
+              variant={'blue'}
+              label={'상/벌점 리스트를 저장하시겠습니까?'}
+              modalName={'pointManagementConfirm'}
+              onConfirm={handleConfirm}
+            />
+          }
+          isOpen={isOpened.pointManagementConfirm}
+        />
+      )}
 
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>

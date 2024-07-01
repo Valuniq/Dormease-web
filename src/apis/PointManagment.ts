@@ -74,3 +74,18 @@ export const usePointsByResidentId = (residentId: number, page: PageDetailInfo) 
   );
   return { data, error, isLoading: !error && !data };
 };
+
+// * 상벌점 내역 등록
+export const postPointsDetail = async (
+  bonusPointList: { pointId: number; content: string; score: number }[],
+  minusPointList: { pointId: number; content: string; score: number }[],
+) => {
+  const res = await swrWithToken(`${BASE_URL}/api/v1/web/points/detail`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ bonusPointList, minusPointList }),
+  });
+  return res;
+};
