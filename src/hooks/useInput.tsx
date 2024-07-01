@@ -4,7 +4,7 @@ type UseInputProps = {
   initialValue: string;
 };
 
-const UseInput = ({ initialValue }: UseInputProps) => {
+const useInput = ({ initialValue }: UseInputProps) => {
   const [input, setInput] = useState(initialValue);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -31,4 +31,4 @@ const UseInput = ({ initialValue }: UseInputProps) => {
   };
 };
 
-export default UseInput;
+export default useInput;
