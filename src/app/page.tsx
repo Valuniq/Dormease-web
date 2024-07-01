@@ -1,7 +1,7 @@
 'use client';
 import { signIn } from '@/apis/Auth';
 import LoginForm from '@/components/organisms/LoginForm/LoginForm';
-import { StudentManagementRoutes } from '@/constants/navigationItems';
+import { StudentManagementRoutes } from '@/constants/navigation';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import { accessTokenState, refreshTokenState } from '@/recoil/user';
 import tokenManager from '@/utils/tokenManager';
