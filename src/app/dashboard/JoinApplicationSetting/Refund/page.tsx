@@ -3,18 +3,12 @@ import React, { useEffect, useState } from 'react';
 import RefundList from '@/components/organisms/Refund/RefundList';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
-import useSWR, { mutate } from 'swr';
-import { getRefundRequestment, postPeriod } from '@/apis/refund';
+import { useRefundRequestment, postPeriod, deleteRefundRequestment } from '@/apis/refund';
 import { RefundRequestmentResponseDataList } from '@/types/refund';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
-type Props = {
-  clickSchoolNumber: number;
-  onStudentClick: (schoolNumber: number) => void;
-};
-
-const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
+const Refund = () => {
   const [refundList, setRefundList] = useState<RefundRequestmentResponseDataList[]>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageTotalNum, setPageTotalNum] = useState(0);
@@ -22,17 +16,18 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [dateModal, setDateModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [clickRefund, setClickRefund] = useState(0);
 
-  const { data, error } = useSWR(`/api/v1/web/refundRequestment/residents?page=${pageNum}`, getRefundRequestment);
+  const { data: refundData, error: refundError, isLoading: refundLoading } = useRefundRequestment(pageNum);
 
   useEffect(() => {
-    if (data) {
-      setRefundList(data.information.dataList);
-      setPageTotalNum(data.information.pageInfo.totalPage);
+    if (refundData) {
+      setRefundList(refundData.information.dataList);
+      setPageTotalNum(refundData.information.pageInfo.totalPage);
     } else {
-      console.log(error);
+      console.log(refundError);
     }
-  }, [data, error]);
+  }, [refundData, refundError]);
 
   const handlePageNum = (navigation: 'prev' | 'next') => {
     if (navigation === 'prev' && pageNum > 1) {
@@ -58,7 +53,10 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
     }
   };
 
-  const onDeleteRefund = async () => {};
+  const onDeleteRefund = async () => {
+    const response = await deleteRefundRequestment(clickRefund);
+    console.log(response);
+  };
 
   return (
     <>
@@ -76,8 +74,10 @@ const Refund = ({ onStudentClick, clickSchoolNumber }: Props) => {
         </div>
         <RefundList
           list={refundList}
-          clickSchoolNumber={clickSchoolNumber}
-          onStudentClick={onStudentClick}
+          clickSchoolNumber={clickRefund}
+          onStudentClick={(studentNumber) => {
+            setClickRefund(studentNumber);
+          }}
           onDeleteRefund={() => setDeleteModal(!deleteModal)}
         />
         {refundList && (
