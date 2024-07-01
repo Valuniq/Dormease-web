@@ -1,7 +1,7 @@
 'use client';
 import MenuBtn from '@/components/atoms/AllBtn/MenuBtn/MenuBtn';
 import MenuDropBtn from '@/components/atoms/AllBtn/MenuDropBtn/MenuDropBtn';
-import { NavigationItems } from '@/constants/NavigationItems';
+import { NavigationItems } from '@/constants/navigationItems';
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

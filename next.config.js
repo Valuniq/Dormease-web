@@ -15,10 +15,17 @@ module.exports = (phase) => {
 
       return config;
     },
-    // 서비스 워커 비활성화
-    experimental: {
-      serviceWorker: false,
-    },
+
+    // async rewrites() {
+    //   return isDevelopment
+    //     ? [
+    //         {
+    //           source: '/:path*',
+    //           destination: 'http://13.209.177.109:8080/:path*',
+    //         },
+    //       ]
+    //     : [];
+    // },
   };
 
   return nextConfig;
