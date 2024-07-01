@@ -1,21 +1,27 @@
-const accessToken =
-  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwaG9uaWw6VVNFUiIsImlzcyI6IkRvcm1lYXNlVmFsdW5pUSIsImlhdCI6MTcxNTg3MDE2OCwiZXhwIjoxNzE1ODcxOTY4fQ.9nhY78ME6CoTpBdkUb3RWNtxX21UCw6h4qqDnOIwom17uc06Fz_2GoykaeREC25NxN7w1sW4yNX5dGE4YQyFTQ';
+import { BuildingAddDeleteResponse, BuildingSettingsResponse, BuildingSettingsDetailResponse } from '@/types/building';
 
-export const getBuildingLists = async (url: string) => {
-  const res = await fetch(url, {
+const accessToken =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjAxOkFETUlOIiwiaXNzIjoiRG9ybWVhc2VWYWx1bmlRIiwiaWF0IjoxNzE2MzUxMzA0LCJleHAiOjE3MTYzNTMxMDR9.aYskJ5J-RihLgDIXWzWBfi8ugd8EXvQgGJxTJqzAkxqX7Sj66FIdZvd1d_KLyOtKa3RSRsWhLAK--SnxBCGHMA';
+
+export const getBuildingLists = async (url: string): Promise<BuildingSettingsResponse> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `bearer ${accessToken}`,
     },
   });
+
   if (!res.ok) {
     throw new Error(`Server responded with status ${res.status}`);
   }
-  return res.json();
+
+  const data: BuildingSettingsResponse = await res.json();
+
+  return data;
 };
 
-export const postAddBuilding = async (name: string, image: File | null): Promise<{ message: string }> => {
+export const postAddBuilding = async (name: string, image: File | null): Promise<BuildingAddDeleteResponse> => {
   const formData = new FormData();
   formData.append('registerDormitoryReq', new Blob([JSON.stringify({ name: name })], { type: 'application/json' }));
   if (image !== null) {
@@ -24,7 +30,7 @@ export const postAddBuilding = async (name: string, image: File | null): Promise
     formData.append('image', new Blob([]));
   }
 
-  const res = await fetch(`/api/v1/web/dormitory/setting`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting`, {
     method: 'POST',
     headers: {
       Authorization: `bearer ${accessToken}`,
@@ -36,14 +42,13 @@ export const postAddBuilding = async (name: string, image: File | null): Promise
     throw new Error(`Server responded with status ${res.status}`);
   }
 
-  const data = await res.json();
+  const data: BuildingAddDeleteResponse = await res.json();
 
-  console.log(data);
   return data;
 };
 
-export const deleteBuilding = async (dormitoryId: number): Promise<{ message: string }> => {
-  const res = await fetch(`/api/v1/web/dormitory/setting/${dormitoryId}`, {
+export const deleteBuilding = async (dormitoryId: number): Promise<BuildingAddDeleteResponse> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -55,7 +60,25 @@ export const deleteBuilding = async (dormitoryId: number): Promise<{ message: st
     throw new Error(`Server responded with status ${res.status}`);
   }
 
-  const data = await res.json();
+  const data: BuildingAddDeleteResponse = await res.json();
+
+  return data;
+};
+
+export const getBuildingDetail = async (dormitoryId: number): Promise<BuildingSettingsDetailResponse> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Server responded with status ${res.status}`);
+  }
+
+  const data: BuildingSettingsDetailResponse = await res.json();
 
   return data;
 };

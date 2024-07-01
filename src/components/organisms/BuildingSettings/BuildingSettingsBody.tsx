@@ -13,20 +13,15 @@ type Props = {
 
 const BuildingSettingsBody = ({ id, name, imageUrl, onBuildingOutClick, onBuildingSettingsDetail }: Props) => {
   return (
-    <div className='relative w-381 h-241 rounded-8 bg-gray-grayscale5'>
+    <div
+      className='relative w-381 h-241 rounded-8 bg-gray-grayscale5 cursor-pointer'
+      onClick={() => onBuildingSettingsDetail(id)}
+    >
       {imageUrl !== null && (
-        <Image
-          className='rounded-8 cursor-pointer'
-          src={imageUrl}
-          alt={name}
-          objectFit='fill'
-          width={381}
-          height={241}
-          onClick={() => onBuildingSettingsDetail(id)}
-        />
+        <Image className='rounded-8 cursor-pointer' src={imageUrl} alt={name} layout='fill' objectFit='cover' />
       )}
       <div className='absolute bottom-0'>
-        <BuildingInBtn label={name} selected={false} onClick={() => onBuildingSettingsDetail(id)} />
+        <BuildingInBtn label={name} selected={false} />
       </div>
       <button
         onClick={(event) => {

@@ -1,33 +1,29 @@
 import React from 'react';
 import BuildingManagementListBody from './BuildingManagementListBody';
 import NoneList from '../NoneList/NoneList';
+import {
+  BuildingManagementRoomResponseInformation,
+  BuildingRoomInAssignedResponseInformation,
+} from '@/types/buildingm';
 
 type Props = {
+  roomList: BuildingManagementRoomResponseInformation[] | undefined;
   listClick: number;
   onListClick: (roomId: number) => void;
-  onStudentClick: (schoolNumber: string) => void;
-  selectStudents: String[];
-  list: {
-    roomId: number;
-    roomNumber: number;
-    roomSize: number;
-    gender: string;
-    currentPeople: number;
-  }[];
-  studentList: {
-    schoolNumber: string;
-    name: string;
-    phoneNumber: string;
-  }[];
+  onStudentClick: (selectStudent: number) => void;
+  studentList: BuildingRoomInAssignedResponseInformation[];
+  editAssign: boolean;
+  roomManual?: (roomId: number) => void;
 };
 
 const BuildingManagementList = ({
-  list,
+  roomList,
   studentList,
-  selectStudents,
   listClick,
   onListClick,
   onStudentClick,
+  editAssign,
+  roomManual,
 }: Props) => {
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
@@ -41,14 +37,14 @@ const BuildingManagementList = ({
         <tr className='h-12 border-b-1' />
       </thead>
       <tbody className='block w-[748px] h-695 overflow-y-auto scrollbar-table'>
-        {list && list.length > 0 ? (
+        {roomList && roomList.length > 0 ? (
           <>
             <tr className='h-12' />
-            {list.map((data) => {
+            {roomList.map((data) => {
               return (
                 <BuildingManagementListBody
-                  key={data.roomId}
-                  roomId={data.roomId}
+                  key={data.id}
+                  roomId={data.id}
                   roomNumber={data.roomNumber}
                   roomSize={data.roomSize}
                   gender={data.gender}
@@ -56,8 +52,9 @@ const BuildingManagementList = ({
                   listClick={listClick}
                   onListClick={onListClick}
                   onStudentClick={onStudentClick}
-                  selectStudents={selectStudents}
-                  list={studentList}
+                  studentList={studentList}
+                  editAssign={editAssign}
+                  roomManual={roomManual}
                 />
               );
             })}
