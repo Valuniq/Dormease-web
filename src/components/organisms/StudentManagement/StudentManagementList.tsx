@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import StudentManagementListBody from './StudentManagementListBody';
 import ArrowDown from '@public/images/ArrowDown.svg';

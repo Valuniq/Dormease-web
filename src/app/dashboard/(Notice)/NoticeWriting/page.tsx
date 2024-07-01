@@ -14,7 +14,7 @@ const Page = () => {
   };
   return (
     <div className='flex flex-col items-center justify-center'>
-      <NoticeWrite
+      {/* <NoticeWrite
         title={title}
         setTitle={setTitle}
         writer={writer}
@@ -22,7 +22,7 @@ const Page = () => {
         setIsPinned={setIsPinned}
         fileLists={[]}
         handleAllDelete={handleAllDelete}
-      />
+      /> */}
       <div className='mt-70'>
         <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} />
       </div>

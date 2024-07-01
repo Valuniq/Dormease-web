@@ -1,3 +1,4 @@
+'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import React from 'react';
 import Image from 'next/image';

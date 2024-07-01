@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import ResignationDetail from '@/components/organisms/Resignation/ResignationDetail';
