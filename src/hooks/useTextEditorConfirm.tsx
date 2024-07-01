@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const UseTextEditorConfirm = (message: string, onConfirm: () => void) => {
+const useTextEditorConfirm = (message: string, onConfirm: () => void) => {
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -24,4 +24,4 @@ const UseTextEditorConfirm = (message: string, onConfirm: () => void) => {
   return confirmChanges;
 };
 
-export default UseTextEditorConfirm;
+export default useTextEditorConfirm;

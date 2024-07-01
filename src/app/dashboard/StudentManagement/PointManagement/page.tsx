@@ -1,42 +1,50 @@
 'use client';
-import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
-import PointManagementList from '@/components/organisms/PointManagement/PointManagementList';
 
-const page = () => {
+import { useInfinitePointMemberList, usePointsDetail } from '@/apis/PointManagment';
+import PointManagementTemplate from '@/components/templates/pointManagement/index';
+import { BASE_URL } from '@/constants/path';
+import InfiniteScroll from '@/hooks/useInfiniteScroll';
+import { PointMemberResponseDataList, PointListResponseInfo } from '@/types/pointManagement';
+import { mutate } from 'swr';
+
+const PointManagementPage = () => {
+  const {
+    pointManagementData,
+    error: pointManagementError,
+    isLoadingMore,
+    size,
+    setSize,
+    isReachingEnd,
+  } = useInfinitePointMemberList();
+  const { data: pointData, error: pointError, isLoading: pointLoading } = usePointsDetail();
+
+  if (pointManagementError || pointError) {
+    console.error('Error fetching point management data:', pointManagementError);
+    console.error('Error fetching point data:', pointError);
+    return <div>Error loading data</div>;
+  }
+
+  const pointLists: PointListResponseInfo[] = pointData?.information ?? [];
+
+  // 데이터 갱신 시 SWR 캐시를 업데이트
+  const refreshData = () => {
+    mutate(`${BASE_URL}/api/v1/web/points`);
+    mutate(`${BASE_URL}/api/v1/web/points/detail`);
+  };
+
   return (
-    <div className='w-[1250px]'>
-      <div className='flex items-center justify-between mb-40'>
-        <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
-        <SearchTextBox
-          placeholder='이름 또는 학번'
-          input={''}
-          setInput={function (id: string): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
-      </div>
-      <PointManagementList
-        pointManagementLists={[]}
-        isAllChecked={false}
-        setIsAllChecked={function (isAllChecked: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-        plusSort={false}
-        setPlusSort={function (plusSort: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-        minusSort={false}
-        setMinusSort={function (minusSort: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
+    <InfiniteScroll
+      isLoading={isLoadingMore || pointLoading}
+      isReachingEnd={isReachingEnd}
+      loadMore={() => setSize(size + 1)}
+    >
+      <PointManagementTemplate
+        pointManagementLists={pointManagementData as PointMemberResponseDataList[]}
+        pointLists={pointLists}
       />
-      <div className='mt-13 flex items-center justify-between'>
-        <BtnMidVariant label={'리스트 관리'} disabled={false} variant={'gray'} />
-        <BtnMidVariant label={'상/벌점 부여'} disabled={false} variant={'blue'} />
-      </div>
-    </div>
+      {isLoadingMore && <div>Loading more...</div>}
+    </InfiniteScroll>
   );
 };
 
-export default page;
+export default PointManagementPage;
