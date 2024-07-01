@@ -21,6 +21,7 @@ import {
   BuildingManagementInfoResponseInformation,
   BuildingManagementResponseInformation,
   BuildingManagementRoomResponseInformation,
+  BuildingRoomAssigned,
   BuildingRoomInAssignedResponseInformation,
   BuildingRoomManualRequest,
 } from '@/types/buildingm';
@@ -53,15 +54,25 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
   const [memoModal, setMemoModal] = useState(false);
   const [listClick, setListClick] = useState(0);
   const [roomAssignedList, setRoomAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
+  const [roomsAssignedList, setRoomsAssignedList] = useState<BuildingRoomAssigned[]>([]);
   const [roomNotAssignedList, setRoomNotAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
   const [studentList, setStudentList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
   const [editAssign, setEditAssign] = useState(false);
   const [saveModal, setSaveModal] = useState(false);
-  const [roomsManual, setRoomsManual] = useState<BuildingRoomManualRequest[]>();
+  const [roomsManual, setRoomsManual] = useState<BuildingRoomManualRequest[]>([]);
 
   useEffect(() => {
-    setStudentList(roomAssignedList.concat(roomNotAssignedList));
-  }, [roomAssignedList, roomNotAssignedList]);
+    if (roomsAssignedList.some((room) => room.roomId === listClick)) {
+      //배정 버튼을 누른 적이 있는 경우(roomId가 roomsAssinedList에 존재하는 경우)
+      const currentRoom = roomsAssignedList.find((room) => room.roomId === listClick);
+      if (currentRoom) {
+        setStudentList(currentRoom.resident.concat(roomNotAssignedList));
+      }
+    } else {
+      //roomId가 roomsAssignedList에 존재하지 않는 경우
+      setStudentList(roomAssignedList.concat(roomNotAssignedList));
+    }
+  }, [listClick, roomAssignedList, roomNotAssignedList, roomsAssignedList]);
 
   //건물 정보 불러오기
   const fetchBuildingInfo = async (id: number) => {
@@ -165,9 +176,27 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     };
 
     setRoomsManual((prevRooms) => {
-      const updatedRooms = (prevRooms || []).filter((room) => room.roomId !== roomId);
+      const updatedRooms = prevRooms.filter((room) => room.roomId !== roomId);
       return [...updatedRooms, roomAssignment];
     });
+
+    //배정된 사생(assigned가 true)인 것들 setRoomsAssignedList에 추가
+    const assignedStudents = studentList.filter((student) => student.assigned);
+
+    const roomAssigned: BuildingRoomAssigned = {
+      roomId: roomId,
+      resident: assignedStudents,
+    };
+
+    setRoomsAssignedList((prevRooms) => {
+      const updatedRooms = prevRooms.filter((room) => room.roomId !== roomId);
+      return [...updatedRooms, roomAssigned];
+    });
+
+    //미배정 사생(assigned가 false)인 것들 setRoomNotAssignedList에 추가
+    const notAssignedStudents = studentList.filter((student) => !student.assigned);
+    setRoomNotAssignedList(notAssignedStudents);
+    setListClick(0);
   };
 
   return (
