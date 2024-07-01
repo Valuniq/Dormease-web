@@ -1,5 +1,6 @@
 import React from 'react';
 import BuildingManagementBody from './BuildingManagementBody';
+import { BuildingRoomInAssignedResponseInformation } from '@/types/buildingm';
 
 type Props = {
   roomId: number;
@@ -9,13 +10,10 @@ type Props = {
   currentPeople: number;
   listClick: number;
   onListClick: (roomId: number) => void;
-  onStudentClick: (schoolNumber: string) => void;
-  selectStudents: String[];
-  list: {
-    schoolNumber: string;
-    name: string;
-    phoneNumber: string;
-  }[];
+  onStudentClick: (selectStudent: number) => void;
+  studentList: BuildingRoomInAssignedResponseInformation[];
+  editAssign: boolean;
+  roomManual?: (roomId: number) => void;
 };
 
 const BuildingManagementListBody = ({
@@ -27,8 +25,9 @@ const BuildingManagementListBody = ({
   listClick,
   onListClick,
   onStudentClick,
-  selectStudents,
-  list,
+  studentList,
+  editAssign,
+  roomManual,
 }: Props) => {
   return (
     <>
@@ -41,7 +40,7 @@ const BuildingManagementListBody = ({
       >
         <td className='w-[20%]'>{roomNumber}호</td>
         <td className='w-[30%] text-blue-blue30 underline'>{roomSize}인실</td>
-        <td className='w-[30%]'>{gender}</td>
+        <td className='w-[30%]'>{gender === 'MALE' ? '남' : '여'}</td>
         <td className='w-[20%] H3 text-gray-grayscale30'>
           <h3 className='text-blue-blue30 inline-flex'>{currentPeople}</h3>/{roomSize}
         </td>
@@ -49,7 +48,14 @@ const BuildingManagementListBody = ({
       {roomId === listClick && (
         <tr className='relative'>
           <td colSpan={4}>
-            <BuildingManagementBody list={list} onStudentClick={onStudentClick} selectStudents={selectStudents} />
+            <BuildingManagementBody
+              studentList={studentList}
+              onStudentClick={onStudentClick}
+              editAssign={editAssign}
+              roomSize={roomSize}
+              roomManual={roomManual}
+              roomId={roomId}
+            />
           </td>
         </tr>
       )}
