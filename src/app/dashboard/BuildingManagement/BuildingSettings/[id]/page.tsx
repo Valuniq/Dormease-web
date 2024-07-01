@@ -1,3 +1,5 @@
+'use client';
+
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import AddRoomBtn from '@/components/atoms/AllBtn/AddRoomBtn/AddRoomBtn';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
@@ -8,55 +10,66 @@ import BuildingSetBtn from '@/components/atoms/AllBtn/BuildingSetBtn/BuildingSet
 import RoomBtn from '@/components/atoms/AllBtn/RoomBtn/RoomBtn';
 import BuildingNameInputText from '@/components/atoms/InputText/BuildingNameInputText/BuildingNameInputText';
 import BuildingSettingsList from '@/components/organisms/BuildingSettings/BuildingSettingsList';
-import React from 'react';
+import { BuildingSettingsDetailResponseFloorAndRoomNumberRes } from '@/types/building';
+import React, { useState } from 'react';
 
-type Props = {
-  list: {
-    roomId: number;
-    roomNumber: number;
-    roomSize: number | null;
-    gender: 'MALE' | 'FEMALE';
-    hasKey: boolean | null;
-    isChecked: boolean;
-  }[];
-  listClick: number;
-  onListClick: (roomId: number) => void;
-  setIsChecked: (isChecked: boolean) => void;
-  isAllChecked: boolean;
-  setIsAllChecked: (isChecked: boolean) => void;
+const BuildingManagement = () => {
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
 
-  selectFilter: number;
-  completedFilter: number[];
+  const [existingFloor, setExistingFloor] = useState<BuildingSettingsDetailResponseFloorAndRoomNumberRes[]>([
+    {
+      floor: 1,
+      startRoomNumber: 1,
+      endRoomNumber: 30,
+    },
+    {
+      floor: 2,
+      startRoomNumber: 1,
+      endRoomNumber: 30,
+    },
+  ]); //기존에 있던 층
 
-  image: string | null;
-  building: string;
-  floor: number;
-  roomCountStart: number;
-  roomCountEnd: number;
-};
+  const [newFloor, setNewFloor] = useState<BuildingSettingsDetailResponseFloorAndRoomNumberRes[]>([
+    {
+      floor: 3,
+      startRoomNumber: 1,
+      endRoomNumber: 30,
+    },
+  ]); //추가된 층
 
-const BuildingManagement = ({
-  list,
-  listClick,
-  onListClick,
-  setIsChecked,
-  isAllChecked,
-  setIsAllChecked,
-  selectFilter,
-  completedFilter,
-  image,
-  building,
-}: Props) => {
+  const [selectedFloor, setSelectedFloor] = useState({
+    floor: 2,
+    startRoomNumber: 1,
+    endRoomNumber: 30,
+  }); //선택된 층
+
+  const [selectFloor, setSelectFloor] = useState(0);
+  const [selectFilter, setSelectFilter] = useState(0);
+  const [completedFilter, setCompletedFilter] = useState<Number[]>([]);
+
+  const handleSetFloorInput = (value: string) => {
+    const newFloor = parseInt(value, 10);
+    if (isNaN(newFloor)) return;
+
+    setNewFloor((prev) => {
+      const existingItemIndex = prev.findIndex((item) => item.floor === newFloor);
+      if (existingItemIndex !== -1) {
+        const updatedList = prev.map((item, index) =>
+          index === existingItemIndex ? { ...item, floor: newFloor } : item,
+        );
+        return updatedList;
+      } else {
+        // 새 항목 추가
+        return [...prev, { floor: newFloor, startRoomNumber: 1, endRoomNumber: 30 }];
+      }
+    });
+  };
+
   return (
     <div className='flex flex-col relative w-[1331px]'>
       <div className='flex justify-center w-full mb-30'>
-        <BuildingNameInputText
-          placeholder='건물명'
-          input={building}
-          setInput={function (input: string): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        <BuildingNameInputText placeholder='건물명' input={name} setInput={setName} />
       </div>
       <div className='flex'>
         <div className='flex flex-col items-center'>
@@ -65,51 +78,50 @@ const BuildingManagement = ({
             <h3 className='H3 text-gray-grayscale50 text-center'>호실 개수</h3>
             <hr className='w-331 border-gray-grayscale50 mt-15 mb-8' />
             <div className='flex flex-col mr-15 gap-12'>
-              <RoomBtn
-                selected={true}
-                floorInput={''}
-                setFloorInput={function (id: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                endInput={''}
-                setEndInput={function (id: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                isOne={true}
-                pressOkBtn={false}
-                hovered={false}
-              />
-              <RoomBtn
-                selected={false}
-                floorInput={''}
-                setFloorInput={function (id: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                endInput={''}
-                setEndInput={function (id: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                isOne={false}
-                pressOkBtn={false}
-                hovered={true}
-              />
-              <RoomBtn
-                selected={true}
-                floorInput={''}
-                setFloorInput={function (id: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                endInput={''}
-                setEndInput={function (id: string): void {
-                  throw new Error('Function not implemented.');
-                }}
-                isOne={false}
-                pressOkBtn={false}
-                hovered={false}
-              />
+              {existingFloor.map((data, index) => {
+                return (
+                  <RoomBtn
+                    key={index}
+                    selected={selectedFloor === data}
+                    floorInput={data.floor?.toString() || ''}
+                    setFloorInput={(value) => handleSetFloorInput(value)}
+                    endInput={data.endRoomNumber?.toString() || ''}
+                    setEndInput={function (id: string): void {
+                      throw new Error('Function not implemented.');
+                    }}
+                    isOne={index === 0}
+                    pressOkBtn={true}
+                    hovered={false}
+                  />
+                );
+              })}
+              {newFloor.map((data, index) => {
+                return (
+                  <RoomBtn
+                    key={index}
+                    selected={selectedFloor === data}
+                    floorInput={data.floor?.toString() || ''}
+                    setFloorInput={(value) => handleSetFloorInput(value)}
+                    endInput={data.endRoomNumber?.toString() || ''}
+                    setEndInput={function (id: string): void {
+                      throw new Error('Function not implemented.');
+                    }}
+                    isOne={false}
+                    pressOkBtn={false}
+                    hovered={false}
+                  />
+                );
+              })}
             </div>
             <div className='h-13'></div>
-            <AddRoomBtn />
+            <AddRoomBtn
+              onClick={() =>
+                setExistingFloor([
+                  ...existingFloor,
+                  { floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') },
+                ])
+              }
+            />
           </div>
         </div>
         <div className='w-33'></div>
@@ -174,14 +186,14 @@ const BuildingManagement = ({
               </div>
             </div>
           </div>
-          <BuildingSettingsList
+          {/* <BuildingSettingsList
             listClick={listClick}
             onListClick={onListClick}
-            list={list}
+            list={[]}
             setIsChecked={setIsChecked}
             isAllChecked={isAllChecked}
             setIsAllChecked={setIsAllChecked}
-          />
+          /> */}
         </div>
       </div>
       <div className='flex justify-between items-start mt-21'>
