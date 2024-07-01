@@ -5,7 +5,9 @@ type Props = {
 
 const BlackListReasonInputText = ({ input, setInput }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    if (setInput) {
+      setInput(e.target.value);
+    }
   };
 
   return (

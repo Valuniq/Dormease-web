@@ -23,26 +23,27 @@ const PrevApplicantList = ({ prevApplicantLists }: Props) => {
             <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
           </th>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          <tr className='h-15' />
-          {prevApplicantLists && prevApplicantLists.length > 0 ? (
-            <>
-              {prevApplicantLists.map((i, index) => (
-                <>
-                  <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
-                    <td className='text-center'>{i.title}</td>
-                    <td className='text-center'>{i.registrationDate}</td>
-                  </tr>
-                  <tr className='h-15' />{' '}
-                </>
-              ))}
-            </>
-          ) : (
-            <td className='h-500' colSpan={2}>
-              <NoneList />
-            </td>
-          )}
-        </tbody>
+
+        {prevApplicantLists && prevApplicantLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-15' />
+            {prevApplicantLists.map((i, index) => (
+              <>
+                <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+                  <td className='text-center'>{i.title}</td>
+                  <td className='text-center'>{i.registrationDate}</td>
+                </tr>
+                <tr className='h-15' />{' '}
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <td className='h-full'>
+              <NoneList colspan={2} />
+            </td>{' '}
+          </tbody>
+        )}
       </table>
     </div>
   );

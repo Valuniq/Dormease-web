@@ -5,7 +5,7 @@ import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import FAQList from '@/components/organisms/FAQ/FAQList';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   const { faqData, error, isLoadingMore, size, setSize, isReachingEnd } = useInfiniteFaq();
 
   if (error) return <div>Failed to load</div>;
@@ -32,4 +32,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -36,13 +36,13 @@ const FAQList = ({ faqLists }: faqListProps) => {
             {pinnedFAQ.map((faq) => (
               <>
                 <FAQListBody
-                  index={faq.notificationId}
+                  notificationId={faq.notificationId}
                   title={faq.title}
                   writer={faq.writer}
-                  registrationDate={faq.createdDate}
-                  isExistedFile={faq.existFile}
+                  createdDate={faq.createdDate}
+                  existFile={faq.existFile}
                   // views={faq.views}
-                  isPinned={faq.pinned}
+                  pinned={faq.pinned}
                 />
                 <tr className='h-15' />
               </>
@@ -51,13 +51,13 @@ const FAQList = ({ faqLists }: faqListProps) => {
             {unPinnedFAQ.map((faq) => (
               <>
                 <FAQListBody
-                  index={faq.notificationId}
+                  notificationId={faq.notificationId}
                   title={faq.title}
                   writer={faq.writer}
-                  registrationDate={faq.createdDate}
-                  isExistedFile={faq.existFile}
+                  createdDate={faq.createdDate}
+                  existFile={faq.existFile}
                   // views={faq.views}
-                  isPinned={faq.pinned}
+                  pinned={faq.pinned}
                 />
                 <tr className='h-15' />
               </>
