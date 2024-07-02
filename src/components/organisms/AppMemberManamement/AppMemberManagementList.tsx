@@ -94,9 +94,7 @@ const AppMemberManagementList = ({
           </tbody>
         ) : (
           <tbody>
-            <td className='h-full'>
-              <NoneList colspan={7} />
-            </td>
+            <NoneList colspan={7} />
           </tbody>
         )}
       </table>

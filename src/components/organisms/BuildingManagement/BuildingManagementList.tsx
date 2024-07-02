@@ -61,9 +61,7 @@ const BuildingManagementList = ({
         </tbody>
       ) : (
         <tbody>
-          <td className='h-full'>
-            <NoneList colspan={4} />
-          </td>
+          <NoneList colspan={4} />
         </tbody>
       )}
     </table>
