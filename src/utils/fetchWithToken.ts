@@ -1,6 +1,7 @@
 // src/utils/fetchWithToken.ts
 import tokenManager from '@/utils/tokenManager';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
+import { BASE_URL } from '@/constants/path';
 
 const fetchWithToken = async (url: string, options: RequestInit = {}) => {
   const accessToken = tokenManager.getToken(ACCESS_TOKEN);
@@ -40,7 +41,7 @@ const fetchWithToken = async (url: string, options: RequestInit = {}) => {
 };
 
 const refreshAccessToken = async (refreshToken: string) => {
-  const response = await fetch('http://13.209.177.109:8080/api/v1/auth/refresh-token', {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/refresh-token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

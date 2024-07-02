@@ -9,8 +9,11 @@ import {
   putBuildingMemo,
   putRoomManual,
 } from '@/apis/BuildingManagement';
+import { postBuildingSettingImage } from '@/apis/BuildingSetting';
+import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
+import BuildingSelectImageBtn from '@/components/atoms/AllBtn/BuildingSelectImageBtn/BuildingSelectImageBtn';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
 import SelectFloorDropdown from '@/components/atoms/Dropdown/SelectFloorDropdown/SelectFloorDropdown';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -28,7 +31,7 @@ import {
 } from '@/types/buildingm';
 import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 type Props = {
   buildingList: BuildingManagementResponseInformation[];
@@ -52,7 +55,6 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     memo: null,
   });
   const [memoText, setMemoText] = useState(buildingInfo.memo);
-  const [memoModal, setMemoModal] = useState(false);
   const [listClick, setListClick] = useState(0);
   const [roomAssignedList, setRoomAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
   const [roomsAssignedList, setRoomsAssignedList] = useState<BuildingRoomAssigned[]>([]);
@@ -61,6 +63,7 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
   const [editAssign, setEditAssign] = useState(false);
   const [saveModal, setSaveModal] = useState(false);
   const [roomsManual, setRoomsManual] = useState<BuildingRoomManualRequest[]>([]);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (roomsAssignedList.some((room) => room.roomId === listClick)) {
@@ -128,7 +131,10 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     if (memoText !== null) {
       const buildingMemo = await putBuildingMemo(selectBuilding.id, memoText);
       if (buildingMemo.check) {
-        setMemoModal(!memoModal);
+        setBuildingInfo((prev) => ({
+          ...prev,
+          memo: memoText,
+        }));
       }
     }
   };
@@ -216,22 +222,54 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     }
   };
 
+  const onAddPicture = () => {
+    inputFileRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+
+    const file = e.target.files[0];
+
+    const imageUrl = URL.createObjectURL(file);
+
+    const response = await postBuildingSettingImage(selectBuilding.id, file);
+    if (response.check) {
+      setBuildingInfo((prev) => ({
+        ...prev,
+        imageUrl: imageUrl,
+      }));
+    }
+  };
+
   return (
     <>
       {mounted && (
         <>
           <div className='flex'>
             <div>
-              {buildingInfo.imageUrl ? (
-                <Image
-                  className='rounded-8 w-381 h-241 cursor-pointer shadow2 mb-35'
-                  src={buildingInfo.imageUrl}
-                  alt='Building'
-                  objectFit='fill'
+              <div className='w-381 h-241 flex items-center justify-center bg-gray-grayscale5 rounded-8 mb-35'>
+                {buildingInfo.imageUrl ? (
+                  <BuildingSelectImageBtn
+                    image={buildingInfo.imageUrl}
+                    name={buildingInfo.name}
+                    onClick={onAddPicture}
+                  />
+                ) : (
+                  <BtnLargeVariant label={'사진 추가'} disabled={false} variant={'blue'} onClick={onAddPicture} />
+                )}
+                <input
+                  id='fileInput'
+                  type='file'
+                  accept='image/*'
+                  style={{ display: 'none', visibility: 'hidden' }}
+                  ref={inputFileRef}
+                  onChange={handleFileChange}
                 />
-              ) : (
-                <div className='rounded-8 w-381 h-241 cursor-pointer shadow2 mb-35 bg-gray-grayscale10'></div>
-              )}
+              </div>
               <table>
                 <tbody className='H4 text-left'>
                   <tr>
@@ -364,11 +402,6 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
               />
             </div>
           </div>
-          {memoModal && (
-            <BackDrop isOpen={memoModal}>
-              <AlertPrompt variant='blue' label='메모가 저장되었습니다.' onConfirm={() => setMemoModal(!memoModal)} />
-            </BackDrop>
-          )}
           {saveModal && (
             <BackDrop isOpen={saveModal}>
               <ConfirmPrompt
