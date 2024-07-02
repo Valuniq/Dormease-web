@@ -73,31 +73,32 @@ const AppMemberManagementList = ({
             <div className='w-[1305px] h-18 border-b-1 border-b-gray-grayscale50' />
           </th>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          {appMemberManagementLists && appMemberManagementLists.length > 0 ? (
-            <>
-              <tr className='h-15' />
-              {appMemberManagementLists.map((i, index) => (
-                <>
-                  <AppMemberManagementListBody
-                    index={i.index}
-                    name={i.name}
-                    studentId={i.studentId}
-                    phoneNumber={i.phoneNumber}
-                    plus={i.plus}
-                    minus={i.minus}
-                    creationDate={i.creationDate}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-            </>
-          ) : (
-            <td className='h-500' colSpan={7}>
-              <NoneList />
+
+        {appMemberManagementLists && appMemberManagementLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-15' />
+            {appMemberManagementLists.map((i, index) => (
+              <>
+                <AppMemberManagementListBody
+                  index={i.index}
+                  name={i.name}
+                  studentId={i.studentId}
+                  phoneNumber={i.phoneNumber}
+                  plus={i.plus}
+                  minus={i.minus}
+                  creationDate={i.creationDate}
+                />
+                <tr className='h-15' />
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <td className='h-full'>
+              <NoneList colspan={7} />
             </td>
-          )}
-        </tbody>
+          </tbody>
+        )}
       </table>
     </div>
   );

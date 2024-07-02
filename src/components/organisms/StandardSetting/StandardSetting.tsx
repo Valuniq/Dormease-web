@@ -1,3 +1,4 @@
+'use client';
 import QuillComponent from '@/lib/Quill/QuillComponent';
 import DistanceScore from './DistanceScore';
 import StandardCheck from './StandardCheck';

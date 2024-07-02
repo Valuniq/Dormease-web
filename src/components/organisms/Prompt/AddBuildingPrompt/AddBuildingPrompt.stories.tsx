@@ -11,18 +11,21 @@ const meta: Meta<typeof AddBuildingPrompt> = {
 };
 
 export default meta;
+// 임시로 빈 스토리를 추가
+export const Default = () => <div />;
+// type Story = StoryObj<typeof AddBuildingPrompt>;
 
-type Story = StoryObj<typeof AddBuildingPrompt>;
+// export const Primary: Story = {
+//   args: {
+//     input: '',
+//   },
+// };
 
-export const Primary: Story = {
-  args: {
-    input: '',
-  },
-};
+// 빌드 에러 주석 처리
 
-export const SelectImage: Story = {
-  args: {
-    input: '명덕관',
-    selectImage: BuildingImgEx,
-  },
-};
+// export const SelectImage: Story = {
+//   args: {
+//     input: '명덕관',
+//     selectImage: BuildingImgEx,
+//   },
+// };

@@ -4,9 +4,19 @@ import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDr
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 import PassMemberList from '@/components/organisms/PassMember/PassMemberList';
-import React from 'react';
+import { BuildingManagementResponseInformation } from '@/types/buildingm';
+import React, { useState } from 'react';
+const initialSelect: BuildingManagementResponseInformation = {
+  id: 0,
+  name: '',
+};
 
-const page = () => {
+const Page = () => {
+  const [select, setSelect] = useState<BuildingManagementResponseInformation>(initialSelect);
+
+  const handleSelect = (id: number, name: string) => {
+    setSelect({ id, name });
+  };
   return (
     <div className='w-[1250px] flex flex-col items-start'>
       <div className='mb-20 w-full flex items-center justify-between'>
@@ -14,10 +24,8 @@ const page = () => {
         <SelectBuildingDropdown
           isOn={false}
           list={[]}
-          select={''}
-          setSelect={function (select: string): void {
-            throw new Error('Function not implemented.');
-          }}
+          select={select}
+          setSelect={handleSelect}
           setIsOn={function (isOn: boolean): void {
             throw new Error('Function not implemented.');
           }}
@@ -58,4 +66,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

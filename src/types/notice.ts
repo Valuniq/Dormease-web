@@ -1,15 +1,59 @@
-export type noticeList = {
-  index: string;
+import { PageInfo } from './pageInfo';
+
+// export type noticeList = {
+//   index: string;
+//   title: string;
+//   writer: string;
+//   registrationDate: string;
+//   isExistedFile: boolean;
+//   views: number;
+//   isPinned: boolean;
+// };
+
+// export type noticeLists = {
+//   noticeLists: noticeList[];
+// };
+
+// export type noticePage = {};
+
+// notice 목록 조회
+export type noticeResponse = {
+  check: boolean;
+  information: {
+    pageInfo: PageInfo;
+    dataList: noticeResponseDataList[];
+  };
+};
+
+export type noticeResponseDataList = {
+  notificationId: number;
+  pinned: boolean;
   title: string;
   writer: string;
-  registrationDate: string;
-  isExistedFile: boolean;
-  views: number;
-  isPinned: boolean;
+  createdDate: string;
+  existFile: boolean;
 };
 
-export type noticeLists = {
-  noticeLists: noticeList[];
+// 공지사항 상세 조회
+export type noticeDetailResponse = {
+  pinned: boolean;
+  title: string;
+  writer: string;
+  createdDate: string;
+  modifiedDate: string;
+  blockResList: noticeDetailResponseBlockResList[];
+  fileList: noticeDetailResponseFileList[];
 };
 
-export type noticePage = {};
+export type noticeDetailResponseBlockResList = {
+  blockId: number;
+  imageUrl: string;
+  sequence: number;
+  content: string;
+};
+
+export type noticeDetailResponseFileList = {
+  fileId: number;
+  fileUrl: string;
+  originalFileName: string;
+};

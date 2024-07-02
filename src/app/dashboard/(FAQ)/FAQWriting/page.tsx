@@ -1,22 +1,20 @@
+'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import NoticeWrite from '@/components/organisms/Notice/NoticeWriting/NoticeWriting';
-import React from 'react';
+import React, { useState } from 'react';
 
-type Props = {
-  title: string;
-  setTitle: (title: string) => void;
-  writer: string;
-  setWriter: (Writer: string) => void;
-  isPinned: boolean;
-  setIsPinned: (isPinned: boolean) => void;
-  fileLists: File[];
-  handleAllDelete: () => void;
-};
+const Page = () => {
+  const [title, setTitle] = useState('');
+  const [writer, setWriter] = useState('');
+  const [isPinned, setIsPinned] = useState(false);
+  const [fileLists, setFileLists] = useState([]);
 
-const page = ({ title, setTitle, writer, setWriter, isPinned, setIsPinned, fileLists, handleAllDelete }: Props) => {
+  const handleAllDelete = () => {
+    setFileLists([]);
+  };
   return (
     <div className='flex flex-col items-center justify-center'>
-      <NoticeWrite
+      {/* <NoticeWrite
         title={title}
         setTitle={setTitle}
         writer={writer}
@@ -24,7 +22,7 @@ const page = ({ title, setTitle, writer, setWriter, isPinned, setIsPinned, fileL
         setIsPinned={setIsPinned}
         fileLists={[]}
         handleAllDelete={handleAllDelete}
-      />
+      /> */}
       <div className='mt-70'>
         <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} />
       </div>
@@ -32,4 +30,4 @@ const page = ({ title, setTitle, writer, setWriter, isPinned, setIsPinned, fileL
   );
 };
 
-export default page;
+export default Page;

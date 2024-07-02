@@ -1,3 +1,4 @@
+'ise client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import React from 'react';

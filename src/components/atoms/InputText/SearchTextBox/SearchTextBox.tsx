@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import SearchIcon from '@public/images/SearchIcon.png';
 

@@ -58,8 +58,8 @@ const RefundList = ({ list, clickSchoolNumber, onDeleteRefund, onStudentClick }:
             })}
           </>
         ) : (
-          <div className='h-600'>
-            <NoneList />
+          <div className='h-full'>
+            <NoneList colspan={11} />
           </div>
         )}
       </div>

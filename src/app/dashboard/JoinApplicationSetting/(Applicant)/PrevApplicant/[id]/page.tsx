@@ -1,9 +1,10 @@
+'use client';
 import BackBtn from '@/components/atoms/AllBtn/BackBtn/BackBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import ApplicantList from '@/components/organisms/Applicant/ApplicantList';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   return (
     <div className='w-[1250px]'>
       <div className='flex justify-start'>
@@ -32,4 +33,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

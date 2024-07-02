@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import StudentManagementDetail from '@/components/organisms/StudentManagement/StudentManagementDetail';

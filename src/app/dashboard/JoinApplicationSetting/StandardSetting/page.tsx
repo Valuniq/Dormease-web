@@ -3,13 +3,13 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import StandardSetting from '@/components/organisms/StandardSetting/StandardSetting';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   return (
     <div className='flex flex-col justify-center items-center'>
       <div className='mb-54'>
         <h1 className='H0 text-gray-grayscale50'>기준 설정</h1>
       </div>
-      <StandardSetting
+      {/* <StandardSetting
         isSmokingOn={false}
         setIsSmokingOn={function (isSmokingOn: boolean): void {
           throw new Error('Function not implemented.');
@@ -35,7 +35,7 @@ const page = () => {
         setInput={function (index: number, value: string): void {
           throw new Error('Function not implemented.');
         }}
-      />
+      /> */}
       <div className='mt-25'>
         <BtnMidVariant label={'작성완료'} disabled={false} variant={'blue'} />
       </div>
@@ -43,4 +43,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

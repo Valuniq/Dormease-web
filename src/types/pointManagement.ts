@@ -1,17 +1,12 @@
+import { PageInfo } from './pageInfo';
+
 // * 사생 목록 조회
 export type PointMemberResponse = {
   check: boolean;
   information: {
-    pageInfo: PageDetailInfo;
+    pageInfo: PageInfo;
     dataList: PointMemberResponseDataList[];
   };
-};
-
-export type PageDetailInfo = {
-  currentPage: number;
-  totalPage: number;
-  pageSize: number;
-  totalElements: number;
 };
 
 export type PointMemberResponseDataList = {
@@ -40,7 +35,7 @@ export type PointListResponseInfo = {
 
 // * 사생 상벌점 내역 조회
 export type ResidentPointResponse = {
-  pagdInfo: PageDetailInfo;
+  pagdInfo: PageInfo;
   userPointDetailRes: ResidentPointResponseUserPointDetailRes[];
   bonusPoint: number;
   minusPoint: number;
