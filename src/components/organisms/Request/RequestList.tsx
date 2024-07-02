@@ -46,9 +46,7 @@ const RequestList = ({ list, onRequestClick }: Props) => {
         </tbody>
       ) : (
         <tbody>
-          <td className='h-full'>
-            <NoneList colspan={5} />
-          </td>
+          <NoneList colspan={5} />
         </tbody>
       )}
     </table>

@@ -60,9 +60,7 @@ const BlackList = ({ blackLists, isAllChecked, setIsAllChecked, isEdit, setIsEdi
           </tbody>
         ) : (
           <tbody>
-            <td className='h-full'>
-              <NoneList colspan={8} />
-            </td>
+            <NoneList colspan={8} />
           </tbody>
         )}
       </table>
