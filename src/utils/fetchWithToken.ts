@@ -3,7 +3,7 @@ import tokenManager from '@/utils/tokenManager';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import { useRouter } from 'next/router';
 
-const fetchWithToken = async (url: string, options: RequestInit = {}) => {
+const FetchWithToken = async (url: string, options: RequestInit = {}) => {
   const router = useRouter(); // next/router의 useRouter를 사용하여 리디렉션 처리
 
   const accessToken = tokenManager.getToken(ACCESS_TOKEN);
@@ -75,4 +75,4 @@ const refreshAccessToken = async (refreshToken: string) => {
   }
 };
 
-export default fetchWithToken;
+export default FetchWithToken;
