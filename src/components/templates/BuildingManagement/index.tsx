@@ -7,6 +7,7 @@ import {
   getRoomAssignedList,
   getRoomNotAssignedList,
   putBuildingMemo,
+  putRoomManual,
 } from '@/apis/BuildingManagement';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
@@ -40,7 +41,7 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
   const [floorList, setFloorList] = useState<BuildingManagementFloorResponseInformation[]>([]);
   const [floorIsOn, setFloorIsOn] = useState(false);
   const [selectFloor, setSelectFloor] = useState(0);
-  const [roomList, setRoomList] = useState<BuildingManagementRoomResponseInformation[]>();
+  const [roomList, setRoomList] = useState<BuildingManagementRoomResponseInformation[]>([]);
   const [buildingInfo, setBuildingInfo] = useState<BuildingManagementInfoResponseInformation>({
     name: '',
     imageUrl: null,
@@ -197,6 +198,22 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     const notAssignedStudents = studentList.filter((student) => !student.assigned);
     setRoomNotAssignedList(notAssignedStudents);
     setListClick(0);
+
+    //roomList의 배정된 인원 수 수정
+    setRoomList((prevList) =>
+      prevList.map((room) => (room.id === roomId ? { ...room, currentPeople: assignedStudents.length } : room)),
+    );
+    console.log(JSON.stringify(roomsManual));
+  };
+
+  //저장 버튼 눌렀을 때 배정
+  const onSaveRoom = async () => {
+    const response = await putRoomManual(roomsManual);
+    if (response.check) {
+      setSaveModal(!saveModal);
+      setEditAssign(!editAssign);
+      setListClick(0);
+    }
   };
 
   return (
@@ -357,12 +374,7 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
               <ConfirmPrompt
                 variant='blue'
                 label='배정된 호실을 저장하시겠습니까?'
-                onConfirm={() => {
-                  //저장 API 작업
-                  setSaveModal(!saveModal);
-                  setEditAssign(!editAssign);
-                  setListClick(0);
-                }}
+                onConfirm={onSaveRoom}
                 onCancel={() => setSaveModal(!saveModal)}
               />
             </BackDrop>
