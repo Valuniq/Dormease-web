@@ -63,10 +63,7 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
           </tbody>
         ) : (
           <tbody>
-            {' '}
-            <td className='h-full'>
-              <NoneList colspan={10} />
-            </td>
+            <NoneList colspan={10} />
           </tbody>
         )}
       </table>
