@@ -1,16 +1,11 @@
 import React from 'react';
 import RequestListBody from './RequestListBody';
 import NoneList from '../NoneList/NoneList';
+import { RequestResponseDataList } from '@/types/request';
 
 type Props = {
-  onRequestClick: (index: number) => void;
-  list: {
-    index: number;
-    title: string;
-    name: string;
-    date: string;
-    progression: string;
-  }[];
+  onRequestClick: (requestmentId: number) => void;
+  list: RequestResponseDataList[];
 };
 
 const RequestList = ({ list, onRequestClick }: Props) => {
@@ -26,18 +21,18 @@ const RequestList = ({ list, onRequestClick }: Props) => {
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-
       {list ? (
         <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
           <tr className='h-15' />
-          {list.map((data) => {
+          {list.map((data, index) => {
             return (
               <RequestListBody
-                key={data.index}
-                index={data.index}
+                key={data.requestmentId}
+                index={index}
+                requestmentId={data.requestmentId}
                 title={data.title}
-                name={data.name}
-                date={data.date}
+                writer={data.writer}
+                createdDate={data.createdDate}
                 progression={data.progression}
                 onRequestClick={onRequestClick}
               />
