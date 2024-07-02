@@ -41,9 +41,7 @@ const WithdrawalMemberManagementList = ({ list }: Props) => {
         </tbody>
       ) : (
         <tbody>
-          <td className='h-full'>
-            <NoneList colspan={6} />
-          </td>
+          <NoneList colspan={6} />
         </tbody>
       )}
     </table>

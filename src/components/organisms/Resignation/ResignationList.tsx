@@ -69,9 +69,7 @@ const ResignationList = ({ list, onStudentClick, setIsChecked, isAllChecked, set
         </tbody>
       ) : (
         <tbody>
-          <td className='h-full'>
-            <NoneList colspan={9} />
-          </td>
+          <NoneList colspan={9} />
         </tbody>
       )}
     </table>

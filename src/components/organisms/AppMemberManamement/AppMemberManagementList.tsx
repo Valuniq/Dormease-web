@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { Fragment } from 'react';
 import SortImg from '@public/images/DropDownBtn.png';
-import AppMemberManagementListBody, { Props as AppMemberManagementListBodyType } from './AppMemberManagementListBody';
+import AppMemberManagementListBody from './AppMemberManagementListBody';
 import NoneList from '../NoneList/NoneList';
+import { userResponseDataList } from '@/types/userManagement';
 
 type Props = {
-  appMemberManagementLists: AppMemberManagementListBodyType[];
+  appMemberManagementLists: userResponseDataList[];
   plusSort: boolean; // true-오름차순, false-내림차순
   setPlusSort: (plusSort: boolean) => void;
   minusSort: boolean;
@@ -26,8 +27,8 @@ const AppMemberManagementList = ({
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1305px]'>
-        <thead className='w-full h-36 bg-white sticky top-0 z-1'>
-          <tr className='text-gray-grayscale50'>
+        <thead className='w-full h-36 bg-white text-gray-grayscale50 sticky top-0 z-1'>
+          <tr className=''>
             <th className='H4'>번호</th>
             <th className='H4'>이름</th>
             <th className='H4'>학번</th>
@@ -69,34 +70,35 @@ const AppMemberManagementList = ({
               </div>
             </th>
           </tr>
-          <th colSpan={8}>
-            <div className='w-[1305px] h-18 border-b-1 border-b-gray-grayscale50' />
-          </th>
+          <tr>
+            <th colSpan={8}>
+              <div className='w-[1305px] h-18 border-b-1 border-b-gray-grayscale50' />
+            </th>
+          </tr>
         </thead>
 
         {appMemberManagementLists && appMemberManagementLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-15' />
             {appMemberManagementLists.map((i, index) => (
-              <>
+              <Fragment key={i.id}>
                 <AppMemberManagementListBody
-                  index={i.index}
+                  index={index + 1}
+                  id={i.id}
                   name={i.name}
-                  studentId={i.studentId}
+                  studentNumber={i.studentNumber}
                   phoneNumber={i.phoneNumber}
-                  plus={i.plus}
-                  minus={i.minus}
-                  creationDate={i.creationDate}
+                  bonusPoint={i.bonusPoint}
+                  minusPoint={i.minusPoint}
+                  createdAt={i.createdAt}
                 />
                 <tr className='h-15' />
-              </>
+              </Fragment>
             ))}
           </tbody>
         ) : (
           <tbody>
-            <td className='h-full'>
-              <NoneList colspan={7} />
-            </td>
+            <NoneList colspan={7} />
           </tbody>
         )}
       </table>
