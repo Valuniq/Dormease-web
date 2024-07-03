@@ -2,15 +2,211 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 기본 스타일 */
+@import '../styles/variables.css';
+
 @font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-family: 'pretendard';
+  src: url('../../public/fonts/Pretendard-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('../../public/fonts/Pretendard-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
 }
-/* 기본 스타일 */
-@import '../styles/variables.css';
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('../../public/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('../../public/fonts/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'pretendard';
+  src: url('../../public/fonts/Pretendard-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
-  font-family: 'Pretendard-Regular', sans-serif;
+  font-family: 'pretendard', sans-serif;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--colors-gray-grayscale-10);
+  border-radius: 10px;
+}
+
+@layer components {
+  .hover-transition {
+    @apply transition duration-300 ease-in-out;
+  }
+}
+
+@layer utilities {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .H0 {
+    font-family: 'pretendard';
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .H1 {
+    font-family: 'pretendard';
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .H2 {
+    font-family: 'pretendard';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .H3 {
+    font-family: 'pretendard';
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .H4 {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .H4-under {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .H4-caption {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .Btn-cap {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .alert-cap {
+    font-family: 'pretendard';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .caption-1 {
+    font-family: 'pretendard';
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .caption-2 {
+    font-family: 'pretendard';
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  .shadow {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  .shadow1 {
+    filter: drop-shadow(0px 2px 10px rgba(0, 0, 0, 0.25));
+  }
+
+  .shadow2 {
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+  }
+
+  .scrollbar-table {
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-table::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-table::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-table::-webkit-scrollbar-thumb {
+    background: var(--colors-gray-grayscale-10);
+    border-radius: 10px;
+  }
+
+  .underline {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+
+  .balloon {
+    position: relative;
+    background-color: #f7f7f7;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    padding: 10px 10px 0;
+  }
+
+  .balloon::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -10px;
+    border: 10px solid transparent;
+    border-bottom-color: #cccccc;
+  }
+
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -8.9px;
+    border: 9px solid transparent;
+    border-bottom-color: #f7f7f7;
+  }
 }
