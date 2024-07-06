@@ -69,11 +69,6 @@ export const NavigationItems = [
     icon: RequestIcon,
   },
   {
-    label: '식권 관리',
-    routes: '/dashboard/',
-    icon: MealTicketManagementIcon,
-  },
-  {
     label: '설정',
     routes: '/dashboard/Setting',
     icon: SettingIcon,
