@@ -1,3 +1,4 @@
+import MainIcon from '@public/images/navigation/Main.png';
 import StudentManagementIcon from '@public/images/navigation/StudentManagement.png';
 import JoinAndResignationManagementIcon from '@public/images/navigation/JoinAndResignationManagement.png';
 import BuildingManagementIcon from '@public/images/navigation/BuildingManagement.png';
@@ -12,6 +13,11 @@ const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
 const BuildingManagementRoutes = '/dashboard/BuildingManagement';
 
 export const NavigationItems = [
+  {
+    label: '메인 화면',
+    routes: '/dashboard',
+    icon: MainIcon,
+  },
   {
     label: '학생 관리',
     routes: StudentManagementRoutes,
