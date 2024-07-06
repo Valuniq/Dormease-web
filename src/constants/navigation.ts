@@ -5,7 +5,6 @@ import ScheduleManagementIcon from '@public/images/navigation/ScheduleManagement
 import NoticeIcon from '@public/images/navigation/Notice.png';
 import FAQIcon from '@public/images/navigation/FAQ.png';
 import RequestIcon from '@public/images/navigation/Request.png';
-import MealTicketManagementIcon from '@public/images/navigation/MealTicketManagement.png';
 import SettingIcon from '@public/images/navigation/Setting.png';
 
 export const StudentManagementRoutes = '/dashboard/StudentManagement';
@@ -54,7 +53,7 @@ export const NavigationItems = [
     icon: ScheduleManagementIcon,
   },
   {
-    label: '공지 사항',
+    label: '공지사항',
     routes: '/dashboard/Notice',
     icon: NoticeIcon,
   },
@@ -64,12 +63,12 @@ export const NavigationItems = [
     icon: FAQIcon,
   },
   {
-    label: '요청 사항',
+    label: '요청사항',
     routes: '/dashboard/Request',
     icon: RequestIcon,
   },
   {
-    label: '설정',
+    label: '계정 관리',
     routes: '/dashboard/Setting',
     icon: SettingIcon,
   },
