@@ -2,6 +2,7 @@ import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import { ResignationListResponseDataList } from '@/types/resignation';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { formatCreateDate } from './FormatCreateDate';
 
 type Props = ResignationListResponseDataList & {
   isChecked: boolean;
@@ -22,13 +23,6 @@ const ResignationListBody = ({
   handleCheckboxChange,
 }: Props) => {
   const router = useRouter();
-
-  //날짜 변환
-  const formatCreateDate = (date: string): string => {
-    let formattedDate = date.startsWith('20') ? date.slice(2) : date;
-    formattedDate = formattedDate.replace(/-/g, '.');
-    return formattedDate;
-  };
 
   return (
     <>

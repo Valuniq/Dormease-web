@@ -25,3 +25,27 @@ export type ResignationListResponseDataList = {
   createDate: string;
   securityDepositReturnStatus: null | 'PAYMENT' | 'UNPAID' | 'UNALBE';
 };
+
+export type ResignationDetailResponse = {
+  check: boolean;
+  information: ResignationDetailResponseInformation;
+};
+
+export type ResignationDetailResponseInformation = {
+  exitRequestmentId: number;
+  residentName: string;
+  major: string;
+  studentNumber: string;
+  schoolYear: number;
+  phoneNumber: string;
+  dormitoryName: string;
+  roomSize: number;
+  securityDepositReturnStatus: null | 'PAYMENT' | 'UNPAID' | 'UNALBE';
+  roomNumber: number;
+  bedNumber: number;
+  hasKey: false;
+  keyNumber: null | string;
+  exitDate: string;
+  bankName: string;
+  accountNumber: string;
+};

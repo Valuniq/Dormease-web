@@ -1,7 +1,12 @@
 import { BASE_URL } from '@/constants/path';
 import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
-import { ResignationListResponse, ResignationListResponseDataList } from '@/types/resignation';
+import {
+  ResignationDetailResponse,
+  ResignationListResponse,
+  ResignationListResponseDataList,
+} from '@/types/resignation';
+import useSWR from 'swr';
 
 export const useResignationList = () => {
   const getKey = (pageIndex: number, previousPageData: ResignationListResponse) => {
@@ -26,4 +31,12 @@ export const useResignationList = () => {
     false;
 
   return { resignationData, error, isLoadingMore, size, setSize, isReachingEnd };
+};
+
+export const useResignationDetail = (exitRequestmentId: number) => {
+  const { data, error } = useSWR<ResignationDetailResponse>(
+    `${BASE_URL}/api/v1/web/exitRequestment/${exitRequestmentId}`,
+    swrWithToken,
+  );
+  return { data, error, isLoading: !error && !data };
 };
