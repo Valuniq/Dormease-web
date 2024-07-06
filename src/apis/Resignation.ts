@@ -14,7 +14,7 @@ export const useResignationList = () => {
     return `${BASE_URL}/api/v1/web/exitRequestment/residents?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<ResignationListResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<ResignationListResponse>(getKey, swrWithToken);
 
   const resignationData: ResignationListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as ResignationListResponseDataList[])
@@ -30,7 +30,7 @@ export const useResignationList = () => {
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { resignationData, error, isLoadingMore, size, setSize, isReachingEnd };
+  return { resignationData, error, isLoadingMore, size, setSize, isReachingEnd, mutate };
 };
 
 export const useResignationDetail = (exitRequestmentId: number) => {
@@ -39,4 +39,18 @@ export const useResignationDetail = (exitRequestmentId: number) => {
     swrWithToken,
   );
   return { data, error, isLoading: !error && !data };
+};
+
+export const patchResignation = async (
+  securityDepositReturnStatus: 'PAYMENT' | 'UNALBE',
+  exitRequestmentIdList: number[],
+) => {
+  const res = await swrWithToken(`${BASE_URL}/api/v1/web/exitRequestment/securityDeposit`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      securityDepositReturnStatus: securityDepositReturnStatus,
+      exitRequestmentIdList: exitRequestmentIdList,
+    }),
+  });
+  return res;
 };

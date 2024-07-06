@@ -21,9 +21,9 @@ export type ResignationListResponseDataList = {
   roomSize: number;
   roomNumber: number;
   exitDate: string;
-  hasKey: null | boolean;
+  hasKey: boolean;
   createDate: string;
-  securityDepositReturnStatus: null | 'PAYMENT' | 'UNPAID' | 'UNALBE';
+  securityDepositReturnStatus: 'PAYMENT' | 'UNPAID' | 'UNALBE';
 };
 
 export type ResignationDetailResponse = {
@@ -40,7 +40,7 @@ export type ResignationDetailResponseInformation = {
   phoneNumber: string;
   dormitoryName: string;
   roomSize: number;
-  securityDepositReturnStatus: null | 'PAYMENT' | 'UNPAID' | 'UNALBE';
+  securityDepositReturnStatus: 'PAYMENT' | 'UNPAID' | 'UNALBE';
   roomNumber: number;
   bedNumber: number;
   hasKey: false;
