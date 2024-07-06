@@ -7,6 +7,7 @@ import { patchResignation, useResignationList } from '@/apis/Resignation';
 import InfiniteScroll from '@/hooks/useInfiniteScroll';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { postPeriod } from '@/apis/period';
 
 const Resignation = () => {
   const {
@@ -21,6 +22,9 @@ const Resignation = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [unableModal, setUnableModal] = useState(false);
   const [paymentModal, setPaymentModal] = useState(false);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [dateModal, setDateModal] = useState(false);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) =>
@@ -41,6 +45,23 @@ const Resignation = () => {
     }
   };
 
+  const onSaveDate = async () => {
+    if (startDate && endDate) {
+      try {
+        const response = await postPeriod(
+          startDate.toISOString().split('T')[0],
+          endDate.toISOString().split('T')[0],
+          'LEAVE',
+        );
+        if (response.check) {
+          setDateModal(!dateModal);
+        }
+      } catch (error) {
+        console.error('Error posting period:', error);
+      }
+    }
+  };
+
   return (
     <>
       <div className='flex flex-col w-[1200px]'>
@@ -49,17 +70,11 @@ const Resignation = () => {
           <div className='flex gap-38 items-end'>
             <DatePicker
               title='제출 기간'
-              startDate={undefined}
-              endDate={undefined}
-              setStartDate={function (startDate: Date): void {
-                throw new Error('Function not implemented.');
-              }}
-              setEndDate={function (endDate: Date): void {
-                throw new Error('Function not implemented.');
-              }}
-              handlePosting={function (): void {
-                throw new Error('Function not implemented.');
-              }}
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              handlePosting={() => setDateModal(!dateModal)}
             />
           </div>
         </div>
@@ -108,6 +123,16 @@ const Resignation = () => {
             label='선택한 인원에 대해 보증금을 환급 처리하시겠습니까?'
             onConfirm={() => onPatchSecurityDeposit('PAYMENT')}
             onCancel={() => setPaymentModal(!paymentModal)}
+          />
+        </BackDrop>
+      )}
+      {dateModal && (
+        <BackDrop isOpen={dateModal}>
+          <ConfirmPrompt
+            variant='blue'
+            label='퇴사확인서 제출기간을 게시하시겠습니까?'
+            onConfirm={onSaveDate}
+            onCancel={() => setDateModal(!dateModal)}
           />
         </BackDrop>
       )}
