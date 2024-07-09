@@ -4,7 +4,10 @@ module.exports = (phase) => {
   const isDevelopment = phase === PHASE_DEVELOPMENT_SERVER;
   const nextConfig = {
     reactStrictMode: true,
+    distDir: 'build',
+    output: 'export',
     images: {
+      unoptimized: true, // 이미지 최적화 비활성화
       domains: ['example.com', 'dormease-s3-bucket.s3.amazonaws.com'],
     },
     webpack: (config) => {
