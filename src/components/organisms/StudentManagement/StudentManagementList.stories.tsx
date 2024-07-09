@@ -21,7 +21,7 @@ export const Primary: Story = {
     minusPointDown: true,
     list: [
       {
-        index: 999,
+        id: 999,
         name: '김김김김',
         schoolNumber: '99999999',
         gender: '남성',
@@ -32,7 +32,7 @@ export const Primary: Story = {
         schoolStatus: '재학',
       },
       {
-        index: 999,
+        id: 999,
         name: '김김김김',
         schoolNumber: '99999998',
         gender: '남성',
@@ -43,7 +43,7 @@ export const Primary: Story = {
         schoolStatus: '재학',
       },
       {
-        index: 999,
+        id: 999,
         name: '김김김김',
         schoolNumber: '99999999',
         gender: '남성',
@@ -54,7 +54,7 @@ export const Primary: Story = {
         schoolStatus: '재학',
       },
       {
-        index: 999,
+        id: 999,
         name: '김김김김',
         schoolNumber: '99999999',
         gender: '남성',
