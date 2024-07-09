@@ -176,6 +176,22 @@
     border-radius: 10px;
   }
 
+  .noscrollbar-table {
+    -ms-overflow-style: none;
+  }
+
+  .noscrollbar-table::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .noscrollbar-table::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .noscrollbar-table::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
   .underline {
     text-decoration: underline;
     text-underline-offset: 4px;
