@@ -4,16 +4,17 @@ import Image from 'next/image';
 
 type Props = {
   image: string | null;
+  name?: string;
 };
 
-const BuildingSelectImageBtn = ({ image, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
+const BuildingSelectImageBtn = ({ image, name, ...props }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button {...props} className='group relative flex flex-col justify-center items-center w-381 h-247 rounded-8'>
       {image && (
         <Image
           className='group-hover:brightness-50 shadow1 rounded-8 group-hover:hover-transition'
           src={image}
-          alt='Build'
+          alt={name ? name : ''}
           layout='fill'
           objectFit='cover'
         />

@@ -7,26 +7,30 @@ import {
   getRoomAssignedList,
   getRoomNotAssignedList,
   putBuildingMemo,
+  putRoomManual,
 } from '@/apis/BuildingManagement';
+import { postBuildingSettingImage } from '@/apis/BuildingSetting';
+import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
+import BuildingSelectImageBtn from '@/components/atoms/AllBtn/BuildingSelectImageBtn/BuildingSelectImageBtn';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
 import SelectFloorDropdown from '@/components/atoms/Dropdown/SelectFloorDropdown/SelectFloorDropdown';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import BuildingManagementList from '@/components/organisms/BuildingManagement/BuildingManagementList';
-import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import {
   BuildingManagementFloorResponseInformation,
   BuildingManagementInfoResponseInformation,
   BuildingManagementResponseInformation,
   BuildingManagementRoomResponseInformation,
+  BuildingRoomAssigned,
   BuildingRoomInAssignedResponseInformation,
   BuildingRoomManualRequest,
 } from '@/types/buildingm';
 import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 type Props = {
   buildingList: BuildingManagementResponseInformation[];
@@ -39,7 +43,7 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
   const [floorList, setFloorList] = useState<BuildingManagementFloorResponseInformation[]>([]);
   const [floorIsOn, setFloorIsOn] = useState(false);
   const [selectFloor, setSelectFloor] = useState(0);
-  const [roomList, setRoomList] = useState<BuildingManagementRoomResponseInformation[]>();
+  const [roomList, setRoomList] = useState<BuildingManagementRoomResponseInformation[]>([]);
   const [buildingInfo, setBuildingInfo] = useState<BuildingManagementInfoResponseInformation>({
     name: '',
     imageUrl: null,
@@ -50,18 +54,36 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     memo: null,
   });
   const [memoText, setMemoText] = useState(buildingInfo.memo);
-  const [memoModal, setMemoModal] = useState(false);
   const [listClick, setListClick] = useState(0);
   const [roomAssignedList, setRoomAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
+  const [roomsAssignedList, setRoomsAssignedList] = useState<BuildingRoomAssigned[]>([]);
   const [roomNotAssignedList, setRoomNotAssignedList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
   const [studentList, setStudentList] = useState<BuildingRoomInAssignedResponseInformation[]>([]);
   const [editAssign, setEditAssign] = useState(false);
   const [saveModal, setSaveModal] = useState(false);
-  const [roomsManual, setRoomsManual] = useState<BuildingRoomManualRequest[]>();
+  const [roomsManual, setRoomsManual] = useState<BuildingRoomManualRequest[]>([]);
+  const [warningModal, setWarningModal] = useState(false);
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [pendingBuilding, setPendingBuilding] = useState<{
+    building: { id: number; name: string } | null;
+    floor: number | null;
+  }>({
+    building: null,
+    floor: null,
+  });
 
   useEffect(() => {
-    setStudentList(roomAssignedList.concat(roomNotAssignedList));
-  }, [roomAssignedList, roomNotAssignedList]);
+    if (roomsAssignedList.some((room) => room.roomId === listClick)) {
+      //배정 버튼을 누른 적이 있는 경우(roomId가 roomsAssinedList에 존재하는 경우)
+      const currentRoom = roomsAssignedList.find((room) => room.roomId === listClick);
+      if (currentRoom) {
+        setStudentList(currentRoom.resident.concat(roomNotAssignedList));
+      }
+    } else {
+      //roomId가 roomsAssignedList에 존재하지 않는 경우
+      setStudentList(roomAssignedList.concat(roomNotAssignedList));
+    }
+  }, [listClick, roomAssignedList, roomNotAssignedList, roomsAssignedList]);
 
   //건물 정보 불러오기
   const fetchBuildingInfo = async (id: number) => {
@@ -116,7 +138,10 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     if (memoText !== null) {
       const buildingMemo = await putBuildingMemo(selectBuilding.id, memoText);
       if (buildingMemo.check) {
-        setMemoModal(!memoModal);
+        setBuildingInfo((prev) => ({
+          ...prev,
+          memo: memoText,
+        }));
       }
     }
   };
@@ -165,9 +190,96 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
     };
 
     setRoomsManual((prevRooms) => {
-      const updatedRooms = (prevRooms || []).filter((room) => room.roomId !== roomId);
+      const updatedRooms = prevRooms.filter((room) => room.roomId !== roomId);
       return [...updatedRooms, roomAssignment];
     });
+
+    //배정된 사생(assigned가 true)인 것들 setRoomsAssignedList에 추가
+    const assignedStudents = studentList.filter((student) => student.assigned);
+
+    const roomAssigned: BuildingRoomAssigned = {
+      roomId: roomId,
+      resident: assignedStudents,
+    };
+
+    setRoomsAssignedList((prevRooms) => {
+      const updatedRooms = prevRooms.filter((room) => room.roomId !== roomId);
+      return [...updatedRooms, roomAssigned];
+    });
+
+    //미배정 사생(assigned가 false)인 것들 setRoomNotAssignedList에 추가
+    const notAssignedStudents = studentList.filter((student) => !student.assigned);
+    setRoomNotAssignedList(notAssignedStudents);
+    setListClick(0);
+
+    //roomList의 배정된 인원 수 수정
+    setRoomList((prevList) =>
+      prevList.map((room) => (room.id === roomId ? { ...room, currentPeople: assignedStudents.length } : room)),
+    );
+    console.log(JSON.stringify(roomsManual));
+  };
+
+  //저장 버튼 눌렀을 때 배정
+  const onSaveRoom = async () => {
+    const response = await putRoomManual(roomsManual);
+    if (response.check) {
+      setSaveModal(!saveModal);
+      setEditAssign(!editAssign);
+      setListClick(0);
+      setRoomsManual([]);
+      setRoomsAssignedList([]);
+    }
+  };
+
+  const onAddPicture = () => {
+    inputFileRef.current?.click();
+  };
+
+  //건물 이미지 변경
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+
+    const file = e.target.files[0];
+
+    const imageUrl = URL.createObjectURL(file);
+
+    const response = await postBuildingSettingImage(selectBuilding.id, file);
+    if (response.check) {
+      setBuildingInfo((prev) => ({
+        ...prev,
+        imageUrl: imageUrl,
+      }));
+    }
+  };
+
+  //수기배정 임시저장된 것을 삭제하고 다른 건물이나 층으로 이동
+  const onCancelMove = async () => {
+    if (pendingBuilding.building) {
+      //건물 이동
+      setSelectBuilding({ id: pendingBuilding.building.id, name: pendingBuilding.building.name });
+      getFloor(pendingBuilding.building.id);
+      setFloorIsOn(false);
+      fetchBuildingInfo(pendingBuilding.building.id);
+      getRoomNotAssigned(pendingBuilding.building.id);
+    } else if (pendingBuilding.floor) {
+      //층 이동
+      setSelectFloor(pendingBuilding.floor);
+      getRoom(selectBuilding.id, pendingBuilding.floor);
+      getRoomNotAssigned(selectBuilding.id);
+    }
+    //저장해둔 데이터 초기화
+    setEditAssign(false);
+    setListClick(0);
+    setPendingBuilding({
+      building: null,
+      floor: null,
+    });
+    setRoomsManual([]);
+    setRoomsAssignedList([]);
+    setWarningModal(false);
   };
 
   return (
@@ -176,16 +288,25 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
         <>
           <div className='flex'>
             <div>
-              {buildingInfo.imageUrl ? (
-                <Image
-                  className='rounded-8 w-381 h-241 cursor-pointer shadow2 mb-35'
-                  src={buildingInfo.imageUrl}
-                  alt='Building'
-                  objectFit='fill'
+              <div className='w-381 h-241 flex items-center justify-center bg-gray-grayscale5 rounded-8 mb-35'>
+                {buildingInfo.imageUrl ? (
+                  <BuildingSelectImageBtn
+                    image={buildingInfo.imageUrl}
+                    name={buildingInfo.name}
+                    onClick={onAddPicture}
+                  />
+                ) : (
+                  <BtnLargeVariant label={'사진 추가'} disabled={false} variant={'blue'} onClick={onAddPicture} />
+                )}
+                <input
+                  id='fileInput'
+                  type='file'
+                  accept='image/*'
+                  style={{ display: 'none', visibility: 'hidden' }}
+                  ref={inputFileRef}
+                  onChange={handleFileChange}
                 />
-              ) : (
-                <div className='rounded-8 w-381 h-241 cursor-pointer shadow2 mb-35 bg-gray-grayscale10'></div>
-              )}
+              </div>
               <table>
                 <tbody className='H4 text-left'>
                   <tr>
@@ -295,13 +416,18 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
                 select={selectBuilding}
                 list={buildingList}
                 setSelect={(id, name) => {
-                  setEditAssign(false);
-                  setSelectBuilding({ id, name });
-                  getFloor(id);
-                  setFloorIsOn(false);
-                  fetchBuildingInfo(id);
-                  getRoomNotAssigned(id);
-                  setListClick(0);
+                  if (editAssign) {
+                    setPendingBuilding({ building: { id, name }, floor: null });
+                    setWarningModal(!warningModal);
+                  } else {
+                    setEditAssign(false);
+                    setSelectBuilding({ id, name });
+                    getFloor(id);
+                    setFloorIsOn(false);
+                    fetchBuildingInfo(id);
+                    getRoomNotAssigned(id);
+                    setListClick(0);
+                  }
                 }}
                 setIsOn={() => setBuildingIsOn(!buildingIsOn)}
               />
@@ -311,30 +437,35 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
                 setIsOn={() => setFloorIsOn(!floorIsOn)}
                 select={selectFloor}
                 setSelect={(floor) => {
-                  setSelectFloor(floor);
-                  getRoom(selectBuilding.id, floor);
-                  setListClick(0);
+                  if (editAssign) {
+                    setPendingBuilding({ building: null, floor: floor });
+                    setWarningModal(!warningModal);
+                  } else {
+                    setSelectFloor(floor);
+                    getRoom(selectBuilding.id, floor);
+                    setListClick(0);
+                  }
                 }}
               />
             </div>
           </div>
-          {memoModal && (
-            <BackDrop isOpen={memoModal}>
-              <AlertPrompt variant='blue' label='메모가 저장되었습니다.' onConfirm={() => setMemoModal(!memoModal)} />
-            </BackDrop>
-          )}
           {saveModal && (
             <BackDrop isOpen={saveModal}>
               <ConfirmPrompt
                 variant='blue'
                 label='배정된 호실을 저장하시겠습니까?'
-                onConfirm={() => {
-                  //저장 API 작업
-                  setSaveModal(!saveModal);
-                  setEditAssign(!editAssign);
-                  setListClick(0);
-                }}
+                onConfirm={onSaveRoom}
                 onCancel={() => setSaveModal(!saveModal)}
+              />
+            </BackDrop>
+          )}
+          {warningModal && (
+            <BackDrop isOpen={warningModal}>
+              <ConfirmPrompt
+                variant='red'
+                label='이 페이지를 떠나시면 설정 내용이 저장되지 않습니다.'
+                onConfirm={onCancelMove}
+                onCancel={() => setWarningModal(!warningModal)}
               />
             </BackDrop>
           )}
