@@ -4,13 +4,13 @@ import NoneList from '../NoneList/NoneList';
 import { RefundRequestmentResponseDataList } from '@/types/refund';
 
 type Props = {
-  clickSchoolNumber: number;
-  onStudentClick: (schoolNumber: number) => void;
+  clickRefund: number;
+  onStudentClick: (refundRequestmentId: number) => void;
   onDeleteRefund: () => void;
   list: RefundRequestmentResponseDataList[];
 };
 
-const RefundList = ({ list, clickSchoolNumber, onDeleteRefund, onStudentClick }: Props) => {
+const RefundList = ({ list, clickRefund, onDeleteRefund, onStudentClick }: Props) => {
   return (
     <div className='text-nowrap text-center text-gray-grayscale50 c'>
       <div className='flex w-full border-b-1 pb-15'>
@@ -32,7 +32,7 @@ const RefundList = ({ list, clickSchoolNumber, onDeleteRefund, onStudentClick }:
             {list.map((data, index) => {
               const isLastItem = index === list.length - 1;
               return (
-                <>
+                <React.Fragment key={data.refundRequestmentId}>
                   <RefundListBody
                     key={index}
                     isLastItem={isLastItem}
@@ -48,12 +48,12 @@ const RefundList = ({ list, clickSchoolNumber, onDeleteRefund, onStudentClick }:
                     dormitoryName={data.dormitoryName}
                     roomNumber={data.roomNumber}
                     bedNumber={data.bedNumber}
-                    clickSchoolNumber={clickSchoolNumber}
+                    clickRefund={clickRefund}
                     onStudentClick={onStudentClick}
                     onDeleteRefund={onDeleteRefund}
                   />
                   {isLastItem && <div className='mt-13 border-b-1 border-gray-grayscale50'></div>}
-                </>
+                </React.Fragment>
               );
             })}
           </>

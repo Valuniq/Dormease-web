@@ -7,6 +7,8 @@ import { useRefundRequestment, postPeriod, deleteRefundRequestment } from '@/api
 import { RefundRequestmentResponseDataList } from '@/types/refund';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { mutate } from 'swr';
+import { BASE_URL } from '@/constants/path';
 
 const Refund = () => {
   const [refundList, setRefundList] = useState<RefundRequestmentResponseDataList[]>([]);
@@ -29,6 +31,7 @@ const Refund = () => {
     }
   }, [refundData, refundError]);
 
+  //페이지네이션
   const handlePageNum = (navigation: 'prev' | 'next') => {
     if (navigation === 'prev' && pageNum > 1) {
       setPageNum(pageNum - 1);
@@ -37,6 +40,7 @@ const Refund = () => {
     }
   };
 
+  //기간 설정 저장
   const onSaveDate = async () => {
     if (startDate && endDate) {
       try {
@@ -53,9 +57,13 @@ const Refund = () => {
     }
   };
 
+  //환불 신청 처리
   const onDeleteRefund = async () => {
     const response = await deleteRefundRequestment(clickRefund);
-    console.log(response);
+    if (response.check) {
+      setDeleteModal(!deleteModal);
+      mutate(`${BASE_URL}/api/v1/web/refundRequestment?page=${pageNum}`);
+    }
   };
 
   return (
@@ -74,9 +82,9 @@ const Refund = () => {
         </div>
         <RefundList
           list={refundList}
-          clickSchoolNumber={clickRefund}
-          onStudentClick={(studentNumber) => {
-            setClickRefund(studentNumber);
+          clickRefund={clickRefund}
+          onStudentClick={(refundRequestmentId) => {
+            setClickRefund(refundRequestmentId);
           }}
           onDeleteRefund={() => setDeleteModal(!deleteModal)}
         />
