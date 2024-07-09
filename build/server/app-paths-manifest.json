@@ -1,7 +1,0 @@
-{
-  "/dashboard/JoinApplicationSetting/Resignation/page": "app/dashboard/JoinApplicationSetting/Resignation/page.js",
-  "/dashboard/BuildingManagement/page": "app/dashboard/BuildingManagement/page.js",
-  "/dashboard/ScheduleManagement/page": "app/dashboard/ScheduleManagement/page.js",
-  "/dashboard/(Notice)/Notice/page": "app/dashboard/(Notice)/Notice/page.js",
-  "/dashboard/(FAQ)/FAQ/page": "app/dashboard/(FAQ)/FAQ/page.js"
-}
