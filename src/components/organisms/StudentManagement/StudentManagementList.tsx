@@ -13,7 +13,6 @@ type Props = {
   onBonusPointClick: (genderDown: boolean) => void;
   minusPointDown: boolean;
   onMinusPointClick: (genderDown: boolean) => void;
-  onStudentClick: (schoolNumber: string) => void;
   list: {
     id: number;
     name: string;
@@ -37,7 +36,6 @@ const StudentManagementList = ({
   onBonusPointClick,
   minusPointDown,
   onMinusPointClick,
-  onStudentClick,
 }: Props) => {
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
@@ -105,7 +103,6 @@ const StudentManagementList = ({
                 bonusPoint={data.bonusPoint}
                 minusPoint={data.minusPoint}
                 schoolStatus={data.schoolStatus}
-                onStudentClick={onStudentClick}
               />
             );
           })}

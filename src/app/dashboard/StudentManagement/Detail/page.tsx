@@ -1,92 +1,48 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import StudentManagementDetail from '@/components/organisms/StudentManagement/StudentManagementDetail';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import BlackListBtn from '@/components/atoms/AllBtn/BlackListBtn/BlackListBtn';
 import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
+import { useRouter } from 'next/navigation';
 
-interface StudentProps {
-  id: string;
-  name: string;
-  studentId: string;
-  major: string;
-  grade: number;
-  academicStatus: string;
-  gender: string;
-  phoneNumber: string;
-  residence: string;
-  certifiedFile: File;
-  prioritySelection: File;
-  meals: number;
-  isSmoking: boolean;
-  dormitoryPayment: boolean;
-  hasKey: boolean;
-  personalInfoConsent: boolean;
-  thirdPartyConsent: boolean;
-  bankName: string;
-  accountNumber: string;
-  emergencyContact: string;
-  emergencyRelation: string;
-  building: string;
-  roomNumber: string;
-  bedNumber: string;
-  period: string;
-  isRoommateApplied: boolean;
-  roommateInformation: string;
-}
-
-async function fetchData(id: string): Promise<StudentProps> {
-  // 실제 데이터를 가져오는 로직을 여기에 작성합니다.
-  // 예: API 호출 또는 데이터베이스 쿼리 등
-  return {
-    id,
-    name: 'John Doe',
-    studentId: 'S123456',
-    major: 'Computer Science',
-    grade: 3,
-    academicStatus: 'Active',
-    gender: 'Male',
-    phoneNumber: '010-1234-5678',
-    residence: 'Seoul',
-    certifiedFile: new File(['file content'], 'certifiedFile.pdf', { type: 'application/pdf' }),
-    prioritySelection: new File(['file content'], 'prioritySelection.pdf', { type: 'application/pdf' }),
-    meals: 3,
-    isSmoking: false,
-    dormitoryPayment: true,
-    hasKey: true,
-    personalInfoConsent: true,
-    thirdPartyConsent: false,
-    bankName: 'Bank of Korea',
-    accountNumber: '123-456-7890',
-    emergencyContact: '010-9876-5432',
-    emergencyRelation: 'Father',
-    building: 'Building A',
-    roomNumber: '101',
-    bedNumber: '1',
-    period: '2023-01-01 to 2023-12-31',
-    isRoommateApplied: true,
-    roommateInformation: 'Roommate Info',
-  };
-}
-
-const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
-  const [data, setData] = useState<StudentProps | null>(null);
-
-  useEffect(() => {
-    async function loadData() {
-      const fetchedData = await fetchData(id);
-      setData(fetchedData);
-    }
-    loadData();
-  }, [id]);
-
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
+const Page = () => {
+  const router = useRouter();
   const isEdit = false;
+  const isBuilding = false;
+
+  const data = {
+    name: '김김김',
+    schoolNumber: '99999999',
+    major: '산업디자인과',
+    grade: 4,
+    schoolStatus: '재학',
+    gender: '남성',
+    phoneNumber: '010-9999-9999',
+    address: '서울특별시 서울도 서울구 서울로 서울특별시 서울도 서울구 서울로',
+    certifiedFile: null,
+    prioritySelection: null,
+    foodCount: 50,
+    isSmoking: true,
+    dormitoryPayment: true,
+    hasKey: false,
+    bounsPoint: 9,
+    minusPoint: 9,
+    personalInfoConsent: true,
+    thirdPartyConsent: true,
+    bankName: '농협은행',
+    accountNumber: '9999-99-999999',
+    emergencyContact: '010-9999-9999',
+    emergencyRelation: '부',
+
+    building: '명덕관(4인실)',
+    roomNumber: 999,
+    bedNumber: 4,
+    period: '6개월',
+    isRoommateApplied: true,
+    roommateInformation: '김김김김 이이이이 박박박박',
+  };
 
   return (
     <div className='flex flex-col relative w-[1200px]'>
@@ -99,16 +55,28 @@ const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
       <div className='flex border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
         <div className='flex-1 flex flex-col pr-170'>
           <StudentManagementDetail label='이름' text={data.name} value={data.name} />
-          <StudentManagementDetail label='학번' text={data.studentId} value={data.studentId} />
+          <StudentManagementDetail label='학번' text={data.schoolNumber} value={data.schoolNumber} />
           <StudentManagementDetail label='학과' text={data.major} value={data.major} />
-          <StudentManagementDetail label='학년' text={`${data.grade}학년`} value={data.grade} />
-          <StudentManagementDetail label='학적' text={data.academicStatus} value={data.academicStatus} />
+          <StudentManagementDetail label='학년' text={data.grade + '학년'} value={data.grade} />
+          <StudentManagementDetail label='학적' text={data.schoolStatus} value={data.schoolStatus} />
           <StudentManagementDetail label='성별' text={data.gender} value={data.gender} />
           <StudentManagementDetail label='휴대전화' text={data.phoneNumber} value={data.phoneNumber} />
-          <StudentManagementDetail label='본거주지' text={data.residence} value={data.residence} />
-          <StudentManagementDetail label='등본' isEdit={isEdit} type='file' text='파일이름' value={null} />
-          <StudentManagementDetail label='우선선발' isEdit={isEdit} type='file' text='파일이름' value={null} />
-          <StudentManagementDetail label='식수' text={`${data.meals}식`} value={data.meals} />
+          <StudentManagementDetail label='본거주지' text={data.address} value={data.address} />
+          <StudentManagementDetail
+            label='등본'
+            isEdit={isEdit}
+            type='file'
+            text='파일이름'
+            value={data.certifiedFile}
+          />
+          <StudentManagementDetail
+            label='우선선발'
+            isEdit={isEdit}
+            type='file'
+            text='파일이름'
+            value={data.prioritySelection}
+          />
+          <StudentManagementDetail label='식수' text={data.foodCount + '식'} value={data.foodCount} />
         </div>
         <div className='flex-1 flex flex-col'>
           <StudentManagementDetail
@@ -139,8 +107,8 @@ const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
               throw new Error('Function not implemented.');
             }}
           />
-          <StudentManagementDetail right={isEdit} label='상점' text={1} value={1} />
-          <StudentManagementDetail right={isEdit} label='벌점' text={1} value={1} />
+          <StudentManagementDetail right={isEdit} label='상점' text={data.bounsPoint} value={data.bounsPoint} />
+          <StudentManagementDetail right={isEdit} label='벌점' text={data.minusPoint} value={data.minusPoint} />
           <StudentManagementDetail
             right={isEdit}
             label='개인정보 동의'
@@ -212,7 +180,7 @@ const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
             <StudentManagementDetail
               isEdit={isEdit}
               type='building'
-              isBuilding={false}
+              isBuilding={isBuilding}
               list={['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)']}
               select='명덕관(4인실)'
               setSelect={function (select: string): void {
@@ -225,28 +193,28 @@ const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
             <StudentManagementDetail
               isEdit={isEdit}
               type='roomNumber'
-              input={data.roomNumber}
+              input='999'
               setInput={function (input: string): void {
                 throw new Error('Function not implemented.');
               }}
               label='호실'
-              text={`${data.roomNumber}호`}
+              text={data.roomNumber + '호'}
               value={data.roomNumber}
             />
             <StudentManagementDetail
               isEdit={isEdit}
               type='bedNumber'
-              input={data.bedNumber}
+              input='4'
               setInput={function (input: string): void {
                 throw new Error('Function not implemented.');
               }}
               label='침대번호'
-              text={`${data.bedNumber}번`}
+              text={data.bedNumber + '번'}
               value={data.bedNumber}
             />
           </div>
           <div className='flex-1 flex flex-col pr-46'>
-            <StudentManagementDetail label='거주기간' text={data.period} value={data.period} />
+            <StudentManagementDetail label='거주기간' text={data.period} value={'period'} />
             <StudentManagementDetail
               label='룸메이트 신청'
               text={data.isRoommateApplied ? 'O' : 'X'}
@@ -267,10 +235,15 @@ const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
         </div>
       </div>
       <div className='flex justify-center mt-9'>
-        <BtnMidVariant label='수정완료' disabled={false} variant='blue' />
+        <BtnMidVariant
+          label='수정완료'
+          disabled={false}
+          variant='blue'
+          onClick={() => router.push(`/dashboard/StudentManagement`)}
+        />
       </div>
     </div>
   );
 };
 
-export default ClientComponent;
+export default Page;

@@ -21,7 +21,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 2,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -32,7 +32,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 3,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -43,7 +43,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 4,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -54,7 +54,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 5,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -65,7 +65,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 6,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -76,7 +76,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 7,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -87,7 +87,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 8,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -98,7 +98,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 9,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -109,7 +109,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 10,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -120,7 +120,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 11,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -131,7 +131,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 12,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -142,7 +142,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 13,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -153,7 +153,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 14,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -164,7 +164,7 @@ const StudentMangement = () => {
       schoolStatus: '재학',
     },
     {
-      id: 1,
+      id: 15,
       name: '김김김',
       schoolNumber: '99999999',
       gender: '남성',
@@ -196,7 +196,6 @@ const StudentMangement = () => {
         onBonusPointClick={(genderDown: boolean) => genderDown}
         minusPointDown={false}
         onMinusPointClick={(genderDown: boolean) => genderDown}
-        onStudentClick={(schoolNumber: string) => schoolNumber}
       />
       <div className='flex justify-end mt-13'>
         <PlusBtnVariant label='사생 추가' disabled={false} variant='blue' />
