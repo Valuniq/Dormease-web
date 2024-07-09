@@ -212,6 +212,7 @@ import ClientComponent from './ClientComponent'; // 클라이언트 컴포넌트
 export async function generateStaticParams() {
   const ids = ['1', '2', '3']; // 예시 데이터, 실제 데이터 로드 로직 필요
   return ids.map((id) => ({ id }));
+  // 전체 조회 후 id만 따로 가지고 있기
 }
 
 const Page = ({ params }: { params: { id: string } }) => {
