@@ -4,6 +4,8 @@ module.exports = (phase) => {
   const isDevelopment = phase === PHASE_DEVELOPMENT_SERVER;
   const nextConfig = {
     reactStrictMode: true,
+    distDir: 'build',
+    output: 'export',
     images: {
       domains: ['example.com', 'dormease-s3-bucket.s3.amazonaws.com'],
     },
