@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import AppMemberManagementList from '@/components/organisms/AppMemberManamement/AppMemberManagementList';
 import { BASE_URL } from '@/constants/path';
-import { useUserSearch, useSortedUsers, useInfiniteUser } from '@/apis/userManagement';
+import { useInfiniteUser, useSortedUsers, useUserSearch } from '@/apis/AppUserManagement';
 
 const Page = () => {
   const [sortConfig, setSortConfig] = useState<{

@@ -10,12 +10,11 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Page = () => {
+  const router = useRouter();
   const { notificationsData, error, isLoadingMore, size, setSize, isReachingEnd } = useInfiniteNotifications();
 
   if (error) return <div>Failed to load</div>;
   if (!notificationsData) return <div>Loading...</div>;
-
-  const router = useRouter();
 
   const handleWriteClick = () => {
     router.push(NoticeWritingRoutes);

@@ -9,11 +9,11 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Page = () => {
+  const router = useRouter();
   const { faqData, error, isLoadingMore, size, setSize, isReachingEnd } = useInfiniteFaq();
 
   if (error) return <div>Failed to load</div>;
   if (!faqData) return <div>Loading...</div>;
-  const router = useRouter();
 
   const handleWriteClick = () => {
     router.push(FAQWritingRoutes);
