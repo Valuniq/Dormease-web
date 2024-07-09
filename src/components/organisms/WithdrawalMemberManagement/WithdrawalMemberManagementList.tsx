@@ -25,11 +25,12 @@ const WithdrawalMemberManagementList = ({ list }: Props) => {
       {list ? (
         <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
           <tr className='h-15' />
-          {list.map((data) => {
+          {list.map((data, index) => {
             return (
               <WithdrawalMemberManagementListBody
                 key={data.id}
                 id={data.id}
+                index={index}
                 name={data.name}
                 studentNumber={data.studentNumber}
                 bonusPoint={data.bonusPoint}

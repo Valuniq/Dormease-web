@@ -15,14 +15,15 @@ type Story = StoryObj<typeof ResignationListBody>;
 
 export const Primary: Story = {
   args: {
-    name: '김김김김',
-    schoolNumber: '99999999',
-    building: '명덕관(4인실)',
-    roomNumber: '999호',
+    exitRequestmentId: 1,
+    residentName: '김김김김',
+    studentNumber: '99999999',
+    dormitoryName: '명덕관(4인실)',
+    roomSize: 0,
+    roomNumber: 999,
     exitDate: '24.00.00',
     hasKey: true,
-    submissionDate: '24.00.00',
-    depositRefund: false,
-    isChecked: true,
+    createDate: '24.00.00',
+    securityDepositReturnStatus: 'PAYMENT',
   },
 };

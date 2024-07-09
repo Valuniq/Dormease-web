@@ -15,7 +15,7 @@ type Story = StoryObj<typeof StudentManagementListBody>;
 
 export const Primary: Story = {
   args: {
-    index: 999,
+    id: 999,
     name: '김김김김',
     schoolNumber: '99999998',
     gender: '남성',
