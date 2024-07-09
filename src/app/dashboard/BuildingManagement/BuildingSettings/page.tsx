@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteBuilding, getBuildingLists, postAddBuilding } from '@/apis/Building';
+import { deleteBuilding, postAddBuilding, useBuildingList } from '@/apis/BuildingSetting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import BuildingSettingsBody from '@/components/organisms/BuildingSettings/BuildingSettingsBody';
@@ -10,7 +10,6 @@ import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPr
 import { BuildingSettingsResponseInformation } from '@/types/building';
 import { useRouter } from 'next/navigation';
 import { useState, Suspense, useEffect } from 'react';
-import useSWR, { mutate } from 'swr';
 
 const BuildingSettings = () => {
   const [lists, setLists] = useState<BuildingSettingsResponseInformation[]>();
@@ -23,7 +22,7 @@ const BuildingSettings = () => {
   const [selectedId, setSeletedId] = useState<number | null>(null);
   const router = useRouter();
 
-  const { data, error } = useSWR('/api/v1/web/dormitory/setting', getBuildingLists);
+  const { data, error, mutate } = useBuildingList();
 
   useEffect(() => {
     if (data) {
@@ -37,11 +36,11 @@ const BuildingSettings = () => {
     try {
       const response = await postAddBuilding(input, selectImage);
 
-      if (response) {
+      if (response.check) {
         if (response.information.message === '동일한 이름의 기숙사가 존재합니다.') {
           setSameModal(true);
         } else {
-          mutate('/api/v1/web/dormitory/setting');
+          await mutate();
           setModal(!modal);
           setInput('');
           setSelectImage(null);
@@ -59,11 +58,8 @@ const BuildingSettings = () => {
     if (dormitoryId !== null) {
       try {
         const response = await deleteBuilding(dormitoryId);
-
-        console.log(response);
-
-        if (response) {
-          mutate('/api/v1/web/dormitory/setting');
+        if (response.check) {
+          await mutate();
           setDeleteModal(false);
           setSeletedId(null);
         } else {
@@ -97,9 +93,7 @@ const BuildingSettings = () => {
                       setDeleteModal(true);
                     }
                   }}
-                  onBuildingSettingsDetail={() =>
-                    router.push(`/dashboard/BuildingManagement/BuildingSettings/${data.id}`)
-                  }
+                  onBuildingSettingsDetail={() => router.push(`/dashboard/BuildingManagement/BuildingSettings`)}
                 />
               );
             })}
