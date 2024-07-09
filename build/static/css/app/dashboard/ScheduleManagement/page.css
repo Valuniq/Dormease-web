@@ -1,0 +1,175 @@
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[11].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[11].oneOf[12].use[3]!./src/components/organisms/Calendar/Custom.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* 이벤트 부분 */
+.fc-daygrid-block-event .fc-event-title {
+  font-family: 'pretendard';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  color: #323232;
+
+  padding-right: 9px;
+}
+
+.fc-daygrid-block-event {
+  border: none !important;
+}
+
+/* 전체 캘린더 크기 */
+.fc {
+  width: 1290px;
+  height: 820px;
+}
+
+/* 토요일, 일요일 색상 변경 */
+.fc-day-sat a {
+  color: #3678d8;
+  text-decoration: none;
+}
+
+.fc-day-sat.fc-day-today a,
+.fc-day-sun.fc-day-today a {
+  color: white !important;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+  background: #3678d8 !important;
+  color: #ffffff !important;
+  width: 33px;
+  height: 33px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.fc-daygrid-day-number {
+  margin-top: 6px;
+}
+
+.fc .fc-day-today {
+  background: transparent !important;
+}
+
+.fc-day-sun a {
+  color: #d83636;
+  text-decoration: none;
+}
+
+/* 요일 칸 */
+.fc th {
+  font-family: 'pretendard';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  color: #323232;
+  border-right: none;
+  border-left: none;
+}
+
+/* 날짜 칸 */
+.fc td {
+  font-family: 'pretendard';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  color: #323232;
+  border-right: none;
+  border-left: none;
+}
+
+.fc .fc-customMonth-button {
+  width: 100% !important;
+  padding: 0 !important;
+  color: #323232;
+
+  font-family: 'pretendard';
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.fc .fc--button {
+  padding: 0 !important;
+}
+
+/* prev next 버튼 그룹 */
+.fc-button-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* prev next 버튼 색상 수정 */
+.fc-button-primary {
+  background: transparent !important;
+  width: 34px !important;
+  border: none !important;
+  padding: 0 0 5px 0 !important;
+  margin: 0 !important;
+}
+
+/* prev next 버튼 shadow 제거 */
+.fc-button {
+  box-shadow: none !important;
+}
+
+/* prev 버튼 */
+.fc-prev-button {
+  border-bottom: 1px solid #999999 !important;
+}
+
+/* next 버튼 */
+.fc-next-button {
+  transform: rotate(180deg);
+}
+
+/* button 안 icon 크기 */
+.fc-icon {
+  width: 34px !important;
+  height: 20px !important;
+}
+
+/* icon 이미지 수정 */
+.fc-prev-button .fc-icon:before,
+.fc-next-button .fc-icon:before {
+  content: url(/_next/static/media/CalendarArrowBtn.93ca9ae7.png);
+}
+
+.fc .fc-customYear-button {
+  width: 100% !important;
+  padding: 0px 25px !important;
+  border: 2px solid #3678d8 !important;
+  border-radius: 50px;
+
+  font-family: 'pretendard';
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 800;
+  color: #3678d8 !important;
+}
+
+.fc-toolbar-chunk:first-child,
+.fc-toolbar-chunk:last-child {
+  flex: 1;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 16px;
+}
+
+/* 캘린더 위쪽 border 없애기 */
+.fc-scrollgrid {
+  border: none !important;
+}
+
+/* 날짜 왼쪽 정렬 */
+.fc .fc-daygrid-day-top {
+  flex-direction: row;
+}
+
