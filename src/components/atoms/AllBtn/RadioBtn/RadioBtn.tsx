@@ -14,7 +14,7 @@ const RadioBtn = ({ isOn, setIsOn, label }: Props) => {
       >
         <div className={`${isOn && 'bg-blue-blue30 w-11 h-11 rounded-full'}`}></div>
       </div>
-      <p className='pl-8 H4 text-gray-grayscale50'>{label}</p>
+      <p className='pl-8 H4 text-gray-grayscale50 cursor-pointer'>{label}</p>
     </div>
   );
 };
