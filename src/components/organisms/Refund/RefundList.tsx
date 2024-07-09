@@ -52,7 +52,7 @@ const RefundList = ({ list, clickRefund, onDeleteRefund, onStudentClick }: Props
                     onStudentClick={onStudentClick}
                     onDeleteRefund={onDeleteRefund}
                   />
-                  {isLastItem && <div className='mt-13 border-b-1 border-gray-grayscale50'></div>}
+                  {isLastItem && <div className='border-b-1 border-gray-grayscale50'></div>}
                 </React.Fragment>
               );
             })}
