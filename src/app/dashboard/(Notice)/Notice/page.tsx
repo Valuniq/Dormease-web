@@ -1,4 +1,5 @@
 'use client';
+
 import { useInfiniteNotifications } from '@/apis/Notifications';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
