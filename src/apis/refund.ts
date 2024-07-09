@@ -5,7 +5,7 @@ import useSWR from 'swr';
 
 export const useRefundRequestment = (pageNum: number) => {
   const { data, error } = useSWR<RefundRequestmentResponse>(
-    `${BASE_URL}/api/v1/web/refundRequestment/residents?page=${pageNum}`,
+    `${BASE_URL}/api/v1/web/refundRequestment?page=${pageNum}`,
     swrWithToken,
   );
   return { data, error, isLoading: !error && !data };

@@ -1,83 +1,56 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import ResignationDetail from '@/components/organisms/Resignation/ResignationDetail';
-import { usePathname, useRouter } from 'next/navigation';
-import { useResignationDetail } from '@/apis/Resignation';
-import { ResignationDetailResponseInformation } from '@/types/resignation';
-import { formatCreateDate } from '@/components/organisms/Resignation/FormatCreateDate';
+import { Suspense } from 'react';
+import ClientComponent from './ClientComponent'; // 클라이언트 컴포넌트 import
 
-const Page = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const exitRequestmentId = pathname.replace('/dashboard/JoinApplicationSetting/Resignation/', '');
-  const { data, error, isLoading } = useResignationDetail(Number(exitRequestmentId));
-  const [detailData, setDetailData] = useState<ResignationDetailResponseInformation>({
-    exitRequestmentId: 0,
-    residentName: '',
-    major: '',
-    studentNumber: '',
-    schoolYear: 0,
-    phoneNumber: '',
-    dormitoryName: '',
-    roomSize: 0,
-    securityDepositReturnStatus: 'UNPAID',
-    roomNumber: 0,
-    bedNumber: 0,
-    hasKey: false,
-    keyNumber: '',
-    exitDate: '',
-    bankName: '',
-    accountNumber: '',
-  });
+interface ResignationProps {
+  id: string;
+  name: string;
+  major: string;
+  schoolNumber: string;
+  grade: number;
+  phoneNumber: string;
+  building: string;
+  depositRefund: boolean;
+  roomNumber: string;
+  bedNumber: string;
+  hasKey: boolean;
+  keyNumber: string;
+  exitDate: string;
+  bankName: string;
+  accountNumber: string;
+}
 
-  useEffect(() => {
-    if (data && data.information) {
-      setDetailData(data.information);
-    }
-  }, [data]);
+async function fetchData(id: string): Promise<ResignationProps> {
+  // 실제 데이터를 가져오는 로직을 여기에 작성합니다.
+  // 예: API 호출 또는 데이터베이스 쿼리 등
+  return {
+    id,
+    name: 'John Doe',
+    major: 'Computer Science',
+    schoolNumber: '123456',
+    grade: 3,
+    phoneNumber: '010-1234-5678',
+    building: 'Building A',
+    depositRefund: true,
+    roomNumber: '101',
+    bedNumber: 'A1',
+    hasKey: true,
+    keyNumber: 'Key-123',
+    exitDate: '2023-12-31',
+    bankName: 'Bank of Korea',
+    accountNumber: '123-456-7890',
+  };
+}
 
+export async function generateStaticParams() {
+  const ids = ['1', '2', '3']; // 예시 데이터
+  return ids.map((id) => ({ id }));
+}
+
+const Page = ({ params }: { params: { id: string } }) => {
   return (
-    <div className='flex flex-col text-center w-[1200px] gap-35'>
-      <h1 className='H0 text-gray-grayscale50 text-nowrap'>퇴사확인서 확인</h1>
-      <div className='flex border-t-1 border-t-gray-grayscale50'>
-        <div className='flex-1 flex flex-col gap-60 py-60 pl-103 pr-134'>
-          <ResignationDetail label='이 름' value={detailData.residentName} />
-          <ResignationDetail label='학 과' value={detailData.major} />
-          <ResignationDetail label='학 번' value={detailData.studentNumber} />
-          <ResignationDetail label='학 년' value={detailData.schoolYear + '학년'} />
-          <ResignationDetail label='휴대전화' value={detailData.phoneNumber} />
-          <ResignationDetail label='건 물' value={detailData.dormitoryName} />
-          <ResignationDetail
-            label='보증금 환급 여부'
-            value={
-              detailData.securityDepositReturnStatus === 'PAYMENT'
-                ? '지급'
-                : detailData.securityDepositReturnStatus === 'UNALBE'
-                  ? '지급 불가'
-                  : '미지급'
-            }
-          />
-        </div>
-        <div className='flex-1 flex flex-col gap-60 bg-gray-grayscale5 py-60 pl-119 pr-112'>
-          <ResignationDetail label='호 실' value={detailData.roomNumber + '호'} />
-          <ResignationDetail label='침대번호' value={detailData.bedNumber + '번'} />
-          <ResignationDetail label='열쇠 수령 여부' value={detailData.hasKey ? 'O' : '-'} />
-          <ResignationDetail label='열쇠번호' value={detailData.keyNumber ? detailData.keyNumber : '-'} />
-          <ResignationDetail label='퇴실날짜' value={formatCreateDate(detailData.exitDate)} />
-          <ResignationDetail label='은행명' value={detailData.bankName} />
-          <ResignationDetail label='계좌번호' value={detailData.accountNumber} />
-        </div>
-      </div>
-      <div>
-        <BtnMidVariant
-          label='확인'
-          disabled={false}
-          variant='blue'
-          onClick={() => router.push(`/dashboard/JoinApplicationSetting/Resignation`)}
-        />
-      </div>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ClientComponent id={params.id} />
+    </Suspense>
   );
 };
 
