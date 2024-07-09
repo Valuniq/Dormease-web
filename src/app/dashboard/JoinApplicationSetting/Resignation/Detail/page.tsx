@@ -5,14 +5,15 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import ResignationDetail from '@/components/organisms/Resignation/ResignationDetail';
 import { useResignationDetail } from '@/apis/Resignation';
 import { ResignationDetailResponseInformation } from '@/types/resignation';
-import { formatCreateDate } from '@/components/organisms/Resignation/FormatCreateDate';
-import { usePathname, useRouter } from 'next/navigation';
+import { formatCreateDate } from '@/components/organisms/FormatCreateDate/FormatCreateDate';
+import { useRouter } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
+import { resignationIdState } from '@/recoil/resignation';
 
-const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
+const ResignationId = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const exitRequestmentId = pathname.replace('/dashboard/JoinApplicationSetting/Resignation/', '');
-  const { data, error, isLoading } = useResignationDetail(Number(exitRequestmentId));
+  const id = useRecoilValue(resignationIdState);
+  const { data, error, isLoading } = useResignationDetail(id);
   const [detailData, setDetailData] = useState<ResignationDetailResponseInformation>({
     exitRequestmentId: 0,
     residentName: '',
@@ -82,4 +83,4 @@ const ClientComponent: React.FC<{ id: string }> = ({ id }) => {
   );
 };
 
-export default ClientComponent;
+export default ResignationId;

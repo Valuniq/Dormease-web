@@ -2,7 +2,9 @@ import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import { ResignationListResponseDataList } from '@/types/resignation';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { formatCreateDate } from './FormatCreateDate';
+import { formatCreateDate } from '../FormatCreateDate/FormatCreateDate';
+import { useSetRecoilState } from 'recoil';
+import { resignationIdState } from '@/recoil/resignation';
 
 type Props = ResignationListResponseDataList & {
   isChecked: boolean;
@@ -23,12 +25,16 @@ const ResignationListBody = ({
   handleCheckboxChange,
 }: Props) => {
   const router = useRouter();
+  const setId = useSetRecoilState(resignationIdState);
 
   return (
     <>
       <tr
         className={`table rounded-5 w-[1200px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
-        onClick={() => router.push(`/dashboard/JoinApplicationSetting/Resignation/${exitRequestmentId}`)}
+        onClick={() => {
+          setId(exitRequestmentId);
+          router.push(`/dashboard/JoinApplicationSetting/Resignation/Detail`);
+        }}
       >
         <td className='w-[10%]'>{residentName}</td>
         <td className='w-[12%]'>{studentNumber}</td>

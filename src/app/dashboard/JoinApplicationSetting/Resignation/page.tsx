@@ -12,7 +12,7 @@ import { postPeriod } from '@/apis/period';
 const Resignation = () => {
   const {
     resignationData,
-    error: withdrawalError,
+    error: resignationError,
     isLoadingMore,
     size,
     setSize,
