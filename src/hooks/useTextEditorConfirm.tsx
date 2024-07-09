@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 
 const useTextEditorConfirm = (message: string, onConfirm: () => void) => {

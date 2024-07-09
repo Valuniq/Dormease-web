@@ -1,3 +1,4 @@
+'use client';
 import { faqResponseDataList } from '@/types/faq';
 import React from 'react';
 import NoneList from '../NoneList/NoneList';
