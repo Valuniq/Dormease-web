@@ -118,7 +118,7 @@ import React, { Fragment, useRef, useEffect, useCallback } from 'react';
 import AppMemberManagementListBody from './AppMemberManagementListBody';
 import NoneList from '../NoneList/NoneList';
 import { userResponseDataList } from '@/types/userManagement';
-import { useInfiniteUser } from '@/apis/userManagement';
+import { useInfiniteUser } from '@/apis/AppUserManagement';
 import SortIcon from '@/components/atoms/AllBtn/SortBtn/SortBtn';
 
 type Props = {
