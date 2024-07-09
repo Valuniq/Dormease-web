@@ -1,4 +1,4 @@
-import { BASE_URL } from './../constants/path';
+import { BASE_URL } from '../constants/path';
 import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
 import { userResponse, userResponseDataList } from '@/types/userManagement';

@@ -1,13 +1,17 @@
 'use client';
-import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+import dynamic from 'next/dynamic';
 import React from 'react';
 import Image from 'next/image';
 import pinIcon from '@public/images/pinIcon.png';
-import LongInputText from '@/components/atoms/InputText/LongInputText/LongInputText';
-import QuillComponent from '@/lib/Quill/QuillComponent';
-import CheckFileBtn from '@/components/atoms/AllBtn/CheckFileBtn/CheckFileBtn';
-import FileNameDeleteBtn from '@/components/atoms/AllBtn/FileNameDeleteBtn/FileNameDeleteBtn';
 import transhcan from '@public/images/transhcan.png';
+
+const LongInputText = dynamic(() => import('@/components/atoms/InputText/LongInputText/LongInputText'), { ssr: false });
+const Checkbox = dynamic(() => import('@/components/atoms/AllBtn/Checkbox/Checkbox'), { ssr: false });
+const QuillComponent = dynamic(() => import('@/lib/Quill/QuillComponent'), { ssr: false });
+const CheckFileBtn = dynamic(() => import('@/components/atoms/AllBtn/CheckFileBtn/CheckFileBtn'), { ssr: false });
+const FileNameDeleteBtn = dynamic(() => import('@/components/atoms/AllBtn/FileNameDeleteBtn/FileNameDeleteBtn'), {
+  ssr: false,
+});
 
 type Props = {
   title: string;
