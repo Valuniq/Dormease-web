@@ -1,0 +1,6 @@
+{
+  "/not-found": "app/not-found.js",
+  "/page": "app/page.js",
+  "/dashboard/StudentManagement/page": "app/dashboard/StudentManagement/page.js",
+  "/dashboard/JoinApplicationSetting/page": "app/dashboard/JoinApplicationSetting/page.js"
+}
