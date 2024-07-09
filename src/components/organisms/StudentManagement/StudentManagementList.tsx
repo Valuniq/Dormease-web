@@ -13,9 +13,8 @@ type Props = {
   onBonusPointClick: (genderDown: boolean) => void;
   minusPointDown: boolean;
   onMinusPointClick: (genderDown: boolean) => void;
-  onStudentClick: (schoolNumber: string) => void;
   list: {
-    index: number;
+    id: number;
     name: string;
     schoolNumber: string;
     gender: string;
@@ -37,7 +36,6 @@ const StudentManagementList = ({
   onBonusPointClick,
   minusPointDown,
   onMinusPointClick,
-  onStudentClick,
 }: Props) => {
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
@@ -88,14 +86,15 @@ const StudentManagementList = ({
         <tr className='h-15 border-b-1' />
       </thead>
 
-      {list ? (
+      {list && list.length > 0 ? (
         <tbody className='w-[1214px] block h-677 overflow-y-auto scrollbar-table'>
           <tr className='h-15' />
-          {list.map((data) => {
+          {list.map((data, index) => {
             return (
               <StudentManagementListBody
-                key={data.index}
-                index={data.index}
+                key={index}
+                index={index}
+                id={data.id}
                 name={data.name}
                 schoolNumber={data.schoolNumber}
                 gender={data.gender}
@@ -104,7 +103,6 @@ const StudentManagementList = ({
                 bonusPoint={data.bonusPoint}
                 minusPoint={data.minusPoint}
                 schoolStatus={data.schoolStatus}
-                onStudentClick={onStudentClick}
               />
             );
           })}
