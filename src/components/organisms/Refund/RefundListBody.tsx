@@ -3,8 +3,8 @@ import React from 'react';
 
 type Props = {
   isLastItem: boolean;
-  clickSchoolNumber: number;
-  onStudentClick: (schoolNumber: number) => void;
+  clickRefund: number;
+  onStudentClick: (refundRequestmentId: number) => void;
   onDeleteRefund: () => void;
 
   refundRequestmentId: number;
@@ -23,7 +23,7 @@ type Props = {
 
 const RefundListBody = ({
   isLastItem,
-  clickSchoolNumber,
+  clickRefund,
   onStudentClick,
   onDeleteRefund,
   refundRequestmentId,
@@ -42,7 +42,7 @@ const RefundListBody = ({
   return (
     <div className={`flex items-center relative ${!isLastItem && 'border-b-1 border-gray-grayscale30'}`}>
       <div
-        className={`my-8 flex items-center rounded-5 w-full H4-caption h-38 text-nowrap cursor-pointer ${clickSchoolNumber === refundRequestmentId ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
+        className={`my-8 flex items-center rounded-5 w-full H4-caption h-38 text-nowrap cursor-pointer ${clickRefund === refundRequestmentId ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
         onClick={() => onStudentClick(refundRequestmentId)}
       >
         <div className='w-[6%]'>{residentName}</div>
@@ -60,7 +60,7 @@ const RefundListBody = ({
       <div className='absolute -right-87'>
         <BtnMiniVariant
           label='처리'
-          disabled={!(clickSchoolNumber === refundRequestmentId)}
+          disabled={!(clickRefund === refundRequestmentId)}
           selected={false}
           variant='blue'
           onClick={onDeleteRefund}
