@@ -7,7 +7,7 @@ import { patchResignation, useResignationList } from '@/apis/Resignation';
 import InfiniteScroll from '@/hooks/useInfiniteScroll';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
-import { postPeriod } from '@/apis/period';
+import { postPeriod } from '@/apis/Period';
 
 const Resignation = () => {
   const {
