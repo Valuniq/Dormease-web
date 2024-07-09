@@ -5,14 +5,14 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { requestIdState } from '@/recoil/request';
 import { RequestDetailResponseInformation } from '@/types/request';
-import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 const Page = () => {
-  const pathname = usePathname();
-  const requestmentId = pathname.replace('/dashboard/Request/', '');
-  const { data, error, isLoading } = useRequestDetail(Number(requestmentId));
+  const requestId = useRecoilValue(requestIdState);
+  const { data, error, isLoading } = useRequestDetail(requestId);
   const [detailData, setDetailData] = useState<RequestDetailResponseInformation>({
     requestmentId: 0,
     myRequestment: false,

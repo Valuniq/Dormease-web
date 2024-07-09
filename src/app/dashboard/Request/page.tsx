@@ -5,8 +5,11 @@ import RequestList from '@/components/organisms/Request/RequestList';
 import InfiniteScroll from '@/hooks/useInfiniteScroll';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
+import { requestIdState } from '@/recoil/request';
 
 const Request = () => {
+  const setRequestId = useSetRecoilState(requestIdState);
   const router = useRouter();
   const { requestData, error: requestError, isLoadingMore: isLoading, size, setSize, isReachingEnd } = useRequestList();
 
@@ -17,7 +20,8 @@ const Request = () => {
         <RequestList
           list={requestData}
           onRequestClick={(requestmentId: number) => {
-            router.push(`/dashboard/Request/${requestmentId}`);
+            setRequestId(requestmentId);
+            router.push(`/dashboard/Request/Detail`);
           }}
         />
       </div>
