@@ -1,18 +1,18 @@
-import { withdrawalList } from '@/types/withdrawal';
+import { WithdrawalMemberResponseDataList } from '@/types/withdrawal';
 import React from 'react';
 
 const WithdrawalMemberManagementListBody = ({
-  id,
+  index,
   name,
   studentNumber,
   bonusPoint,
   minusPoint,
   deletedAt,
-}: withdrawalList) => {
+}: WithdrawalMemberResponseDataList & { index: number }) => {
   return (
     <>
       <tr className='table rounded-5 w-[1090px] H4-caption h-38 text-nowrap relative align-middle cursor-pointer'>
-        <td className='w-[8%]'>{id}</td>
+        <td className='w-[8%]'>{index + 1}</td>
         <td className='w-[22%]'>{name}</td>
         <td className='w-[20%]'>{studentNumber}</td>
         <td className='w-[17%]'>{bonusPoint}</td>

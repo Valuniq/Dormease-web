@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/constants/path';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import tokenManager from '@/utils/tokenManager';
 
@@ -16,7 +17,7 @@ interface UserLoginResponse {
 }
 
 export const signIn = async ({ loginId, password }: UserLoginRequest): Promise<UserLoginResponse> => {
-  const res = await fetch(`http://13.209.177.109:8080/api/v1/auth/sign-in`, {
+  const res = await fetch(`${BASE_URL}/api/v1/auth/sign-in`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

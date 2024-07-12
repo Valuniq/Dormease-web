@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import PromptBodyWarning from '@public/images/PromptBodyWarning.png';
+import PromptWarning from '@public/images/PromptWarning.png';
 import AlertBtn from '@/components/atoms/AllBtn/AlertBtn/AlertBtn';
 import PromptHeader from '@/components/atoms/Prompt/PromptHeader/PromptHeader';
 
@@ -35,7 +35,7 @@ const ConfirmPrompt = ({ variant, label, onCancel, onConfirm }: Props) => {
   return (
     <div className='w-456 h-194 flex flex-col items-center rounded-8 shadow-xl bg-white pb-15'>
       <PromptHeader bgColor={bgHeader} />
-      <Image src={PromptBodyWarning} className='mt-19 mb-16' width={22} height={19} alt='promptBodyWarning' />
+      <Image src={PromptWarning} className='mt-19 mb-16' width={22} height={19} alt='PromptWarning' />
       <h1 className='alert-cap text-gray-grayscale50 text-center'>
         {label.split('\\n').map((line, index) => (
           <p key={index} className='leading-25'>

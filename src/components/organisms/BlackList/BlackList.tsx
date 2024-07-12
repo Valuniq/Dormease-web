@@ -35,35 +35,34 @@ const BlackList = ({ blackLists, isAllChecked, setIsAllChecked, isEdit, setIsEdi
             <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
           </th>
         </thead>
-        <tbody className='overflow-y-scroll'>
-          {blackLists && blackLists.length > 0 ? (
-            <>
-              <tr className='h-15' />
-              {blackLists.map((i) => (
-                <>
-                  <BlackListBody
-                    index={i.index}
-                    name={i.name}
-                    studentId={i.studentId}
-                    phoneNumber={i.phoneNumber}
-                    minus={i.minus}
-                    reason={i.reason}
-                    setReason={i.setReason}
-                    registrationDate={i.registrationDate}
-                    isChecked={i.isChecked}
-                    setIsChecked={i.setIsChecked}
-                    isEdit={isEdit}
-                  />
-                  <tr className='h-15' />
-                </>
-              ))}
-            </>
-          ) : (
-            <td className='h-500' colSpan={8}>
-              <NoneList />
-            </td>
-          )}
-        </tbody>
+
+        {blackLists && blackLists.length > 0 ? (
+          <tbody className='overflow-y-scroll'>
+            <tr className='h-15' />
+            {blackLists.map((i) => (
+              <>
+                <BlackListBody
+                  index={i.index}
+                  name={i.name}
+                  studentId={i.studentId}
+                  phoneNumber={i.phoneNumber}
+                  minus={i.minus}
+                  reason={i.reason}
+                  setReason={i.setReason}
+                  registrationDate={i.registrationDate}
+                  isChecked={i.isChecked}
+                  setIsChecked={i.setIsChecked}
+                  isEdit={isEdit}
+                />
+                <tr className='h-15' />
+              </>
+            ))}
+          </tbody>
+        ) : (
+          <tbody>
+            <NoneList colspan={8} />
+          </tbody>
+        )}
       </table>
     </div>
   );

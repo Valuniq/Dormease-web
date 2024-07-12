@@ -36,33 +36,34 @@ const BuildingManagementList = ({
         </tr>
         <tr className='h-12 border-b-1' />
       </thead>
-      <tbody className='block w-[748px] h-695 overflow-y-auto scrollbar-table'>
-        {roomList && roomList.length > 0 ? (
-          <>
-            <tr className='h-12' />
-            {roomList.map((data) => {
-              return (
-                <BuildingManagementListBody
-                  key={data.id}
-                  roomId={data.id}
-                  roomNumber={data.roomNumber}
-                  roomSize={data.roomSize}
-                  gender={data.gender}
-                  currentPeople={data.currentPeople}
-                  listClick={listClick}
-                  onListClick={onListClick}
-                  onStudentClick={onStudentClick}
-                  studentList={studentList}
-                  editAssign={editAssign}
-                  roomManual={roomManual}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <NoneList />
-        )}
-      </tbody>
+
+      {roomList && roomList.length > 0 ? (
+        <tbody className='block w-[748px] h-695 overflow-y-auto scrollbar-table'>
+          <tr className='h-12' />
+          {roomList.map((data) => {
+            return (
+              <BuildingManagementListBody
+                key={data.id}
+                roomId={data.id}
+                roomNumber={data.roomNumber}
+                roomSize={data.roomSize}
+                gender={data.gender}
+                currentPeople={data.currentPeople}
+                listClick={listClick}
+                onListClick={onListClick}
+                onStudentClick={onStudentClick}
+                studentList={studentList}
+                editAssign={editAssign}
+                roomManual={roomManual}
+              />
+            );
+          })}
+        </tbody>
+      ) : (
+        <tbody>
+          <NoneList colspan={4} />
+        </tbody>
+      )}
     </table>
   );
 };

@@ -120,7 +120,7 @@ const PointManagementList = ({ pointManagementLists, plusSort, setPlusSort, minu
               ))}
             </tbody>
           ) : (
-            <tbody className='overflow-y-scroll'>
+            <tbody className='h-full'>
               <NoneList colspan={9} />
             </tbody>
           )}

@@ -1,9 +1,10 @@
+'use client';
 import BackBtn from '@/components/atoms/AllBtn/BackBtn/BackBtn';
 import PrevApplicantList from '@/components/organisms/Applicant/PrevApplicantList';
 import React from 'react';
 import { dummy } from './dummy';
 
-const page = () => {
+const Page = () => {
   return (
     <div className='w-[1250px]'>
       <div className='flex justify-center'>
@@ -15,4 +16,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -58,6 +58,7 @@ export type BuildingRoomInAssignedResponse = {
 };
 
 export type BuildingRoomInAssignedResponseInformation = {
+  roomId: number;
   id: number;
   studentNumber: string;
   name: string;
@@ -68,4 +69,9 @@ export type BuildingRoomInAssignedResponseInformation = {
 export type BuildingRoomManualRequest = {
   roomId: number;
   residentIds: number[];
+};
+
+export type BuildingRoomAssigned = {
+  roomId: number;
+  resident: BuildingRoomInAssignedResponseInformation[];
 };

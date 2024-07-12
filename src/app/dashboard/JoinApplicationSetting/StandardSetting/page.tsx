@@ -3,7 +3,7 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import StandardSetting from '@/components/organisms/StandardSetting/StandardSetting';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   return (
     <div className='flex flex-col justify-center items-center'>
       <div className='mb-54'>
@@ -43,4 +43,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

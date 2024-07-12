@@ -21,28 +21,30 @@ const WithdrawalMemberManagementList = ({ list }: Props) => {
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
-        {list ? (
-          <>
-            <tr className='h-15' />
-            {list.map((data) => {
-              return (
-                <WithdrawalMemberManagementListBody
-                  key={data.id}
-                  id={data.id}
-                  name={data.name}
-                  studentNumber={data.studentNumber}
-                  bonusPoint={data.bonusPoint}
-                  minusPoint={data.minusPoint}
-                  deletedAt={data.deletedAt}
-                />
-              );
-            })}
-          </>
-        ) : (
-          <NoneList />
-        )}
-      </tbody>
+
+      {list ? (
+        <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
+          <tr className='h-15' />
+          {list.map((data, index) => {
+            return (
+              <WithdrawalMemberManagementListBody
+                key={data.id}
+                id={data.id}
+                index={index}
+                name={data.name}
+                studentNumber={data.studentNumber}
+                bonusPoint={data.bonusPoint}
+                minusPoint={data.minusPoint}
+                deletedAt={data.deletedAt}
+              />
+            );
+          })}
+        </tbody>
+      ) : (
+        <tbody>
+          <NoneList colspan={6} />
+        </tbody>
+      )}
     </table>
   );
 };

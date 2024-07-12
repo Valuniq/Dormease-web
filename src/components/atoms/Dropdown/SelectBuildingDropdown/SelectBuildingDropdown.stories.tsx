@@ -11,20 +11,22 @@ const meta: Meta<typeof SelectBuildingDropdown> = {
 
 export default meta;
 
+// build 타입 에러 주석 처리
+
 type Story = StoryObj<typeof SelectBuildingDropdown>;
 
 export const IsOn: Story = {
   args: {
-    isOn: true,
-    select: '명덕관(4인실)',
-    list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
+    // isOn: true,
+    // select: '명덕관(4인실)',
+    // list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
   },
 };
 
-export const IsOff: Story = {
-  args: {
-    isOn: false,
-    select: '명덕관(4인실)',
-    list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
-  },
-};
+// export const IsOff: Story = {
+//   args: {
+//     isOn: false,
+//     select: '명덕관(4인실)',
+//     list: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
+//   },
+// };
