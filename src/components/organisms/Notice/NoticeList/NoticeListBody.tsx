@@ -7,13 +7,12 @@ const NoticeListBody = ({ notificationId, pinned, title, writer, createdDate, ex
   const slicedTitle = title.length > 35 ? title.slice(0, 35) + '...' : title;
   return (
     <tr
-      key={notificationId}
-      className={`${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-38 hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
+      className={` ${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-38 hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
     >
-      <td className='text-center'>
+      <td className='text-center '>
         {pinned ? (
           <div className='flex items-center justify-center'>
-            {notificationId}{' '}
+            {notificationId}
             <Image className=' object-contain ml-2 ' src={pinIcon} width={13} height={19.61} alt='pinIcon' />
           </div>
         ) : (

@@ -33,8 +33,10 @@ const NoticeList = ({ noticeLists }: NoticeListProps) => {
 
         {noticeLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
+            <tr className='h-14' />
             {pinnedNotices.map((notice) => (
-              <tr key={notice.notificationId}>
+              <Fragment key={notice.notificationId}>
+                {' '}
                 <NoticeListBody
                   notificationId={notice.notificationId}
                   title={notice.title}
@@ -42,11 +44,12 @@ const NoticeList = ({ noticeLists }: NoticeListProps) => {
                   createdDate={notice.createdDate}
                   existFile={notice.existFile}
                   pinned={notice.pinned}
-                />
-              </tr>
+                />{' '}
+                <tr className='h-14' />
+              </Fragment>
             ))}
             {unPinnedNotices.map((notice) => (
-              <tr key={notice.notificationId}>
+              <Fragment key={notice.notificationId}>
                 <NoticeListBody
                   notificationId={notice.notificationId}
                   title={notice.title}
@@ -54,8 +57,9 @@ const NoticeList = ({ noticeLists }: NoticeListProps) => {
                   createdDate={notice.createdDate}
                   existFile={notice.existFile}
                   pinned={notice.pinned}
-                />
-              </tr>
+                />{' '}
+                <tr className='h-14' />
+              </Fragment>
             ))}
           </tbody>
         ) : (
