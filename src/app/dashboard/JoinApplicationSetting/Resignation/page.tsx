@@ -4,7 +4,6 @@ import ResignationList from '@/components/organisms/Resignation/ResignationList'
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 import { patchResignation, useResignationList } from '@/apis/Resignation';
-import InfiniteScroll from '@/hooks/useInfiniteScroll';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { postPeriod } from '@/apis/Period';
@@ -78,19 +77,14 @@ const Resignation = () => {
             />
           </div>
         </div>
-        <InfiniteScroll
-          isLoading={isLoadingMore || false}
-          isReachingEnd={isReachingEnd}
-          loadMore={() => {
-            setSize(size + 1);
-          }}
-        >
-          <ResignationList
-            list={resignationData}
-            checkedItems={checkedItems}
-            handleCheckboxChange={handleCheckboxChange}
-          />
-        </InfiniteScroll>
+        <ResignationList
+          list={resignationData}
+          checkedItems={checkedItems}
+          handleCheckboxChange={handleCheckboxChange}
+          isLoading={isLoadingMore ?? false}
+          isEndReached={isReachingEnd}
+          setSize={setSize}
+        />
         <div className='mt-21 flex justify-end gap-14'>
           <BtnMidVariant
             label='지급불가'
