@@ -50,7 +50,6 @@ const Refund = () => {
           endDate.toISOString().split('T')[0],
           'REFUND',
         );
-        console.log(response.information.message);
         setDateModal(!dateModal);
       } catch (error) {
         console.error('Error posting period:', error);
