@@ -5,6 +5,8 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
+import { editState } from '@/recoil/nav';
 
 const Page = () => {
   const [input, setInput] = useState({
@@ -41,6 +43,7 @@ const Page = () => {
   const [isBuilding, setIsBuilding] = useState(false);
   const [createModal, setCreateModal] = useState(false);
   const router = useRouter();
+  const setEditState = useSetRecoilState(editState);
 
   const handleInputChange = (field: string, value: string | number | boolean) => {
     setInput((prevInput) => ({
@@ -320,7 +323,10 @@ const Page = () => {
             onCancel={() => {
               setCreateModal(false);
             }}
-            onConfirm={() => router.push(`/dashboard/StudentManagement`)}
+            onConfirm={() => {
+              setEditState(false);
+              router.push(`/dashboard/StudentManagement`);
+            }}
           />
         </BackDrop>
       )}

@@ -6,10 +6,11 @@ import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { formatCreateDate } from '@/components/organisms/FormatCreateDate/FormatCreateDate';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { editState } from '@/recoil/nav';
 import { requestIdState } from '@/recoil/request';
 import { RequestDetailResponseInformation } from '@/types/request';
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 const Page = () => {
   const requestId = useRecoilValue(requestIdState);
@@ -25,8 +26,13 @@ const Page = () => {
     visibility: false,
     progression: 'IN_REVIEW',
   });
+  const setEditState = useSetRecoilState(editState);
   const [progressionModal, setProgressionModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+
+  useEffect(() => {
+    setEditState(true);
+  }, [setEditState]);
 
   useEffect(() => {
     if (data && data.information) {
@@ -89,7 +95,10 @@ const Page = () => {
               label='등록'
               disabled={data?.information.progression === detailData.progression}
               variant='blue'
-              onClick={() => setProgressionModal(!progressionModal)}
+              onClick={() => {
+                setProgressionModal(!progressionModal);
+                setEditState(false);
+              }}
             />
             <BtnMidVariant label='삭제' disabled={false} variant='red' onClick={() => setDeleteModal(!deleteModal)} />
           </div>

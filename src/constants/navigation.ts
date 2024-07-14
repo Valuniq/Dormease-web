@@ -1,3 +1,4 @@
+import MainIcon from '@public/images/navigation/Main.png';
 import StudentManagementIcon from '@public/images/navigation/StudentManagement.png';
 import JoinAndResignationManagementIcon from '@public/images/navigation/JoinAndResignationManagement.png';
 import BuildingManagementIcon from '@public/images/navigation/BuildingManagement.png';
@@ -5,7 +6,6 @@ import ScheduleManagementIcon from '@public/images/navigation/ScheduleManagement
 import NoticeIcon from '@public/images/navigation/Notice.png';
 import FAQIcon from '@public/images/navigation/FAQ.png';
 import RequestIcon from '@public/images/navigation/Request.png';
-import MealTicketManagementIcon from '@public/images/navigation/MealTicketManagement.png';
 import SettingIcon from '@public/images/navigation/Setting.png';
 
 export const StudentManagementRoutes = '/dashboard/StudentManagement';
@@ -15,6 +15,11 @@ export const NoticeWritingRoutes = '/dashboard/Notice/NoticeWriting';
 export const FAQWritingRoutes = '/dashboard/FAQ/FAQWriting';
 
 export const NavigationItems = [
+  {
+    label: '메인 화면',
+    routes: '/dashboard',
+    icon: MainIcon,
+  },
   {
     label: '학생 관리',
     routes: StudentManagementRoutes,
@@ -56,7 +61,7 @@ export const NavigationItems = [
     icon: ScheduleManagementIcon,
   },
   {
-    label: '공지 사항',
+    label: '공지사항',
     routes: '/dashboard/Notice',
     icon: NoticeIcon,
   },
@@ -66,17 +71,12 @@ export const NavigationItems = [
     icon: FAQIcon,
   },
   {
-    label: '요청 사항',
+    label: '요청사항',
     routes: '/dashboard/Request',
     icon: RequestIcon,
   },
   {
-    label: '식권 관리',
-    routes: '/dashboard/',
-    icon: MealTicketManagementIcon,
-  },
-  {
-    label: '설정',
+    label: '계정 관리',
     routes: '/dashboard/Setting',
     icon: SettingIcon,
   },
