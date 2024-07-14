@@ -1,16 +1,17 @@
 'use client';
 
-import { deleteBuilding, getBuildingLists, postAddBuilding } from '@/apis/Building';
+import { deleteBuilding, postAddBuilding, useBuildingList } from '@/apis/BuildingSetting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import BuildingSettingsBody from '@/components/organisms/BuildingSettings/BuildingSettingsBody';
 import AddBuildingPrompt from '@/components/organisms/Prompt/AddBuildingPrompt/AddBuildingPrompt';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { buildingSettingIdState } from '@/recoil/buildingSetting';
 import { BuildingSettingsResponseInformation } from '@/types/building';
 import { useRouter } from 'next/navigation';
 import { useState, Suspense, useEffect } from 'react';
-import useSWR, { mutate } from 'swr';
+import { useSetRecoilState } from 'recoil';
 
 const BuildingSettings = () => {
   const [lists, setLists] = useState<BuildingSettingsResponseInformation[]>();
@@ -22,8 +23,9 @@ const BuildingSettings = () => {
   const [selectImage, setSelectImage] = useState<File | null>(null);
   const [selectedId, setSeletedId] = useState<number | null>(null);
   const router = useRouter();
+  const setBuildingId = useSetRecoilState(buildingSettingIdState);
 
-  const { data, error } = useSWR('/api/v1/web/dormitory/setting', getBuildingLists);
+  const { data, error, mutate } = useBuildingList();
 
   useEffect(() => {
     if (data) {
@@ -37,11 +39,11 @@ const BuildingSettings = () => {
     try {
       const response = await postAddBuilding(input, selectImage);
 
-      if (response) {
+      if (response.check) {
         if (response.information.message === '동일한 이름의 기숙사가 존재합니다.') {
           setSameModal(true);
         } else {
-          mutate('/api/v1/web/dormitory/setting');
+          await mutate();
           setModal(!modal);
           setInput('');
           setSelectImage(null);
@@ -59,11 +61,8 @@ const BuildingSettings = () => {
     if (dormitoryId !== null) {
       try {
         const response = await deleteBuilding(dormitoryId);
-
-        console.log(response);
-
-        if (response) {
-          mutate('/api/v1/web/dormitory/setting');
+        if (response.check) {
+          await mutate();
           setDeleteModal(false);
           setSeletedId(null);
         } else {
@@ -82,10 +81,10 @@ const BuildingSettings = () => {
         <h1 className='H0 text-gray-grayscale50 text-center mb-35'>건물 설정</h1>
         <div className='w-[1220px] grid grid-cols-3 gap-x-20 gap-y-30 min-h-381 max-h-800 overflow-y-auto scrollbar-table'>
           {lists &&
-            lists.map((data) => {
+            lists.map((data, index) => {
               return (
                 <BuildingSettingsBody
-                  key={data.id}
+                  key={index}
                   id={data.id}
                   name={data.name}
                   imageUrl={data.imageUrl}
@@ -97,9 +96,10 @@ const BuildingSettings = () => {
                       setDeleteModal(true);
                     }
                   }}
-                  onBuildingSettingsDetail={() =>
-                    router.push(`/dashboard/BuildingManagement/BuildingSettings/${data.id}`)
-                  }
+                  onBuildingSettingsDetail={() => {
+                    setBuildingId(data.id);
+                    router.push(`/dashboard/BuildingManagement/BuildingSettings/Detail`);
+                  }}
                 />
               );
             })}

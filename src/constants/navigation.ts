@@ -9,8 +9,10 @@ import RequestIcon from '@public/images/navigation/Request.png';
 import SettingIcon from '@public/images/navigation/Setting.png';
 
 export const StudentManagementRoutes = '/dashboard/StudentManagement';
-const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
-const BuildingManagementRoutes = '/dashboard/BuildingManagement';
+export const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
+export const BuildingManagementRoutes = '/dashboard/BuildingManagement';
+export const NoticeWritingRoutes = '/dashboard/Notice/NoticeWriting';
+export const FAQWritingRoutes = '/dashboard/FAQ/FAQWriting';
 
 export const NavigationItems = [
   {

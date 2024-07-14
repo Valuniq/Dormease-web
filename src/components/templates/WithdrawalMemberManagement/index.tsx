@@ -8,10 +8,16 @@ const WithdrawalMemberManagementTemplate = ({
   list,
   input,
   setInput,
+  isLoading,
+  isEndReached,
+  setSize,
 }: {
   list: WithdrawalMemberResponseDataList[];
   input: string;
   setInput: (value: string) => void;
+  isLoading: boolean;
+  isEndReached: boolean;
+  setSize: (size: number | ((size: number) => number)) => void;
 }) => {
   return (
     <div className='flex flex-col w-[1145px] relative'>
@@ -25,7 +31,7 @@ const WithdrawalMemberManagementTemplate = ({
           </div>
         )}
       </div>
-      <WithdrawalMemberManagementList list={list} />
+      <WithdrawalMemberManagementList list={list} isLoading={isLoading} isEndReached={isEndReached} setSize={setSize} />
     </div>
   );
 };

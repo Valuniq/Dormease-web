@@ -19,6 +19,7 @@ type Props = {
   setInput?: (id: string) => void;
   right?: boolean;
   isBuilding?: boolean;
+  setIsBuilding?: (isBuilding: boolean) => void;
   list?: string[];
   select?: string;
   setSelect?: (isOn: string) => void;
@@ -54,25 +55,36 @@ const RadioEdit = ({ value, setIsOn }: Props) => {
     <div className='w-260 flex justify-center gap-70'>
       {setIsOn && (
         <>
-          <RadioBtn isOn={value === '남성'} setIsOn={setIsOn} label='남성' />
-          <RadioBtn isOn={value === '여성'} setIsOn={setIsOn} label='여성' />
+          <RadioBtn isOn={value === 'MALE'} setIsOn={() => setIsOn(true)} label='남성' />
+          <RadioBtn isOn={value === 'FEMALE'} setIsOn={() => setIsOn(false)} label='여성' />
         </>
       )}
     </div>
   );
 };
 
-const BuildingEdit = ({ text, isBuilding, list, select, setSelect }: Props) => {
+const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, select, setSelect }: Props) => {
   return (
-    <div className='flex relative'>
-      <h4 className='H4 text-gray-grayscale50 mr-5'>{text ? text : '건물 선택'}</h4>
-      <button className={`${isBuilding && 'rotate-90'}`}>
-        <ArrowDown />
-      </button>
-      {isBuilding && setSelect && (
-        <div className='absolute left-full bottom-0'>
-          <RelocationDropdown list={list || []} select={select || ''} setSelect={setSelect} />
-        </div>
+    <div className='flex relative cursor-pointer'>
+      {setIsBuilding && (
+        <>
+          <h4 className='H4 text-gray-grayscale50 mr-5' onClick={() => setIsBuilding(!isBuilding)}>
+            {text ? text : '건물 선택'}
+          </h4>
+          <button className={`${isBuilding && 'rotate-90'}`} onClick={() => setIsBuilding(!isBuilding)}>
+            <ArrowDown />
+          </button>
+          {isBuilding && setSelect && (
+            <div className='absolute left-full bottom-0'>
+              <RelocationDropdown
+                list={list || []}
+                select={select || ''}
+                setSelect={setSelect}
+                setIsBuilding={setIsBuilding}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
@@ -91,7 +103,7 @@ const RoomNumberEdit = ({ input, setInput }: Props) => {
 const BedNumberEdit = ({ input, setInput }: Props) => {
   return (
     <div className='flex items-center'>
-      {setInput && <PointBar input={input || ''} setInput={setInput} readonly />}
+      {setInput && <PointBar input={input || ''} setInput={setInput} />}
       <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>번</h4>
     </div>
   );
@@ -108,6 +120,7 @@ const StudentManagementDetail = ({
   setInput,
   right,
   isBuilding,
+  setIsBuilding,
   list,
   select,
   setSelect,
@@ -125,7 +138,16 @@ const StudentManagementDetail = ({
         case 'radio':
           return <RadioEdit value={value} setIsOn={setIsOn} />;
         case 'building':
-          return <BuildingEdit text={text} isBuilding={isBuilding} list={list} select={select} setSelect={setSelect} />;
+          return (
+            <BuildingEdit
+              text={text}
+              isBuilding={isBuilding}
+              setIsBuilding={setIsBuilding}
+              list={list}
+              select={select}
+              setSelect={setSelect}
+            />
+          );
         case 'roomNumber':
           return <RoomNumberEdit input={input} setInput={setInput} />;
         case 'bedNumber':

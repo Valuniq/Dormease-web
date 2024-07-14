@@ -1,7 +1,10 @@
 'use client';
-import QuillComponent from '@/lib/Quill/QuillComponent';
-import DistanceScore from './DistanceScore';
-import StandardCheck from './StandardCheck';
+import dynamic from 'next/dynamic';
+import React from 'react';
+
+const QuillComponent = dynamic(() => import('@/lib/Quill/QuillComponent'), { ssr: false });
+const DistanceScore = dynamic(() => import('./DistanceScore'), { ssr: false });
+const StandardCheck = dynamic(() => import('./StandardCheck'), { ssr: false });
 
 type Props = {
   isSmokingOn: boolean;

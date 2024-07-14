@@ -3,26 +3,25 @@ import React from 'react';
 import ResignationListBody from './ResignationListBody';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import NoneList from '../NoneList/NoneList';
+import { ResignationListResponseDataList } from '@/types/resignation';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 type Props = {
-  onStudentClick: (schoolNumber: string) => void;
-  setIsChecked: (isChecked: boolean) => void;
-  isAllChecked: boolean;
-  setIsAllChecked: (isChecked: boolean) => void;
-  list: {
-    name: string;
-    schoolNumber: string;
-    building: string;
-    roomNumber: string;
-    exitDate: string;
-    hasKey: boolean;
-    submissionDate: string;
-    depositRefund: boolean;
-    isChecked: boolean;
-  }[];
+  checkedItems: number[];
+  handleCheckboxChange: (id: number) => void;
+  list: ResignationListResponseDataList[];
+  isLoading: boolean;
+  isEndReached: boolean;
+  setSize: (size: number | ((size: number) => number)) => void;
 };
 
-const ResignationList = ({ list, onStudentClick, setIsChecked, isAllChecked, setIsAllChecked }: Props) => {
+const ResignationList = ({ list, checkedItems, handleCheckboxChange, isLoading, isEndReached, setSize }: Props) => {
+  const lastElementRef = useInfiniteScroll({
+    isLoading,
+    isEndReached,
+    onIntersect: () => setSize((prevSize) => prevSize + 1),
+  });
+
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
       <thead className='table w-[1200px]'>
@@ -38,33 +37,71 @@ const ResignationList = ({ list, onStudentClick, setIsChecked, isAllChecked, set
           <th className={`H4 w-[8%] ${list && list.length > 0 ? 'visible' : 'invisible'}`}>
             <div className='flex items-center justify-center text-center w-full gap-6'>
               전 체
-              <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+              <Checkbox
+                isChecked={list.length > 0 && checkedItems.length === list.length}
+                setIsChecked={(isChecked) => {
+                  if (isChecked) {
+                    list.forEach((item) => {
+                      if (!checkedItems.includes(item.exitRequestmentId)) {
+                        handleCheckboxChange(item.exitRequestmentId);
+                      }
+                    });
+                  } else {
+                    list.forEach((item) => {
+                      if (checkedItems.includes(item.exitRequestmentId)) {
+                        handleCheckboxChange(item.exitRequestmentId);
+                      }
+                    });
+                  }
+                }}
+              />
             </div>
           </th>
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-
       {list && list.length > 0 ? (
-        <tbody className='block w-[1214px] h-677 overflow-y-auto scrollbar-table'>
+        <tbody className='block w-[1214px] max-h-677 overflow-y-auto scrollbar-table'>
           <tr className='h-15' />
           {list.map((data, index) => {
-            return (
-              <ResignationListBody
-                key={index}
-                name={data.name}
-                schoolNumber={data.schoolNumber}
-                building={data.building}
-                roomNumber={data.roomNumber}
-                exitDate={data.exitDate}
-                hasKey={data.hasKey}
-                submissionDate={data.submissionDate}
-                depositRefund={data.depositRefund}
-                isChecked={data.isChecked}
-                setIsChecked={setIsChecked}
-                onStudentClick={onStudentClick}
-              />
-            );
+            if (index === list.length - 1) {
+              return (
+                <ResignationListBody
+                  key={index}
+                  exitRequestmentId={data.exitRequestmentId}
+                  residentName={data.residentName}
+                  studentNumber={data.studentNumber}
+                  dormitoryName={data.dormitoryName}
+                  roomSize={data.roomSize}
+                  roomNumber={data.roomNumber}
+                  exitDate={data.exitDate}
+                  hasKey={data.hasKey}
+                  createDate={data.createDate}
+                  securityDepositReturnStatus={data.securityDepositReturnStatus}
+                  isChecked={checkedItems.includes(data.exitRequestmentId)}
+                  handleCheckboxChange={handleCheckboxChange}
+                  ref={lastElementRef}
+                />
+              );
+            } else {
+              return (
+                <ResignationListBody
+                  key={index}
+                  exitRequestmentId={data.exitRequestmentId}
+                  residentName={data.residentName}
+                  studentNumber={data.studentNumber}
+                  dormitoryName={data.dormitoryName}
+                  roomSize={data.roomSize}
+                  roomNumber={data.roomNumber}
+                  exitDate={data.exitDate}
+                  hasKey={data.hasKey}
+                  createDate={data.createDate}
+                  securityDepositReturnStatus={data.securityDepositReturnStatus}
+                  isChecked={checkedItems.includes(data.exitRequestmentId)}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
+              );
+            }
           })}
         </tbody>
       ) : (

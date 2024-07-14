@@ -1,24 +1,15 @@
 import React from 'react';
 import BuildingSettingsListBody from './BuildingSettingsListBody';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+import { BuildingSettingDetailRoomResponseInformation } from '@/types/building';
 
 type Props = {
-  listClick: number;
-  onListClick: (roomId: number) => void;
-  setIsChecked: (isChecked: boolean) => void;
-  isAllChecked: boolean;
-  setIsAllChecked: (isChecked: boolean) => void;
-  list: {
-    roomId: number;
-    roomNumber: number;
-    roomSize: number | null;
-    gender: 'MALE' | 'FEMALE';
-    hasKey: boolean | null;
-    isChecked: boolean;
-  }[];
+  checkedItems: number[];
+  handleCheckboxChange: (id: number) => void;
+  list: BuildingSettingDetailRoomResponseInformation[];
 };
 
-const BuildingSettingsList = ({ list, listClick, onListClick, setIsChecked, isAllChecked, setIsAllChecked }: Props) => {
+const BuildingSettingsList = ({ checkedItems, handleCheckboxChange, list }: Props) => {
   return (
     <table className='text-nowrap text-center text-gray-grayscale50'>
       <thead className='table w-[917px]'>
@@ -30,7 +21,24 @@ const BuildingSettingsList = ({ list, listClick, onListClick, setIsChecked, isAl
           <th className='H4 w-[10%]'>
             <div className='flex items-center justify-center text-center w-full gap-6'>
               전 체
-              <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+              <Checkbox
+                isChecked={list.length > 0 && checkedItems.length === list.length}
+                setIsChecked={(isChecked) => {
+                  if (isChecked) {
+                    list.forEach((item) => {
+                      if (!checkedItems.includes(item.id)) {
+                        handleCheckboxChange(item.id);
+                      }
+                    });
+                  } else {
+                    list.forEach((item) => {
+                      if (checkedItems.includes(item.id)) {
+                        handleCheckboxChange(item.id);
+                      }
+                    });
+                  }
+                }}
+              />
             </div>
           </th>
         </tr>
@@ -42,15 +50,15 @@ const BuildingSettingsList = ({ list, listClick, onListClick, setIsChecked, isAl
           return (
             <BuildingSettingsListBody
               key={index}
-              roomId={data.roomId}
+              id={data.id}
               roomNumber={data.roomNumber}
               roomSize={data.roomSize}
               gender={data.gender}
               hasKey={data.hasKey}
-              isChecked={data.isChecked}
-              setIsChecked={setIsChecked}
-              listClick={listClick}
-              onListClick={onListClick}
+              isChecked={checkedItems.includes(data.id)}
+              handleCheckboxChange={handleCheckboxChange}
+              floor={data.floor}
+              isActivated={data.isActivated}
             />
           );
         })}

@@ -40,10 +40,10 @@ const BuildingManagementList = ({
       {roomList && roomList.length > 0 ? (
         <tbody className='block w-[748px] h-695 overflow-y-auto scrollbar-table'>
           <tr className='h-12' />
-          {roomList.map((data) => {
+          {roomList.map((data, index) => {
             return (
               <BuildingManagementListBody
-                key={data.id}
+                key={index}
                 roomId={data.id}
                 roomNumber={data.roomNumber}
                 roomSize={data.roomSize}
