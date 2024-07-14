@@ -18,7 +18,7 @@ const WithdrawalMemberManagementListBody: ForwardRefRenderFunction<HTMLTableRowE
         <td className='w-[20%]'>{studentNumber}</td>
         <td className='w-[17%]'>{bonusPoint}</td>
         <td className='w-[18%]'>{minusPoint}</td>
-        <td className='w-[15%]'>{deletedAt}</td>
+        <td className='w-[15%]'>{deletedAt.replace(/-/g, '.')}</td>
       </tr>
       <tr className='h-14' />
     </>
