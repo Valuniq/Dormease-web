@@ -1,4 +1,4 @@
-import { BuildingAddDeleteResponse, BuildingSettingsResponse } from '@/types/building';
+import { BuildingAddDeleteResponse, BuildingSettingDetailResponse, BuildingSettingsResponse } from '@/types/building';
 import { BASE_URL } from '@/constants/path';
 import SwrWithTokens from '@/utils/swrWithTokens';
 import swrWithToken from '@/utils/swrWithToken';
@@ -52,4 +52,13 @@ export const deleteBuilding = async (dormitoryId: number) => {
     method: 'DELETE',
   });
   return res;
+};
+
+//건물 상세 조회
+export const useBuildingDetail = (dormitoryId: number) => {
+  const { data, error, mutate } = useSWR<BuildingSettingDetailResponse>(
+    `${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`,
+    swrWithToken,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
 };

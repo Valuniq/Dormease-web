@@ -8,9 +8,9 @@ type Props = {
   selected: boolean;
   hovered: boolean;
   floorInput: string;
-  setFloorInput: (id: string) => void;
+  setFloorInput: (value: string) => void;
   endInput: string;
-  setEndInput: (id: string) => void;
+  setEndInput: (value: string) => void;
   isOne: boolean;
   pressOkBtn: boolean;
 };

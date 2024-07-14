@@ -1,6 +1,6 @@
 'use client';
 
-import { postBuildingSettingImage } from '@/apis/BuildingSetting';
+import { postBuildingSettingImage, useBuildingDetail } from '@/apis/BuildingSetting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import AddRoomBtn from '@/components/atoms/AllBtn/AddRoomBtn/AddRoomBtn';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
@@ -12,18 +12,38 @@ import RoomBtn from '@/components/atoms/AllBtn/RoomBtn/RoomBtn';
 import BuildingNameInputText from '@/components/atoms/InputText/BuildingNameInputText/BuildingNameInputText';
 import BuildingSettingsList from '@/components/organisms/BuildingSettings/BuildingSettingsList';
 import { buildingSettingIdState } from '@/recoil/buildingSetting';
-import { BuildingSettingsDetailResponseFloorAndRoomNumberRes } from '@/types/building';
-import React, { useRef, useState } from 'react';
+import {
+  BuildingSettingDetailResponseInformation,
+  BuildingSettingDetailResponseInformationFloor,
+} from '@/types/building';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 const Page = () => {
-  const buildingId = useRecoilValue(buildingSettingIdState);
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const [buildingInfo, setBuildingInfo] = useState<{ name: string; imageUrl: string | null }>({
+  const buildingId = useRecoilValue(buildingSettingIdState);
+  const { data, error, mutate } = useBuildingDetail(buildingId);
+  const [buildingInfo, setBuildingInfo] = useState<BuildingSettingDetailResponseInformation>({
+    id: buildingId,
     name: '',
     imageUrl: null,
-  });
+    floorAndRoomNumberRes: [],
+  }); //건물 상세 조회
+  const [newFloor, setNewFloor] = useState<BuildingSettingDetailResponseInformationFloor[]>([]); //추가한 층
+  const [selectedFloor, setSelectedFloor] = useState<BuildingSettingDetailResponseInformationFloor>({
+    floor: 2,
+    startRoomNumber: 1,
+    endRoomNumber: 1,
+  }); //선택된 층
+  const [selectFilter, setSelectFilter] = useState(0);
+  const [completedFilter, setCompletedFilter] = useState<Number[]>([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (data && data.information) {
+      setBuildingInfo(data.information);
+    }
+  }, [data]);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) =>
@@ -31,53 +51,29 @@ const Page = () => {
     );
   };
 
-  const [existingFloor, setExistingFloor] = useState<BuildingSettingsDetailResponseFloorAndRoomNumberRes[]>([
-    {
-      floor: 1,
-      startRoomNumber: 1,
-      endRoomNumber: 30,
-    },
-    {
-      floor: 2,
-      startRoomNumber: 1,
-      endRoomNumber: 30,
-    },
-  ]); //기존에 있던 층
-
-  const [newFloor, setNewFloor] = useState<BuildingSettingsDetailResponseFloorAndRoomNumberRes[]>([
-    {
-      floor: 3,
-      startRoomNumber: 1,
-      endRoomNumber: 30,
-    },
-  ]); //추가된 층
-
-  const [selectedFloor, setSelectedFloor] = useState({
-    floor: 2,
-    startRoomNumber: 1,
-    endRoomNumber: 30,
-  }); //선택된 층
-
-  const [selectFloor, setSelectFloor] = useState(0);
-  const [selectFilter, setSelectFilter] = useState(0);
-  const [completedFilter, setCompletedFilter] = useState<Number[]>([]);
-
-  const handleSetFloorInput = (value: string) => {
-    const newFloor = parseInt(value, 10);
-    if (isNaN(newFloor)) return;
-
-    setNewFloor((prev) => {
-      const existingItemIndex = prev.findIndex((item) => item.floor === newFloor);
-      if (existingItemIndex !== -1) {
-        const updatedList = prev.map((item, index) =>
-          index === existingItemIndex ? { ...item, floor: newFloor } : item,
-        );
-        return updatedList;
-      } else {
-        // 새 항목 추가
-        return [...prev, { floor: newFloor, startRoomNumber: 1, endRoomNumber: 30 }];
-      }
-    });
+  const handleSetFloorInput = (index: number, field: 'floor' | 'endRoomNumber', value: string, isNew: boolean) => {
+    if (isNew) {
+      setNewFloor((prev) => {
+        const updatedNewFloor = [...prev];
+        updatedNewFloor[index] = {
+          ...updatedNewFloor[index],
+          [field]: parseInt(value, 10) || '',
+        };
+        return updatedNewFloor;
+      });
+    } else {
+      setBuildingInfo((prev) => {
+        const updatedFloorAndRoomNumberRes = [...prev.floorAndRoomNumberRes];
+        updatedFloorAndRoomNumberRes[index] = {
+          ...updatedFloorAndRoomNumberRes[index],
+          [field]: parseInt(value, 10) || '',
+        };
+        return {
+          ...prev,
+          floorAndRoomNumberRes: updatedFloorAndRoomNumberRes,
+        };
+      });
+    }
   };
 
   const onAddPicture = () => {
@@ -94,17 +90,13 @@ const Page = () => {
     const file = e.target.files[0];
 
     const imageUrl = URL.createObjectURL(file);
-    setBuildingInfo((prev) => ({
-      ...prev,
-      imageUrl: imageUrl,
-    }));
-    // const response = await postBuildingSettingImage(buildingId, file);
-    // if (response.check) {
-    //   setBuildingInfo((prev) => ({
-    //     ...prev,
-    //     imageUrl: imageUrl,
-    //   }));
-    // }
+    const response = await postBuildingSettingImage(buildingId, file);
+    if (response.check) {
+      setBuildingInfo((prev) => ({
+        ...prev,
+        imageUrl: imageUrl,
+      }));
+    }
   };
 
   return (
@@ -113,10 +105,10 @@ const Page = () => {
         <BuildingNameInputText
           placeholder='건물명'
           input={buildingInfo.name}
-          setInput={() => {
+          setInput={(newName: string) => {
             setBuildingInfo((prev) => ({
               ...prev,
-              name: buildingInfo.name,
+              name: newName,
             }));
           }}
         />
@@ -146,33 +138,35 @@ const Page = () => {
             <h3 className='H3 text-gray-grayscale50 text-center'>호실 개수</h3>
             <hr className='w-331 border-gray-grayscale50 mt-15 mb-8' />
             <div className='flex flex-col mr-15 gap-12'>
-              {existingFloor.map((data, index) => {
-                return (
-                  <RoomBtn
-                    key={index}
-                    selected={selectedFloor === data}
-                    floorInput={data.floor?.toString() || ''}
-                    setFloorInput={(value) => handleSetFloorInput(value)}
-                    endInput={data.endRoomNumber?.toString() || ''}
-                    setEndInput={function (id: string): void {
-                      throw new Error('Function not implemented.');
-                    }}
-                    isOne={index === 0}
-                    pressOkBtn={true}
-                    hovered={false}
-                  />
-                );
-              })}
+              {buildingInfo.floorAndRoomNumberRes.map((data, index) => (
+                <RoomBtn
+                  key={index}
+                  selected={selectedFloor.floor === data.floor && selectedFloor.endRoomNumber === data.endRoomNumber}
+                  floorInput={data.floor?.toString() || ''}
+                  setFloorInput={(value) => {
+                    handleSetFloorInput(index, 'floor', value, false);
+                  }}
+                  endInput={data.endRoomNumber?.toString() || ''}
+                  setEndInput={(value) => {
+                    handleSetFloorInput(index, 'endRoomNumber', value, false);
+                  }}
+                  isOne={index === 0}
+                  pressOkBtn={true}
+                  hovered={false}
+                />
+              ))}
               {newFloor.map((data, index) => {
                 return (
                   <RoomBtn
                     key={index}
                     selected={selectedFloor === data}
                     floorInput={data.floor?.toString() || ''}
-                    setFloorInput={(value) => handleSetFloorInput(value)}
+                    setFloorInput={(value) => {
+                      handleSetFloorInput(index, 'floor', value, true);
+                    }}
                     endInput={data.endRoomNumber?.toString() || ''}
-                    setEndInput={function (id: string): void {
-                      throw new Error('Function not implemented.');
+                    setEndInput={(value) => {
+                      handleSetFloorInput(index, 'endRoomNumber', value, true);
                     }}
                     isOne={false}
                     pressOkBtn={false}
@@ -184,10 +178,7 @@ const Page = () => {
             <div className='h-13'></div>
             <AddRoomBtn
               onClick={() =>
-                setExistingFloor([
-                  ...existingFloor,
-                  { floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') },
-                ])
+                setNewFloor([...newFloor, { floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') }])
               }
             />
           </div>
@@ -257,9 +248,14 @@ const Page = () => {
           <BuildingSettingsList list={[]} checkedItems={checkedItems} handleCheckboxChange={handleCheckboxChange} />
         </div>
       </div>
-      <div className='flex justify-between items-start mt-21'>
-        <BtnMidVariant label='등록' disabled={false} variant='blue' />
-        <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} />
+      <div className='flex mt-21'>
+        <div className='flex-1'></div>
+        <div className='flex-1 flex justify-center'>
+          <BtnMidVariant label='등록' disabled={!buildingInfo.name} variant='blue' />
+        </div>
+        <div className='flex-1 flex justify-end'>
+          <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} />
+        </div>
       </div>
     </div>
   );
