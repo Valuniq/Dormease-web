@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import StudentManagementDetail from '@/components/organisms/StudentManagement/StudentManagementDetail';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
@@ -9,10 +9,10 @@ import { useRouter } from 'next/navigation';
 
 const Page = () => {
   const router = useRouter();
-  const isEdit = false;
-  const isBuilding = false;
+  const [isEdit, setIsEdit] = useState(false);
+  const [isBuilding, setIsBuilding] = useState(false);
 
-  const data = {
+  const [data, setData] = useState({
     name: '김김김',
     schoolNumber: '99999999',
     major: '산업디자인과',
@@ -35,13 +35,19 @@ const Page = () => {
     accountNumber: '9999-99-999999',
     emergencyContact: '010-9999-9999',
     emergencyRelation: '부',
-
     building: '명덕관(4인실)',
-    roomNumber: 999,
-    bedNumber: 4,
+    roomNumber: '999',
+    bedNumber: '4',
     period: '6개월',
     isRoommateApplied: true,
     roommateInformation: '김김김김 이이이이 박박박박',
+  });
+
+  const handleInputChange = (field: string, value: string | number | boolean) => {
+    setData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
   };
 
   return (
@@ -49,7 +55,13 @@ const Page = () => {
       <h3 className='H3 text-gray-grayscale50 text-center mb-6'>개인정보</h3>
       {!isEdit && (
         <div className='absolute right-0 -top-8'>
-          <BtnMiniVariant label='수정' disabled={false} selected={false} variant='blue' />
+          <BtnMiniVariant
+            label='수정'
+            disabled={false}
+            selected={false}
+            variant='blue'
+            onClick={() => setIsEdit(!isEdit)}
+          />
         </div>
       )}
       <div className='flex border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
@@ -92,9 +104,7 @@ const Page = () => {
             label='생활관비 납부'
             text={data.dormitoryPayment ? 'O' : 'X'}
             value={data.dormitoryPayment}
-            setIsChecked={function (isChecked: boolean): void {
-              throw new Error('Function not implemented.');
-            }}
+            setIsChecked={(isChecked) => handleInputChange('dormitoryPayment', isChecked)}
           />
           <StudentManagementDetail
             right={isEdit}
@@ -103,9 +113,7 @@ const Page = () => {
             type='checkbox'
             text={data.hasKey ? '수령' : '미수령'}
             value={data.hasKey}
-            setIsChecked={function (isChecked: boolean): void {
-              throw new Error('Function not implemented.');
-            }}
+            setIsChecked={(isChecked) => handleInputChange('hasKey', isChecked)}
           />
           <StudentManagementDetail right={isEdit} label='상점' text={data.bounsPoint} value={data.bounsPoint} />
           <StudentManagementDetail right={isEdit} label='벌점' text={data.minusPoint} value={data.minusPoint} />
@@ -129,9 +137,7 @@ const Page = () => {
             text={data.bankName}
             value={data.bankName}
             input={data.bankName}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
+            setInput={(value) => handleInputChange('bankName', value)}
           />
           <StudentManagementDetail
             right={isEdit}
@@ -141,9 +147,7 @@ const Page = () => {
             text={data.accountNumber}
             value={data.accountNumber}
             input={data.accountNumber}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
+            setInput={(value) => handleInputChange('accountNumber', value)}
           />
           <StudentManagementDetail
             right={isEdit}
@@ -153,9 +157,7 @@ const Page = () => {
             text={data.emergencyContact}
             value={data.emergencyContact}
             input={data.emergencyContact}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
+            setInput={(value) => handleInputChange('emergencyContact', value)}
           />
           <StudentManagementDetail
             right={isEdit}
@@ -165,9 +167,7 @@ const Page = () => {
             text={data.emergencyRelation}
             value={data.emergencyRelation}
             input={data.emergencyRelation}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
+            setInput={(value) => handleInputChange('emergencyRelation', value)}
           />
         </div>
       </div>
@@ -181,11 +181,10 @@ const Page = () => {
               isEdit={isEdit}
               type='building'
               isBuilding={isBuilding}
+              setIsBuilding={setIsBuilding}
               list={['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)']}
-              select='명덕관(4인실)'
-              setSelect={function (select: string): void {
-                throw new Error('Function not implemented.');
-              }}
+              select={data.building}
+              setSelect={(value) => handleInputChange('building', value)}
               label='건물'
               text={data.building}
               value={data.building}
@@ -193,24 +192,20 @@ const Page = () => {
             <StudentManagementDetail
               isEdit={isEdit}
               type='roomNumber'
-              input='999'
-              setInput={function (input: string): void {
-                throw new Error('Function not implemented.');
-              }}
               label='호실'
-              text={data.roomNumber + '호'}
+              text={`${data.roomNumber}호`}
               value={data.roomNumber}
+              input={data.roomNumber}
+              setInput={(value) => handleInputChange('roomNumber', value)}
             />
             <StudentManagementDetail
               isEdit={isEdit}
               type='bedNumber'
-              input='4'
-              setInput={function (input: string): void {
-                throw new Error('Function not implemented.');
-              }}
               label='침대번호'
-              text={data.bedNumber + '번'}
+              text={`${data.bedNumber}번`}
               value={data.bedNumber}
+              input={data.bedNumber}
+              setInput={(value) => handleInputChange('bedNumber', value)}
             />
           </div>
           <div className='flex-1 flex flex-col pr-46'>

@@ -39,8 +39,8 @@ export const Primary: Story = {
     emergencyRelation: '부',
 
     building: '명덕관(4인실)',
-    roomNumber: 999,
-    bedNumber: 4,
+    roomNumber: '999',
+    bedNumber: '4',
     period: '6개월',
     isRoommateApplied: true,
     roommateInformation: '김김김김 이이이이 박박박박',
@@ -75,8 +75,8 @@ export const Edit: Story = {
     emergencyRelation: '부',
 
     building: '명덕관(4인실)',
-    roomNumber: 999,
-    bedNumber: 4,
+    roomNumber: '999',
+    bedNumber: '4',
     period: '6개월',
     isRoommateApplied: true,
     roommateInformation: '김김김김 이이이이 박박박박',
@@ -112,8 +112,8 @@ export const EditRelocation: Story = {
     emergencyRelation: '부',
 
     building: '명덕관(4인실)',
-    roomNumber: 999,
-    bedNumber: 4,
+    roomNumber: '999',
+    bedNumber: '4',
     period: '6개월',
     isRoommateApplied: true,
     roommateInformation: '김김김김 이이이이 박박박박',
