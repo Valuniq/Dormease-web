@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import page from './page';
 
 const meta: Meta<typeof page> = {
@@ -20,7 +19,7 @@ export const Primary: Story = {
     major: '',
     grade: null,
     schoolStatus: '',
-    gender: '',
+    gender: 'MALE',
     phoneNumber: '',
     address: '',
     certifiedFile: null,
