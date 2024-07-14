@@ -1,50 +1,58 @@
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+import { ResignationListResponseDataList } from '@/types/resignation';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { formatCreateDate } from '../FormatCreateDate/FormatCreateDate';
+import { useSetRecoilState } from 'recoil';
+import { resignationIdState } from '@/recoil/resignation';
 
-type Props = {
-  name: string;
-  schoolNumber: string;
-  building: string;
-  roomNumber: string;
-  exitDate: string;
-  hasKey: boolean;
-  submissionDate: string;
-  depositRefund: boolean;
+type Props = ResignationListResponseDataList & {
   isChecked: boolean;
-  setIsChecked: (isChecked: boolean) => void;
-  onStudentClick: (schoolNumber: string) => void;
+  handleCheckboxChange: (id: number) => void;
 };
 
 const ResignationListBody = ({
-  name,
-  schoolNumber,
-  building,
+  exitRequestmentId,
+  residentName,
+  studentNumber,
+  dormitoryName,
   roomNumber,
   exitDate,
   hasKey,
-  submissionDate,
-  depositRefund,
+  createDate,
+  securityDepositReturnStatus,
   isChecked,
-  setIsChecked,
-  onStudentClick,
+  handleCheckboxChange,
 }: Props) => {
+  const router = useRouter();
+  const setId = useSetRecoilState(resignationIdState);
+
   return (
     <>
       <tr
         className={`table rounded-5 w-[1200px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
-        onClick={() => onStudentClick(schoolNumber)}
+        onClick={() => {
+          setId(exitRequestmentId);
+          router.push(`/dashboard/JoinApplicationSetting/Resignation/Detail`);
+        }}
       >
-        <td className='w-[10%]'>{name}</td>
-        <td className='w-[12%]'>{schoolNumber}</td>
-        <td className='w-[17%]'>{building}</td>
+        <td className='w-[10%]'>{residentName}</td>
+        <td className='w-[12%]'>{studentNumber}</td>
+        <td className='w-[17%]'>{dormitoryName}</td>
         <td className='w-[9%]'>{roomNumber}</td>
-        <td className='w-[12%]'>{exitDate}</td>
-        <td className='w-[10%]'>{hasKey ? 'O' : 'X'}</td>
-        <td className='w-[12%]'>{submissionDate}</td>
-        <td className='w-[10%]'>{depositRefund ? '지급' : '미지급'}</td>
+        <td className='w-[12%]'>{formatCreateDate(exitDate)}</td>
+        <td className='w-[10%]'>{hasKey ? 'O' : '-'}</td>
+        <td className='w-[12%]'>{formatCreateDate(createDate)}</td>
+        <td className='w-[10%]'>
+          {securityDepositReturnStatus === 'PAYMENT'
+            ? '지급'
+            : securityDepositReturnStatus === 'UNALBE'
+              ? '지급 불가'
+              : '미지급'}
+        </td>
         <td className='w-[8%]'>
           <div className='flex justify-center items-center'>
-            <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
+            <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(exitRequestmentId)} />
           </div>
         </td>
       </tr>

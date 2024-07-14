@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import RefundList from '@/components/organisms/Refund/RefundList';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
-import { useRefundRequestment, postPeriod, deleteRefundRequestment } from '@/apis/Refund';
+import { useRefundRequestment, deleteRefundRequestment } from '@/apis/Refund';
 import { RefundRequestmentResponseDataList } from '@/types/refund';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { mutate } from 'swr';
 import { BASE_URL } from '@/constants/path';
+import { postPeriod } from '@/apis/Period';
 
 const Refund = () => {
   const [refundList, setRefundList] = useState<RefundRequestmentResponseDataList[]>([]);

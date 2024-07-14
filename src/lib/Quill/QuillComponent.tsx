@@ -1,9 +1,12 @@
 'use client';
+import dynamic from 'next/dynamic';
 import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import React, { useState, useEffect } from 'react';
-import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Quill } from 'react-quill';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }) as any;
 Quill.register('modules/ImageResize', ImageResize);
 
 type Props = {
