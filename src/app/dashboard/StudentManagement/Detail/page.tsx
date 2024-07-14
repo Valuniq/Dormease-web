@@ -6,9 +6,12 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import BlackListBtn from '@/components/atoms/AllBtn/BlackListBtn/BlackListBtn';
 import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
+import { editState } from '@/recoil/nav';
 
 const Page = () => {
   const router = useRouter();
+  const setEditState = useSetRecoilState(editState);
   const [isEdit, setIsEdit] = useState(false);
   const [isBuilding, setIsBuilding] = useState(false);
 
@@ -60,7 +63,10 @@ const Page = () => {
             disabled={false}
             selected={false}
             variant='blue'
-            onClick={() => setIsEdit(!isEdit)}
+            onClick={() => {
+              setEditState(true);
+              setIsEdit(!isEdit);
+            }}
           />
         </div>
       )}
@@ -234,7 +240,10 @@ const Page = () => {
           label='수정완료'
           disabled={false}
           variant='blue'
-          onClick={() => router.push(`/dashboard/StudentManagement`)}
+          onClick={() => {
+            setEditState(false);
+            router.push(`/dashboard/StudentManagement`);
+          }}
         />
       </div>
     </div>

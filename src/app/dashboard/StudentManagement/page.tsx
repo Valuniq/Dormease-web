@@ -5,10 +5,13 @@ import GrayBtn from '@/components/atoms/AllBtn/GrayBtn/GrayBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import StudentManagementList from '@/components/organisms/StudentManagement/StudentManagementList';
 import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
+import { editState } from '@/recoil/nav';
 
 const StudentMangement = () => {
   const router = useRouter();
   const [input, setInput] = useState('');
+  const setEditState = useSetRecoilState(editState);
 
   const list = [
     {
@@ -205,6 +208,7 @@ const StudentMangement = () => {
           disabled={false}
           variant='blue'
           onClick={() => {
+            setEditState(true);
             router.push(`/dashboard/StudentManagement/Plus`);
           }}
         />
