@@ -1,7 +1,7 @@
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import { ResignationListResponseDataList } from '@/types/resignation';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { forwardRef, ForwardRefRenderFunction } from 'react';
 import { formatCreateDate } from '../FormatCreateDate/FormatCreateDate';
 import { useSetRecoilState } from 'recoil';
 import { resignationIdState } from '@/recoil/resignation';
@@ -11,25 +11,29 @@ type Props = ResignationListResponseDataList & {
   handleCheckboxChange: (id: number) => void;
 };
 
-const ResignationListBody = ({
-  exitRequestmentId,
-  residentName,
-  studentNumber,
-  dormitoryName,
-  roomNumber,
-  exitDate,
-  hasKey,
-  createDate,
-  securityDepositReturnStatus,
-  isChecked,
-  handleCheckboxChange,
-}: Props) => {
+const ResignationListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
+  {
+    exitRequestmentId,
+    residentName,
+    studentNumber,
+    dormitoryName,
+    roomNumber,
+    exitDate,
+    hasKey,
+    createDate,
+    securityDepositReturnStatus,
+    isChecked,
+    handleCheckboxChange,
+  }: Props,
+  ref,
+) => {
   const router = useRouter();
   const setId = useSetRecoilState(resignationIdState);
 
   return (
     <>
       <tr
+        ref={ref}
         className={`table rounded-5 w-[1200px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
         onClick={() => {
           setId(exitRequestmentId);
@@ -50,7 +54,7 @@ const ResignationListBody = ({
               ? '지급 불가'
               : '미지급'}
         </td>
-        <td className='w-[8%]'>
+        <td className='w-[8%]' onClick={(e) => e.stopPropagation()}>
           <div className='flex justify-center items-center'>
             <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(exitRequestmentId)} />
           </div>
@@ -61,4 +65,4 @@ const ResignationListBody = ({
   );
 };
 
-export default ResignationListBody;
+export default forwardRef<HTMLTableRowElement, Props>(ResignationListBody);
