@@ -13,6 +13,7 @@ type Props = {
   setEndInput: (value: string) => void;
   isOne: boolean;
   pressOkBtn: boolean;
+  deleteDetailRoom: () => void;
 };
 
 const RoomBtn = ({
@@ -24,6 +25,7 @@ const RoomBtn = ({
   setEndInput,
   isOne,
   pressOkBtn,
+  deleteDetailRoom,
   ...props
 }: Props & React.HtmlHTMLAttributes<HTMLDivElement>) => {
   return (
@@ -33,11 +35,18 @@ const RoomBtn = ({
         !isOne ? (hovered ? 'bg-gray-grayscale5' : 'hover:bg-gray-grayscale5 hover:hover-transition') : ''
       } `}
     >
-      <CloseBtnRed
-        className={`ml-21 opacity-0 ${
-          !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
-        }`}
-      />
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteDetailRoom();
+        }}
+      >
+        <CloseBtnRed
+          className={`ml-21 opacity-0 ${
+            !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
+          }`}
+        />
+      </div>
       <div
         className={`flex items-center ${selected ? (hovered ? '' : 'bg-blue-blue15 py-9 px-14 rounded-8 group-hover:bg-gray-grayscale5 group-hover:hover-transition:') : ''}`}
       >
@@ -48,13 +57,20 @@ const RoomBtn = ({
         <TextBoxes input={endInput} setInput={setEndInput} placeholder='끝' type='textBox7' />
         <div className='w-22'></div>
         {pressOkBtn ? (
-          <BtnMiniVariant label='복제' disabled={false} selected={false} variant='blue' />
+          <BtnMiniVariant
+            label='복제'
+            disabled={false}
+            selected={false}
+            variant='blue'
+            onClick={(e) => e.stopPropagation()}
+          />
         ) : (
           <BtnMiniVariant
             label='확인'
             disabled={floorInput === '' || endInput === ''}
             selected={false}
             variant='blue'
+            onClick={(e) => e.stopPropagation()}
           />
         )}
       </div>

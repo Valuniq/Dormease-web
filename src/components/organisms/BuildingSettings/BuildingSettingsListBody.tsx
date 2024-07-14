@@ -1,18 +1,14 @@
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+import { BuildingSettingDetailRoomResponseInformation } from '@/types/building';
 import React from 'react';
 
-type Props = {
-  roomId: number;
-  roomNumber: number;
-  roomSize: number | null;
-  gender: 'MALE' | 'FEMALE';
-  hasKey: boolean | null;
+type Props = BuildingSettingDetailRoomResponseInformation & {
   isChecked: boolean;
   handleCheckboxChange: (id: number) => void;
 };
 
 const BuildingSettingsListBody = ({
-  roomId,
+  id,
   roomNumber,
   roomSize,
   gender,
@@ -31,7 +27,7 @@ const BuildingSettingsListBody = ({
         <td className='w-[35%]'>{hasKey === true ? '수령' : hasKey === false ? '미수령' : '-'}</td>
         <td className='w-[10%]'>
           <div className='flex justify-center items-center'>
-            <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(roomId)} />
+            <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(id)} />
           </div>
         </td>
       </tr>

@@ -1,18 +1,12 @@
 import React from 'react';
 import BuildingSettingsListBody from './BuildingSettingsListBody';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+import { BuildingSettingDetailRoomResponseInformation } from '@/types/building';
 
 type Props = {
   checkedItems: number[];
   handleCheckboxChange: (id: number) => void;
-  list: {
-    roomId: number;
-    roomNumber: number;
-    roomSize: number | null;
-    gender: 'MALE' | 'FEMALE';
-    hasKey: boolean | null;
-    isChecked: boolean;
-  }[];
+  list: BuildingSettingDetailRoomResponseInformation[];
 };
 
 const BuildingSettingsList = ({ checkedItems, handleCheckboxChange, list }: Props) => {
@@ -32,14 +26,14 @@ const BuildingSettingsList = ({ checkedItems, handleCheckboxChange, list }: Prop
                 setIsChecked={(isChecked) => {
                   if (isChecked) {
                     list.forEach((item) => {
-                      if (!checkedItems.includes(item.roomId)) {
-                        handleCheckboxChange(item.roomId);
+                      if (!checkedItems.includes(item.id)) {
+                        handleCheckboxChange(item.id);
                       }
                     });
                   } else {
                     list.forEach((item) => {
-                      if (checkedItems.includes(item.roomId)) {
-                        handleCheckboxChange(item.roomId);
+                      if (checkedItems.includes(item.id)) {
+                        handleCheckboxChange(item.id);
                       }
                     });
                   }
@@ -56,13 +50,15 @@ const BuildingSettingsList = ({ checkedItems, handleCheckboxChange, list }: Prop
           return (
             <BuildingSettingsListBody
               key={index}
-              roomId={data.roomId}
+              id={data.id}
               roomNumber={data.roomNumber}
               roomSize={data.roomSize}
               gender={data.gender}
               hasKey={data.hasKey}
-              isChecked={checkedItems.includes(data.roomId)}
+              isChecked={checkedItems.includes(data.id)}
               handleCheckboxChange={handleCheckboxChange}
+              floor={data.floor}
+              isActivated={data.isActivated}
             />
           );
         })}

@@ -1,6 +1,6 @@
 'use client';
 
-import { postBuildingSettingImage, useBuildingDetail } from '@/apis/BuildingSetting';
+import { deleteRoom, postBuildingSettingImage, useBuildingDetail, useBuildingDetailRoom } from '@/apis/BuildingSetting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import AddRoomBtn from '@/components/atoms/AllBtn/AddRoomBtn/AddRoomBtn';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
@@ -15,6 +15,7 @@ import { buildingSettingIdState } from '@/recoil/buildingSetting';
 import {
   BuildingSettingDetailResponseInformation,
   BuildingSettingDetailResponseInformationFloor,
+  BuildingSettingDetailRoomResponseInformation,
 } from '@/types/building';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -38,12 +39,24 @@ const Page = () => {
   const [selectFilter, setSelectFilter] = useState(0);
   const [completedFilter, setCompletedFilter] = useState<Number[]>([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  const {
+    data: roomData,
+    error: roomError,
+    mutate: roomMutate,
+  } = useBuildingDetailRoom(buildingId, selectedFloor.floor);
+  const [roomInfo, setRoomInfo] = useState<BuildingSettingDetailRoomResponseInformation[]>(); //호실 조회
 
   useEffect(() => {
     if (data && data.information) {
       setBuildingInfo(data.information);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (roomData && roomData.information) {
+      setRoomInfo(roomData.information);
+    }
+  }, [roomData]);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) =>
@@ -97,6 +110,21 @@ const Page = () => {
         imageUrl: imageUrl,
       }));
     }
+  };
+
+  //호실 삭제
+  const deleteDetailRoom = async (floor: number) => {
+    // try {
+    //   const response = await deleteRoom(buildingId, floor);
+    //   if (response.check) {
+    //     await mutate();
+    //   } else {
+    //     console.log('실패');
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   console.log('오류가 발생했습니다.');
+    // }
   };
 
   return (
@@ -153,6 +181,8 @@ const Page = () => {
                   isOne={index === 0}
                   pressOkBtn={true}
                   hovered={false}
+                  deleteDetailRoom={() => deleteDetailRoom(data.floor)}
+                  onClick={() => setSelectedFloor(data)}
                 />
               ))}
               {newFloor.map((data, index) => {
@@ -171,6 +201,8 @@ const Page = () => {
                     isOne={false}
                     pressOkBtn={false}
                     hovered={false}
+                    deleteDetailRoom={() => deleteDetailRoom(data.floor)}
+                    onClick={() => setSelectedFloor(data)}
                   />
                 );
               })}
@@ -194,24 +226,28 @@ const Page = () => {
                   detail={false}
                   selected={selectFilter === 1}
                   done={completedFilter.includes(1)}
+                  onClick={() => setSelectFilter(1)}
                 />
                 <BuildingSetBtn
                   label='호실 타입'
                   detail={false}
                   selected={selectFilter === 2}
                   done={completedFilter.includes(2)}
+                  onClick={() => setSelectFilter(2)}
                 />
                 <BuildingSetBtn
                   label='열쇠 수령 여부'
                   detail={false}
                   selected={selectFilter === 3}
                   done={completedFilter.includes(3)}
+                  onClick={() => setSelectFilter(3)}
                 />
                 <BuildingSetBtn
                   label='비활성화'
                   detail={false}
                   selected={selectFilter === 4}
                   done={completedFilter.includes(4)}
+                  onClick={() => setSelectFilter(4)}
                 />
               </div>
               <div className='h-53 flex gap-15 justify-end items-end '>
@@ -245,7 +281,11 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <BuildingSettingsList list={[]} checkedItems={checkedItems} handleCheckboxChange={handleCheckboxChange} />
+          <BuildingSettingsList
+            list={roomInfo ? roomInfo : []}
+            checkedItems={checkedItems}
+            handleCheckboxChange={handleCheckboxChange}
+          />
         </div>
       </div>
       <div className='flex mt-21'>

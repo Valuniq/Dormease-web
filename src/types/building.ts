@@ -34,3 +34,18 @@ export type BuildingSettingDetailResponseInformationFloor = {
   startRoomNumber: number;
   endRoomNumber: number;
 };
+
+export type BuildingSettingDetailRoomResponse = {
+  check: boolean;
+  information: BuildingSettingDetailRoomResponseInformation[];
+};
+
+export type BuildingSettingDetailRoomResponseInformation = {
+  id: number;
+  roomNumber: number;
+  floor: number;
+  gender: 'FEMALE' | 'MALE';
+  roomSize: number;
+  hasKey: boolean;
+  isActivated: boolean;
+};
