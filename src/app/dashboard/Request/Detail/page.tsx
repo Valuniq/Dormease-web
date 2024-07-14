@@ -4,6 +4,7 @@ import { useRequestDetail } from '@/apis/Request';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
+import { formatCreateDate } from '@/components/organisms/FormatCreateDate/FormatCreateDate';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { requestIdState } from '@/recoil/request';
 import { RequestDetailResponseInformation } from '@/types/request';
@@ -48,7 +49,7 @@ const Page = () => {
             </div>
             <div className='flex items-center caption2 text-gray-grayscale40'>
               <h6 className='pr-19'>작성일</h6>
-              <h6>{detailData.createdDate}</h6>
+              <h6>{formatCreateDate(detailData.createdDate)}</h6>
             </div>
           </div>
           <hr className='text-gray-grayscale30 mb-23' />
