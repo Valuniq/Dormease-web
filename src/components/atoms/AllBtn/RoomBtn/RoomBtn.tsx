@@ -25,9 +25,9 @@ const RoomBtn = ({
   isOne,
   pressOkBtn,
   ...props
-}: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
+}: Props & React.HtmlHTMLAttributes<HTMLDivElement>) => {
   return (
-    <button
+    <div
       {...props}
       className={`group flex justify-between items-center w-403 h-52 rounded-r-8 rounded-l-50 ${
         !isOne ? (hovered ? 'bg-gray-grayscale5' : 'hover:bg-gray-grayscale5 hover:hover-transition') : ''
@@ -63,7 +63,7 @@ const RoomBtn = ({
           !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
         }`}
       />
-    </button>
+    </div>
   );
 };
 

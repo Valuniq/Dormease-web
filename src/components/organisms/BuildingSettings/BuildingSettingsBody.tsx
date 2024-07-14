@@ -18,7 +18,14 @@ const BuildingSettingsBody = ({ id, name, imageUrl, onBuildingOutClick, onBuildi
       onClick={() => onBuildingSettingsDetail(id)}
     >
       {imageUrl !== null && (
-        <Image className='rounded-8 cursor-pointer' src={imageUrl} alt={name} layout='fill' objectFit='cover' />
+        <Image
+          className='rounded-8 cursor-pointer'
+          src={imageUrl}
+          alt={name}
+          fill
+          priority
+          style={{ objectFit: 'cover' }}
+        />
       )}
       <div className='absolute bottom-0'>
         <BuildingInBtn label={name} selected={false} />
