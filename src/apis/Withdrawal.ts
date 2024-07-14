@@ -4,7 +4,7 @@ import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
 
 export const useWithdrawalLists = () => {
-  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse) => {
+  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse | null) => {
     if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
     return `${BASE_URL}/api/v1/web/users/management/delete?page=${pageIndex + 1}`;
   };
@@ -29,7 +29,7 @@ export const useWithdrawalLists = () => {
 };
 
 export const useWithdrawalSearch = (keyword: string) => {
-  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse) => {
+  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse | null) => {
     if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
     return `${BASE_URL}/api/v1/web/users/management/delete/search?page=${pageIndex + 1}&keyword=${keyword}`;
   };
