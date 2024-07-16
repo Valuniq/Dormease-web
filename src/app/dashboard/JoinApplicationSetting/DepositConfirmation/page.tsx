@@ -5,9 +5,12 @@ import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchText
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import DepositConfirmationList from '@/components/organisms/DepositConfirmation/DepositConfirmationList';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
-import { useRef, useState } from 'react';
+import { editState } from '@/recoil/nav';
+import { useEffect, useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 const DepositConfirmation = () => {
+  const setEditState = useSetRecoilState(editState);
   const [input, setInput] = useState('');
   const [saveModal, setSaveModal] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -175,6 +178,7 @@ const DepositConfirmation = () => {
     if (fileUrl) {
       //입금 내역 확인 파일 선택했을 때 id 배열 추가
       setSelected([1, 3]);
+      setEditState(true);
     }
     //추후 API 연동 필요
   };
@@ -182,6 +186,7 @@ const DepositConfirmation = () => {
   const onSaveDeposit = () => {
     setSelected([]);
     setSaveModal(!saveModal);
+    setEditState(false);
     //추후 저장 API 연동 필요
   };
 

@@ -28,11 +28,11 @@ const BuildingManagementBody = ({ studentList, onStudentClick, editAssign, roomS
         <div className='balloon caption-2 max-h-256 overflow-y-auto noscrollbar-table'>
           <table>
             <tbody>
-              {studentList.map((data) => {
+              {studentList.map((data, index) => {
                 return (
-                  <>
+                  <React.Fragment key={index}>
                     <tr
-                      key={data.id}
+                      key={index}
                       className={`w-[290px] caption-2 py-2 text-nowrap align-middle cursor-pointer ${data.assigned && editAssign ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
                       onClick={(event) => {
                         event.stopPropagation();
@@ -44,7 +44,7 @@ const BuildingManagementBody = ({ studentList, onStudentClick, editAssign, roomS
                       <td className='rounded-r-5 pr-10 min-w-100'>{data.phoneNumber}</td>
                     </tr>
                     <tr className='h-10' />
-                  </>
+                  </React.Fragment>
                 );
               })}
             </tbody>

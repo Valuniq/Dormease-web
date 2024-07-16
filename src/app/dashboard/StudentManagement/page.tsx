@@ -4,9 +4,14 @@ import PlusBtnVariant from '@/components/atoms/AllBtn/PlusBtnVariant/PlusBtnVari
 import GrayBtn from '@/components/atoms/AllBtn/GrayBtn/GrayBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import StudentManagementList from '@/components/organisms/StudentManagement/StudentManagementList';
+import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
+import { editState } from '@/recoil/nav';
 
 const StudentMangement = () => {
+  const router = useRouter();
   const [input, setInput] = useState('');
+  const setEditState = useSetRecoilState(editState);
 
   const list = [
     {
@@ -198,7 +203,15 @@ const StudentMangement = () => {
         onMinusPointClick={(genderDown: boolean) => genderDown}
       />
       <div className='flex justify-end mt-13'>
-        <PlusBtnVariant label='사생 추가' disabled={false} variant='blue' />
+        <PlusBtnVariant
+          label='사생 추가'
+          disabled={false}
+          variant='blue'
+          onClick={() => {
+            setEditState(true);
+            router.push(`/dashboard/StudentManagement/Plus`);
+          }}
+        />
       </div>
     </div>
   );

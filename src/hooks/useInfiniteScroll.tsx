@@ -1,35 +1,33 @@
-// src/components/InfiniteScroll.tsx
-import React, { useEffect, ReactNode } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
-/**
- * 무한 스크롤 컴포넌트
- * @param children - 렌더링할 자식 요소
- * @param isLoading - 데이터 로딩 중인지 여부
- * @param isReachingEnd - 마지막 페이지인지 여부
- * @param loadMore - 다음 페이지 데이터를 로드하는 함수
- */
-interface InfiniteScrollProps {
-  children: ReactNode;
+interface UseInfiniteScrollProps {
   isLoading: boolean;
-  isReachingEnd: boolean;
-  loadMore: () => void;
+  isEndReached: boolean;
+  onIntersect: () => void;
 }
 
-const InfiniteScroll = ({ children, isLoading, isReachingEnd, loadMore }: InfiniteScrollProps) => {
+const useInfiniteScroll = ({ isLoading, isEndReached, onIntersect }: UseInfiniteScrollProps) => {
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !isEndReached) {
+          onIntersect();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, isEndReached, onIntersect],
+  );
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (isLoading || isReachingEnd) return;
+    return () => observer.current?.disconnect();
+  }, []);
 
-      if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50) {
-        loadMore();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLoading, isReachingEnd, loadMore]);
-
-  return <>{children}</>;
+  return lastElementRef;
 };
 
-export default InfiniteScroll;
+export default useInfiniteScroll;

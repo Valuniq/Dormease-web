@@ -2,7 +2,6 @@
 
 import { useWithdrawalLists, useWithdrawalSearch } from '@/apis/Withdrawal';
 import WithdrawalMemberManagementTemplate from '@/components/templates/WithdrawalMemberManagement';
-import InfiniteScroll from '@/hooks/useInfiniteScroll';
 import { WithdrawalMemberResponseDataList } from '@/types/withdrawal';
 import React, { useEffect, useState } from 'react';
 
@@ -34,24 +33,14 @@ const WithdrawalMemberManagement = () => {
   const isEndReached = input ? isSearchReachingEnd : isReachingEnd;
 
   return (
-    <InfiniteScroll
-      isLoading={isLoadingMore || searchError}
-      isReachingEnd={isEndReached}
-      loadMore={() => {
-        if (input) {
-          setSearchSize(searchSize + 1);
-        } else {
-          setSize(size + 1);
-        }
-      }}
-    >
-      <WithdrawalMemberManagementTemplate
-        list={dataToShow as WithdrawalMemberResponseDataList[]}
-        input={input}
-        setInput={setInput}
-      />
-      {isLoading && <></>}
-    </InfiniteScroll>
+    <WithdrawalMemberManagementTemplate
+      list={dataToShow as WithdrawalMemberResponseDataList[]}
+      input={input}
+      setInput={setInput}
+      isLoading={isLoading ?? false}
+      isEndReached={isEndReached ?? false}
+      setSize={input ? setSearchSize : setSize}
+    />
   );
 };
 

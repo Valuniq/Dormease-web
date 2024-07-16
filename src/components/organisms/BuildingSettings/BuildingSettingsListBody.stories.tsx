@@ -15,11 +15,10 @@ type Story = StoryObj<typeof BuildingSettingsListBody>;
 
 export const Primary: Story = {
   args: {
-    roomId: 1,
+    id: 1,
     roomNumber: 101,
     roomSize: 4,
     gender: 'MALE',
     hasKey: true,
-    isChecked: true,
   },
 };

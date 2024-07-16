@@ -1,5 +1,6 @@
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import React from 'react';
+import { formatCreateDate } from '../FormatCreateDate/FormatCreateDate';
 
 type Props = {
   isLastItem: boolean;
@@ -51,11 +52,11 @@ const RefundListBody = ({
         <div className='w-[8%]'>{bankName}</div>
         <div className='w-[12%]'>{accountNumber}</div>
         <div className='w-[8%]'>{term}</div>
-        <div className='w-[9%]'>{exitDate}</div>
-        <div className='w-[9%]'>{createDate}</div>
+        <div className='w-[9%]'>{formatCreateDate(exitDate)}</div>
+        <div className='w-[9%]'>{formatCreateDate(createDate)}</div>
         <div className='w-[12%]'>{dormitoryName}</div>
-        <div className='w-[7%]'>{roomNumber}</div>
-        <div className='w-[7%]'>{bedNumber}</div>
+        <div className='w-[7%]'>{roomNumber ? roomNumber + '호' : '-'}</div>
+        <div className='w-[7%]'>{bedNumber ? bedNumber + '번' : '-'}</div>
       </div>
       <div className='absolute -right-87'>
         <BtnMiniVariant

@@ -7,9 +7,11 @@ import BuildingSettingsBody from '@/components/organisms/BuildingSettings/Buildi
 import AddBuildingPrompt from '@/components/organisms/Prompt/AddBuildingPrompt/AddBuildingPrompt';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { buildingSettingIdState } from '@/recoil/buildingSetting';
 import { BuildingSettingsResponseInformation } from '@/types/building';
 import { useRouter } from 'next/navigation';
 import { useState, Suspense, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 const BuildingSettings = () => {
   const [lists, setLists] = useState<BuildingSettingsResponseInformation[]>();
@@ -21,6 +23,7 @@ const BuildingSettings = () => {
   const [selectImage, setSelectImage] = useState<File | null>(null);
   const [selectedId, setSeletedId] = useState<number | null>(null);
   const router = useRouter();
+  const setBuildingId = useSetRecoilState(buildingSettingIdState);
 
   const { data, error, mutate } = useBuildingList();
 
@@ -78,10 +81,10 @@ const BuildingSettings = () => {
         <h1 className='H0 text-gray-grayscale50 text-center mb-35'>건물 설정</h1>
         <div className='w-[1220px] grid grid-cols-3 gap-x-20 gap-y-30 min-h-381 max-h-800 overflow-y-auto scrollbar-table'>
           {lists &&
-            lists.map((data) => {
+            lists.map((data, index) => {
               return (
                 <BuildingSettingsBody
-                  key={data.id}
+                  key={index}
                   id={data.id}
                   name={data.name}
                   imageUrl={data.imageUrl}
@@ -93,7 +96,10 @@ const BuildingSettings = () => {
                       setDeleteModal(true);
                     }
                   }}
-                  onBuildingSettingsDetail={() => router.push(`/dashboard/BuildingManagement/BuildingSettings`)}
+                  onBuildingSettingsDetail={() => {
+                    setBuildingId(data.id);
+                    router.push(`/dashboard/BuildingManagement/BuildingSettings/Detail`);
+                  }}
                 />
               );
             })}

@@ -19,6 +19,7 @@ import SelectFloorDropdown from '@/components/atoms/Dropdown/SelectFloorDropdown
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import BuildingManagementList from '@/components/organisms/BuildingManagement/BuildingManagementList';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { editState } from '@/recoil/nav';
 import {
   BuildingManagementFloorResponseInformation,
   BuildingManagementInfoResponseInformation,
@@ -31,12 +32,14 @@ import {
 import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 type Props = {
   buildingList: BuildingManagementResponseInformation[];
 };
 
 const BuildingManagementTemplates = ({ buildingList }: Props) => {
+  const setEditState = useSetRecoilState(editState);
   const [mounted, setMounted] = useState(false);
   const [buildingIsOn, setBuildingIsOn] = useState(false);
   const [selectBuilding, setSelectBuilding] = useState(buildingList[0]);
@@ -403,6 +406,7 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
                     } else {
                       setListClick(0);
                       setEditAssign(!editAssign);
+                      setEditState(true);
                     }
                   }}
                 />

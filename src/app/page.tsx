@@ -1,7 +1,6 @@
 'use client';
 import { signIn } from '@/apis/Auth';
 import LoginForm from '@/components/organisms/LoginForm/LoginForm';
-import { StudentManagementRoutes } from '@/constants/navigation';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import { accessTokenState, refreshTokenState } from '@/recoil/user';
 import tokenManager from '@/utils/tokenManager';
@@ -43,7 +42,7 @@ const Page = () => {
         console.log('Refresh Token (LocalStorage):', tokenManager.getToken(REFRESH_TOKEN));
 
         alert('로그인 성공');
-        router.push(StudentManagementRoutes);
+        router.push('/dashboard');
       } else {
         alert('로그인 실패');
       }
