@@ -1,7 +1,9 @@
 import { BASE_URL } from './../constants/path';
 import { noticeResponse, noticeResponseDataList } from './../types/notice';
-import swrWithToken from '@/utils/swrWithToken';
+
 import useSWRInfinite from 'swr/infinite';
+import swrWithTokens from '@/utils/swrWithTokens';
+import test from '@/utils/swrWithToken';
 
 export const useInfiniteNotifications = () => {
   const getKey = (pageIndex: number, previousPageData: noticeResponse) => {
@@ -9,7 +11,7 @@ export const useInfiniteNotifications = () => {
     return `${BASE_URL}/api/v1/web/notifications/ANNOUNCEMENT?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, test);
 
   const notificationsData: noticeResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as noticeResponseDataList[])
@@ -26,4 +28,13 @@ export const useInfiniteNotifications = () => {
     false;
 
   return { notificationsData, error, isLoadingMore, size, setSize, isReachingEnd, mutate };
+};
+
+export const postNotification = async (data: FormData) => {
+  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+    method: 'POST',
+    body: data,
+  });
+
+  return response;
 };
