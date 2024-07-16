@@ -6,8 +6,11 @@ import React, { useState } from 'react';
 import { postNotification } from '@/apis/Notifications';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
 import { WriteNotificationReq } from '@/types/notice';
+import { useRouter } from 'next/navigation';
+import { NoticeRoutes } from '@/constants/navigation';
 
 const Page = () => {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [writer, setWriter] = useState('');
   const [isPinned, setIsPinned] = useState(false);
@@ -32,28 +35,36 @@ const Page = () => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    const writeNotificationReq: WriteNotificationReq = {
+    const writeNotificationReq = {
       title,
       pinned: isPinned,
       notificationType: 'ANNOUNCEMENT',
       blockReqList: [
         {
-          imageUrl: 'www.example.com', // 필요한 경우 실제 이미지 URL로 대체
+          imageUrl: 'www.example.com',
           sequence: 1,
           content: '내용',
         },
       ],
     };
 
-    formData.append('writeNotificationReq', JSON.stringify(writeNotificationReq));
+    formData.append(
+      'writeNotificataionReq',
+      new Blob([JSON.stringify(writeNotificationReq)], { type: 'application/json' }),
+    );
 
-    fileLists.forEach((file) => {
-      formData.append('files', file.file);
-    });
+    if (fileLists.length > 0) {
+      fileLists.forEach((file) => {
+        formData.append('files', file.file);
+      });
+    } else {
+      formData.append('files', new Blob());
+    }
 
     try {
       const response = await postNotification(formData);
       alert(response.information.message);
+      router.push(NoticeRoutes);
     } catch (error) {
       console.error(error);
       alert('Failed to post notification');
