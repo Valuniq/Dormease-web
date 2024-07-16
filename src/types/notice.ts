@@ -20,13 +20,16 @@ export type noticeResponseDataList = {
 
 // 공지사항 상세 조회
 export type noticeDetailResponse = {
-  pinned: boolean;
-  title: string;
-  writer: string;
-  createdDate: string;
-  modifiedDate: string;
-  blockResList: noticeDetailResponseBlockResList[];
-  fileList: noticeDetailResponseFileList[];
+  check: boolean;
+  information: {
+    pinned: boolean;
+    title: string;
+    writer: string;
+    createdDate: string;
+    modifiedDate: string;
+    blockResList: noticeDetailResponseBlockResList[];
+    fileList: noticeDetailResponseFileList[];
+  };
 };
 
 export type noticeDetailResponseBlockResList = {

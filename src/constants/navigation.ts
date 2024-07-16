@@ -11,8 +11,10 @@ import SettingIcon from '@public/images/navigation/Setting.png';
 export const StudentManagementRoutes = '/dashboard/StudentManagement';
 export const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
 export const BuildingManagementRoutes = '/dashboard/BuildingManagement';
+export const NoticeRoutes = '/dashboard/Notice';
 export const NoticeWritingRoutes = '/dashboard/Notice/NoticeWriting';
 export const FAQWritingRoutes = '/dashboard/FAQ/FAQWriting';
+export const NoticeDetailRoutes = '/dashboard/Notice/Detail';
 
 export const NavigationItems = [
   {

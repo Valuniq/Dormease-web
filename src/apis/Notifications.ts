@@ -4,6 +4,7 @@ import { noticeResponse, noticeResponseDataList } from './../types/notice';
 import useSWRInfinite from 'swr/infinite';
 import swrWithTokens from '@/utils/swrWithTokens';
 import test from '@/utils/swrWithToken';
+import useSWR from 'swr';
 
 export const useInfiniteNotifications = () => {
   const getKey = (pageIndex: number, previousPageData: noticeResponse) => {
@@ -37,4 +38,13 @@ export const postNotification = async (data: FormData) => {
   });
 
   return response;
+};
+
+export const useNoticeDetail = (id: number) => {
+  const { data, error } = useSWR(id ? `${BASE_URL}/api/v1/web/notifications/notification/${id}` : null, swrWithTokens);
+  return {
+    data,
+    error,
+    isLoading: !error && !data,
+  };
 };
