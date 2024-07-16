@@ -1,19 +1,30 @@
 'use client';
+import React, { Fragment } from 'react';
+import NoneList from '@/components/organisms/NoneList/NoneList';
+import FAQListBody from '@/components/organisms/FAQ/FAQListBody';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { faqResponseDataList } from '@/types/faq';
-import React from 'react';
-import NoneList from '../NoneList/NoneList';
-import FAQListBody from './FAQListBody';
 
-type faqListProps = {
-  faqLists: faqResponseDataList[];
+type Props = {
+  list: faqResponseDataList[];
+  isLoading: boolean;
+  isEndReached: boolean;
+  setSize: (size: number | ((size: number) => number)) => void;
 };
 
-const FAQList = ({ faqLists }: faqListProps) => {
-  const pinnedFAQ = faqLists && faqLists.filter((faq) => faq.pinned);
-  const unPinnedFAQ = faqLists && faqLists.filter((faq) => !faq.pinned);
+const FAQList = ({ list, isLoading, isEndReached, setSize }: Props) => {
+  const pinnedFAQ = list.filter((faq) => faq.pinned);
+  const unPinnedFAQ = list.filter((faq) => !faq.pinned);
+
+  const lastElementRef = useInfiniteScroll({
+    isLoading,
+    isEndReached,
+    onIntersect: () => setSize((prevSize) => prevSize + 1),
+  });
+
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
-      <table className='w-[1200px]'>
+      <table className='w-[1200px] h-full'>
         <thead className='w-full h-36 bg-white sticky top-0 z-1'>
           <tr className='text-gray-grayscale50'>
             <th className='H4'>번호</th>
@@ -30,46 +41,62 @@ const FAQList = ({ faqLists }: faqListProps) => {
           </tr>
         </thead>
 
-        {faqLists && faqLists.length > 0 ? (
+        {list.length > 0 ? (
           <tbody className='overflow-y-scroll'>
-            <tr className='h-15' />
-            {/* 고정된 FAQ 먼저 렌더링 */}
+            <tr className='h-14' />
             {pinnedFAQ.map((faq) => (
-              <>
+              <Fragment key={faq.notificationId}>
                 <FAQListBody
                   notificationId={faq.notificationId}
                   title={faq.title}
                   writer={faq.writer}
                   createdDate={faq.createdDate}
                   existFile={faq.existFile}
-                  // views={faq.views}
                   pinned={faq.pinned}
                 />
-                <tr className='h-15' />
-              </>
+                <tr className='h-14' />
+              </Fragment>
             ))}
-            {/* 고정되지 않은 FAQ 렌더링 */}
-            {unPinnedFAQ.map((faq) => (
-              <>
-                <FAQListBody
-                  notificationId={faq.notificationId}
-                  title={faq.title}
-                  writer={faq.writer}
-                  createdDate={faq.createdDate}
-                  existFile={faq.existFile}
-                  // views={faq.views}
-                  pinned={faq.pinned}
-                />
-                <tr className='h-15' />
-              </>
-            ))}
+            {unPinnedFAQ.map((faq, index) => {
+              if (index === unPinnedFAQ.length - 1) {
+                return (
+                  <Fragment key={faq.notificationId}>
+                    <FAQListBody
+                      notificationId={faq.notificationId}
+                      title={faq.title}
+                      writer={faq.writer}
+                      createdDate={faq.createdDate}
+                      existFile={faq.existFile}
+                      pinned={faq.pinned}
+                      ref={lastElementRef}
+                    />
+                    <tr className='h-14' />
+                  </Fragment>
+                );
+              } else {
+                return (
+                  <Fragment key={faq.notificationId}>
+                    <FAQListBody
+                      notificationId={faq.notificationId}
+                      title={faq.title}
+                      writer={faq.writer}
+                      createdDate={faq.createdDate}
+                      existFile={faq.existFile}
+                      pinned={faq.pinned}
+                    />
+                    <tr className='h-14' />
+                  </Fragment>
+                );
+              }
+            })}
           </tbody>
         ) : (
-          <tbody className='h-full '>
+          <tbody className='h-full'>
             <NoneList colspan={6} />
           </tbody>
         )}
       </table>
+      {isLoading && <div>Loading...</div>}
     </div>
   );
 };
