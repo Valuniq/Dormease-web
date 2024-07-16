@@ -11,21 +11,21 @@ import React from 'react';
 
 const Page = () => {
   const router = useRouter();
-  const { notificationsData, error, isLoadingMore, size, setSize, isReachingEnd } = useInfiniteNotifications();
+  const {
+    notificationsData,
+    error,
+    isLoadingMore,
+    size,
+    setSize,
+    isReachingEnd,
+    mutate: mutateList,
+  } = useInfiniteNotifications();
 
-  if (error) return <div>Failed to load</div>;
-  if (!notificationsData) return <div>Loading...</div>;
+  // if (error) return <div>Failed to load</div>;
+  // if (!notificationsData) return <div>Loading...</div>;
 
   const handleWriteClick = () => {
     router.push(NoticeWritingRoutes);
-  };
-
-  const handlePageChange = (direction: 'prev' | 'next') => {
-    if (direction === 'prev' && size > 1) {
-      setSize(size - 1);
-    } else if (direction === 'next' && !isReachingEnd) {
-      setSize(size + 1);
-    }
   };
 
   return (
@@ -34,10 +34,12 @@ const Page = () => {
       <div onClick={handleWriteClick} className='ml-auto mb-15'>
         <BtnLargeVariant label={'작성하기'} disabled={false} variant={'blue'} />
       </div>
-      <NoticeList noticeLists={notificationsData} />
-      <div className='mt-27 flex justify-center'>
-        <Pagination pageNum={size} pageTotalNum={10} setPageNum={handlePageChange} />
-      </div>
+      <NoticeList
+        list={notificationsData}
+        isLoading={isLoadingMore ?? false}
+        isEndReached={isReachingEnd}
+        setSize={setSize}
+      />
     </div>
   );
 };

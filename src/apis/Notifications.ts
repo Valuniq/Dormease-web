@@ -9,7 +9,7 @@ export const useInfiniteNotifications = () => {
     return `${BASE_URL}/api/v1/web/notifications/ANNOUNCEMENT?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<noticeResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, swrWithToken);
 
   const notificationsData: noticeResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as noticeResponseDataList[])
@@ -25,5 +25,5 @@ export const useInfiniteNotifications = () => {
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { notificationsData, error, isLoadingMore, size, setSize, isReachingEnd };
+  return { notificationsData, error, isLoadingMore, size, setSize, isReachingEnd, mutate };
 };
