@@ -11,6 +11,7 @@ import React from 'react';
 
 const Page = () => {
   const router = useRouter();
+
   const {
     notificationsData,
     error,
