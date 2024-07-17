@@ -1,11 +1,14 @@
 'use client';
 import dynamic from 'next/dynamic';
-import React, { useState, useRef, useEffect, useMemo, forwardRef } from 'react';
+import React, { useRef, useEffect, useMemo, forwardRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import 'react-quill/dist/quill.snow.css';
 import { Quill } from 'react-quill';
+import { useRecoilState } from 'recoil';
+
 import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
+import { isEditorModifiedState } from '@/types/editor';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }) as any;
 Quill.register('modules/ImageResize', ImageResize);
@@ -13,14 +16,14 @@ Quill.register('modules/ImageResize', ImageResize);
 type Props = {
   width?: string;
   height?: string;
-  setEditorHtml: (content: string) => void; // 에디터 내용을 상위 컴포넌트로 전달하는 함수
+  setEditorHtml: (content: string) => void;
 };
 
-const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, ref) => {
-  const [isEditorModified, setIsEditorModified] = useState<boolean>(false);
-  const quillRef = useRef<any>(null); // Quill 인스턴스를 참조하기 위한 ref
+const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEditorHtml }, ref) => {
+  const [isEditorModified, setIsEditorModified] = useRecoilState(isEditorModifiedState);
+  const quillRef = useRef<typeof ReactQuill | null>(null);
   const router = useRouter();
-  const nextUrlRef = useRef<string | null>(null); // nextUrlRef를 여기서 정의
+  const nextUrlRef = useRef<string | null>(null);
 
   const { confirmChanges, ConfirmDialogComponent } = useTextEditorConfirm(
     '작성한 내용은 저장되지 않았습니다.\n페이지를 벗어나시겠습니까?',
@@ -31,6 +34,7 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
         router.push(nextUrl);
       }
     },
+    'red',
   );
 
   const handleEditorChange = (content: string) => {
@@ -42,7 +46,7 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
-    input.style.display = 'none'; // 입력 요소를 숨깁니다.
+    input.style.display = 'none';
     document.body.appendChild(input);
 
     input.click();
@@ -54,13 +58,12 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
         reader.onload = (e) => {
           if (quillRef.current) {
             const editor = quillRef.current.getEditor();
-            const range = editor.getSelection(true); // 현재 커서 위치를 가져옵니다.
+            const range = editor.getSelection(true);
             if (range) {
-              // Convert base64 to Blob URL
               const base64Data = e.target?.result as string;
               const blob = base64ToBlob(base64Data.split(',')[1], 'image/png');
               const url = URL.createObjectURL(blob);
-              editor.insertEmbed(range.index, 'image', url); // 이미지를 삽입합니다.
+              editor.insertEmbed(range.index, 'image', url);
             }
           }
         };
@@ -89,9 +92,7 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
-      const observer = new MutationObserver(() => {
-        // Mutation observer callback
-      });
+      const observer = new MutationObserver(() => {});
 
       observer.observe(editor.root, {
         childList: true,
@@ -108,7 +109,7 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isEditorModified) {
         e.preventDefault();
-        e.returnValue = ''; // 브라우저가 기본 경고 메시지를 표시하도록 합니다.
+        e.returnValue = '';
       }
     };
 
@@ -122,7 +123,7 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
         nextUrlRef.current = url;
         const confirmed = await confirmChanges();
         if (confirmed) {
-          originalPush(url, options); // 원래 push 함수 호출
+          originalPush(url, options);
         }
       } else {
         return originalPush(url, options);
@@ -183,7 +184,6 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
   return (
     <>
       <ReactQuill
-        ref={ref}
         style={{ width, height }}
         theme='snow'
         onChange={handleEditorChange}
@@ -194,5 +194,7 @@ const QuillEditor = forwardRef<any, Props>(({ width, height, setEditorHtml }, re
     </>
   );
 });
+
+QuillEditor.displayName = 'QuillEditor';
 
 export default dynamic(() => Promise.resolve(QuillEditor), { ssr: false });
