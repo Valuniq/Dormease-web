@@ -2,7 +2,7 @@
 
 import { useInfiniteFaq } from '@/apis/Faq';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
-import FAQList from '@/components/organisms/FAQ/FAQList';
+import FAQList from '@/components/organisms/FAQ/FAQList/FAQList';
 import { FAQWritingRoutes } from '@/constants/navigation';
 import { useRouter } from 'next/navigation';
 import React from 'react';
