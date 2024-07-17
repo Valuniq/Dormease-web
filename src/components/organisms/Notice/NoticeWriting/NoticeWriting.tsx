@@ -23,6 +23,7 @@ type Props = {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDeleteFile: (fileName: string) => void;
   handleAllDelete: () => void;
+  setEditorHtml: (content: string) => void;
 };
 
 const NoticeWriting = ({
@@ -35,6 +36,7 @@ const NoticeWriting = ({
   handleFileChange,
   handleDeleteFile,
   handleAllDelete,
+  setEditorHtml,
 }: Props) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -63,6 +65,7 @@ const NoticeWriting = ({
           onSave={function (): void {
             throw new Error('Function not implemented.');
           }}
+          setEditorHtml={setEditorHtml}
         />
       </div>
       <div className='flex items-center py-23 border-y-1 border-y-gray-grayscale30'>

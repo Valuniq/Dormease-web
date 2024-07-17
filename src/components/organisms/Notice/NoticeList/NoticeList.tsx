@@ -45,8 +45,8 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
         {list.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-14' />
-            {pinnedNotices.map((notice) => (
-              <Fragment key={notice.notificationId}>
+            {pinnedNotices.map((notice, index) => (
+              <Fragment key={`${notice.notificationId}-pinned-${index}`}>
                 <NoticeListBody
                   notificationId={notice.notificationId}
                   title={notice.title}
@@ -61,7 +61,7 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
             {unPinnedNotices.map((notice, index) => {
               if (index === unPinnedNotices.length - 1) {
                 return (
-                  <Fragment key={notice.notificationId}>
+                  <Fragment key={`${notice.notificationId}-unpinned-${index}`}>
                     <NoticeListBody
                       notificationId={notice.notificationId}
                       title={notice.title}
@@ -76,7 +76,7 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
                 );
               } else {
                 return (
-                  <Fragment key={notice.notificationId}>
+                  <Fragment key={`${notice.notificationId}-unpinned-${index}`}>
                     <NoticeListBody
                       notificationId={notice.notificationId}
                       title={notice.title}

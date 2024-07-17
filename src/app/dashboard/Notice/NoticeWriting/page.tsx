@@ -5,16 +5,19 @@ import React, { useState } from 'react';
 
 import { postNotification } from '@/apis/Notifications';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
-import { WriteNotificationReq } from '@/types/notice';
+import { noticePostRequest } from '@/types/notice';
 import { useRouter } from 'next/navigation';
 import { NoticeRoutes } from '@/constants/navigation';
 
 const Page = () => {
   const router = useRouter();
-  const [title, setTitle] = useState('');
-  const [writer, setWriter] = useState('');
-  const [isPinned, setIsPinned] = useState(false);
   const [fileLists, setFileLists] = useState<{ fileName: string; file: File }[]>([]);
+  const [formState, setFormState] = useState<noticePostRequest>({
+    title: '',
+    pinned: false,
+    notificationType: 'ANNOUNCEMENT',
+    blockReqList: [{ imageUrl: 'www.example.com', sequence: 1, content: '' }],
+  });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -35,30 +38,13 @@ const Page = () => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    const writeNotificationReq = {
-      title,
-      pinned: isPinned,
-      notificationType: 'ANNOUNCEMENT',
-      blockReqList: [
-        {
-          imageUrl: 'www.example.com',
-          sequence: 1,
-          content: '내용',
-        },
-      ],
-    };
-
-    formData.append(
-      'writeNotificataionReq',
-      new Blob([JSON.stringify(writeNotificationReq)], { type: 'application/json' }),
-    );
-
+    formData.append('writeNotificataionReq', new Blob([JSON.stringify(formState)], { type: 'application/json' }));
     if (fileLists.length > 0) {
       fileLists.forEach((file) => {
         formData.append('files', file.file);
       });
     } else {
-      formData.append('files', new Blob());
+      formData.append('files', new Blob([], { type: 'application/json' })); // 빈 배열로 파일 필드를 추가
     }
 
     try {
@@ -73,15 +59,21 @@ const Page = () => {
   return (
     <div className='flex flex-col items-center justify-center'>
       <NoticeWrite
-        title={title}
-        setTitle={setTitle}
-        writer={writer}
-        isPinned={isPinned}
-        setIsPinned={setIsPinned}
+        title={formState.title}
+        setTitle={(title) => setFormState((prevState) => ({ ...prevState, title }))}
+        writer='수정 필요'
+        isPinned={formState.pinned}
+        setIsPinned={(pinned) => setFormState((prevState) => ({ ...prevState, pinned }))}
         fileLists={fileLists}
         handleFileChange={handleFileChange}
         handleDeleteFile={handleDeleteFile}
         handleAllDelete={handleAllDelete}
+        setEditorHtml={(content) =>
+          setFormState((prevState) => ({
+            ...prevState,
+            blockReqList: [{ ...prevState.blockReqList[0], content }],
+          }))
+        }
       />
       <div className='mt-70'>
         <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} onClick={handleSubmit} />

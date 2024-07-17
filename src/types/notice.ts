@@ -46,15 +46,15 @@ export type noticeDetailResponseFileList = {
 };
 
 // 공지사항 등록
-export type BlockReq = {
-  imageUrl: string;
-  sequence: number;
-  content: string;
-};
-
-export type WriteNotificationReq = {
+export type noticePostRequest = {
   title: string;
   pinned: boolean;
   notificationType: string;
   blockReqList: BlockReq[];
+};
+
+export type BlockReq = {
+  imageUrl: string;
+  sequence: number;
+  content: string;
 };

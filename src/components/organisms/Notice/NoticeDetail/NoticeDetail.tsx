@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import Union from '@public/images/Union.png';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
+import '@/styles/editor.css';
 
 type Props = {
   title: string;
@@ -20,7 +21,7 @@ const NoticeDetail = ({ title, writer, isPinned, content, fileLists, createdDate
 
   return (
     <div className='w-[1200px] px-12'>
-      <div className='flex items-center justify-between'>
+      <div className=' flex items-center justify-between'>
         <div className='flex items-end'>
           <h1 className='H0 text-gray-grayscale50 mr-8'>공지사항</h1>
           {isPinned && (
@@ -55,8 +56,8 @@ const NoticeDetail = ({ title, writer, isPinned, content, fileLists, createdDate
             </div>
           </div>
         </div>
-        <div className='w-[1200px] h-450 p-17 overflow-y-auto border-1 border-gray-grayscale30 border-opacity-30 rounded-8 my-23'>
-          <h2 className='H4 text-gray-grayscale30'>{content}</h2>
+        <div className='h-450 p-17 overflow-y-auto border-1 border-gray-grayscale30 border-opacity-30 rounded-8 my-23'>
+          <div dangerouslySetInnerHTML={{ __html: content }} className='editor-content'></div>
         </div>
         <div className='pl-12 flex items-center pt-23 border-t-1 border-y-gray-grayscale30 border-opacity-30'>
           <h1 className='H4 text-gray-grayscale50 mr-20 text-nowrap'>첨부파일</h1>
