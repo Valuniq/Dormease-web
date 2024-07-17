@@ -1,9 +1,9 @@
 'use client';
 import React, { Fragment } from 'react';
 import NoneList from '@/components/organisms/NoneList/NoneList';
-import FAQListBody from '@/components/organisms/FAQ/FAQListBody';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { faqResponseDataList } from '@/types/faq';
+import FAQListBody from './FAQListBody';
 
 type Props = {
   list: faqResponseDataList[];
@@ -44,8 +44,8 @@ const FAQList = ({ list, isLoading, isEndReached, setSize }: Props) => {
         {list.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-14' />
-            {pinnedFAQ.map((faq) => (
-              <Fragment key={faq.notificationId}>
+            {pinnedFAQ.map((faq, index) => (
+              <Fragment key={index}>
                 <FAQListBody
                   notificationId={faq.notificationId}
                   title={faq.title}
@@ -60,7 +60,7 @@ const FAQList = ({ list, isLoading, isEndReached, setSize }: Props) => {
             {unPinnedFAQ.map((faq, index) => {
               if (index === unPinnedFAQ.length - 1) {
                 return (
-                  <Fragment key={faq.notificationId}>
+                  <Fragment key={index}>
                     <FAQListBody
                       notificationId={faq.notificationId}
                       title={faq.title}
@@ -75,7 +75,7 @@ const FAQList = ({ list, isLoading, isEndReached, setSize }: Props) => {
                 );
               } else {
                 return (
-                  <Fragment key={faq.notificationId}>
+                  <Fragment key={index}>
                     <FAQListBody
                       notificationId={faq.notificationId}
                       title={faq.title}

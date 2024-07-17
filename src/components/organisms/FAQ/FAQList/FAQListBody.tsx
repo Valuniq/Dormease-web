@@ -4,6 +4,10 @@ import React, { forwardRef, ForwardRefRenderFunction } from 'react';
 import { faqResponseDataList } from '@/types/faq';
 import pinIcon from '@public/images/pinIcon.png';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { faqIdState } from '@/recoil/faq';
+import { useSetRecoilState } from 'recoil';
+import { FAQDetailRoutes } from '@/constants/navigation';
 
 type Props = faqResponseDataList;
 
@@ -12,10 +16,17 @@ const FAQListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
   ref,
 ) => {
   const slicedTitle = title.length > 35 ? title.slice(0, 35) + '...' : title;
+  const router = useRouter();
+  const setId = useSetRecoilState(faqIdState);
+
   return (
     <tr
       ref={ref}
       className={` ${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-38 hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
+      onClick={() => {
+        setId(notificationId);
+        router.push(FAQDetailRoutes);
+      }}
     >
       <td className='text-center'>
         {pinned ? (
