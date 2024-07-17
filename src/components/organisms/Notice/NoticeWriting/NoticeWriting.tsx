@@ -73,13 +73,9 @@ const NoticeWriting = ({
         <CheckFileBtn label={'파일선택'} onClick={() => fileInputRef.current?.click()} />
         <input type='file' ref={fileInputRef} className='hidden' multiple onChange={handleFileChange} />
         <div className='overflow-scroll noti-file-scrollbar  ml-20 w-[917px] h-34 rounded-5 flex items-center justify-start px-10 border-1 border-gray-grayscale30'>
-          {fileLists.map((file) => (
-            <ul className='mr-10'>
-              <FileNameDeleteBtn
-                key={file.fileName}
-                fileName={file.fileName}
-                handleDelete={() => handleDeleteFile(file.fileName)}
-              />
+          {fileLists.map((file, index) => (
+            <ul className='mr-10' key={index}>
+              <FileNameDeleteBtn fileName={file.fileName} handleDelete={() => handleDeleteFile(file.fileName)} />
             </ul>
           ))}
         </div>
