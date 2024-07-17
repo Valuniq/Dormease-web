@@ -12,9 +12,11 @@ export const StudentManagementRoutes = '/dashboard/StudentManagement';
 export const JoinApplicationSettingRoutes = '/dashboard/JoinApplicationSetting';
 export const BuildingManagementRoutes = '/dashboard/BuildingManagement';
 export const NoticeRoutes = '/dashboard/Notice';
+export const FAQRoutes = '/dashboard/FAQ';
 export const NoticeWritingRoutes = '/dashboard/Notice/NoticeWriting';
 export const FAQWritingRoutes = '/dashboard/FAQ/FAQWriting';
 export const NoticeDetailRoutes = '/dashboard/Notice/Detail';
+export const FAQDetailRoutes = '/dashboard/FAQ/Detail';
 
 export const NavigationItems = [
   {
