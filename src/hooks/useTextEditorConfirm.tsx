@@ -1,28 +1,41 @@
 'use client';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
+import { createPortal } from 'react-dom';
+import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 
 const useTextEditorConfirm = (message: string, onConfirm: () => void) => {
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = message;
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [message, onConfirm]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [resolvePromise, setResolvePromise] = useState<(value: boolean) => void>(() => {});
 
   const confirmChanges = () => {
-    const shouldConfirm = window.confirm(message);
-    if (shouldConfirm) {
-      onConfirm();
-    }
+    setIsDialogOpen(true);
+    return new Promise<boolean>((resolve) => {
+      setResolvePromise(() => resolve);
+    });
   };
 
-  return confirmChanges;
+  const handleConfirm = () => {
+    setIsDialogOpen(false);
+    onConfirm();
+    resolvePromise(true);
+  };
+
+  const handleCancel = () => {
+    setIsDialogOpen(false);
+    resolvePromise(false);
+  };
+
+  const ConfirmDialogComponent = isDialogOpen
+    ? createPortal(
+        <BackDrop isOpen={true}>
+          <AlertPrompt variant='blue' label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
+        </BackDrop>,
+        document.body,
+      )
+    : null;
+
+  return { confirmChanges, ConfirmDialogComponent };
 };
 
 export default useTextEditorConfirm;
