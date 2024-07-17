@@ -1,4 +1,3 @@
-'use client';
 import dynamic from 'next/dynamic';
 import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
 import { ImageResize } from 'quill-image-resize-module-ts';
@@ -13,10 +12,10 @@ type Props = {
   width?: string;
   height?: string;
   onSave: () => void; // 에디터 변경 사항 저장 함수
+  setEditorHtml: (content: string) => void; // 에디터 내용을 상위 컴포넌트로 전달하는 함수
 };
 
-const QuillComponent = ({ width, height, onSave }: Props) => {
-  const [editorHtml, setEditorHtml] = useState<string>('');
+const QuillComponent = ({ width, height, onSave, setEditorHtml }: Props) => {
   const [isEditorModified, setIsEditorModified] = useState<boolean>(false);
 
   useTextEditorConfirm('변경 사항이 저장되지 않았습니다. 페이지를 벗어나시겠습니까?', () => {
@@ -25,16 +24,16 @@ const QuillComponent = ({ width, height, onSave }: Props) => {
 
   const handleEditorChange = (content: string) => {
     setEditorHtml(content);
+    console.log(content);
     setIsEditorModified(true);
   };
 
   const modules = {
     toolbar: [
-      [{ header: '1' }, { header: '2' }, { font: [] }],
-      [{ size: [] }],
+      [{ header: '1' }, { header: '2' }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-      ['link', 'image', 'video'],
+      ['link', 'image'],
       ['clean'],
       ['emoji'],
     ],
@@ -61,14 +60,12 @@ const QuillComponent = ({ width, height, onSave }: Props) => {
     'indent',
     'link',
     'image',
-    'video',
   ];
 
   return (
     <ReactQuill
       style={{ width, height }}
       theme='snow'
-      value={editorHtml}
       onChange={handleEditorChange}
       modules={modules}
       formats={formats}
