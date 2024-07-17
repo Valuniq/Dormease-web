@@ -48,3 +48,11 @@ export const useNoticeDetail = (id: number) => {
     isLoading: !error && !data,
   };
 };
+
+export const deleteNotice = async (id: number) => {
+  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications/notification/${id}`, {
+    method: 'DELETE',
+  });
+
+  return response;
+};
