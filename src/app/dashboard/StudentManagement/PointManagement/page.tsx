@@ -33,17 +33,10 @@ const PointManagementPage = () => {
   };
 
   return (
-    <InfiniteScroll
-      isLoading={isLoadingMore || pointLoading}
-      isReachingEnd={isReachingEnd}
-      loadMore={() => setSize(size + 1)}
-    >
-      <PointManagementTemplate
-        pointManagementLists={pointManagementData as PointMemberResponseDataList[]}
-        pointLists={pointLists}
-      />
-      {isLoadingMore && <div>Loading more...</div>}
-    </InfiniteScroll>
+    <PointManagementTemplate
+      pointManagementLists={pointManagementData as PointMemberResponseDataList[]}
+      pointLists={pointLists}
+    />
   );
 };
 
