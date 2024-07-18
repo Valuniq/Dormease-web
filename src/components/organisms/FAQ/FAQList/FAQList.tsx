@@ -1,21 +1,20 @@
 'use client';
 import React, { Fragment } from 'react';
 import NoneList from '@/components/organisms/NoneList/NoneList';
-
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import { noticeResponseDataList } from '@/types/notice';
-import NoticeListBody from './NoticeListBody';
+import { faqResponseDataList } from '@/types/faq';
+import FAQListBody from './FAQListBody';
 
 type Props = {
-  list: noticeResponseDataList[];
+  list: faqResponseDataList[];
   isLoading: boolean;
   isEndReached: boolean;
   setSize: (size: number | ((size: number) => number)) => void;
 };
 
-const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
-  const pinnedNotices = list.filter((notice) => notice.pinned);
-  const unPinnedNotices = list.filter((notice) => !notice.pinned);
+const FAQList = ({ list, isLoading, isEndReached, setSize }: Props) => {
+  const pinnedFAQ = list.filter((faq) => faq.pinned);
+  const unPinnedFAQ = list.filter((faq) => !faq.pinned);
 
   const lastElementRef = useInfiniteScroll({
     isLoading,
@@ -45,30 +44,30 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
         {list.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-14' />
-            {pinnedNotices.map((notice, index) => (
-              <Fragment key={`${notice.notificationId}-pinned-${index}`}>
-                <NoticeListBody
-                  notificationId={notice.notificationId}
-                  title={notice.title}
-                  writer={notice.writer}
-                  createdDate={notice.createdDate}
-                  existFile={notice.existFile}
-                  pinned={notice.pinned}
+            {pinnedFAQ.map((faq, index) => (
+              <Fragment key={index}>
+                <FAQListBody
+                  notificationId={faq.notificationId}
+                  title={faq.title}
+                  writer={faq.writer}
+                  createdDate={faq.createdDate}
+                  existFile={faq.existFile}
+                  pinned={faq.pinned}
                 />
                 <tr className='h-14' />
               </Fragment>
             ))}
-            {unPinnedNotices.map((notice, index) => {
-              if (index === unPinnedNotices.length - 1) {
+            {unPinnedFAQ.map((faq, index) => {
+              if (index === unPinnedFAQ.length - 1) {
                 return (
-                  <Fragment key={`${notice.notificationId}-unpinned-${index}`}>
-                    <NoticeListBody
-                      notificationId={notice.notificationId}
-                      title={notice.title}
-                      writer={notice.writer}
-                      createdDate={notice.createdDate}
-                      existFile={notice.existFile}
-                      pinned={notice.pinned}
+                  <Fragment key={index}>
+                    <FAQListBody
+                      notificationId={faq.notificationId}
+                      title={faq.title}
+                      writer={faq.writer}
+                      createdDate={faq.createdDate}
+                      existFile={faq.existFile}
+                      pinned={faq.pinned}
                       ref={lastElementRef}
                     />
                     <tr className='h-14' />
@@ -76,14 +75,14 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
                 );
               } else {
                 return (
-                  <Fragment key={`${notice.notificationId}-unpinned-${index}`}>
-                    <NoticeListBody
-                      notificationId={notice.notificationId}
-                      title={notice.title}
-                      writer={notice.writer}
-                      createdDate={notice.createdDate}
-                      existFile={notice.existFile}
-                      pinned={notice.pinned}
+                  <Fragment key={index}>
+                    <FAQListBody
+                      notificationId={faq.notificationId}
+                      title={faq.title}
+                      writer={faq.writer}
+                      createdDate={faq.createdDate}
+                      existFile={faq.existFile}
+                      pinned={faq.pinned}
                     />
                     <tr className='h-14' />
                   </Fragment>
@@ -102,4 +101,4 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
   );
 };
 
-export default NoticeList;
+export default FAQList;

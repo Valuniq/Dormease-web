@@ -3,6 +3,8 @@ import { BASE_URL } from './../constants/path';
 
 import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
+import swrWithTokens from '@/utils/swrWithTokens';
+import useSWR from 'swr';
 
 export const useInfiniteFaq = () => {
   const getKey = (pageIndex: number, previousPageData: faqResponse) => {
@@ -27,4 +29,30 @@ export const useInfiniteFaq = () => {
     false;
 
   return { faqData, error, isLoadingMore, size, setSize, isReachingEnd };
+};
+
+export const postFaq = async (data: FormData) => {
+  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+    method: 'POST',
+    body: data,
+  });
+
+  return response;
+};
+
+export const useFaqDetail = (id: number) => {
+  const { data, error } = useSWR(id ? `${BASE_URL}/api/v1/web/notifications/notification/${id}` : null, swrWithTokens);
+  return {
+    data,
+    error,
+    isLoading: !error && !data,
+  };
+};
+
+export const deleteFaq = async (id: number) => {
+  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications/notification/${id}`, {
+    method: 'DELETE',
+  });
+
+  return response;
 };

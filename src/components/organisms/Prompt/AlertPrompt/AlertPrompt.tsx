@@ -13,23 +13,16 @@ const AlertPrompt = ({ variant, label, onConfirm }: Props) => {
   const getClassByVariant = (variant: string) => {
     switch (variant) {
       case 'blue':
-        return {
-          bgHeader: 'bg-blue-blue30',
-        };
+        return { bgHeader: 'bg-blue-blue30' };
       case 'red':
-        return {
-          bgHeader: 'bg-red-red20',
-        };
+        return { bgHeader: 'bg-red-red20' };
       case 'green':
-        return {
-          bgHeader: 'bg-green-green20',
-        };
+        return { bgHeader: 'bg-green-green20' };
       default:
-        return {
-          bgHeader: 'bg-blue-blue30',
-        };
+        return { bgHeader: 'bg-blue-blue30' };
     }
   };
+
   const { bgHeader } = getClassByVariant(variant);
 
   return (
@@ -37,7 +30,7 @@ const AlertPrompt = ({ variant, label, onConfirm }: Props) => {
       <PromptHeader bgColor={bgHeader} onCancel={onConfirm} />
       <Image src={PromptWarning} className='mt-19 mb-16' width={22} height={19} alt='PromptWarning' />
       <h1 className='alert-cap text-gray-grayscale50 text-center'>
-        {label.split('\\n').map((line, index) => (
+        {label.split('\n').map((line, index) => (
           <p key={index} className='leading-25'>
             {line}
           </p>

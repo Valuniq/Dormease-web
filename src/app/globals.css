@@ -166,6 +166,15 @@
   .scrollbar-table {
     -ms-overflow-style: none;
   }
+  .noti-file-scrollbar::-webkit-scrollbar {
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /* 수평 스크롤바 높이 */
+  }
+
+  .noti-file-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--colors-gray-grayscale-10);
+    border-radius: 10px;
+  }
 
   .scrollbar-table::-webkit-scrollbar {
     width: 6px;
@@ -228,5 +237,8 @@
     margin-left: -8.9px;
     border: 9px solid transparent;
     border-bottom-color: #f7f7f7;
+  }
+  .border-opacity-30 {
+    border-color: rgba(32, 32, 32, 0.3);
   }
 }

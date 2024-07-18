@@ -1,28 +1,46 @@
 'use client';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { createPortal } from 'react-dom';
+import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 
-const useTextEditorConfirm = (message: string, onConfirm: () => void) => {
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      event.returnValue = message;
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [message, onConfirm]);
+const useTextEditorConfirm = (message: string, onConfirm: () => void, variant: 'blue' | 'red' | 'green') => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [resolvePromise, setResolvePromise] = useState<(value: boolean) => void>(() => {});
+  const [skipConfirm, setSkipConfirm] = useState(false);
 
   const confirmChanges = () => {
-    const shouldConfirm = window.confirm(message);
-    if (shouldConfirm) {
-      onConfirm();
+    if (skipConfirm) {
+      return Promise.resolve(true);
     }
+    setIsDialogOpen(true);
+    return new Promise<boolean>((resolve) => {
+      setResolvePromise(() => resolve);
+    });
   };
 
-  return confirmChanges;
+  const handleConfirm = () => {
+    setIsDialogOpen(false);
+    onConfirm();
+    resolvePromise(true);
+  };
+
+  const handleCancel = () => {
+    setIsDialogOpen(false);
+    resolvePromise(false);
+  };
+
+  const ConfirmDialogComponent = isDialogOpen
+    ? createPortal(
+        <BackDrop isOpen={true}>
+          {' '}
+          <ConfirmPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
+        </BackDrop>,
+        document.body,
+      )
+    : null;
+
+  return { confirmChanges, ConfirmDialogComponent, setSkipConfirm };
 };
 
 export default useTextEditorConfirm;

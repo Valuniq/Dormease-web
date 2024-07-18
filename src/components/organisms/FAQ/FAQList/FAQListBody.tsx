@@ -1,34 +1,34 @@
 'use client';
 
 import React, { forwardRef, ForwardRefRenderFunction } from 'react';
-import { noticeResponseDataList } from '@/types/notice';
+import { faqResponseDataList } from '@/types/faq';
 import pinIcon from '@public/images/pinIcon.png';
 import Image from 'next/image';
-import { noticeIdState } from '@/recoil/notice';
 import { useRouter } from 'next/navigation';
+import { faqIdState } from '@/recoil/faq';
 import { useSetRecoilState } from 'recoil';
-import { NoticeDetailRoutes } from '@/constants/navigation';
+import { FAQDetailRoutes } from '@/constants/navigation';
 
-type Props = noticeResponseDataList;
+type Props = faqResponseDataList;
 
-const NoticeListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
+const FAQListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
   { notificationId, pinned, title, writer, createdDate, existFile },
   ref,
 ) => {
-  const router = useRouter();
-  const setId = useSetRecoilState(noticeIdState);
-
   const slicedTitle = title.length > 35 ? title.slice(0, 35) + '...' : title;
+  const router = useRouter();
+  const setId = useSetRecoilState(faqIdState);
+
   return (
     <tr
       ref={ref}
       className={` ${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-38 hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
       onClick={() => {
         setId(notificationId);
-        router.push(NoticeDetailRoutes);
+        router.push(FAQDetailRoutes);
       }}
     >
-      <td className='text-center '>
+      <td className='text-center'>
         {pinned ? (
           <div className='flex items-center justify-center'>
             {notificationId}
@@ -47,4 +47,4 @@ const NoticeListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
   );
 };
 
-export default forwardRef<HTMLTableRowElement, noticeResponseDataList>(NoticeListBody);
+export default forwardRef<HTMLTableRowElement, faqResponseDataList>(FAQListBody);

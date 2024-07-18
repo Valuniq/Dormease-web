@@ -1,21 +1,5 @@
 import { PageInfo } from './pageInfo';
 
-// export type noticeList = {
-//   index: string;
-//   title: string;
-//   writer: string;
-//   registrationDate: string;
-//   isExistedFile: boolean;
-//   views: number;
-//   isPinned: boolean;
-// };
-
-// export type noticeLists = {
-//   noticeLists: noticeList[];
-// };
-
-// export type noticePage = {};
-
 // notice 목록 조회
 export type noticeResponse = {
   check: boolean;
@@ -36,13 +20,16 @@ export type noticeResponseDataList = {
 
 // 공지사항 상세 조회
 export type noticeDetailResponse = {
-  pinned: boolean;
-  title: string;
-  writer: string;
-  createdDate: string;
-  modifiedDate: string;
-  blockResList: noticeDetailResponseBlockResList[];
-  fileList: noticeDetailResponseFileList[];
+  check: boolean;
+  information: {
+    pinned: boolean;
+    title: string;
+    writer: string;
+    createdDate: string;
+    modifiedDate: string;
+    blockResList: noticeDetailResponseBlockResList[];
+    fileList: noticeDetailResponseFileList[];
+  };
 };
 
 export type noticeDetailResponseBlockResList = {
@@ -56,4 +43,18 @@ export type noticeDetailResponseFileList = {
   fileId: number;
   fileUrl: string;
   originalFileName: string;
+};
+
+// 공지사항 등록
+export type noticePostRequest = {
+  title: string;
+  pinned: boolean;
+  notificationType: string;
+  blockReqList: BlockReq[];
+};
+
+export type BlockReq = {
+  imageUrl: string;
+  sequence: number;
+  content: string;
 };
