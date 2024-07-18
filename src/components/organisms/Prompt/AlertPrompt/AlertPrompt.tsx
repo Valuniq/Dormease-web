@@ -7,10 +7,9 @@ type Props = {
   variant: 'blue' | 'red' | 'green';
   label: string;
   onConfirm: () => void;
-  onCancel: () => void;
 };
 
-const AlertPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
+const AlertPrompt = ({ variant, label, onConfirm }: Props) => {
   const getClassByVariant = (variant: string) => {
     switch (variant) {
       case 'blue':
@@ -28,7 +27,7 @@ const AlertPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
 
   return (
     <div className='w-456 h-194 flex flex-col items-center rounded-8 shadow-xl bg-white pb-15'>
-      <PromptHeader bgColor={bgHeader} onCancel={onCancel} />
+      <PromptHeader bgColor={bgHeader} onCancel={onConfirm} />
       <Image src={PromptWarning} className='mt-19 mb-16' width={22} height={19} alt='PromptWarning' />
       <h1 className='alert-cap text-gray-grayscale50 text-center'>
         {label.split('\n').map((line, index) => (
@@ -39,7 +38,6 @@ const AlertPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
       </h1>
       <div className='ml-auto mt-auto'>
         <AlertBtn label={'확인'} onClick={onConfirm} hoverColor={variant} />
-        <AlertBtn label={'닫기'} onClick={onCancel} hoverColor={variant} />
       </div>
     </div>
   );

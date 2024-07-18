@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
 // confirm 창 열고 닫기
 
@@ -18,8 +18,8 @@ const useConfirmDialog = (
   };
 
   const handleCancel = () => {
-    if (onCancel) onCancel();
     setIsDialogOpen(false);
+    if (onCancel) onCancel();
   };
 
   const showConfirmDialog = (arg?: any) => {
@@ -28,7 +28,7 @@ const useConfirmDialog = (
   };
 
   const ConfirmDialogComponent = isDialogOpen ? (
-    <AlertPrompt label={message} onConfirm={handleConfirm} onCancel={handleCancel} variant={variant} />
+    <ConfirmPrompt label={message} onConfirm={handleConfirm} onCancel={handleCancel} variant={variant} />
   ) : null;
 
   return { showConfirmDialog, ConfirmDialogComponent };

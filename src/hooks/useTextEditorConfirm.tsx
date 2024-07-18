@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { createPortal } from 'react-dom';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 
@@ -32,10 +32,10 @@ const useTextEditorConfirm = (message: string, onConfirm: () => void, variant: '
 
   const ConfirmDialogComponent = isDialogOpen
     ? createPortal(
-        <BackDrop
-          children={<AlertPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />}
-          isOpen={true}
-        />,
+        <BackDrop isOpen={true}>
+          {' '}
+          <ConfirmPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
+        </BackDrop>,
         document.body,
       )
     : null;
