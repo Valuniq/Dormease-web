@@ -31,7 +31,7 @@ const ConfirmPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
       <PromptHeader bgColor={bgHeader} onCancel={onCancel} />
       <Image src={PromptWarning} className='mt-19 mb-16' width={22} height={19} alt='PromptWarning' />
       <h1 className='alert-cap text-gray-grayscale50 text-center'>
-        {label.split('\n').map((line, index) => (
+        {label.split('\\n').map((line, index) => (
           <p key={index} className='leading-25'>
             {line}
           </p>
