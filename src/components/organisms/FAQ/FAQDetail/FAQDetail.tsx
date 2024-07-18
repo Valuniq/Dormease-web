@@ -1,40 +1,27 @@
 'use client';
-import React, { useRef } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Union from '@public/images/Union.png';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import '@/styles/editor.css';
-import { deleteFaq } from '@/apis/Faq';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '../../BackDrop/Backdrop';
 import { useRouter } from 'next/navigation';
-import { FAQRoutes } from '@/constants/navigation';
-import { BASE_URL } from '@/constants/path';
-import { mutate } from 'swr';
+import { faqDetailResponseFileList } from '@/types/faq';
+import FileClip from '@public/images/FileClip.png';
 
 type Props = {
-  id: number;
   title: string;
   writer: string;
   content: string;
   isPinned: boolean;
   createdDate: string;
   modifiedDate: string;
-  fileLists: { fileName: string; file: File }[];
+  fileLists: faqDetailResponseFileList[];
   handleDelete: () => void;
 };
 
-const FAQDetail = ({
-  id,
-  title,
-  writer,
-  isPinned,
-  content,
-  fileLists,
-  createdDate,
-  modifiedDate,
-  handleDelete,
-}: Props) => {
+const FAQDetail = ({ title, writer, isPinned, content, fileLists, createdDate, modifiedDate, handleDelete }: Props) => {
   const router = useRouter();
 
   const { showConfirmDialog, ConfirmDialogComponent } = useConfirmDialog(
@@ -90,8 +77,16 @@ const FAQDetail = ({
             {fileLists && fileLists.length > 0 ? (
               <>
                 {fileLists.map((file, index) => (
-                  <ul key={index} className='mr-10'>
-                    {file.fileName}
+                  <ul key={index} className='mr-10 flex align-center'>
+                    <a
+                      target='_blank'
+                      className='mr-4 border-b border-gray-grayscale50'
+                      href={file.fileUrl}
+                      download={file.originalFileName}
+                    >
+                      {file.originalFileName}
+                    </a>
+                    <Image width={16} height={15} src={FileClip} className='object-contain' alt={'FileClip'} />
                   </ul>
                 ))}
               </>

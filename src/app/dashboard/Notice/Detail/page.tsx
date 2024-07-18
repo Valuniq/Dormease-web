@@ -52,18 +52,20 @@ const Page = () => {
 
   const noticeDetail = data as noticeDetailResponse;
 
+  // fileLists 데이터 변환
+  const fileLists: noticeDetailResponseFileList[] = noticeDetail.information.fileList.map((file) => ({
+    fileId: file.fileId,
+    fileUrl: file.fileUrl,
+    originalFileName: file.originalFileName,
+  }));
+
   return (
     <div>
       <NoticeDetail
         title={noticeDetail.information.title}
         writer={noticeDetail.information.writer}
         isPinned={noticeDetail.information.pinned}
-        fileLists={
-          noticeDetail.information.fileList?.map((file: noticeDetailResponseFileList) => ({
-            fileName: file.originalFileName,
-            file: new File([], file.originalFileName),
-          })) || []
-        }
+        fileLists={fileLists}
         content={
           noticeDetail.information.blockResList
             ?.map((block: noticeDetailResponseBlockResList) => block.content)
