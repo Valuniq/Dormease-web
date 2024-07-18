@@ -7,6 +7,8 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import '@/styles/editor.css';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '../../BackDrop/Backdrop';
+import { noticeDetailResponseFileList, noticeDetailResponseBlockResList } from '@/types/notice';
+import FileClip from '@public/images/FileClip.png';
 
 type Props = {
   title: string;
@@ -15,7 +17,7 @@ type Props = {
   isPinned: boolean;
   createdDate: string;
   modifiedDate: string;
-  fileLists: { fileName: string; file: File }[];
+  fileLists: noticeDetailResponseFileList[];
   handleDelete: () => void;
 };
 
@@ -38,10 +40,7 @@ const NoticeDetail = ({
 
   return (
     <>
-      {' '}
-      {!!ConfirmDialogComponent && (
-        <BackDrop children={ConfirmDialogComponent} isOpen={!!ConfirmDialogComponent} />
-      )}{' '}
+      {!!ConfirmDialogComponent && <BackDrop children={ConfirmDialogComponent} isOpen={!!ConfirmDialogComponent} />}
       <div className='w-[1200px] px-12'>
         <div className=' flex items-center justify-between'>
           <div className='flex items-end'>
@@ -86,8 +85,16 @@ const NoticeDetail = ({
             {fileLists && fileLists.length > 0 ? (
               <>
                 {fileLists.map((file, index) => (
-                  <ul key={index} className='mr-10'>
-                    {file.fileName}
+                  <ul key={index} className='mr-10 flex align-center'>
+                    <a
+                      target='_blank'
+                      className='mr-4 border-b border-gray-grayscale50'
+                      href={file.fileUrl}
+                      download={file.originalFileName}
+                    >
+                      {file.originalFileName}
+                    </a>
+                    <Image width={16} height={15} src={FileClip} className='object-contain' alt={'FileClip'} />
                   </ul>
                 ))}
               </>

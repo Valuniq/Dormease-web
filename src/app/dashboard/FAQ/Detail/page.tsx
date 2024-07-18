@@ -54,19 +54,20 @@ const Page = () => {
 
   const faqDetail = data as faqDetailResponse;
 
+  // fileLists 데이터 변환
+  const fileLists: faqDetailResponseFileList[] = faqDetail.information.fileList.map((file) => ({
+    fileId: file.fileId,
+    fileUrl: file.fileUrl,
+    originalFileName: file.originalFileName,
+  }));
+
   return (
     <div>
       <FAQDetail
-        id={id}
         title={faqDetail.information.title}
         writer={faqDetail.information.writer}
         isPinned={faqDetail.information.pinned}
-        fileLists={
-          faqDetail.information.fileList?.map((file: faqDetailResponseFileList) => ({
-            fileName: file.originalFileName,
-            file: new File([], file.originalFileName),
-          })) || []
-        }
+        fileLists={fileLists}
         content={
           faqDetail.information.blockResList?.map((block: faqDetailResponseBlockResList) => block.content).join('\n') ||
           ''
