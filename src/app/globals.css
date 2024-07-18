@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scale-80 {
+    transform: scale(0.8);
+  }
+  .scale-65 {
+    transform: scale(0.65);
+  }
+  .scale-50 {
+    transform: scale(0.5);
+  }
+  .scale-40 {
+    transform: scale(0.4);
+  }
+  .transform-origin-top-left {
+    transform-origin: top left;
+  }
+}
+
 /* 기본 스타일 */
 @import '../styles/variables.css';
 

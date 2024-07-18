@@ -63,15 +63,17 @@ const Page = () => {
       }}
       className='overflow-y-hidden flex flex-col items-center justify-center'
     >
-      <Image src={LoginLogo} width={372} height={136.5} className='object-cover mb-43' alt='login logo' />
-      <LoginForm
-        loginId={loginId}
-        setLoginId={setLoginId}
-        password={password}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
-        loginBtnDisabled={isDisabled}
-      />
+      <div className='xl:scale-80 lg:scale-65 md:scale-50 sm:scale-40 flex flex-col items-center justify-center'>
+        <Image src={LoginLogo} width={372} height={136.5} className='object-cover mb-43' alt='login logo' />
+        <LoginForm
+          loginId={loginId}
+          setLoginId={setLoginId}
+          password={password}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+          loginBtnDisabled={isDisabled}
+        />
+      </div>
     </div>
   );
 };
