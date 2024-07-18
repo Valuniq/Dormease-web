@@ -1,7 +1,9 @@
 'use client';
-import React from 'react';
+import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
+import React, { useState } from 'react';
 
 const FreshmanMethod = () => {
+  const [isOn, setIsOn] = useState(false);
   return (
     <div>
       {' '}

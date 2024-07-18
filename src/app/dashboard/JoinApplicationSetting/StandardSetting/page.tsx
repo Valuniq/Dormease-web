@@ -13,12 +13,7 @@ const Page = () => {
       </div>
       <CurrentStudentMethod />
       <div className='w-full h-2 bg-gray-grayscale30 my-50' />
-      <FreshmanMethod
-        isOn={false}
-        setIsOn={function (): boolean {
-          throw new Error('Function not implemented.');
-        }}
-      />
+      <FreshmanMethod />
       <div className='w-full h-2 bg-gray-grayscale30 my-50' />
       <div className='mt-25'>
         <BtnMidVariant label={'작성완료'} disabled={false} variant={'blue'} />
