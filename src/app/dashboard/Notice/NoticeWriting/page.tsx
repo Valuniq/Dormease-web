@@ -88,7 +88,7 @@ const Page = () => {
       <div className='mt-70'>
         <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} onClick={showConfirmDialog} />
       </div>
-      {!!ConfirmDialogComponent && <BackDrop children={ConfirmDialogComponent} isOpen={!!ConfirmDialogComponent} />}
+      {!!ConfirmDialogComponent && <BackDrop isOpen={!!ConfirmDialogComponent}>{ConfirmDialogComponent}</BackDrop>}
     </div>
   );
 };

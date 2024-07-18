@@ -40,7 +40,7 @@ const NoticeDetail = ({
 
   return (
     <>
-      {!!ConfirmDialogComponent && <BackDrop children={ConfirmDialogComponent} isOpen={!!ConfirmDialogComponent} />}
+      {!!ConfirmDialogComponent && <BackDrop isOpen={!!ConfirmDialogComponent}>{ConfirmDialogComponent}</BackDrop>}
       <div className='w-[1200px] px-12'>
         <div className=' flex items-center justify-between'>
           <div className='flex items-end'>
