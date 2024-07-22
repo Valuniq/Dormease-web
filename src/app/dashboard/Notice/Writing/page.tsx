@@ -1,18 +1,20 @@
 'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import NoticeWrite from '@/components/organisms/Notice/NoticeWriting/NoticeWriting';
+import NoticeWrite from '@/components/organisms/Notice/Writing/NoticeWriting';
 import React, { useState } from 'react';
 
 import { postNotification } from '@/apis/Notifications';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
-import { noticePostRequest } from '@/types/notice';
+import { noticePostRequest, ImageReq, FileReq } from '@/types/notice';
 import { useRouter } from 'next/navigation';
 import { NoticeRoutes } from '@/constants/navigation';
-import { isEditorModifiedState } from '@/types/editor';
+
 import { useSetRecoilState } from 'recoil';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
+import { isEditorModifiedState } from '@/recoil/editor';
 
+type NewImageReq = { imageUrl: string }; // 새로운 이미지 타입
 const Page = () => {
   const router = useRouter();
   const setIsEditorModified = useSetRecoilState(isEditorModifiedState);
@@ -21,7 +23,9 @@ const Page = () => {
     title: '',
     pinned: false,
     notificationType: 'ANNOUNCEMENT',
-    blockReqList: [{ imageUrl: 'www.example.com', sequence: 1, content: '' }],
+    content: '',
+    imageReqList: [],
+    files: [],
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +45,26 @@ const Page = () => {
     setFileLists([]);
   };
 
-  // 제출 시 ConfirmDialog를 표시
   const { showConfirmDialog, ConfirmDialogComponent } = useConfirmDialog(
     '작성한 내용을 등록하시겠습니까?',
     async () => {
+      const imageReqList: NewImageReq[] =
+        formState.content.match(/<img[^>]+src="([^">]+)"/g)?.map((imgTag: string) => {
+          const urlMatch = imgTag.match(/src="([^"]+)"/);
+          return { imageUrl: urlMatch ? urlMatch[1] : '' };
+        }) || [];
+
+      const updatedFormState = {
+        ...formState,
+        imageReqList,
+        files: fileLists.map((file) => ({ file: file.file })),
+      };
+
       const formData = new FormData();
-      formData.append('writeNotificataionReq', new Blob([JSON.stringify(formState)], { type: 'application/json' }));
+      formData.append(
+        'writeNotificationReq',
+        new Blob([JSON.stringify(updatedFormState)], { type: 'application/json' }),
+      );
       if (fileLists.length > 0) {
         fileLists.forEach((file) => {
           formData.append('files', file.file);
@@ -56,8 +74,8 @@ const Page = () => {
       }
 
       try {
-        setIsEditorModified(false); // 저장 시 경고 건너뛰기 설정
-        const response = await postNotification(formData);
+        setIsEditorModified(false);
+        await postNotification(formData);
         router.push(NoticeRoutes);
       } catch (error) {
         console.error(error);
@@ -66,14 +84,15 @@ const Page = () => {
     },
     'blue',
   );
+
   return (
     <>
-      {!!ConfirmDialogComponent && <BackDrop isOpen={!!ConfirmDialogComponent}>{ConfirmDialogComponent}</BackDrop>}
+      {!!ConfirmDialogComponent && ConfirmDialogComponent}
       <div className='flex flex-col items-center justify-center'>
         <NoticeWrite
           title={formState.title}
           setTitle={(title) => setFormState((prevState) => ({ ...prevState, title }))}
-          writer='수정 필요'
+          writer='관리자'
           isPinned={formState.pinned}
           setIsPinned={(pinned) => setFormState((prevState) => ({ ...prevState, pinned }))}
           fileLists={fileLists}
@@ -83,7 +102,7 @@ const Page = () => {
           setEditorHtml={(content) =>
             setFormState((prevState) => ({
               ...prevState,
-              blockReqList: [{ ...prevState.blockReqList[0], content }],
+              content,
             }))
           }
         />

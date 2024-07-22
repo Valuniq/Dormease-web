@@ -23,13 +23,13 @@ const NoticeListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
   return (
     <tr
       ref={ref}
-      className={` ${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-38 hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
+      className={`${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-[38px] hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
       onClick={() => {
         setId(notificationId);
         router.push(NoticeDetailRoutes);
       }}
     >
-      <td className='text-center '>
+      <td className='text-center'>
         {pinned ? (
           <div className='flex items-center justify-center'>
             {notificationId}

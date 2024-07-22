@@ -24,9 +24,9 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
   });
 
   return (
-    <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
-      <table className='w-[1200px] h-full'>
-        <thead className='w-full h-36 bg-white sticky top-0 z-1'>
+    <div className='w-fit h-[693px] overflow-y-scroll overflow-x-visible border-b border-gray-grayscale50'>
+      <table className='w-[1200px] '>
+        <thead className='w-full h-[36px] bg-white sticky top-0 z-10'>
           <tr className='text-gray-grayscale50'>
             <th className='H4'>번호</th>
             <th className='H4'>제목</th>
@@ -37,14 +37,14 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
           </tr>
           <tr>
             <th colSpan={6}>
-              <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
+              <div className='w-full h-[18px] border-b border-gray-grayscale50' />
             </th>
           </tr>
         </thead>
 
         {list.length > 0 ? (
-          <tbody className='overflow-y-scroll'>
-            <tr className='h-14' />
+          <tbody>
+            <tr className='h-[14px]' />
             {pinnedNotices.map((notice, index) => (
               <Fragment key={`${notice.notificationId}-pinned-${index}`}>
                 <NoticeListBody
@@ -55,7 +55,7 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
                   existFile={notice.existFile}
                   pinned={notice.pinned}
                 />
-                <tr className='h-14' />
+                <tr className='h-[14px]' />
               </Fragment>
             ))}
             {unPinnedNotices.map((notice, index) => {
@@ -71,7 +71,7 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
                       pinned={notice.pinned}
                       ref={lastElementRef}
                     />
-                    <tr className='h-14' />
+                    <tr className='h-[14px]' />
                   </Fragment>
                 );
               } else {
@@ -85,7 +85,7 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
                       existFile={notice.existFile}
                       pinned={notice.pinned}
                     />
-                    <tr className='h-14' />
+                    <tr className='h-[14px]' />
                   </Fragment>
                 );
               }
@@ -97,7 +97,6 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
           </tbody>
         )}
       </table>
-      {isLoading && <div>Loading...</div>}
     </div>
   );
 };

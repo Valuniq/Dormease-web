@@ -24,7 +24,7 @@ const FAQList = ({ list, isLoading, isEndReached, setSize }: Props) => {
 
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
-      <table className='w-[1200px] h-full'>
+      <table className='w-[1200px]'>
         <thead className='w-full h-36 bg-white sticky top-0 z-1'>
           <tr className='text-gray-grayscale50'>
             <th className='H4'>번호</th>

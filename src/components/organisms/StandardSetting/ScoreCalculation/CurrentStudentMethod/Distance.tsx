@@ -16,8 +16,11 @@ const Distance = ({ scores, scoresInput, setScoresInput }: Props) => {
       <div className='mt-16 border-b-2 border-b-gray-grayscale20 mx-15'>
         <h2 className='H4 w-fit border-b border-red-red20 text-red-red20 mb-18'>주의사항</h2>
         <div className='H4 text-black  grid gap-16  pb-30'>
-          <li>지역명 입력은 '도' 단위 혹은 '시' 단위로 입력해 주세요.</li>
-          <li>'시' 지역이 겹치는 경우 '도' 단위와 같이 입력해 주세요. (ex. 경기도 광주시, 전라도 광주시)</li>
+          <li>지역명 입력은 &apos;도&apos; 단위 혹은 &apos;시&apos; 단위로 입력해 주세요.</li>
+          <li>
+            &apos;시&apos; 지역이 겹치는 경우 &apos;도&apos; 단위와 같이 입력해 주세요. (ex. 경기도 광주시, 전라도
+            광주시)
+          </li>
           <li>지역명 사이에 콤마(,) 표시를 해주세요.</li>
           <li>입력되지 않은 지역은 만점 처리 됩니다.</li>
         </div>

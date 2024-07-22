@@ -56,3 +56,11 @@ export const deleteFaq = async (id: number) => {
 
   return response;
 };
+export const patchFaq = async (data: FormData) => {
+  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+    method: 'PATCH',
+    body: data,
+  });
+
+  return response;
+};

@@ -56,3 +56,12 @@ export const deleteNotice = async (id: number) => {
 
   return response;
 };
+
+export const patchNotification = async (data: FormData) => {
+  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+    method: 'PATCH',
+    body: data,
+  });
+
+  return response;
+};

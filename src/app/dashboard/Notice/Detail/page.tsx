@@ -1,11 +1,11 @@
 'use client';
 
-import NoticeDetail from '@/components/organisms/Notice/NoticeDetail/NoticeDetail';
+import NoticeDetail from '@/components/organisms/Notice/Detail/NoticeDetail';
 import { noticeIdState } from '@/recoil/notice';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { noticeDetailResponse, noticeDetailResponseFileList, noticeDetailResponseBlockResList } from '@/types/notice';
+import { noticeDetailResponse, noticeDetailResponseFileList } from '@/types/notice';
 import { deleteNotice, useInfiniteNotifications, useNoticeDetail } from '@/apis/Notifications';
 import { NoticeRoutes } from '@/constants/navigation';
 import { mutate } from 'swr';
@@ -61,20 +61,7 @@ const Page = () => {
 
   return (
     <div>
-      <NoticeDetail
-        title={noticeDetail.information.title}
-        writer={noticeDetail.information.writer}
-        isPinned={noticeDetail.information.pinned}
-        fileLists={fileLists}
-        content={
-          noticeDetail.information.blockResList
-            ?.map((block: noticeDetailResponseBlockResList) => block.content)
-            .join('\n') || ''
-        }
-        createdDate={noticeDetail.information.createdDate}
-        modifiedDate={noticeDetail.information.modifiedDate}
-        handleDelete={handleDelete}
-      />
+      <NoticeDetail data={noticeDetail} handleDelete={handleDelete} />
     </div>
   );
 };

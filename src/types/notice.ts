@@ -27,16 +27,15 @@ export type noticeDetailResponse = {
     writer: string;
     createdDate: string;
     modifiedDate: string;
-    blockResList: noticeDetailResponseBlockResList[];
+    content: string;
+    imageResList: noticeDetailResponseImageResList[];
     fileList: noticeDetailResponseFileList[];
   };
 };
 
-export type noticeDetailResponseBlockResList = {
-  blockId: number;
+export type noticeDetailResponseImageResList = {
+  imageId: number;
   imageUrl: string;
-  sequence: number;
-  content: string;
 };
 
 export type noticeDetailResponseFileList = {
@@ -49,12 +48,20 @@ export type noticeDetailResponseFileList = {
 export type noticePostRequest = {
   title: string;
   pinned: boolean;
+  writer?: string;
   notificationType: string;
-  blockReqList: BlockReq[];
+  content: string;
+  imageReqList: ImageReq[];
+  files: FileReq[];
 };
 
-export type BlockReq = {
+export type ImageReq = {
   imageUrl: string;
-  sequence: number;
-  content: string;
+  imageId: number;
+};
+
+export type FileReq = {
+  fileId: number;
+  fileUrl: string;
+  originalFileName: string;
 };
