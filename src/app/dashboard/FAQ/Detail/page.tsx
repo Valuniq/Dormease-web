@@ -1,13 +1,13 @@
 'use client';
 
-import NoticeDetail from '@/components/organisms/Notice/NoticeDetail/NoticeDetail';
+import NoticeDetail from '@/components/organisms/Notice/Detail/NoticeDetail';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNoticeDetail } from '@/apis/Notifications';
-import { faqDetailResponse, faqDetailResponseBlockResList, faqDetailResponseFileList } from '@/types/faq';
+import { faqDetailResponse, faqDetailResponseFileList } from '@/types/faq';
 import { faqIdState } from '@/recoil/faq';
-import FAQDetail from '@/components/organisms/FAQ/FAQDetail/FAQDetail';
+import FAQDetail from '@/components/organisms/FAQ/Detail/FAQDetail';
 import { deleteFaq, useInfiniteFaq } from '@/apis/Faq';
 import { FAQRoutes } from '@/constants/navigation';
 import { BASE_URL } from '@/constants/path';
@@ -63,19 +63,7 @@ const Page = () => {
 
   return (
     <div>
-      <FAQDetail
-        title={faqDetail.information.title}
-        writer={faqDetail.information.writer}
-        isPinned={faqDetail.information.pinned}
-        fileLists={fileLists}
-        content={
-          faqDetail.information.blockResList?.map((block: faqDetailResponseBlockResList) => block.content).join('\n') ||
-          ''
-        }
-        createdDate={faqDetail.information.createdDate}
-        modifiedDate={faqDetail.information.modifiedDate}
-        handleDelete={handleDelete}
-      />
+      <FAQDetail data={faqDetail} handleDelete={handleDelete} />
     </div>
   );
 };
