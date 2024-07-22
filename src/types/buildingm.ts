@@ -58,7 +58,6 @@ export type BuildingRoomInAssignedResponse = {
 };
 
 export type BuildingRoomInAssignedResponseInformation = {
-  roomId: number;
   id: number;
   studentNumber: string;
   name: string;

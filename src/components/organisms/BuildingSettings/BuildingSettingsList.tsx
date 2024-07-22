@@ -44,7 +44,7 @@ const BuildingSettingsList = ({ checkedItems, handleCheckboxChange, list }: Prop
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      <tbody className='block w-[931px] h-677 overflow-y-auto scrollbar-table'>
+      <tbody className='block w-[931px] h-540 overflow-y-auto scrollbar-table'>
         <tr className='h-10' />
         {list.map((data, index) => {
           return (
