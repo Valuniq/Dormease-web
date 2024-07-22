@@ -13,7 +13,7 @@ type Props = {
 const PledgeWriting = forwardRef<HTMLDivElement, Props>(({ setEditorHtml }, ref) => {
   return (
     <div className='w-full grid gap-28'>
-      <h1 className='H1 text-blue-blue30'>합격 및 배정 방식</h1>
+      <h1 className='H1 text-blue-blue30'>입사 서약서 작성</h1>
       <div className='flex items-start justify-between h-466'>
         <QuillComponent width='822px' height='466px' setEditorHtml={setEditorHtml} />
         <div className='flex flex-col items-end'>
