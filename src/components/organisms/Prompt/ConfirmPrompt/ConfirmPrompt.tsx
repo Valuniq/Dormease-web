@@ -38,8 +38,8 @@ const ConfirmPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
         ))}
       </h1>
       <div className='ml-auto mt-auto'>
+        <AlertBtn label={'취소'} onClick={onCancel} hoverColor={variant} />
         <AlertBtn label={'확인'} onClick={onConfirm} hoverColor={variant} />
-        <AlertBtn label={'닫기'} onClick={onCancel} hoverColor={variant} />
       </div>
     </div>
   );

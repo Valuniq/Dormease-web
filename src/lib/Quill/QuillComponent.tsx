@@ -26,7 +26,7 @@ const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEd
   const nextUrlRef = useRef<string | null>(null);
 
   const { confirmChanges, ConfirmDialogComponent } = useTextEditorConfirm(
-    '작성한 내용은 저장되지 않았습니다.\n페이지를 벗어나시겠습니까?',
+    '작성한 내용은 저장되지 않았습니다. \\n페이지를 벗어나시겠습니까?',
     () => {
       if (nextUrlRef.current) {
         const nextUrl = nextUrlRef.current;
