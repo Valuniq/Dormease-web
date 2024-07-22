@@ -1,8 +1,8 @@
-import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import { userResponseDataList } from '@/types/userManagement';
-import React from 'react';
+'use client';
 
-export type Props = {
+import React, { forwardRef, ForwardRefRenderFunction } from 'react';
+
+type Props = {
   index: number;
   id: number;
   name: string;
@@ -13,18 +13,15 @@ export type Props = {
   createdAt: string;
 };
 
-const AppMemberManagementListBody = ({
-  index,
-  id,
-  name,
-  studentNumber,
-  phoneNumber,
-  bonusPoint,
-  minusPoint,
-  createdAt,
-}: Props) => {
+const AppMemberManagementListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
+  { index, id, name, studentNumber, phoneNumber, bonusPoint, minusPoint, createdAt },
+  ref,
+) => {
   return (
-    <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+    <tr
+      ref={ref}
+      className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'
+    >
       <td className='text-center'>{index}</td>
       <td className='text-center'>{name}</td>
       <td className='text-center'>{studentNumber}</td>
@@ -36,4 +33,4 @@ const AppMemberManagementListBody = ({
   );
 };
 
-export default AppMemberManagementListBody;
+export default forwardRef<HTMLTableRowElement, Props>(AppMemberManagementListBody);
