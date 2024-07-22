@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import React, { useRef, useEffect, useMemo, forwardRef } from 'react';
+import React, { useEffect, useMemo, forwardRef, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageResize } from 'quill-image-resize-module-ts';
 import 'react-quill/dist/quill.snow.css';
@@ -8,25 +8,27 @@ import { Quill } from 'react-quill';
 import { useRecoilState } from 'recoil';
 
 import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
-import { isEditorModifiedState } from '@/types/editor';
+import { isEditorModifiedState, uploadedImagesState } from '@/recoil/editor';
+import { uploadImage } from '@/apis/Editor';
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }) as any;
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 Quill.register('modules/ImageResize', ImageResize);
 
 type Props = {
   width?: string;
   height?: string;
   setEditorHtml: (content: string) => void;
+  initialContent?: string; // 추가된 부분
 };
 
-const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEditorHtml }, ref) => {
+const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEditorHtml, initialContent }, ref) => {
   const [isEditorModified, setIsEditorModified] = useRecoilState(isEditorModifiedState);
-  const quillRef = useRef<typeof ReactQuill | null>(null);
+  const [uploadedImages, setUploadedImages] = useRecoilState(uploadedImagesState);
   const router = useRouter();
   const nextUrlRef = useRef<string | null>(null);
 
   const { confirmChanges, ConfirmDialogComponent } = useTextEditorConfirm(
-    '작성한 내용은 저장되지 않았습니다. \\n페이지를 벗어나시겠습니까?',
+    '작성한 내용은 저장되지 않았습니다. \\n 페이지를 벗어나시겠습니까?',
     () => {
       if (nextUrlRef.current) {
         const nextUrl = nextUrlRef.current;
@@ -42,7 +44,7 @@ const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEd
     setIsEditorModified(true);
   };
 
-  const handleImageUpload = () => {
+  const handleImageUpload = async () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
@@ -54,56 +56,29 @@ const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEd
     input.onchange = async () => {
       const file = input.files ? input.files[0] : null;
       if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (quillRef.current) {
-            const editor = quillRef.current.getEditor();
-            const range = editor.getSelection(true);
+        try {
+          const response = await uploadImage(file);
+          const imageUrl = response.information.imageUrl;
+          setUploadedImages((prev) => [...prev, imageUrl]);
+
+          const quill = document.querySelector('.ql-editor');
+          if (quill) {
+            const range = window.getSelection()?.getRangeAt(0);
             if (range) {
-              const base64Data = e.target?.result as string;
-              const blob = base64ToBlob(base64Data.split(',')[1], 'image/png');
-              const url = URL.createObjectURL(blob);
-              editor.insertEmbed(range.index, 'image', url);
+              const img = document.createElement('img');
+              img.src = imageUrl;
+              img.alt = 'image';
+              range.insertNode(img);
+              setEditorHtml(quill.innerHTML);
+              setIsEditorModified(true);
             }
           }
-        };
-        reader.readAsDataURL(file);
+        } catch (error) {
+          console.error('이미지 업로드 실패:', error);
+        }
       }
     };
   };
-
-  const base64ToBlob = (base64: string, mime: string) => {
-    const byteCharacters = atob(base64);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-      const slice = byteCharacters.slice(offset, offset + 512);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-
-    return new Blob(byteArrays, { type: mime });
-  };
-
-  useEffect(() => {
-    if (quillRef.current) {
-      const editor = quillRef.current.getEditor();
-      const observer = new MutationObserver(() => {});
-
-      observer.observe(editor.root, {
-        childList: true,
-        subtree: true,
-      });
-
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, []);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -140,8 +115,8 @@ const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEd
     };
   }, [isEditorModified, confirmChanges, router]);
 
-  const modules = useMemo(() => {
-    return {
+  const modules = useMemo(
+    () => ({
       toolbar: {
         container: [
           [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -162,8 +137,9 @@ const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEd
         parchment: Quill.import('parchment'),
         modules: ['Resize', 'DisplaySize'],
       },
-    };
-  }, []);
+    }),
+    [],
+  );
 
   const formats = [
     'header',
@@ -183,13 +159,16 @@ const QuillEditor = forwardRef<typeof ReactQuill, Props>(({ width, height, setEd
 
   return (
     <>
-      <ReactQuill
-        style={{ width, height }}
-        theme='snow'
-        onChange={handleEditorChange}
-        modules={modules}
-        formats={formats}
-      />
+      <div ref={ref} style={{ width, height }}>
+        <ReactQuill
+          style={{ width, height }}
+          theme='snow'
+          onChange={handleEditorChange}
+          modules={modules}
+          formats={formats}
+          defaultValue={initialContent} // 추가된 부분
+        />
+      </div>
       {ConfirmDialogComponent}
     </>
   );
