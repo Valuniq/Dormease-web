@@ -9,12 +9,13 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { mutate } from 'swr';
 import { BASE_URL } from '@/constants/path';
-import { postPeriod } from '@/apis/Period';
+import { postPeriod, usePeriod } from '@/apis/Period';
 
 const Refund = () => {
   const [refundList, setRefundList] = useState<RefundRequestmentResponseDataList[]>([]);
   const [pageNum, setPageNum] = useState(1);
   const [pageTotalNum, setPageTotalNum] = useState(0);
+  const { data, error, isLoading } = usePeriod('REFUND');
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [dateModal, setDateModal] = useState(false);
@@ -22,6 +23,15 @@ const Refund = () => {
   const [clickRefund, setClickRefund] = useState(0);
 
   const { data: refundData, error: refundError, isLoading: refundLoading } = useRefundRequestment(pageNum);
+
+  useEffect(() => {
+    if (data?.information.startDate) {
+      setStartDate(new Date(data.information.startDate));
+    }
+    if (data?.information.endDate) {
+      setEndDate(new Date(data.information.endDate));
+    }
+  }, [data]);
 
   useEffect(() => {
     if (refundData) {
@@ -50,7 +60,9 @@ const Refund = () => {
           endDate.toISOString().split('T')[0],
           'REFUND',
         );
-        setDateModal(!dateModal);
+        if (response.check) {
+          setDateModal(!dateModal);
+        }
       } catch (error) {
         console.error('Error posting period:', error);
       }
@@ -69,7 +81,7 @@ const Refund = () => {
   return (
     <>
       <div className='flex flex-col w-[1396px]'>
-        <div className='flex justify-between items-center mb-32'>
+        <div className='flex justify-between items-center mb-32 w-[1396px]'>
           <h1 className='H0 text-gray-grayscale50 text-nowrap'>환불 신청</h1>
           <DatePicker
             title='환불 신청 기간'
@@ -88,7 +100,7 @@ const Refund = () => {
           }}
           onDeleteRefund={() => setDeleteModal(!deleteModal)}
         />
-        {refundList && (
+        {refundList && refundList.length > 0 && (
           <div className='mt-27 flex justify-center'>
             <Pagination pageNum={pageNum} pageTotalNum={pageTotalNum} setPageNum={handlePageNum} />
           </div>

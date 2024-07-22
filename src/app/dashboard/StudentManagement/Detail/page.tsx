@@ -55,7 +55,7 @@ const Page = () => {
 
   return (
     <div className='flex flex-col relative w-[1200px]'>
-      <h3 className='H3 text-gray-grayscale50 text-center mb-6'>개인정보</h3>
+      <h3 className='H3 text-gray-grayscale50 text-center mb-6 w-[1200px]'>개인정보</h3>
       {!isEdit && (
         <div className='absolute right-0 -top-8'>
           <BtnMiniVariant
@@ -229,23 +229,27 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className='relative mt-16'>
-        <div className='flex gap-13 absolute right-0 -top-8'>
-          <BlackListBtn label='블랙리스트' />
-          <ResignBtn label='퇴사처리' />
-        </div>
-      </div>
-      <div className='flex justify-center mt-9'>
-        <BtnMidVariant
-          label='수정완료'
-          disabled={false}
-          variant='blue'
-          onClick={() => {
-            setEditState(false);
-            router.push(`/dashboard/StudentManagement`);
-          }}
-        />
-      </div>
+      {isEdit && (
+        <>
+          <div className='relative mt-16'>
+            <div className='flex gap-13 absolute right-0 -top-8'>
+              <BlackListBtn label='블랙리스트' />
+              <ResignBtn label='퇴사처리' />
+            </div>
+          </div>
+          <div className='flex justify-center mt-9'>
+            <BtnMidVariant
+              label='수정완료'
+              disabled={false}
+              variant='blue'
+              onClick={() => {
+                setEditState(false);
+                router.push(`/dashboard/StudentManagement`);
+              }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -55,7 +55,7 @@ const Page = () => {
   return (
     <>
       <div className='flex flex-col relative w-[1200px]'>
-        <h3 className='H3 text-gray-grayscale50 text-center mb-6'>사생 추가 상세 내용</h3>
+        <h3 className='H3 text-gray-grayscale50 text-center mb-6 w-[1200px]'>사생 추가 상세 내용</h3>
         <div className='flex border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
           <div className='flex-1 flex flex-col pr-170'>
             <StudentManagementDetail

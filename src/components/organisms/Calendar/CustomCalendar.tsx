@@ -7,6 +7,7 @@ import { EventInput } from '@fullcalendar/core';
 import './Custom.css';
 import CalendarPrompt from '../Prompt/CalendarPrompt/CalendarPrompt';
 import { EventClickArg } from '@fullcalendar/core';
+import BackDrop from '../BackDrop/Backdrop';
 
 type Event = {
   title: string;
@@ -47,7 +48,7 @@ const CustomCalendar = () => {
       start: data.start,
       end: data.end,
       backgroundColor: colors[data.backgroundColor],
-      className: 'text-right rounded-8',
+      className: 'text-right rounded-8 cursor-pointer',
     })),
   );
 
@@ -81,7 +82,7 @@ const CustomCalendar = () => {
   };
 
   return (
-    <div>
+    <div className='w-[1290px]'>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView='dayGridMonth'
@@ -122,50 +123,54 @@ const CustomCalendar = () => {
       />
       <div className='absolute top-0 left-0 z-10'>
         {showAddButton && (
-          <CalendarPromptAdd
-            onCancel={() => {
-              setShowAddButton(false);
-              setTitle('');
-              setContents('');
-              setColor('gray');
-            }}
-            onConfirm={() => {
-              const adjustedEndDate = adjustDate(selectedDates.end, 1);
+          <BackDrop isOpen={showAddButton}>
+            <CalendarPromptAdd
+              onCancel={() => {
+                setShowAddButton(false);
+                setTitle('');
+                setContents('');
+                setColor('gray');
+              }}
+              onConfirm={() => {
+                const adjustedEndDate = adjustDate(selectedDates.end, 1);
 
-              addNewEvent({
-                title: title,
-                start: selectedDates.start,
-                end: adjustedEndDate,
-                color: colors[color],
-                className: 'text-right rounded-8',
-              });
-              setShowAddButton(false);
-              setTitle('');
-              setContents('');
-              setColor('gray');
-            }}
-            startDate={selectedDates.start}
-            endDate={selectedDates.end}
-            title={title}
-            setTitle={setTitle}
-            contents={contents}
-            setContents={setContents}
-            color={color}
-            setColor={setColor}
-            setSelectedDates={setSelectedDates}
-          />
+                addNewEvent({
+                  title: title,
+                  start: selectedDates.start,
+                  end: adjustedEndDate,
+                  color: colors[color],
+                  className: 'text-right rounded-8',
+                });
+                setShowAddButton(false);
+                setTitle('');
+                setContents('');
+                setColor('gray');
+              }}
+              startDate={selectedDates.start}
+              endDate={selectedDates.end}
+              title={title}
+              setTitle={setTitle}
+              contents={contents}
+              setContents={setContents}
+              color={color}
+              setColor={setColor}
+              setSelectedDates={setSelectedDates}
+            />
+          </BackDrop>
         )}
         {showEventDetails && selectedEvent && (
-          <CalendarPrompt
-            title={selectedEvent.title}
-            contents={selectedEvent.contents}
-            color={selectedEvent.color}
-            startDate={selectedEvent.start}
-            endDate={adjustDate(selectedEvent.end, -1)}
-            onDelete={() => setShowEventDetails(false)}
-            onCancel={() => setShowEventDetails(false)}
-            onEdit={() => setShowEventDetails(false)}
-          />
+          <BackDrop isOpen={showEventDetails}>
+            <CalendarPrompt
+              title={selectedEvent.title}
+              contents={selectedEvent.contents}
+              color={selectedEvent.color}
+              startDate={selectedEvent.start}
+              endDate={adjustDate(selectedEvent.end, -1)}
+              onDelete={() => setShowEventDetails(false)}
+              onCancel={() => setShowEventDetails(false)}
+              onEdit={() => setShowEventDetails(false)}
+            />
+          </BackDrop>
         )}
       </div>
     </div>

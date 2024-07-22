@@ -20,7 +20,7 @@ export type RefundRequestmentResponseDataList = {
   phoneNumber: string;
   bankName: string;
   accountNumber: string;
-  term: string;
+  termName: string;
   exitDate: string;
   createDate: string;
   dormitoryName: string;

@@ -403,6 +403,7 @@ const BuildingManagementTemplates = ({ buildingList }: Props) => {
                   onClick={() => {
                     if (editAssign) {
                       setSaveModal(!saveModal);
+                      setEditState(false);
                     } else {
                       setListClick(0);
                       setEditAssign(!editAssign);

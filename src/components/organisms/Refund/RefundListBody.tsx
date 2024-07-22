@@ -14,7 +14,7 @@ type Props = {
   phoneNumber: string;
   bankName: string;
   accountNumber: string;
-  term: string;
+  termName: string;
   exitDate: string;
   createDate: string;
   dormitoryName: string;
@@ -33,7 +33,7 @@ const RefundListBody = ({
   phoneNumber,
   bankName,
   accountNumber,
-  term,
+  termName,
   exitDate,
   createDate,
   dormitoryName,
@@ -50,10 +50,10 @@ const RefundListBody = ({
         <div className='w-[10%]'>{studentNumber}</div>
         <div className='w-[12%]'>{phoneNumber}</div>
         <div className='w-[8%]'>{bankName}</div>
-        <div className='w-[12%]'>{accountNumber}</div>
-        <div className='w-[8%]'>{term}</div>
-        <div className='w-[9%]'>{formatCreateDate(exitDate)}</div>
-        <div className='w-[9%]'>{formatCreateDate(createDate)}</div>
+        <div className='w-[15%]'>{accountNumber}</div>
+        <div className='w-[7%]'>{termName}</div>
+        <div className='w-[8%]'>{formatCreateDate(exitDate)}</div>
+        <div className='w-[8%]'>{formatCreateDate(createDate)}</div>
         <div className='w-[12%]'>{dormitoryName}</div>
         <div className='w-[7%]'>{roomNumber ? roomNumber + '호' : '-'}</div>
         <div className='w-[7%]'>{bedNumber ? bedNumber + '번' : '-'}</div>
