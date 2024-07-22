@@ -4,10 +4,11 @@ import React, { forwardRef, ForwardRefRenderFunction } from 'react';
 import { noticeResponseDataList } from '@/types/notice';
 import pinIcon from '@public/images/pinIcon.png';
 import Image from 'next/image';
-import { noticeIdState } from '@/recoil/notice';
+
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { NoticeDetailRoutes } from '@/constants/navigation';
+import { noticeIdState } from '@/recoil/notice';
 
 type Props = noticeResponseDataList;
 
