@@ -33,8 +33,9 @@ const useTextEditorConfirm = (message: string, onConfirm: () => void, variant: '
   const ConfirmDialogComponent = isDialogOpen
     ? createPortal(
         <BackDrop isOpen={true}>
-          {' '}
-          <ConfirmPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
+          <div className='xl:scale-65 xxl:scale-80 lg:scale-65 md:scale-50 sm:scale-40'>
+            <ConfirmPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
+          </div>
         </BackDrop>,
         document.body,
       )
