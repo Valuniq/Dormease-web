@@ -1,12 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ResignationList from '@/components/organisms/Resignation/ResignationList';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 import { patchResignation, useResignationList } from '@/apis/Resignation';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
-import { postPeriod } from '@/apis/Period';
+import { postPeriod, usePeriod } from '@/apis/Period';
 
 const Resignation = () => {
   const {
@@ -21,9 +21,19 @@ const Resignation = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [unableModal, setUnableModal] = useState(false);
   const [paymentModal, setPaymentModal] = useState(false);
-  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const { data, error, isLoading } = usePeriod('LEAVE');
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
   const [dateModal, setDateModal] = useState(false);
+
+  useEffect(() => {
+    if (data?.information.startDate) {
+      setStartDate(new Date(data.information.startDate));
+    }
+    if (data?.information.endDate) {
+      setEndDate(new Date(data.information.endDate));
+    }
+  }, [data]);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) =>
