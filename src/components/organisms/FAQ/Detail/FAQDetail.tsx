@@ -31,7 +31,7 @@ const FAQDetail = ({ data, handleDelete }: Props) => {
       <div className='w-[1200px] px-12'>
         <div className=' flex items-center justify-between'>
           <div className='flex items-end'>
-            <h1 className='H0 text-gray-grayscale50 mr-8'>공지사항</h1>
+            <h1 className='H0 text-gray-grayscale50 mr-8'>FAQ</h1>
             {data.information.pinned && (
               <>
                 <h2 className='text-nowrap mr-4 H4 text-blue-blue20 mb-8'>최상단 고정</h2>
