@@ -84,7 +84,7 @@ body {
 .fc .fc-customMonth-button {
   width: 100% !important;
   padding: 0 !important;
-  color: #323232;
+  color: #323232 !important;
 
   font-family: 'pretendard';
   font-size: 45px;
@@ -168,4 +168,15 @@ body {
 /* 날짜 왼쪽 정렬 */
 .fc .fc-daygrid-day-top {
   flex-direction: row;
+}
+
+.fc-scrollgrid,
+.fc-scrollgrid-liquid,
+.fc-col-header,
+.fc-daygrid-body,
+.fc-daygrid-body-unbalanced,
+.fc-scrollgrid-sync-table,
+.fc-scrollgrid-sync-table {
+  width: 100% !important;
+  height: 100% !important;
 }
