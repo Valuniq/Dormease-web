@@ -16,9 +16,12 @@ const Page = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
+  const infiniteUser = useInfiniteUser(sortConfig.sortBy, sortConfig.isAscending);
+  const userSearch = useUserSearch(searchTerm, sortConfig.sortBy, sortConfig.isAscending);
+
   const { userData, error, isLoadingMore, size, setSize, isEndReached, mutate } = isSearching
-    ? useUserSearch(searchTerm, sortConfig.sortBy, sortConfig.isAscending)
-    : useInfiniteUser(sortConfig.sortBy, sortConfig.isAscending);
+    ? userSearch
+    : infiniteUser;
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
