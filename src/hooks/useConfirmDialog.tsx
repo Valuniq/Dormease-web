@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
-import { createPortal } from 'react-dom';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 
 // confirm 창 열고 닫기
@@ -30,16 +29,11 @@ const useConfirmDialog = (
     setIsDialogOpen(true);
   };
 
-  const ConfirmDialogComponent = isDialogOpen
-    ? createPortal(
-        <BackDrop isOpen={true}>
-          <div className='xl:scale-65 xxl:scale-80 lg:scale-65 md:scale-50 sm:scale-40'>
-            <ConfirmPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
-          </div>
-        </BackDrop>,
-        document.body,
-      )
-    : null;
+  const ConfirmDialogComponent = isDialogOpen ? (
+    <BackDrop isOpen={true}>
+      <ConfirmPrompt variant={variant} label={message} onConfirm={handleConfirm} onCancel={handleCancel} />
+    </BackDrop>
+  ) : null;
 
   return { showConfirmDialog, ConfirmDialogComponent };
 };
