@@ -81,7 +81,7 @@ const Refund = () => {
   return (
     <>
       <div className='flex flex-col w-[1396px]'>
-        <div className='flex justify-between items-center mb-32'>
+        <div className='flex justify-between items-center mb-32 w-[1396px]'>
           <h1 className='H0 text-gray-grayscale50 text-nowrap'>환불 신청</h1>
           <DatePicker
             title='환불 신청 기간'
