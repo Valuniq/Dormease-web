@@ -23,11 +23,6 @@ const WithdrawalMemberManagement = () => {
     }
   }, [input, setSearchSize]);
 
-  if (withdrawalError || searchError) {
-    console.error('Error fetching withdrawal Member data:', withdrawalError || searchError);
-    return <div>Error loading data</div>;
-  }
-
   const dataToShow = input ? withdrawalSearchData : withdrawalData;
   const isLoading = input ? isSearchingMore : isLoadingMore;
   const isEndReached = input ? isSearchReachingEnd : isReachingEnd;

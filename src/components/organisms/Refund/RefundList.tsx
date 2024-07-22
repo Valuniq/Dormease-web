@@ -18,51 +18,51 @@ const RefundList = ({ list, clickRefund, onDeleteRefund, onStudentClick }: Props
         <div className='H4 w-[10%]'>학 번</div>
         <div className='H4 w-[12%]'>휴대전화</div>
         <div className='H4 w-[8%]'>은행명</div>
-        <div className='H4 w-[12%]'>계좌번호</div>
-        <div className='H4 w-[8%]'>기간</div>
-        <div className='H4 w-[9%]'>퇴사 예정일</div>
-        <div className='H4 w-[9%]'>신청날짜</div>
+        <div className='H4 w-[15%]'>계좌번호</div>
+        <div className='H4 w-[7%]'>기간</div>
+        <div className='H4 w-[8%]'>퇴사 예정일</div>
+        <div className='H4 w-[8%]'>신청날짜</div>
         <div className='H4 w-[12%]'>건 물</div>
         <div className='H4 w-[7%]'>호 실</div>
         <div className='H4 w-[7%]'>침대번호</div>
       </div>
-      <table className='w-full'>
-        <tbody>
-          {list && list.length > 0 ? (
-            <>
-              {list.map((data, index) => {
-                const isLastItem = index === list.length - 1;
-                return (
-                  <React.Fragment key={data.refundRequestmentId}>
-                    <RefundListBody
-                      key={index}
-                      isLastItem={isLastItem}
-                      refundRequestmentId={data.refundRequestmentId}
-                      residentName={data.residentName}
-                      studentNumber={data.studentNumber}
-                      phoneNumber={data.phoneNumber}
-                      bankName={data.bankName}
-                      accountNumber={data.accountNumber}
-                      term={data.term}
-                      exitDate={data.exitDate}
-                      createDate={data.createDate}
-                      dormitoryName={data.dormitoryName}
-                      roomNumber={data.roomNumber}
-                      bedNumber={data.bedNumber}
-                      clickRefund={clickRefund}
-                      onStudentClick={onStudentClick}
-                      onDeleteRefund={onDeleteRefund}
-                    />
-                    {isLastItem && <div className='border-b-1 border-gray-grayscale50'></div>}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          ) : (
+      {list && list.length > 0 ? (
+        <div className='w-full'>
+          {list.map((data, index) => {
+            const isLastItem = index === list.length - 1;
+            return (
+              <React.Fragment key={data.refundRequestmentId}>
+                <RefundListBody
+                  key={index}
+                  isLastItem={isLastItem}
+                  refundRequestmentId={data.refundRequestmentId}
+                  residentName={data.residentName}
+                  studentNumber={data.studentNumber}
+                  phoneNumber={data.phoneNumber}
+                  bankName={data.bankName}
+                  accountNumber={data.accountNumber}
+                  termName={data.termName}
+                  exitDate={data.exitDate}
+                  createDate={data.createDate}
+                  dormitoryName={data.dormitoryName}
+                  roomNumber={data.roomNumber}
+                  bedNumber={data.bedNumber}
+                  clickRefund={clickRefund}
+                  onStudentClick={onStudentClick}
+                  onDeleteRefund={onDeleteRefund}
+                />
+                {isLastItem && <div className='border-b-1 border-gray-grayscale50'></div>}
+              </React.Fragment>
+            );
+          })}
+        </div>
+      ) : (
+        <table className='w-full'>
+          <tbody>
             <NoneList colspan={11} />
-          )}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
