@@ -28,16 +28,14 @@ export type faqDetailResponse = {
     writer: string;
     createdDate: string;
     modifiedDate: string;
-    blockResList: faqDetailResponseBlockResList[];
+    content: string;
+    imageResList: faqDetailResponseImageResList[];
     fileList: faqDetailResponseFileList[];
   };
 };
-
-export type faqDetailResponseBlockResList = {
-  blockId: number;
+export type faqDetailResponseImageResList = {
+  imageId: number;
   imageUrl: string;
-  sequence: number;
-  content: string;
 };
 
 export type faqDetailResponseFileList = {
@@ -50,12 +48,20 @@ export type faqDetailResponseFileList = {
 export type faqPostRequest = {
   title: string;
   pinned: boolean;
+  writer?: string;
   notificationType: string;
-  blockReqList: BlockReq[];
+  content: string;
+  imageReqList: ImageReq[];
+  files: FileReq[];
 };
 
-export type BlockReq = {
+export type ImageReq = {
   imageUrl: string;
-  sequence: number;
-  content: string;
+  imageId: number;
+};
+
+export type FileReq = {
+  fileId: number;
+  fileUrl: string;
+  originalFileName: string;
 };
