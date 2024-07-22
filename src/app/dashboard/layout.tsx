@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className='z-header mb-30 fixed top-0 w-full'>
         <Header />
       </div>
-      <div className='flex align-start ml-19 mt-132 xl:scale-80 lg:scale-65 md:scale-50 sm:scale-40 transform-origin-top-left'>
+      <div className='flex align-start ml-19 mt-132 xl:scale-65 xxl:scale-80 lg:scale-65 md:scale-50 sm:scale-40 transform-origin-top-left'>
         <nav className='mr-101'>
           <Navigation />
         </nav>
