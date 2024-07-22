@@ -28,10 +28,3 @@ export type RefundRequestmentResponseDataList = {
   roomNumber: number;
   bedNumber: number;
 };
-
-export type PeriodResponse = {
-  check: true;
-  information: {
-    message: string;
-  };
-};
