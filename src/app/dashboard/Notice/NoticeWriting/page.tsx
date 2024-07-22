@@ -67,29 +67,31 @@ const Page = () => {
     'blue',
   );
   return (
-    <div className='flex flex-col items-center justify-center'>
-      <NoticeWrite
-        title={formState.title}
-        setTitle={(title) => setFormState((prevState) => ({ ...prevState, title }))}
-        writer='수정 필요'
-        isPinned={formState.pinned}
-        setIsPinned={(pinned) => setFormState((prevState) => ({ ...prevState, pinned }))}
-        fileLists={fileLists}
-        handleFileChange={handleFileChange}
-        handleDeleteFile={handleDeleteFile}
-        handleAllDelete={handleAllDelete}
-        setEditorHtml={(content) =>
-          setFormState((prevState) => ({
-            ...prevState,
-            blockReqList: [{ ...prevState.blockReqList[0], content }],
-          }))
-        }
-      />
-      <div className='mt-70'>
-        <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} onClick={showConfirmDialog} />
-      </div>
+    <>
       {!!ConfirmDialogComponent && <BackDrop isOpen={!!ConfirmDialogComponent}>{ConfirmDialogComponent}</BackDrop>}
-    </div>
+      <div className='flex flex-col items-center justify-center'>
+        <NoticeWrite
+          title={formState.title}
+          setTitle={(title) => setFormState((prevState) => ({ ...prevState, title }))}
+          writer='수정 필요'
+          isPinned={formState.pinned}
+          setIsPinned={(pinned) => setFormState((prevState) => ({ ...prevState, pinned }))}
+          fileLists={fileLists}
+          handleFileChange={handleFileChange}
+          handleDeleteFile={handleDeleteFile}
+          handleAllDelete={handleAllDelete}
+          setEditorHtml={(content) =>
+            setFormState((prevState) => ({
+              ...prevState,
+              blockReqList: [{ ...prevState.blockReqList[0], content }],
+            }))
+          }
+        />
+        <div className='mt-70'>
+          <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} onClick={showConfirmDialog} />
+        </div>
+      </div>
+    </>
   );
 };
 
