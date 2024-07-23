@@ -1,7 +1,8 @@
 {
-  "/dashboard/StudentManagement/AppMemberManagement/page": "app/dashboard/StudentManagement/AppMemberManagement/page.js",
-  "/dashboard/StudentManagement/BlackList/page": "app/dashboard/StudentManagement/BlackList/page.js",
-  "/dashboard/JoinApplicationSetting/page": "app/dashboard/JoinApplicationSetting/page.js",
-  "/dashboard/JoinApplicationSetting/StandardSetting/page": "app/dashboard/JoinApplicationSetting/StandardSetting/page.js",
-  "/dashboard/JoinApplicationSetting/(Applicant)/Applicant/page": "app/dashboard/JoinApplicationSetting/(Applicant)/Applicant/page.js"
+  "/dashboard/JoinApplicationSetting/Resignation/page": "app/dashboard/JoinApplicationSetting/Resignation/page.js",
+  "/dashboard/BuildingManagement/BuildingSettings/page": "app/dashboard/BuildingManagement/BuildingSettings/page.js",
+  "/dashboard/ScheduleManagement/page": "app/dashboard/ScheduleManagement/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/StudentManagement/page": "app/dashboard/StudentManagement/page.js",
+  "/dashboard/StudentManagement/PointManagement/page": "app/dashboard/StudentManagement/PointManagement/page.js"
 }
