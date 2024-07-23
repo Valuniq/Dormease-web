@@ -11,15 +11,15 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/dashboard/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/layout.js"
-    ],
     "/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/page.js"
+    ],
+    "/dashboard/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/layout.js"
     ],
     "/dashboard/StudentManagement/page": [
       "static/chunks/webpack.js",
@@ -30,6 +30,36 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/StudentManagement/PointManagement/page.js"
+    ],
+    "/dashboard/StudentManagement/AppMemberManagement/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/StudentManagement/AppMemberManagement/page.js"
+    ],
+    "/dashboard/StudentManagement/BlackList/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/StudentManagement/BlackList/page.js"
+    ],
+    "/dashboard/StudentManagement/WithdrawalMemberManagement/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/StudentManagement/WithdrawalMemberManagement/page.js"
+    ],
+    "/dashboard/JoinApplicationSetting/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/JoinApplicationSetting/page.js"
+    ],
+    "/dashboard/JoinApplicationSetting/StandardSetting/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/JoinApplicationSetting/StandardSetting/page.js"
+    ],
+    "/dashboard/JoinApplicationSetting/(Applicant)/Applicant/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/JoinApplicationSetting/(Applicant)/Applicant/page.js"
     ]
   }
 }
