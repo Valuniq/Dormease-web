@@ -5,7 +5,7 @@ import BlackList from '@/components/organisms/BlackList/BlackList';
 import { useState } from 'react';
 import { mockBlackList } from './mockData';
 
-const page = () => {
+const Page = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [blackLists, setBlackLists] = useState(mockBlackList);
@@ -29,4 +29,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
