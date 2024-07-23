@@ -4,8 +4,12 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import ApplicantList from '@/components/organisms/Applicant/ApplicantList';
+import { useState } from 'react';
+import { mockApplicantList } from './mockData';
 
 const Applicant = () => {
+  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [applicantLists, setApplicantLists] = useState(mockApplicantList);
   return (
     <div className='w-[1250px]'>
       <div className='flex items-center justify-end mb-44'>
@@ -18,13 +22,7 @@ const Applicant = () => {
           placeholder={'검색어를 입력해주세요.'}
         />
       </div>
-      <ApplicantList
-        applicantLists={[]}
-        isAllChecked={false}
-        setIsAllChecked={function (isAllChecked: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
+      <ApplicantList applicantLists={applicantLists} isAllChecked={isAllChecked} setIsAllChecked={setIsAllChecked} />
       <div className='flex itmes-center justify-between mt-12'>
         <BackBtn label={'이전 내역'} disabled={false} />
         <div className='mt-16 w-278 flex items-center justify-between'>

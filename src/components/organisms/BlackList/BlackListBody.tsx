@@ -3,7 +3,7 @@ import BlackListReasonInputText from '@/components/atoms/InputText/BlackListReas
 import React from 'react';
 
 export type Props = {
-  index: string;
+  index: number;
   name: string;
   studentId: string;
   phoneNumber: string;

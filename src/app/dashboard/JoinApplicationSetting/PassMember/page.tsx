@@ -6,6 +6,8 @@ import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 import PassMemberList from '@/components/organisms/PassMember/PassMemberList';
 import { BuildingManagementResponseInformation } from '@/types/buildingm';
 import React, { useState } from 'react';
+import { mockApplicantList } from '../(Applicant)/Applicant/mockData';
+import { mockPassMemberList } from './mockData';
 const initialSelect: BuildingManagementResponseInformation = {
   id: 0,
   name: '',
@@ -13,7 +15,6 @@ const initialSelect: BuildingManagementResponseInformation = {
 
 const Page = () => {
   const [select, setSelect] = useState<BuildingManagementResponseInformation>(initialSelect);
-
   const handleSelect = (id: number, name: string) => {
     setSelect({ id, name });
   };
@@ -57,7 +58,7 @@ const Page = () => {
           />
         </div>
       </div>
-      <PassMemberList passMemberLists={[]} />
+      <PassMemberList passMemberLists={mockPassMemberList} />
       <div className='mt-29 w-691 ml-auto flex items-center justify-between'>
         <BtnMidVariant label={'매칭시작'} disabled={false} variant={'blue'} />
         <BtnMidVariant label={'완료'} disabled={false} variant={'green'} />

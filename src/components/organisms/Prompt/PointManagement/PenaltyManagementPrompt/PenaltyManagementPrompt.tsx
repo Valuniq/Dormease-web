@@ -27,7 +27,8 @@ const PenaltyManagementPrompt = () => {
     handleSaveDisabled();
   }, [bonusLists, minusLists, tempBonusLists, tempMinusLists]);
   return (
-    <div className='w-[1138px] h-686 overflow-y-scroll flex flex-col items-center rounded-8 shadow-xl bg-gray-grayscale5 '>
+    // overflow-y-scroll 임시 삭제
+    <div className='w-[1138px] h-686  flex flex-col items-center rounded-8 shadow-xl bg-gray-grayscale5 '>
       <div className='w-[1138px] fixed'>
         <PromptHeader modalName={'pointManagement'} />
       </div>
