@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { noticeDetailResponse, noticeDetailResponseFileList } from '@/types/notice';
-import { deleteNotice, useInfiniteNotifications, useNoticeDetail } from '@/apis/Notice';
+import { deleteNotice, useInfiniteNotifications, useNoticeDetail } from '@/apis/notice';
 import { noticesRoutes } from '@/constants/navigation';
 import { mutate } from 'swr';
 import { BASE_URL } from '@/constants/path';

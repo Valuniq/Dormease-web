@@ -1,5 +1,5 @@
 'use client';
-import { signIn } from '@/apis/Auth';
+import { signIn } from '@/apis/auth';
 import LoginForm from '@/components/organisms/LoginForm/LoginForm';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import { accessTokenState, refreshTokenState } from '@/recoil/user';

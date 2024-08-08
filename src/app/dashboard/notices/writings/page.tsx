@@ -3,7 +3,7 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 
 import React, { useState } from 'react';
 
-import { postNotification } from '@/apis/Notice';
+import { postNotification } from '@/apis/notice';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
 import { noticePostRequest, ImageReq, FileReq } from '@/types/notice';
 import { useRouter } from 'next/navigation';

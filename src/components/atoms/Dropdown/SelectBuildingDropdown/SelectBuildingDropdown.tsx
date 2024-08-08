@@ -1,13 +1,13 @@
 import React from 'react';
 import Dropdown from '@public/images/Dropdown.svg';
 import BtnMidVariant from '../../AllBtn/BtnMidVariant/BtnMidVariant';
-import { BuildingManagementResponseInformation } from '@/types/dorm';
+import { DormNameResponseInformation } from '@/types/dorm';
 
 type Props = {
-  list: BuildingManagementResponseInformation[];
+  list: DormNameResponseInformation[];
   isOn: boolean;
   setIsOn: (isOn: boolean) => void;
-  select: BuildingManagementResponseInformation;
+  select: DormNameResponseInformation;
   setSelect: (id: number, name: string) => void;
 };
 

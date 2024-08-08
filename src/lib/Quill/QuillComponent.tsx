@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil';
 
 import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
 import { isEditorModifiedState, uploadedImagesState } from '@/recoil/editor';
-import { uploadImage } from '@/apis/Editor';
+import { uploadImage } from '@/apis/editor';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 Quill.register('modules/ImageResize', ImageResize);

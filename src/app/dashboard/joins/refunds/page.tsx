@@ -9,7 +9,7 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { mutate } from 'swr';
 import { BASE_URL } from '@/constants/path';
-import { postPeriod, usePeriod } from '@/apis/Period';
+import { postPeriod, usePeriod } from '@/apis/period';
 
 const Page = () => {
   const [refundList, setRefundList] = useState<RefundListResponseDataList[]>([]);
