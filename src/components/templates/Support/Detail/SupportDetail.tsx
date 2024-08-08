@@ -8,7 +8,7 @@ import useConfirmDialog from '@/hooks/useConfirmDialog';
 import { useRouter } from 'next/navigation';
 import { supportDetailResponse } from '@/types/support';
 import FileClip from '@public/images/FileClip.png';
-import { FAQEditRoutes } from '@/constants/navigation';
+import { supportsEditRoutes } from '@/constants/navigation';
 
 type Props = {
   data: supportDetailResponse;
@@ -40,7 +40,7 @@ const SupportDetail = ({ data, handleDelete }: Props) => {
           </div>
           <div className='w-278 flex justify-between'>
             <BtnMidVariant
-              onClick={() => router.push(FAQEditRoutes)}
+              onClick={() => router.push(supportsEditRoutes)}
               label={'수정하기'}
               disabled={false}
               variant={'gray'}

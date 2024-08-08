@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { useSetRecoilState } from 'recoil';
-import { FAQDetailRoutes } from '@/constants/navigation';
+import { supportsDetailRoutes } from '@/constants/navigation';
 import { supportIdState } from '@/recoil/support';
 import { supportResponseDataList } from '@/types/support';
 
@@ -27,7 +27,7 @@ const SupportListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
       className={` ${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-38 hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
       onClick={() => {
         setId(notificationId);
-        router.push(FAQDetailRoutes);
+        router.push(supportsDetailRoutes);
       }}
     >
       <td className='text-center'>
