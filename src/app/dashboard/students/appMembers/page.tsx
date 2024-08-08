@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 
-import { useInfiniteUser, useUserSearch } from '@/apis/AppUserManagement';
+import { useInfiniteUser, useUserSearch } from '@/apis/appMember';
 import AppMemberList from '@/components/templates/AppMember/AppMemberList';
 
 const Page = () => {
