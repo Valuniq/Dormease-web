@@ -1,10 +1,10 @@
 import React from 'react';
 import Dropdown from '@public/images/Dropdown.svg';
 import FloorBtn from '../../AllBtn/FloorBtn/FloorBtn';
-import { BuildingManagementFloorResponseInformation } from '@/types/buildingm';
+import { DormFloorResponseInformation } from '@/types/dorm';
 
 type Props = {
-  list: BuildingManagementFloorResponseInformation[];
+  list: DormFloorResponseInformation[];
   isOn: boolean;
   setIsOn: (isOn: boolean) => void;
   select: number;

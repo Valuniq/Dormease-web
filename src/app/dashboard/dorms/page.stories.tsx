@@ -1,0 +1,321 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import BuildingImgEx from '@public/images/BuildingImgEx2.png';
+
+import page from './page';
+
+const meta: Meta<typeof page> = {
+  title: 'app/dorms/page',
+  component: page,
+  tags: ['autodocs'],
+  argTypes: {},
+};
+
+export default meta;
+
+type Story = StoryObj<typeof page>;
+
+const list = [
+  {
+    roomId: 1,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 2,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 3,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+  {
+    roomId: 4,
+    roomNumber: 101,
+    roomSize: 4,
+    gender: '남',
+    currentPeople: 1,
+  },
+];
+
+const studentList = [
+  {
+    schoolNumber: '6024000',
+    name: '김도미',
+    phoneNumber: '010-0000-0000',
+  },
+  {
+    schoolNumber: '60240000',
+    name: '김도미',
+    phoneNumber: '010-0000-0000',
+  },
+  {
+    schoolNumber: '60220000',
+    name: '김도미',
+    phoneNumber: '010-0000-0000',
+  },
+  {
+    schoolNumber: '60240000',
+    name: '김도미',
+    phoneNumber: '010-0000-0000',
+  },
+];
+
+export const Primary: Story = {
+  args: {
+    listClick: 2,
+    selectStudents: ['6024000', '60220000'],
+    image: BuildingImgEx,
+    isOnBuilding: false,
+    selectBuilding: '명덕관(4인실)',
+    buildingList: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
+    isOnFloor: false,
+    selectFloor: '2층',
+    floorList: ['1층', '2층', '3층', '4층', '5층', '6층', '7층', '8층', '9층', '10층'],
+    list: list,
+    studentList: studentList,
+    building: '명덕관',
+    roomCount: 9999,
+    roomSize: 9999,
+    capacityCount: 9999,
+    capacitySize: 9999,
+  },
+};
+
+export const DropDown: Story = {
+  args: {
+    listClick: 2,
+    selectStudents: ['6024000', '60220000'],
+    image: BuildingImgEx,
+    isOnBuilding: true,
+    selectBuilding: '명덕관(4인실)',
+    buildingList: ['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)', '명덕관(6인실)'],
+    isOnFloor: true,
+    selectFloor: '2층',
+    floorList: ['1층', '2층', '3층', '4층', '5층', '6층', '7층', '8층', '9층', '10층'],
+    list: list,
+    studentList: studentList,
+    building: '명덕관',
+    roomCount: 9999,
+    roomSize: 9999,
+    capacityCount: 9999,
+    capacitySize: 9999,
+  },
+};

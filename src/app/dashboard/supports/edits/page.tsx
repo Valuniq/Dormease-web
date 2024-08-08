@@ -1,7 +1,7 @@
 'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { patchFaq, useFaqDetail } from '@/apis/Support';
+import { patchFaq, useFaqDetail } from '@/apis/support';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
 import { noticePostRequest, ImageReq, FileReq } from '@/types/notice';
 import { useRouter } from 'next/navigation';

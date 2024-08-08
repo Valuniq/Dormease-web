@@ -3,10 +3,10 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { useNoticeDetail } from '@/apis/Notice';
+import { useNoticeDetail } from '@/apis/notice';
 import { supportDetailResponse, supportDetailResponseFileList } from '@/types/support';
 
-import { deleteFaq, useInfiniteSupport } from '@/apis/Support';
+import { deleteFaq, useInfiniteSupport } from '@/apis/support';
 import { supportsRoutes } from '@/constants/navigation';
 import { BASE_URL } from '@/constants/path';
 import { mutate } from 'swr';

@@ -1,19 +1,19 @@
-export type RequestResponse = {
+export type RequestListResponse = {
   check: boolean;
   information: {
-    pageInfo: RequestResponsePageInfo;
-    dataList: RequestResponseDataList[];
+    pageInfo: RequestListResponsePageInfo;
+    dataList: RequestListResponseDataList[];
   };
 };
 
-export type RequestResponsePageInfo = {
+export type RequestListResponsePageInfo = {
   currentPage: number;
   totalPage: number;
   pageSize: number;
   totalElements: number;
 };
 
-export type RequestResponseDataList = {
+export type RequestListResponseDataList = {
   requestmentId: number;
   title: string;
   writer: string;

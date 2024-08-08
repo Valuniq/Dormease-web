@@ -1,6 +1,6 @@
 'use client';
 
-import { useInfiniteNotifications } from '@/apis/Notice';
+import { useInfiniteNotifications } from '@/apis/notice';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import NoticeList from '@/components/templates/Notice/List/NoticeList';

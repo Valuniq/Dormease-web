@@ -1,19 +1,19 @@
-export type RefundRequestmentResponse = {
+export type RefundListResponse = {
   check: boolean;
   information: {
-    pageInfo: RefundRequestmentResponsePageInfo;
-    dataList: RefundRequestmentResponseDataList[];
+    pageInfo: RefundListResponsePageInfo;
+    dataList: RefundListResponseDataList[];
   };
 };
 
-export type RefundRequestmentResponsePageInfo = {
+export type RefundListResponsePageInfo = {
   currentPage: number;
   totalPage: number;
   pageSize: number;
   totalElements: number;
 };
 
-export type RefundRequestmentResponseDataList = {
+export type RefundListResponseDataList = {
   refundRequestmentId: number;
   residentName: string;
   studentNumber: string;

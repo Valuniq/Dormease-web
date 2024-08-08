@@ -5,16 +5,16 @@ import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchText
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 import PassMemberList from '@/components/templates/PassMember/PassMemberList';
 
-import { BuildingManagementResponseInformation } from '@/types/buildingm';
+import { DormNameResponseInformation } from '@/types/dorm';
 import React, { useState } from 'react';
 import { mockPassMemberList } from './mockData';
-const initialSelect: BuildingManagementResponseInformation = {
+const initialSelect: DormNameResponseInformation = {
   id: 0,
   name: '',
 };
 
 const Page = () => {
-  const [select, setSelect] = useState<BuildingManagementResponseInformation>(initialSelect);
+  const [select, setSelect] = useState<DormNameResponseInformation>(initialSelect);
   const handleSelect = (id: number, name: string) => {
     setSelect({ id, name });
   };
