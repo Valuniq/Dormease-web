@@ -4,13 +4,13 @@ import BtnExtraLarge from '@/components/atoms/AllBtn/BtnExtraLarge/BtnExtraLarge
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
 import JoinSettingInputText from '@/components/atoms/InputText/JoinSettingInputText/JoinSettingInputText';
-import BuildingPriceSetting from '@/components/organisms/JoinApplicationSetting/BuildingPriceSetting';
-import DepositSetting from '@/components/organisms/JoinApplicationSetting/DepositSetting';
-import JoinApplicationSettingList from '@/components/organisms/JoinApplicationSetting/JoinApplicationSettingList';
-import PeriodSetting from '@/components/organisms/JoinApplicationSetting/PeriodSetting';
+import BuildingPriceSetting from '@/components/templates/Join/BuildingPriceSetting';
+import DepositSetting from '@/components/templates/Join/DepositSetting';
+import JoinApplicationSettingList from '@/components/templates/Join/JoinApplicationSettingList';
+import PeriodSetting from '@/components/templates/Join/PeriodSetting';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   return (
     <div className='flex flex-col w-[1418px]'>
       <div className='H0 text-gray-grayscale50 flex items-center justify-center mb-32'>
@@ -123,4 +123,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import RefundList from '@/components/templates/Refund/RefundList';
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import DatePicker from '@/components/organisms/DatePicker/DatePicker';
-import { useRefundList, deleteRefundList } from '@/apis/1';
+import { useRefundList, deleteRefundList } from '@/apis/refund';
 import { RefundListResponseDataList } from '@/types/refund';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';

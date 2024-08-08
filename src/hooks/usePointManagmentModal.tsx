@@ -1,5 +1,5 @@
 import { pointManagementModalState } from '@/recoil';
-import { TPointManagementModalState } from '@/recoil/pointManagement';
+import { TPointManagementModalState } from '@/recoil/point';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
