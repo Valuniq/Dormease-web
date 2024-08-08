@@ -1,4 +1,4 @@
-import { PointListResponseInfo } from '@/types/pointManagement';
+import { PointListResponseInfo } from '@/types/point';
 
 export const usePointDetailValidation = (lists: PointListResponseInfo[][]) => {
   const isListEmpty = (list: PointListResponseInfo[]) => list.some((item) => item.content === '' || !item.score);

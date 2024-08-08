@@ -6,12 +6,10 @@ import {
   promptClientMinusState,
   promptMinusState,
   selectedMemberIdForPointState,
-} from './pointManagement';
-import { countState } from './count';
+} from './point';
 import { accessTokenState, refreshTokenState } from './user';
 
 export {
-  countState,
   accessTokenState,
   refreshTokenState,
   selectedMemberIdForPointState,
