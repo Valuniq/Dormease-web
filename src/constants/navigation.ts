@@ -17,8 +17,8 @@ export const dorms = '/dashboard/dorms';
 
 // 공지사항
 export const noticesRoutes = '/dashboard/notice';
-export const noticesWritingRoutes = '/dashboard/Notices/writings';
-export const noticesDetailRoutes = '/dashboard/Notices/details';
+export const noticesWritingRoutes = '/dashboard/notices/writings';
+export const noticesDetailRoutes = '/dashboard/notices/details';
 export const noticesEditRoutes = '/dashboard/notices/edits';
 
 // FAQ
@@ -41,7 +41,7 @@ export const NavigationItems = [
       { label: '사생 관리', routes: studentsRoutes },
       { label: '상/벌점 관리', routes: `${studentsRoutes}/points` },
       { label: '앱 회원관리', routes: `${studentsRoutes}/appMembers` },
-      { label: '블랙리스트', routes: `${studentsRoutes}/blackLists` },
+      { label: '블랙리스트', routes: `${studentsRoutes}/blacklists` },
       { label: '탈퇴회원관리', routes: `${studentsRoutes}/withdrawals` },
     ],
   },
