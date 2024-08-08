@@ -319,7 +319,7 @@ const Page = () => {
             }}
             onConfirm={() => {
               setEditState(false);
-              router.push(`/dashboard/StudentManagement`);
+              router.push(`/dashboard/students`);
             }}
           />
         </BackDrop>

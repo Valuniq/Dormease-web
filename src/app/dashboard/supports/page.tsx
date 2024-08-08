@@ -1,6 +1,6 @@
 'use client';
 
-import { useInfiniteSupport } from '@/apis/Support';
+import { useInfiniteSupport } from '@/apis/support';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import SupportList from '@/components/templates/Support/List/SupportList';
 

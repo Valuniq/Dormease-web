@@ -98,7 +98,7 @@ const Page = () => {
                   }}
                   onBuildingSettingsDetail={() => {
                     setBuildingId(data.id);
-                    router.push(`/dashboard/BuildingManagement/BuildingSettings/Detail`);
+                    router.push(`/dashboard/dorms/settings/details`);
                   }}
                 />
               );

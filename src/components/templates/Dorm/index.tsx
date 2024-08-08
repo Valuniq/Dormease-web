@@ -388,7 +388,7 @@ const Index = ({ buildingList }: Props) => {
                   }}
                   onStudentClick={() => {
                     //사생관리 만든 후에 사생관리_상세 내용으로 이동 수정 필요
-                    //router.push(`/dashboard/StudentManagement/${id}`)
+                    //router.push(`/dashboard/students/${id}`)
                   }}
                   roomList={roomList}
                   studentList={roomAssignedList}

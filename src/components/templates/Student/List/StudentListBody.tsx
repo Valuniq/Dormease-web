@@ -37,7 +37,7 @@ const StudentListBody = ({
         className='table rounded-5 w-[1200px] H4-caption h-38 text-nowrap relative hover:bg-gray-grayscale10 active:bg-gray-grayscale20 align-middle cursor-pointer'
         onClick={() => {
           setStudentId(id);
-          router.push(`/dashboard/StudentManagement/Detail`);
+          router.push(`/dashboard/students/details`);
         }}
       >
         <td className='w-[5%]'>{index + 1}</td>

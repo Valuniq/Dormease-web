@@ -76,7 +76,7 @@ const Page = () => {
           label='확인'
           disabled={false}
           variant='blue'
-          onClick={() => router.push(`/dashboard/JoinApplicationSetting/Resignation`)}
+          onClick={() => router.push(`/dashboard/joins/resigns`)}
         />
       </div>
     </div>

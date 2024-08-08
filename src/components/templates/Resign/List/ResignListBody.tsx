@@ -26,7 +26,7 @@ const ResignListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
         className={`table rounded-5 w-[1200px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
         onClick={() => {
           setId(item.exitRequestmentId);
-          router.push(`/dashboard/JoinApplicationSetting/Resignation/Detail`);
+          router.push(`/dashboard/join/resigns/details`);
         }}
       >
         <td className='w-[10%]'>{item.residentName}</td>

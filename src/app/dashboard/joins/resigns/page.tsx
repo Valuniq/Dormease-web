@@ -6,7 +6,7 @@ import DatePicker from '@/components/organisms/DatePicker/DatePicker';
 import { patchResign, useResignList } from '@/apis/resign';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
-import { postPeriod, usePeriod } from '@/apis/Period';
+import { postPeriod, usePeriod } from '@/apis/period';
 
 const Page = () => {
   const {

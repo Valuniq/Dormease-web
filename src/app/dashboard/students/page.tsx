@@ -209,7 +209,7 @@ const Page = () => {
           variant='blue'
           onClick={() => {
             setEditState(true);
-            router.push(`/dashboard/StudentManagement/Plus`);
+            router.push(`/dashboard/students/additions`);
           }}
         />
       </div>

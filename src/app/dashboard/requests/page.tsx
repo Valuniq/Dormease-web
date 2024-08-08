@@ -19,7 +19,7 @@ const Page = () => {
         list={requestData}
         onRequestClick={(requestmentId: number) => {
           setRequestId(requestmentId);
-          router.push(`/dashboard/Request/Detail`);
+          router.push(`/dashboard/request/details`);
         }}
         isLoading={isLoadingMore ?? false}
         isEndReached={isReachingEnd ?? false}

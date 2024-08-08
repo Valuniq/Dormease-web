@@ -17,7 +17,7 @@ import usePointManagementModal from '@/hooks/usePointManagmentModal';
 import PenaltyGivePrompt from '@/components/templates/Point/Prompt/PenaltyGivePrompt/PenaltyGivePrompt';
 import PenaltyManagementPrompt from '@/components/templates/Point/Prompt/PenaltyManagementPrompt/PenaltyManagementPrompt';
 import AlertPrompt from '@/components/templates/Point/Prompt/AlertPrompt/AlertPrompt';
-import { postPointsDetail } from '@/apis/Point';
+import { postPointsDetail } from '@/apis/point';
 import { mockPointMemberResponse, mockPointListResponse } from './mockData';
 import PointList from '@/components/templates/Point/List/PointList';
 

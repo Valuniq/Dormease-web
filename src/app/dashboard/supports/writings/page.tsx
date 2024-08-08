@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { supportsRoutes } from '@/constants/navigation';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
-import { postFaq } from '@/apis/Support';
+import { postFaq } from '@/apis/support';
 import { useSetRecoilState } from 'recoil';
 import { isEditorModifiedState } from '@/recoil/editor';
 import { supportPostRequest } from '@/types/support';
