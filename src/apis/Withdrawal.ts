@@ -1,18 +1,18 @@
-import { WithdrawalMemberResponse, WithdrawalMemberResponseDataList } from '@/types/withdrawal';
+import { WithdrawalListResponse, WithdrawalListResponseDataList } from '@/types/withdrawal';
 import { BASE_URL } from '@/constants/path';
 import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
 
-export const useWithdrawalLists = () => {
-  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse | null) => {
+export const useWithdrawalList = () => {
+  const getKey = (pageIndex: number, previousPageData: WithdrawalListResponse | null) => {
     if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
     return `${BASE_URL}/api/v1/web/users/management/delete?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<WithdrawalMemberResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithToken);
 
-  const withdrawalData: WithdrawalMemberResponseDataList[] = data
-    ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalMemberResponseDataList[])
+  const withdrawalData: WithdrawalListResponseDataList[] = data
+    ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalListResponseDataList[])
     : [];
 
   const isLoadingInitialData = !data && !error;
@@ -29,15 +29,15 @@ export const useWithdrawalLists = () => {
 };
 
 export const useWithdrawalSearch = (keyword: string) => {
-  const getKey = (pageIndex: number, previousPageData: WithdrawalMemberResponse | null) => {
+  const getKey = (pageIndex: number, previousPageData: WithdrawalListResponse | null) => {
     if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
     return `${BASE_URL}/api/v1/web/users/management/delete/search?page=${pageIndex + 1}&keyword=${keyword}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<WithdrawalMemberResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithToken);
 
-  const withdrawalSearchData: WithdrawalMemberResponseDataList[] = data
-    ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalMemberResponseDataList[])
+  const withdrawalSearchData: WithdrawalListResponseDataList[] = data
+    ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalListResponseDataList[])
     : [];
 
   const isLoadingInitialData = !data && !error;

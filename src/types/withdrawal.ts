@@ -1,19 +1,19 @@
-export type WithdrawalMemberResponse = {
+export type WithdrawalListResponse = {
   check: boolean;
   information: {
-    pageInfo: WithdrawalMemberResponsePageInfo;
-    dataList: WithdrawalMemberResponseDataList[];
+    pageInfo: WithdrawalListResponsePageInfo;
+    dataList: WithdrawalListResponseDataList[];
   };
 };
 
-export type WithdrawalMemberResponsePageInfo = {
+export type WithdrawalListResponsePageInfo = {
   currentPage: number;
   totalPage: number;
   pageSize: number;
   totalElements: number;
 };
 
-export type WithdrawalMemberResponseDataList = {
+export type WithdrawalListResponseDataList = {
   id: number;
   name: string;
   studentNumber: string;

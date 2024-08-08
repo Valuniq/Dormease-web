@@ -1,7 +1,7 @@
 import React from 'react';
 import Dropdown from '@public/images/Dropdown.svg';
 import FloorBtn from '../../AllBtn/FloorBtn/FloorBtn';
-import { BuildingManagementFloorResponseInformation } from '@/types/buildingm';
+import { BuildingManagementFloorResponseInformation } from '@/types/dorm';
 
 type Props = {
   list: BuildingManagementFloorResponseInformation[];
