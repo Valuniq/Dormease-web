@@ -5,7 +5,7 @@ import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeV
 import Pagination from '@/components/atoms/AllBtn/Pagination/Pagination';
 import NoticeList from '@/components/templates/Notice/List/NoticeList';
 
-import { NoticeWritingRoutes } from '@/constants/navigation';
+import { noticesWritingRoutes } from '@/constants/navigation';
 import { useRouter } from 'next/navigation';
 
 import React from 'react';
@@ -27,7 +27,7 @@ const Page = () => {
   // if (!notificationsData) return <div>Loading...</div>;
 
   const handleWriteClick = () => {
-    router.push(NoticeWritingRoutes);
+    router.push(noticesWritingRoutes);
   };
 
   return (

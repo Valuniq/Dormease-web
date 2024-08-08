@@ -9,7 +9,7 @@ import useConfirmDialog from '@/hooks/useConfirmDialog';
 import { noticeDetailResponse, noticeDetailResponseFileList } from '@/types/notice';
 import FileClip from '@public/images/FileClip.png';
 import { useRouter } from 'next/navigation';
-import { NoticeEditRoutes } from '@/constants/navigation';
+import { noticesEditRoutes } from '@/constants/navigation';
 
 type Props = {
   data: noticeDetailResponse;
@@ -40,7 +40,7 @@ const NoticeDetail = ({ data, handleDelete }: Props) => {
           </div>
           <div className='w-278 flex justify-between'>
             <BtnMidVariant
-              onClick={() => router.push(NoticeEditRoutes)}
+              onClick={() => router.push(noticesEditRoutes)}
               label={'수정하기'}
               disabled={false}
               variant={'gray'}

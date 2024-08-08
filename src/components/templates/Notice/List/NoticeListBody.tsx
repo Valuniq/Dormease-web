@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
-import { NoticeDetailRoutes } from '@/constants/navigation';
+import { noticesDetailRoutes } from '@/constants/navigation';
 import { noticeIdState } from '@/recoil/notice';
 
 type Props = noticeResponseDataList;
@@ -26,7 +26,7 @@ const NoticeListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
       className={`${pinned ? 'bg-gray-grayscale10' : 'bg-white'} h-[38px] hover-transition hover:bg-gray-grayscale10 cursor-pointer active:bg-gray-grayscale20 H4-caption text-gray-grayscale50`}
       onClick={() => {
         setId(notificationId);
-        router.push(NoticeDetailRoutes);
+        router.push(noticesDetailRoutes);
       }}
     >
       <td className='text-center'>

@@ -5,7 +5,7 @@ import { patchNotification, useNoticeDetail } from '@/apis/Notice';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
 import { noticePostRequest, ImageReq, FileReq } from '@/types/notice';
 import { useRouter } from 'next/navigation';
-import { NoticeRoutes } from '@/constants/navigation';
+import { noticesRoutes } from '@/constants/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -152,7 +152,7 @@ const Page = () => {
       try {
         setIsEditorModified(false);
         await patchNotification(formData);
-        router.push(NoticeRoutes);
+        router.push(noticesRoutes);
       } catch (error) {
         console.error(error);
         alert('공지사항 수정에 실패했습니다. 다시 시도해주세요.');

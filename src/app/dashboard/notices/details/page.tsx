@@ -6,7 +6,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { noticeDetailResponse, noticeDetailResponseFileList } from '@/types/notice';
 import { deleteNotice, useInfiniteNotifications, useNoticeDetail } from '@/apis/Notice';
-import { NoticeRoutes } from '@/constants/navigation';
+import { noticesRoutes } from '@/constants/navigation';
 import { mutate } from 'swr';
 import { BASE_URL } from '@/constants/path';
 import NoticeDetail from '@/components/templates/Notice/Detail/NoticeDetail';
@@ -30,7 +30,7 @@ const Page = () => {
           const key = `${BASE_URL}/api/v1/web/notifications/ANNOUNCEMENT?page=${i + 1}`;
           await mutate(key, undefined, { revalidate: true });
         }
-        router.push(NoticeRoutes);
+        router.push(noticesRoutes);
       } else {
         console.error('Notice 삭제 실패:', responseData);
       }

@@ -4,7 +4,7 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import React, { useState, useRef } from 'react';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
 import { useRouter } from 'next/navigation';
-import { FAQRoutes } from '@/constants/navigation';
+import { supportsRoutes } from '@/constants/navigation';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { postFaq } from '@/apis/Support';
@@ -75,7 +75,7 @@ const Page = () => {
       try {
         setIsEditorModified(false);
         await postFaq(formData);
-        router.push(FAQRoutes);
+        router.push(supportsRoutes);
       } catch (error) {
         console.error(error);
         alert('공지사항 등록에 실패했습니다. 다시 시도해주세요.');

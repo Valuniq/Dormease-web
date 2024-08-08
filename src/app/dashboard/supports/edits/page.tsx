@@ -5,7 +5,7 @@ import { patchFaq, useFaqDetail } from '@/apis/Support';
 import { RES_NOTIFICATIONS } from '@/constants/restrictions';
 import { noticePostRequest, ImageReq, FileReq } from '@/types/notice';
 import { useRouter } from 'next/navigation';
-import { FAQRoutes } from '@/constants/navigation';
+import { supportsRoutes } from '@/constants/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -152,7 +152,7 @@ const Page = () => {
       try {
         setIsEditorModified(false);
         await patchFaq(formData);
-        router.push(FAQRoutes);
+        router.push(supportsRoutes);
       } catch (error) {
         console.error(error);
         alert('공지사항 수정에 실패했습니다. 다시 시도해주세요.');

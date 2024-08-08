@@ -1,10 +1,9 @@
 'use client';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import AcceptanceMethod from '@/components/templates/StandardSetting/AcceptanceMethod/AcceptanceMethod';
-import PledgeWriting from '@/components/templates/StandardSetting/PledgeWriting/PledgeWriting';
-import CurrentStudentMethod from '@/components/templates/StandardSetting/ScoreCalculation/CurrentStudentMethod/CurrentStudentMethod';
-import FreshmanMethod from '@/components/templates/StandardSetting/ScoreCalculation/FreshmanMethod/FreshmanMethod';
-
+import AcceptanceMethod from '@/components/templates/Standard/AcceptanceMethod/AcceptanceMethod';
+import PledgeWriting from '@/components/templates/Standard/PledgeWriting/PledgeWriting';
+import CurrentStudentMethod from '@/components/templates/Standard/ScoreCalculation/CurrentStudentMethod/CurrentStudentMethod';
+import FreshmanMethod from '@/components/templates/Standard/ScoreCalculation/FreshmanMethod/FreshmanMethod';
 import React from 'react';
 
 const Page = () => {

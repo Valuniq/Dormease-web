@@ -7,7 +7,7 @@ import { useNoticeDetail } from '@/apis/Notice';
 import { supportDetailResponse, supportDetailResponseFileList } from '@/types/support';
 
 import { deleteFaq, useInfiniteSupport } from '@/apis/Support';
-import { FAQRoutes } from '@/constants/navigation';
+import { supportsRoutes } from '@/constants/navigation';
 import { BASE_URL } from '@/constants/path';
 import { mutate } from 'swr';
 import { supportIdState } from '@/recoil/support';
@@ -32,7 +32,7 @@ const Page = () => {
           const key = `${BASE_URL}/api/v1/web/notifications/FAQ?page=${i + 1}`;
           await mutate(key, undefined, { revalidate: true });
         }
-        router.push(FAQRoutes);
+        router.push(supportsRoutes);
       } else {
         console.error('FAQ 삭제 실패:', responseData);
       }

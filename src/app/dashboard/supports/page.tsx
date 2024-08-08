@@ -4,7 +4,7 @@ import { useInfiniteSupport } from '@/apis/Support';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
 import SupportList from '@/components/templates/Support/List/SupportList';
 
-import { FAQWritingRoutes } from '@/constants/navigation';
+import { supportsWritingRoutes } from '@/constants/navigation';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -16,7 +16,7 @@ const Page = () => {
   if (!faqData) return <div>Loading...</div>;
 
   const handleWriteClick = () => {
-    router.push(FAQWritingRoutes);
+    router.push(supportsWritingRoutes);
   };
 
   return (
