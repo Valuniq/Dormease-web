@@ -1,17 +1,53 @@
+'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import React from 'react';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { selectedMemberIdForBlacklistState } from '@/recoil/blacklist';
+import { blacklistResponseDataList } from '@/types/blacklist';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import NoneList from '../../organisms/NoneList/NoneList';
 import BlackListBody, { Props as BlackListBodyType } from './BlackListBody';
 
 type Props = {
-  blackLists: BlackListBodyType[];
-  isAllChecked: boolean;
-  setIsAllChecked: (isAllChecked: boolean) => void;
-  isEdit: boolean;
-  setIsEdit: (isEdit: boolean) => void;
+  blackLists: blacklistResponseDataList[];
+  isLoading: boolean;
+  isEndReached: boolean;
+  setSize: (size: number | ((size: number) => number)) => void;
 };
 
-const BlackList = ({ blackLists, isAllChecked, setIsAllChecked, isEdit, setIsEdit }: Props) => {
+const BlackList = ({ blackLists, isLoading, isEndReached, setSize }: Props) => {
+  const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForBlacklistState); // 선택된 학생 ID Recoil 상태
+  const [isAllChecked, setIsAllChecked] = useState(false);
+
+  const lastElementRef = useInfiniteScroll({
+    isLoading,
+    isEndReached,
+    onIntersect: () => setSize((prevSize) => prevSize + 1),
+  });
+
+  // "전체" 체크박스 클릭 시 모든 학생의 ID를 Recoil 상태에 저장하거나 제거
+  useEffect(() => {
+    if (isAllChecked) {
+      // 모든 학생의 ID를 Recoil 상태에 저장
+      const allMemberIds = blackLists.map((member) => member.id);
+      setSelectedMemberId(allMemberIds);
+    } else {
+      // 전체 선택이 해제되면, Recoil 상태를 비움
+      setSelectedMemberId([]);
+    }
+  }, [isAllChecked, blackLists, setSelectedMemberId]);
+
+  // 개별 학생 선택 시 Recoil 상태 업데이트
+  const handleMemberCheck = (id: number) => {
+    if (selectedMemberId.includes(id)) {
+      // 이미 선택된 경우 제거
+      setSelectedMemberId((prev) => prev.filter((memberId) => memberId !== id));
+    } else {
+      // 선택되지 않은 경우 추가
+      setSelectedMemberId((prev) => [...prev, id]);
+    }
+  };
+
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1305px]'>
@@ -39,20 +75,20 @@ const BlackList = ({ blackLists, isAllChecked, setIsAllChecked, isEdit, setIsEdi
         {blackLists && blackLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-15' />
-            {blackLists.map((i) => (
+            {blackLists.map((i, index) => (
               <>
                 <BlackListBody
-                  index={i.index}
+                  id={i.id}
+                  index={index + 1}
                   name={i.name}
-                  studentId={i.studentId}
+                  studentId={i.studentNumber}
                   phoneNumber={i.phoneNumber}
-                  minus={i.minus}
-                  reason={i.reason}
-                  setReason={i.setReason}
-                  registrationDate={i.registrationDate}
-                  isChecked={i.isChecked}
-                  setIsChecked={i.setIsChecked}
-                  isEdit={isEdit}
+                  minus={i.minusPoint}
+                  content={i.content}
+                  registrationDate={i.createdAt}
+                  ref={lastElementRef}
+                  isChecked={selectedMemberId.includes(i.id)} // Recoil 상태를 기반으로 체크 상태 관리
+                  setIsChecked={() => handleMemberCheck(i.id)} // 개별 학생 선택 시 상태 업데이트
                 />
                 <tr className='h-15' />
               </>
