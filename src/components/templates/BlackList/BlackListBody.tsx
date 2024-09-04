@@ -1,6 +1,7 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import BlackListReasonInputText from '@/components/atoms/InputText/BlackListReasonInputText/BlackListReasonInputText';
+import { formatDate } from '@/utils/formatDate';
 import React, { forwardRef, ForwardRefRenderFunction, useState } from 'react';
 
 export type Props = {
@@ -54,7 +55,7 @@ const BlackListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
       <td className='text-center'>
         <BlackListReasonInputText input={reason} setInput={handleReasonChange} />
       </td>
-      <td className='text-center'>{registrationDate}</td>
+      <td className='text-center'>{formatDate(registrationDate)}</td>
       <td className='h-38 flex justify-center items-center my-auto'>
         <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
