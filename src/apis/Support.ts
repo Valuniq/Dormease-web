@@ -2,7 +2,7 @@ import { supportResponse, supportResponseDataList } from '../types/support';
 import { BASE_URL } from '../constants/path';
 
 import useSWRInfinite from 'swr/infinite';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 
 export const useInfiniteSupport = () => {

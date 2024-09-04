@@ -1,6 +1,6 @@
 import { WithdrawalListResponse, WithdrawalListResponseDataList } from '@/types/withdrawal';
 import { BASE_URL } from '@/constants/path';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 
 export const useWithdrawalList = () => {

@@ -1,12 +1,15 @@
 import { BASE_URL } from '@/constants/path';
 import { PeriodResponse } from '@/types/period';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 
 //신청 기간 등록
 export const postPeriod = async (startDate: string, endDate: string, periodType: 'LEAVE' | 'REFUND' | 'ROOMMATE') => {
   const res = await swrWithTokens(`${BASE_URL}/api/v1/web/period`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       startDate: startDate,
       endDate: endDate,

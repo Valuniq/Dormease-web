@@ -7,7 +7,7 @@ import {
 import { BASE_URL } from '@/constants/path';
 
 import useSWR from 'swr';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 
 //건물 사진 변경
 export const postDormSettingImage = async (dormitoryId: number, image: File) => {
@@ -55,6 +55,9 @@ export const postAddDorm = async (name: string, image: File | null): Promise<Dor
 export const deleteDorm = async (dormitoryId: number) => {
   const res = await swrWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return res;
 };
@@ -81,6 +84,9 @@ export const useDormDetailRoom = (dormitoryId: number, floor: number) => {
 export const deleteRoom = async (dormitoryId: number, floor: number) => {
   const res = await swrWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return res;
 };

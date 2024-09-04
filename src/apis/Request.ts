@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/constants/path';
 import { RequestDetailResponse, RequestListResponse, RequestListResponseDataList } from '@/types/request';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 

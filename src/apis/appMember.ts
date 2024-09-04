@@ -1,5 +1,5 @@
 import { BASE_URL } from '../constants/path';
-import swrWithTokens from '@/utils/swrWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 import { userResponse, userResponseDataList } from '@/types/userManagement';
 
@@ -11,7 +11,7 @@ export const useInfiniteUser = (sortBy: string = 'createdDate', isAscending: boo
     return `${BASE_URL}/api/v1/web/users/management?sortBy=${sortBy}&isAscending=${isAscending}&page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, mutate, isValidating } = useSWRInfinite<userResponse>(getKey, swrWithTokens, {
+  const { data, error, size, setSize, mutate, isValidating } = useSWRInfinite<userResponse>(getKey, fetchWithTokens, {
     initialSize: 1,
   });
 
@@ -41,7 +41,7 @@ export const useUserSearch = (keyword: string, sortBy: string = 'createdDate', i
     return `${BASE_URL}/api/v1/web/users/management/search?keyword=${keyword}&sortBy=${sortBy}&isAscending=${isAscending}&page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, mutate, isValidating } = useSWRInfinite<userResponse>(getKey, swrWithTokens, {
+  const { data, error, size, setSize, mutate, isValidating } = useSWRInfinite<userResponse>(getKey, fetchWithTokens, {
     initialSize: 1,
   });
 

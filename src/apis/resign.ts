@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/path';
-import swrWithTokens from '@/utils/swrWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 import { ResignDetailResponse, ResignListResponse, ResignListResponseDataList } from '@/types/resign';
 import useSWR from 'swr';
@@ -11,7 +11,7 @@ export const useResignList = () => {
     return `${BASE_URL}/api/v1/web/exitRequestment/residents?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, mutate } = useSWRInfinite<ResignListResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<ResignListResponse>(getKey, fetchWithTokens);
 
   const resignationData: ResignListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as ResignListResponseDataList[])
@@ -34,7 +34,7 @@ export const useResignList = () => {
 export const useResignDetail = (exitRequestmentId: number) => {
   const { data, error } = useSWR<ResignDetailResponse>(
     `${BASE_URL}/api/v1/web/exitRequestment/${exitRequestmentId}`,
-    swrWithTokens,
+    fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data };
 };
@@ -44,12 +44,15 @@ export const patchResign = async (
   securityDepositReturnStatus: 'PAYMENT' | 'UNALBE',
   exitRequestmentIdList: number[],
 ) => {
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/exitRequestment/securityDeposit`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/exitRequestment/securityDeposit`, {
     method: 'PATCH',
     body: JSON.stringify({
       securityDepositReturnStatus: securityDepositReturnStatus,
       exitRequestmentIdList: exitRequestmentIdList,
     }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return res;
 };

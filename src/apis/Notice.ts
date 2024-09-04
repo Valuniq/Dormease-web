@@ -3,7 +3,7 @@ import { noticeResponse, noticeResponseDataList } from '../types/notice';
 
 import useSWRInfinite from 'swr/infinite';
 
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 
 export const useInfiniteNotifications = () => {

@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/constants/path';
 import { blacklistResponse, blacklistResponseDataList } from '@/types/blacklist';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/dist/infinite';
 
 export const useInfiniteBlacklist = () => {

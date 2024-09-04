@@ -6,7 +6,7 @@ import {
   ResidentPointResponse,
 } from '@/types/point';
 import useSWR from 'swr';
-import swrWithTokens from '@/utils/swrWithTokens';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 import { PageInfo } from '@/types/pageInfo';
 
@@ -53,6 +53,9 @@ export const usePointsDetail = () => {
 export const deletePointsDetail = async (pointId: number) => {
   const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/detail/${pointId}`, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return res;
 };
@@ -62,6 +65,9 @@ export const postMemberPoint = async (residentId: number, pointType: string, poi
   const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/${residentId}?pointType=${pointType}`, {
     method: 'POST',
     body: JSON.stringify(points),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
   return res;
 };
