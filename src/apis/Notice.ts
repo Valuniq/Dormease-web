@@ -2,8 +2,8 @@ import { BASE_URL } from '../constants/path';
 import { noticeResponse, noticeResponseDataList } from '../types/notice';
 
 import useSWRInfinite from 'swr/infinite';
+
 import swrWithTokens from '@/utils/swrWithTokens';
-import test from '@/utils/swrWithToken';
 import useSWR from 'swr';
 
 export const useInfiniteNotifications = () => {
@@ -12,7 +12,7 @@ export const useInfiniteNotifications = () => {
     return `${BASE_URL}/api/v1/web/notifications/ANNOUNCEMENT?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, test);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, swrWithTokens);
 
   const notificationsData: noticeResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as noticeResponseDataList[])

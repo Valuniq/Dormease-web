@@ -6,7 +6,7 @@ import {
   ResidentPointResponse,
 } from '@/types/point';
 import useSWR from 'swr';
-import swrWithToken from '@/utils/swrWithToken';
+import swrWithTokens from '@/utils/swrWithTokens';
 import useSWRInfinite from 'swr/infinite';
 import { PageInfo } from '@/types/pageInfo';
 
@@ -25,7 +25,7 @@ export const useInfinitePointMemberList = () => {
     return `${BASE_URL}/api/v1/web/points?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<PointMemberResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<PointMemberResponse>(getKey, swrWithTokens);
 
   const pointManagementData: PointMemberResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as PointMemberResponseDataList[])
@@ -45,13 +45,13 @@ export const useInfinitePointMemberList = () => {
 };
 // * 상/벌점 리스트 조회
 export const usePointsDetail = () => {
-  const { data, error } = useSWR<PointListResponse>(`${BASE_URL}/api/v1/web/points/detail`, swrWithToken);
+  const { data, error } = useSWR<PointListResponse>(`${BASE_URL}/api/v1/web/points/detail`, swrWithTokens);
   return { data, error, isLoading: !error && !data };
 };
 
 // * 상/벌점 리스트 삭제
 export const deletePointsDetail = async (pointId: number) => {
-  const res = await swrWithToken(`${BASE_URL}/api/v1/web/points/detail/${pointId}`, {
+  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/detail/${pointId}`, {
     method: 'DELETE',
   });
   return res;
@@ -59,7 +59,7 @@ export const deletePointsDetail = async (pointId: number) => {
 
 // * 사생 상벌점 부여
 export const postMemberPoint = async (residentId: number, pointType: string, points: { pointId: number }[]) => {
-  const res = await swrWithToken(`${BASE_URL}/api/v1/web/points/${residentId}?pointType=${pointType}`, {
+  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/${residentId}?pointType=${pointType}`, {
     method: 'POST',
     body: JSON.stringify(points),
   });
@@ -70,7 +70,7 @@ export const postMemberPoint = async (residentId: number, pointType: string, poi
 export const usePointsByResidentId = (residentId: number, page: PageInfo) => {
   const { data, error } = useSWR<ResidentPointResponse>(
     `${BASE_URL}/api/v1/web/points/${residentId}?page=${page.currentPage}`,
-    swrWithToken,
+    swrWithTokens,
   );
   return { data, error, isLoading: !error && !data };
 };
@@ -80,7 +80,7 @@ export const postPointsDetail = async (
   bonusPointList: { pointId: number; content: string; score: number }[],
   minusPointList: { pointId: number; content: string; score: number }[],
 ) => {
-  const res = await swrWithToken(`${BASE_URL}/api/v1/web/points/detail`, {
+  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/detail`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

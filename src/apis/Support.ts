@@ -1,7 +1,6 @@
 import { supportResponse, supportResponseDataList } from '../types/support';
 import { BASE_URL } from '../constants/path';
 
-import swrWithToken from '@/utils/swrWithToken';
 import useSWRInfinite from 'swr/infinite';
 import swrWithTokens from '@/utils/swrWithTokens';
 import useSWR from 'swr';
@@ -12,7 +11,7 @@ export const useInfiniteSupport = () => {
     return `${BASE_URL}/api/v1/web/notifications/FAQ?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<supportResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<supportResponse>(getKey, swrWithTokens);
 
   const faqData: supportResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as supportResponseDataList[])
