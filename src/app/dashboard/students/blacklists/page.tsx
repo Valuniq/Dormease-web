@@ -5,13 +5,24 @@ import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 import BlackList from '@/components/templates/BlackList/BlackList';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
 import { selectedMemberIdForBlacklistState } from '@/recoil/blacklist';
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { editState } from '@/recoil/nav';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 const Page = () => {
   const { blacklistsData, error, isLoadingMore, size, setSize, isEndReached, mutate } = useInfiniteBlacklist();
   const [editedReasons, setEditedReasons] = useState<Record<number, string>>({});
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForBlacklistState); // 선택된 학생 ID Recoil 상태
+  const setEditState = useSetRecoilState(editState);
+
+  // 페이지가 렌더링될 때 및 editedReasons가 변경될 때 editMode를 설정
+  useEffect(() => {
+    if (Object.keys(editedReasons).length > 0) {
+      setEditState(true);
+    } else {
+      setEditState(false);
+    }
+  }, [editedReasons, setEditState]);
 
   // 삭제 확인 다이얼로그 설정
   const { showConfirmDialog, ConfirmDialogComponent } = useConfirmDialog(
@@ -21,6 +32,7 @@ const Page = () => {
     },
     'red',
   );
+
   // 사유가 변경될 때 호출되는 함수
   const handleReasonChange = (id: number, reason: string) => {
     setEditedReasons((prev) => {
@@ -31,20 +43,17 @@ const Page = () => {
       return prev;
     });
   };
+
   // 저장 버튼 클릭 시 호출되는 함수
   const handleSave = async () => {
     const updates = Object.entries(editedReasons).map(([id, content]) => ({
       id: Number(id),
       content,
     }));
-
     try {
-      await updateBlacklistReasons(updates); // 변경된 부분
-      // alert('모든 사유가 성공적으로 업데이트되었습니다.');
-
+      await updateBlacklistReasons(updates);
       // 업데이트가 완료된 후 수정된 항목 상태를 초기화
       setEditedReasons({});
-
       // mutate를 호출하여 다시 데이터를 가져오도록 함
       mutate();
     } catch (error) {
@@ -56,10 +65,8 @@ const Page = () => {
   const handleDelete = async () => {
     try {
       await deleteBlacklists(selectedMemberId);
-
       // 삭제가 완료된 후 선택된 항목 상태를 초기화
       setSelectedMemberId([]);
-
       // mutate를 호출하여 다시 데이터를 가져오도록 함
       mutate();
     } catch (error) {
