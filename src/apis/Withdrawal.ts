@@ -1,6 +1,6 @@
 import { WithdrawalListResponse, WithdrawalListResponseDataList } from '@/types/withdrawal';
 import { BASE_URL } from '@/constants/path';
-import swrWithToken from '@/utils/swrWithToken';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 
 export const useWithdrawalList = () => {
@@ -9,7 +9,7 @@ export const useWithdrawalList = () => {
     return `${BASE_URL}/api/v1/web/users/management/delete?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithTokens);
 
   const withdrawalData: WithdrawalListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalListResponseDataList[])
@@ -34,7 +34,7 @@ export const useWithdrawalSearch = (keyword: string) => {
     return `${BASE_URL}/api/v1/web/users/management/delete/search?page=${pageIndex + 1}&keyword=${keyword}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithTokens);
 
   const withdrawalSearchData: WithdrawalListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalListResponseDataList[])
