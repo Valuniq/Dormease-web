@@ -14,13 +14,32 @@ export type Props = {
   registrationDate: string;
   isChecked: boolean;
   setIsChecked: (isChecked: boolean) => void;
+  onReasonChange: (id: number, reason: string) => void; // 사유 변경 핸들러 추가
 };
 
 const BlackListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
-  { index, name, studentId, phoneNumber, minus, registrationDate, content, isChecked, setIsChecked },
+  {
+    id,
+    index,
+    name,
+    studentId,
+    phoneNumber,
+    minus,
+    registrationDate,
+    content,
+    isChecked,
+    setIsChecked,
+    onReasonChange,
+  },
   ref, // 부모 컴포넌트로부터 전달받은 ref
 ) => {
   const [reason, setReason] = useState(content);
+
+  // 사유 변경 시 호출되는 함수
+  const handleReasonChange = (newReason: string) => {
+    setReason(newReason);
+    onReasonChange(id, newReason); // 부모로 변경된 사유 전달
+  };
 
   return (
     <tr
@@ -33,7 +52,7 @@ const BlackListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = (
       <td className='text-center'>{phoneNumber}</td>
       <td className='text-center'>{minus}점</td>
       <td className='text-center'>
-        <BlackListReasonInputText input={reason} setInput={setReason} />
+        <BlackListReasonInputText input={reason} setInput={handleReasonChange} />
       </td>
       <td className='text-center'>{registrationDate}</td>
       <td className='h-38 flex justify-center items-center my-auto'>

@@ -3,19 +3,20 @@ import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { selectedMemberIdForBlacklistState } from '@/recoil/blacklist';
 import { blacklistResponseDataList } from '@/types/blacklist';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import NoneList from '../../organisms/NoneList/NoneList';
-import BlackListBody, { Props as BlackListBodyType } from './BlackListBody';
+import BlackListBody from './BlackListBody';
 
 type Props = {
   blackLists: blacklistResponseDataList[];
   isLoading: boolean;
   isEndReached: boolean;
   setSize: (size: number | ((size: number) => number)) => void;
+  onReasonChange: (id: number, reason: string) => void;
 };
 
-const BlackList = ({ blackLists, isLoading, isEndReached, setSize }: Props) => {
+const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChange }: Props) => {
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForBlacklistState); // 선택된 학생 ID Recoil 상태
   const [isAllChecked, setIsAllChecked] = useState(false);
 
@@ -67,16 +68,18 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize }: Props) => {
               </div>
             </th>
           </tr>
-          <th colSpan={8}>
-            <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
-          </th>
+          <tr>
+            <th colSpan={8}>
+              <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
+            </th>
+          </tr>
         </thead>
 
         {blackLists && blackLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-15' />
             {blackLists.map((i, index) => (
-              <>
+              <Fragment key={index}>
                 <BlackListBody
                   id={i.id}
                   index={index + 1}
@@ -89,9 +92,10 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize }: Props) => {
                   ref={lastElementRef}
                   isChecked={selectedMemberId.includes(i.id)} // Recoil 상태를 기반으로 체크 상태 관리
                   setIsChecked={() => handleMemberCheck(i.id)} // 개별 학생 선택 시 상태 업데이트
+                  onReasonChange={onReasonChange} // 사유 변경 핸들러 전달
                 />
                 <tr className='h-15' />
-              </>
+              </Fragment>
             ))}
           </tbody>
         ) : (

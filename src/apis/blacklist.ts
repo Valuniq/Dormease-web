@@ -36,3 +36,21 @@ export const useInfiniteBlacklist = () => {
 
   return { blacklistsData, error, isLoadingMore, size, setSize, isEndReached, mutate };
 };
+
+// 블랙리스트 항목 사유 업데이트 함수
+export const updateBlacklistReason = async (id: number, content: string) => {
+  try {
+    console.log('Updating reason for ID:', id, 'with content:', content);
+
+    const responseData = await swrWithTokens(`${BASE_URL}/api/v1/web/users/management/blacklist`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([{ blacklistId: id, content }]),
+    });
+  } catch (error) {
+    console.error('Error updating blacklist reason:', error); // 에러 로그
+    throw error;
+  }
+};
