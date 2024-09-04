@@ -26,9 +26,9 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChang
     onIntersect: () => setSize((prevSize) => prevSize + 1),
   });
 
-  // "전체" 체크박스 클릭 시 모든 학생의 ID를 Recoil 상태에 저장하거나 제거
-  useEffect(() => {
-    if (isAllChecked) {
+  // 전체 선택/해제 체크박스 클릭 시 호출되는 함수
+  const handleAllCheck = () => {
+    if (!isAllChecked) {
       // 모든 학생의 ID를 Recoil 상태에 저장
       const allMemberIds = blackLists.map((member) => member.id);
       setSelectedMemberId(allMemberIds);
@@ -36,16 +36,15 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChang
       // 전체 선택이 해제되면, Recoil 상태를 비움
       setSelectedMemberId([]);
     }
-  }, [isAllChecked, blackLists, setSelectedMemberId]);
+    setIsAllChecked(!isAllChecked); // 전체 선택 상태 변경
+  };
 
   // 개별 학생 선택 시 Recoil 상태 업데이트
-  const handleMemberCheck = (id: number) => {
-    if (selectedMemberId.includes(id)) {
-      // 이미 선택된 경우 제거
-      setSelectedMemberId((prev) => prev.filter((memberId) => memberId !== id));
-    } else {
-      // 선택되지 않은 경우 추가
+  const handleMemberCheck = (id: number, isChecked: boolean) => {
+    if (isChecked) {
       setSelectedMemberId((prev) => [...prev, id]);
+    } else {
+      setSelectedMemberId((prev) => prev.filter((memberId) => memberId !== id));
     }
   };
 
@@ -64,7 +63,7 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChang
             <th>
               <div className='H4 flex  items-center justify-center text-center w-full'>
                 <h1 className='mr-4'>전체</h1>
-                <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+                <Checkbox isChecked={isAllChecked} setIsChecked={handleAllCheck} />
               </div>
             </th>
           </tr>
@@ -91,8 +90,8 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChang
                   registrationDate={i.createdAt}
                   ref={lastElementRef}
                   isChecked={selectedMemberId.includes(i.id)} // Recoil 상태를 기반으로 체크 상태 관리
-                  setIsChecked={() => handleMemberCheck(i.id)} // 개별 학생 선택 시 상태 업데이트
-                  onReasonChange={onReasonChange} // 사유 변경 핸들러 전달
+                  setIsChecked={(isChecked) => handleMemberCheck(i.id, isChecked)} // 개별 학생 선택 시 상태 업데이트
+                  onReasonChange={onReasonChange}
                 />
                 <tr className='h-15' />
               </Fragment>
