@@ -5,9 +5,8 @@ import {
   DormSettingResponse,
 } from '@/types/setting';
 import { BASE_URL } from '@/constants/path';
-
 import useSWR from 'swr';
-import swrWithTokens from '@/utils/fetchWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 
 //건물 사진 변경
 export const postDormSettingImage = async (dormitoryId: number, image: File) => {
@@ -18,7 +17,7 @@ export const postDormSettingImage = async (dormitoryId: number, image: File) => 
     formData.append('image', new Blob([]));
   }
 
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/image`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/image`, {
     method: 'POST',
     body: formData,
   });
@@ -29,7 +28,7 @@ export const postDormSettingImage = async (dormitoryId: number, image: File) => 
 export const useDormList = () => {
   const { data, error, mutate } = useSWR<DormSettingResponse>(
     `${BASE_URL}/api/v1/web/dormitory/setting`,
-    swrWithTokens,
+    fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
 };
@@ -44,7 +43,7 @@ export const postAddDorm = async (name: string, image: File | null): Promise<Dor
     formData.append('image', new Blob([]));
   }
 
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting`, {
     method: 'POST',
     body: formData,
   });
@@ -53,7 +52,7 @@ export const postAddDorm = async (name: string, image: File | null): Promise<Dor
 
 //건물 삭제
 export const deleteDorm = async (dormitoryId: number) => {
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -66,7 +65,7 @@ export const deleteDorm = async (dormitoryId: number) => {
 export const useDormDetail = (dormitoryId: number) => {
   const { data, error, mutate } = useSWR<DormSettingDetailResponse>(
     `${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}`,
-    swrWithTokens,
+    fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
 };
@@ -75,14 +74,14 @@ export const useDormDetail = (dormitoryId: number) => {
 export const useDormDetailRoom = (dormitoryId: number, floor: number) => {
   const { data, error, mutate } = useSWR<DormSettingDetailRoomResponse>(
     `${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`,
-    swrWithTokens,
+    fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
 };
 
 //호실 삭제
 export const deleteRoom = async (dormitoryId: number, floor: number) => {
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
