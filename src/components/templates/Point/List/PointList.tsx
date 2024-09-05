@@ -1,53 +1,113 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import Image from 'next/image';
 import React, { Fragment, useEffect, useState } from 'react';
-import SortImg from '@public/images/DropDownBtn.png';
 import PointManagementListBody from './PointListBody';
-
 import { PointMemberResponseDataList } from '@/types/point';
-import { selectedMemberIdForPointState } from '@/recoil/point';
+import { selectedMemberIdForPointState, selectedPointsForPenaltyState } from '@/recoil/point';
 import { useRecoilState } from 'recoil';
-
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import NoneList from '@/components/organisms/NoneList/NoneList';
 import PenaltyHistoryPrompt from '../Prompt/PenaltyHistoryPrompt/PenaltyHistoryPrompt';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import SortIcon from '@/components/atoms/AllBtn/SortBtn/SortBtn';
+import AlertPrompt from '../Prompt/AlertPrompt/AlertPrompt';
+import { deletePointsDetail, deleteResidentsPointsDetail } from '@/apis/point';
 
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];
-  plusSort: boolean; // true-오름차순, false-내림차순
-  setPlusSort: (plusSort: boolean) => void;
-  minusSort: boolean;
-  setMinusSort: (minusSort: boolean) => void;
+  isLoading: boolean;
+  sortConfig: { sortBy: 'bonusPoint' | 'minusPoint' | 'name'; isAscending: boolean };
+  setSortConfig: (config: { sortBy: 'bonusPoint' | 'minusPoint' | 'name'; isAscending: boolean }) => void;
+  isEndReached: boolean;
+  setSize: (size: number | ((size: number) => number)) => void;
 };
 
-const PointList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, setMinusSort }: Props) => {
+const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig, isEndReached, setSize }: Props) => {
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
+  const [selectedPoints, setSelectedPoints] = useRecoilState(selectedPointsForPenaltyState); // 추가된 Recoil 상태
   const [isAllChecked, setIsAllChecked] = useState(false);
   const { isOpened, handleOpenModal } = usePointManagementModal();
-  useEffect(() => {
-    if (isAllChecked) {
-      // 모든 학생의 ID를 Recoil 상태에 저장
+  const [selectedResidentId, setSelectedResidentId] = useState<number | null>(null); // 클릭된 사생 ID
+
+  // 전체 선택/해제 체크박스 클릭 시 호출되는 함수
+  const handleAllCheck = () => {
+    if (!isAllChecked) {
       const allMemberIds = pointManagementLists.map((member) => member.id);
       setSelectedMemberId(allMemberIds);
     } else {
-      // 전체 선택이 해제되면, Recoil 상태를 비움
       setSelectedMemberId([]);
     }
-  }, [isAllChecked, pointManagementLists, setSelectedMemberId]);
+    setIsAllChecked(!isAllChecked);
+  };
+
+  // 개별 학생 체크박스 선택 시 Recoil 상태 업데이트
+  const handleMemberCheck = (id: number, isChecked: boolean) => {
+    if (isChecked) {
+      setSelectedMemberId((prev) => [...prev, id]);
+    } else {
+      setSelectedMemberId((prev) => prev.filter((memberId) => memberId !== id));
+    }
+  };
+
+  const handleSort = (sortBy: 'bonusPoint' | 'minusPoint' | 'name') => {
+    const isAscending = sortConfig.sortBy === sortBy ? !sortConfig.isAscending : true;
+    setSortConfig({ sortBy, isAscending });
+  };
+
+  const getSortIconClass = (sortBy: 'bonusPoint' | 'minusPoint' | 'name') => {
+    if (sortConfig.sortBy === sortBy) {
+      return sortConfig.isAscending ? 'rotate-0 ' : 'rotate-180';
+    }
+    return '';
+  };
+
+  const getFillColor = (sortBy: 'bonusPoint' | 'minusPoint' | 'name') => {
+    return sortConfig.sortBy === sortBy ? '#3678D8' : '#323232';
+  };
+
+  const lastElementRef = useInfiniteScroll({
+    isLoading,
+    isEndReached,
+    onIntersect: () => setSize((prevSize) => prevSize + 1),
+  });
+
+  const handleOpenPenaltyHistory = (residentId: number) => {
+    setSelectedResidentId(residentId); // 선택된 사생 ID 저장
+    handleOpenModal('pointHistory'); // 모달 열기
+  };
+
+  const handleDeleteSelectedPoints = async () => {
+    if (selectedResidentId === null || selectedPoints.length === 0) return;
+
+    try {
+      // 선택된 사생의 상/벌점 항목을 하나씩 삭제 요청
+      for (const pointId of selectedPoints) {
+        await deleteResidentsPointsDetail(selectedResidentId, [pointId]); // 배열에 하나의 ID만 포함
+      }
+
+      setSelectedPoints([]);
+      handleOpenModal('pointGiveConfirm'); // 모달 닫기
+      setSize(1); // 데이터 새로고침
+    } catch (error) {
+      console.error('Error deleting points:', error);
+    }
+  };
+
   return (
     <>
-      {isOpened.pointHistory && (
+      {isOpened.pointHistory && selectedResidentId !== null && (
         <BackDrop isOpen={isOpened.pointHistory}>
-          <PenaltyHistoryPrompt
-            penaltyLists={[]}
-            plusSum={0}
-            minusSum={0}
-            isAllChecked={false}
-            setIsAllChecked={function (isAllChecked: boolean): void {
-              throw new Error('Function not implemented.');
-            }}
+          <PenaltyHistoryPrompt residentId={selectedResidentId} />
+        </BackDrop>
+      )}
+      {isOpened.pointHistoryConfirm && selectedResidentId !== null && (
+        <BackDrop isOpen={isOpened.pointHistoryConfirm}>
+          <AlertPrompt
+            variant={'blue'}
+            label={'선택한 내역을 삭제하시겠습니까?'}
+            modalName={'pointHistoryConfirm'}
+            onConfirm={handleDeleteSelectedPoints} // 삭제 함수 연결
           />
         </BackDrop>
       )}
@@ -56,30 +116,50 @@ const PointList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, set
           <thead className='w-full h-36 bg-white sticky top-0 z-1'>
             <tr className='text-gray-grayscale50'>
               <th className='H4'>번호</th>
-              <th className='H4'>이름</th>
-              <th className='H4'>학번</th>
-              <th className='H4'>전화번호</th>
-              <th onClick={() => setPlusSort(!plusSort)}>
+              <th
+                className='h-30 rounded-8  cursor-pointer'
+                onClick={() => handleSort('name')}
+                style={{ backgroundColor: sortConfig.sortBy === 'name' ? '#DAE9FF' : 'transparent' }}
+              >
                 <div className='H4 flex items-center justify-center text-center w-full'>
-                  <h1 className='mr-4'>상점</h1>
-                  <Image
-                    src={SortImg}
-                    height={8}
+                  <h1 className='mr-4'>이름</h1>
+                  <SortIcon
+                    className={`object-contain ${getSortIconClass('name')}`}
                     width={16}
-                    className={`object-contain ${plusSort ? 'rotate-180' : ''}`}
-                    alt='sort img'
+                    height={8}
+                    fillColor={getFillColor('name')}
                   />
                 </div>
               </th>
-              <th onClick={() => setMinusSort(!minusSort)}>
+              <th className='H4'>학번</th>
+              <th className='H4'>전화번호</th>
+              <th
+                className='h-30 rounded-8  cursor-pointer'
+                onClick={() => handleSort('bonusPoint')}
+                style={{ backgroundColor: sortConfig.sortBy === 'bonusPoint' ? '#DAE9FF' : 'transparent' }}
+              >
+                <div className='H4 flex items-center justify-center text-center w-full'>
+                  <h1 className='mr-4'>상점</h1>
+                  <SortIcon
+                    className={`object-contain ${getSortIconClass('bonusPoint')}`}
+                    width={16}
+                    height={8}
+                    fillColor={getFillColor('bonusPoint')}
+                  />
+                </div>
+              </th>
+              <th
+                className='h-30 rounded-8  cursor-pointer'
+                onClick={() => handleSort('minusPoint')}
+                style={{ backgroundColor: sortConfig.sortBy === 'minusPoint' ? '#DAE9FF' : 'transparent' }}
+              >
                 <div className='H4 flex items-center justify-center text-center w-full'>
                   <h1 className='mr-4'>벌점</h1>
-                  <Image
-                    src={SortImg}
-                    height={8}
+                  <SortIcon
+                    className={`object-contain ${getSortIconClass('minusPoint')}`}
                     width={16}
-                    className={`object-contain ${minusSort ? 'rotate-180' : ''}`}
-                    alt='sort img'
+                    height={8}
+                    fillColor={getFillColor('minusPoint')}
                   />
                 </div>
               </th>
@@ -88,7 +168,7 @@ const PointList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, set
               <th>
                 <div className='H4 flex items-center justify-center text-center w-full'>
                   <h1 className='mr-4'>전체</h1>
-                  <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
+                  <Checkbox isChecked={isAllChecked} setIsChecked={handleAllCheck} />
                 </div>
               </th>
             </tr>
@@ -104,7 +184,9 @@ const PointList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, set
               {pointManagementLists.map((i, key) => (
                 <Fragment key={i.id}>
                   <PointManagementListBody
-                    onClick={() => handleOpenModal('pointHistory')}
+                    onClick={() => {
+                      handleOpenModal('pointHistory'), setSelectedResidentId(i.id);
+                    }}
                     index={key + 1}
                     data={{
                       id: i.id,
@@ -116,6 +198,9 @@ const PointList = ({ pointManagementLists, plusSort, setPlusSort, minusSort, set
                       dormitory: i.dormitory,
                       room: i.room,
                     }}
+                    isChecked={selectedMemberId.includes(i.id)} // Recoil 상태를 기반으로 체크 상태 관리
+                    setIsChecked={(isChecked) => handleMemberCheck(i.id, isChecked)} // 개별 학생 선택 시 상태 업데이트
+                    ref={lastElementRef}
                   />
                   <tr className='h-14' />
                 </Fragment>

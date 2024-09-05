@@ -6,9 +6,11 @@ type Props = {
   reason: string;
   score: number;
   division: 'BONUS' | 'MINUS';
+  isChecked: boolean;
+  setIsChecked: (isChecked: boolean) => void;
 };
 
-const PenaltyHistoryList = ({ date, reason, score, division }: Props) => {
+const PenaltyHistoryListBody = ({ date, reason, score, division, isChecked, setIsChecked }: Props) => {
   return (
     <>
       <td className='text-center'>
@@ -26,10 +28,10 @@ const PenaltyHistoryList = ({ date, reason, score, division }: Props) => {
         </h1>
       </td>
       <td className='flex justify-center'>
-        <Checkbox isChecked={false} setIsChecked={() => console.log('흥')} />
+        <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
       </td>
     </>
   );
 };
 
-export default PenaltyHistoryList;
+export default PenaltyHistoryListBody;

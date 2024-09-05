@@ -45,8 +45,7 @@ export type TPointManagementModalState = {
   pointHistory: boolean;
   pointHistoryConfirm: boolean;
   pointGive: boolean;
-  pointGiveBonusConfirm: boolean;
-  pointGiveMinusConfirm: boolean;
+  pointGiveConfirm: boolean;
 };
 
 export const pointManagementModalState = atom<TPointManagementModalState>({
@@ -57,7 +56,12 @@ export const pointManagementModalState = atom<TPointManagementModalState>({
     pointHistory: false,
     pointHistoryConfirm: false,
     pointGive: false,
-    pointGiveBonusConfirm: false,
-    pointGiveMinusConfirm: false,
+    pointGiveConfirm: false,
   },
+});
+
+// 선택한 상/벌점 userPointId 상태
+export const selectedPointsForPenaltyState = atom<number[]>({
+  key: 'selectedPointsForPenaltyState',
+  default: [],
 });
