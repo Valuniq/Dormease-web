@@ -1,7 +1,7 @@
 import { BASE_URL } from '@/constants/path';
 import { blacklistResponse, blacklistResponseDataList } from '@/types/blacklist';
 import useSWRInfinite from 'swr/infinite';
-import swrWithTokens from '@/utils/fetchWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 
 export const useInfiniteBlacklist = () => {
   // useSWRInfinite의 getKey 함수로 페이지 키 설정
@@ -13,7 +13,7 @@ export const useInfiniteBlacklist = () => {
   };
 
   // useSWRInfinite 훅을 사용하여 데이터를 가져오기
-  const { data, error, size, setSize, mutate } = useSWRInfinite<blacklistResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<blacklistResponse>(getKey, fetchWithTokens);
 
   // 가져온 데이터를 배열로 변환하여 블랙리스트 데이터 목록 만들기
   const blacklistsData: blacklistResponseDataList[] = data
@@ -42,7 +42,7 @@ export const updateBlacklistReasons = async (updates: { id: number; content: str
   try {
     // 모든 업데이트 요청을 병렬로 실행
     const updatePromises = updates.map(({ id, content }) =>
-      swrWithTokens(`${BASE_URL}/api/v1/web/users/management/blacklist`, {
+      fetchWithTokens(`${BASE_URL}/api/v1/web/users/management/blacklist`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const deleteBlacklists = async (ids: number[]) => {
   try {
     // 모든 삭제 요청을 병렬로 실행
     const deletePromises = ids.map((id) =>
-      swrWithTokens(`${BASE_URL}/api/v1/web/users/management/blacklist/${id}`, {
+      fetchWithTokens(`${BASE_URL}/api/v1/web/users/management/blacklist/${id}`, {
         method: 'DELETE',
       }),
     );

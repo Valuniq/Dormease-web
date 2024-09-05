@@ -6,7 +6,7 @@ import {
   ResidentPointResponse,
 } from '@/types/point';
 import useSWR from 'swr';
-import swrWithTokens from '@/utils/fetchWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 import { PageInfo } from '@/types/pageInfo';
 
@@ -25,7 +25,7 @@ export const useInfinitePointMemberList = () => {
     return `${BASE_URL}/api/v1/web/points?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<PointMemberResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize } = useSWRInfinite<PointMemberResponse>(getKey, fetchWithTokens);
 
   const pointManagementData: PointMemberResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as PointMemberResponseDataList[])
@@ -45,13 +45,13 @@ export const useInfinitePointMemberList = () => {
 };
 // * 상/벌점 리스트 조회
 export const usePointsDetail = () => {
-  const { data, error } = useSWR<PointListResponse>(`${BASE_URL}/api/v1/web/points/detail`, swrWithTokens);
+  const { data, error } = useSWR<PointListResponse>(`${BASE_URL}/api/v1/web/points/detail`, fetchWithTokens);
   return { data, error, isLoading: !error && !data };
 };
 
 // * 상/벌점 리스트 삭제
 export const deletePointsDetail = async (pointId: number) => {
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/detail/${pointId}`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/points/detail/${pointId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export const deletePointsDetail = async (pointId: number) => {
 
 // * 사생 상벌점 부여
 export const postMemberPoint = async (residentId: number, pointType: string, points: { pointId: number }[]) => {
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/${residentId}?pointType=${pointType}`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/points/${residentId}?pointType=${pointType}`, {
     method: 'POST',
     body: JSON.stringify(points),
     headers: {
@@ -76,7 +76,7 @@ export const postMemberPoint = async (residentId: number, pointType: string, poi
 export const usePointsByResidentId = (residentId: number, page: PageInfo) => {
   const { data, error } = useSWR<ResidentPointResponse>(
     `${BASE_URL}/api/v1/web/points/${residentId}?page=${page.currentPage}`,
-    swrWithTokens,
+    fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data };
 };
@@ -86,7 +86,7 @@ export const postPointsDetail = async (
   bonusPointList: { pointId: number; content: string; score: number }[],
   minusPointList: { pointId: number; content: string; score: number }[],
 ) => {
-  const res = await swrWithTokens(`${BASE_URL}/api/v1/web/points/detail`, {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/points/detail`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
