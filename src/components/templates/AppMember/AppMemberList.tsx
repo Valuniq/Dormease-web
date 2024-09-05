@@ -140,6 +140,7 @@ const AppMemberList = ({
                       bonusPoint={i.bonusPoint}
                       minusPoint={i.minusPoint}
                       createdAt={i.createdAt}
+                      ref={lastElementRef}
                     />
                     <tr className='h-15' />
                   </Fragment>
