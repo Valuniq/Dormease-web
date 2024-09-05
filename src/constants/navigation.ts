@@ -16,7 +16,7 @@ export const joinsRoutes = '/dashboard/joins';
 export const dorms = '/dashboard/dorms';
 
 // 공지사항
-export const noticesRoutes = '/dashboard/notice';
+export const noticesRoutes = '/dashboard/notices';
 export const noticesWritingRoutes = '/dashboard/notices/writings';
 export const noticesDetailRoutes = '/dashboard/notices/details';
 export const noticesEditRoutes = '/dashboard/notices/edits';

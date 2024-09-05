@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/constants/path';
 import { RequestDetailResponse, RequestListResponse, RequestListResponseDataList } from '@/types/request';
-import swrWithToken from '@/utils/swrWithToken';
+import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 
@@ -10,7 +10,7 @@ export const useRequestList = () => {
     return `${BASE_URL}/api/v1/app/requestments?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<RequestListResponse>(getKey, swrWithToken);
+  const { data, error, size, setSize } = useSWRInfinite<RequestListResponse>(getKey, swrWithTokens);
 
   const requestData: RequestListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as RequestListResponseDataList[])
@@ -32,7 +32,7 @@ export const useRequestList = () => {
 export const useRequestDetail = (requestmentId: number) => {
   const { data, error } = useSWR<RequestDetailResponse>(
     `${BASE_URL}/api/v1/app/requestments/${requestmentId}`,
-    swrWithToken,
+    swrWithTokens,
   );
   return { data, error, isLoading: !error && !data };
 };
