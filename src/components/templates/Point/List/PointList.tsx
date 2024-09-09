@@ -115,9 +115,9 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
         <table className='w-[1250px]'>
           <thead className='w-full h-36 bg-white sticky top-0 z-1'>
             <tr className='text-gray-grayscale50'>
-              <th className='H4'>번호</th>
+              <th className='H4 w-[8%]'>번호</th>
               <th
-                className='h-30 rounded-8  cursor-pointer'
+                className='h-30 rounded-8  cursor-pointer w-[8%]'
                 onClick={() => handleSort('name')}
                 style={{ backgroundColor: sortConfig.sortBy === 'name' ? '#DAE9FF' : 'transparent' }}
               >
@@ -131,10 +131,10 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
                   />
                 </div>
               </th>
-              <th className='H4'>학번</th>
-              <th className='H4'>전화번호</th>
+              <th className='H4 w-[12%]'>학번</th>
+              <th className='H4 w-[16%]'>전화번호</th>
               <th
-                className='h-30 rounded-8  cursor-pointer'
+                className='h-30 rounded-8  cursor-pointer w-[10%]'
                 onClick={() => handleSort('bonusPoint')}
                 style={{ backgroundColor: sortConfig.sortBy === 'bonusPoint' ? '#DAE9FF' : 'transparent' }}
               >
@@ -149,7 +149,7 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
                 </div>
               </th>
               <th
-                className='h-30 rounded-8  cursor-pointer'
+                className='h-30 rounded-8  cursor-pointer  w-[10%]'
                 onClick={() => handleSort('minusPoint')}
                 style={{ backgroundColor: sortConfig.sortBy === 'minusPoint' ? '#DAE9FF' : 'transparent' }}
               >
@@ -163,11 +163,11 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
                   />
                 </div>
               </th>
-              <th className='H4'>건물</th>
-              <th className='H4'>호실</th>
-              <th>
+              <th className='H4  w-[20%]'>건물</th>
+              <th className='H4 w-[8%]'>호실</th>
+              <th className='w-[8%]'>
                 <div className='H4 flex items-center justify-center text-center w-full'>
-                  <h1 className='mr-4'>전체</h1>
+                  <h1 className='mr-4 '>전체</h1>
                   <Checkbox isChecked={isAllChecked} setIsChecked={handleAllCheck} />
                 </div>
               </th>
