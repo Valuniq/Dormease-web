@@ -27,7 +27,8 @@ import {
   DormSettingDetailRoomResponseInformation,
 } from '@/types/setting';
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { editState } from '@/recoil/nav';
 
 const Page = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -41,23 +42,22 @@ const Page = () => {
   }); //건물 상세 조회
   const [buildingName, setBuildingName] = useState('');
   const [newFloor, setNewFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //추가한 층
-  const [selectedFloor, setSelectedFloor] = useState<DormSettingDetailResponseInformationFloor>({
-    floor: 2,
-    startRoomNumber: 1,
-    endRoomNumber: 99,
-  }); //선택된 층
-  const [selectFilter, setSelectFilter] = useState(0);
-  const [completedFilter, setCompletedFilter] = useState<Number[]>([]);
-  const [checkedItems, setCheckedItems] = useState<number[]>([]);
-  const { data: roomData, error: roomError, mutate: roomMutate } = useDormDetailRoom(buildingId, selectedFloor.floor);
+  const [selectedFloor, setSelectedFloor] = useState(1); //선택된 층
+  const [selectFilter, setSelectFilter] = useState(0); //선택된 필터
+  const [completedFilter, setCompletedFilter] = useState<Number[]>([]); //선택 완료된 필터
+  const [checkedItems, setCheckedItems] = useState<number[]>([]); //체크한 roomId
+  const { data: roomData, error: roomError, mutate: roomMutate } = useDormDetailRoom(buildingId, selectedFloor);
   const [roomInfo, setRoomInfo] = useState<DormSettingDetailRoomResponseInformation[]>(); //호실 조회
-  const [sameDormModal, setSameDormModal] = useState(false); //건물명 중복 모달창
-  const [sameFloorModal, setSameFloorModal] = useState(false); //층 중복 모달창
+  const [isSameDormModal, setIsSameDormModal] = useState(false); //건물명 중복 모달창
+  const [isNullDormNameModal, setIsNullDormNameModal] = useState(false); //건물명 null 모달창
+  const [isSameFloorModal, setIsSameFloorModal] = useState(false); //층 중복 모달창
   const [floorToUpdate, setFloorToUpdate] = useState<number | null>(null); //지우려는 층 index
   const [editFilter, setEditFilter] = useState(false); //필터 수정 중
   const [isFilterModal, setIsFilterModal] = useState(false); //필터 수정 중 모달창
+  const setEditState = useSetRecoilState(editState);
 
   useEffect(() => {
+    setEditState(true);
     if (data && data.information) {
       setBuildingInfo(data.information);
       setBuildingName(data.information.name);
@@ -136,7 +136,7 @@ const Page = () => {
   const handleRoomCreate = async (floor: number, startRoomNumber: number, endRoomNumber: number, index: number) => {
     if (buildingInfo.floorAndRoomNumberRes.find((item) => item.floor === floor)) {
       setFloorToUpdate(index);
-      setSameFloorModal(true);
+      setIsSameFloorModal(true);
     } else {
       try {
         const response = await postRoom(buildingId, {
@@ -181,12 +181,12 @@ const Page = () => {
           await mutate();
         } else {
           //동일한 이름의 건물명이 있는 경우
-          setSameDormModal(true);
+          setIsSameDormModal(true);
         }
       } catch (error) {
         console.error(error);
         console.log('오류가 발생했습니다.');
-        setSameDormModal(true); //추후 삭제 필요
+        setIsNullDormNameModal(true);
       }
   };
 
@@ -226,6 +226,32 @@ const Page = () => {
       setIsFilterModal(true);
     } else {
       //서버에 필터 저장
+      let filter: keyof DormSettingDetailRoomResponseInformation;
+
+      if (selectFilter === 1) {
+        filter = 'gender';
+      } else if (selectFilter === 2) {
+        filter = 'roomSize';
+      } else if (selectFilter === 3) {
+        filter = 'hasKey';
+      } else if (selectFilter === 4) {
+        filter = 'isActivated';
+      } else {
+        return;
+      }
+      const filteredData = roomInfo
+        ?.map((room) => {
+          const dataValue = room[filter];
+          return {
+            id: room.id,
+            data: dataValue,
+          };
+        })
+        .filter((room) => room.data !== undefined);
+
+      console.log(filter);
+      console.log(filteredData);
+
       setCompletedFilter([...completedFilter, selectFilter]);
       setSelectFilter(0);
       setCheckedItems([]);
@@ -244,7 +270,7 @@ const Page = () => {
         />
       </div>
       <div className='flex'>
-        <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center min-w-410 mr-20'>
           <div className='w-381 h-241 flex items-center justify-center bg-gray-grayscale5 rounded-8'>
             {buildingInfo.imageUrl ? (
               <BuildingSelectImageBtn
@@ -267,63 +293,72 @@ const Page = () => {
           <div className='mt-28 flex flex-col items-center'>
             <h3 className='H3 text-gray-grayscale50 text-center'>호실 개수</h3>
             <hr className='w-331 border-gray-grayscale50 mt-15 mb-8' />
-            <div className='flex flex-col mr-15 gap-12'>
-              {buildingInfo.floorAndRoomNumberRes.map((data, index) => (
-                <RoomBtn
-                  key={index}
-                  selected={selectedFloor.floor === data.floor && selectedFloor.endRoomNumber === data.endRoomNumber}
-                  floorInput={data.floor?.toString() || ''}
-                  setFloorInput={(value) => {
-                    handleSetFloorInput(index, 'floor', value, false);
-                  }}
-                  startInput={data.startRoomNumber?.toString() || ''}
-                  setStartInput={(value) => {
-                    handleSetFloorInput(index, 'startRoomNumber', value, false);
-                  }}
-                  endInput={data.endRoomNumber?.toString() || ''}
-                  setEndInput={(value) => {
-                    handleSetFloorInput(index, 'endRoomNumber', value, false);
-                  }}
-                  isOne={index === 0} //첫번째인지
-                  pressOkBtn={true} //복제 버튼
-                  hovered={index === 0} //hover가 가능한지
-                  deleteDetailRoom={() => deleteDetailRoom(data.floor)} //해당 층 삭제
-                  onClick={() => setSelectedFloor(data)} //해당 층 선택
-                  readOnly={true}
-                  handleDuplicate={() => {}} //복제 버튼 클릭
-                />
-              ))}
-              {newFloor.map((data, index) => {
-                return (
+            <div className='max-h-320 w-410 overflow-y-auto scrollbar-table mb-13 mr-20'>
+              <div className='flex flex-col gap-12 mr-5'>
+                {buildingInfo.floorAndRoomNumberRes.map((data, index) => (
                   <RoomBtn
                     key={index}
+                    selected={selectedFloor === data.floor}
                     floorInput={data.floor?.toString() || ''}
                     setFloorInput={(value) => {
-                      handleSetFloorInput(index, 'floor', value, true);
+                      handleSetFloorInput(index, 'floor', value, false);
                     }}
                     startInput={data.startRoomNumber?.toString() || ''}
                     setStartInput={(value) => {
-                      handleSetFloorInput(index, 'startRoomNumber', value, true);
+                      handleSetFloorInput(index, 'startRoomNumber', value, false);
                     }}
                     endInput={data.endRoomNumber?.toString() || ''}
                     setEndInput={(value) => {
-                      handleSetFloorInput(index, 'endRoomNumber', value, true);
+                      handleSetFloorInput(index, 'endRoomNumber', value, false);
                     }}
-                    isOne={buildingInfo.floorAndRoomNumberRes.length === 0 ? index === 0 : false}
-                    pressOkBtn={false} //확인 버튼
-                    hovered={buildingInfo.floorAndRoomNumberRes.length === 0 ? index !== 0 : true}
-                    deleteDetailRoom={() => {
-                      setNewFloor((prev) => prev.filter((_, i) => i !== index));
-                    }} //newFloor에서 해당층 삭제
-                    readOnly={false}
-                    handleCreate={() => {
-                      handleRoomCreate(data.floor, data.startRoomNumber, data.endRoomNumber, index);
-                    }} //확인, 추가 버튼 클릭
+                    isOne={index === 0} //첫번째인지
+                    pressOkBtn={true} //복제 버튼
+                    hovered={index === 0} //hover가 가능한지
+                    deleteDetailRoom={() => deleteDetailRoom(data.floor)} //해당 층 삭제
+                    onClick={() => {
+                      if (editFilter) {
+                        setIsFilterModal(true);
+                      } else {
+                        setCompletedFilter([]);
+                        setSelectFilter(0);
+                        setSelectedFloor(data.floor);
+                      }
+                    }} //해당 층 선택
+                    readOnly={true}
+                    handleDuplicate={() => {}} //복제 버튼 클릭
                   />
-                );
-              })}
+                ))}
+                {newFloor.map((data, index) => {
+                  return (
+                    <RoomBtn
+                      key={index}
+                      floorInput={data.floor?.toString() || ''}
+                      setFloorInput={(value) => {
+                        handleSetFloorInput(index, 'floor', value, true);
+                      }}
+                      startInput={data.startRoomNumber?.toString() || ''}
+                      setStartInput={(value) => {
+                        handleSetFloorInput(index, 'startRoomNumber', value, true);
+                      }}
+                      endInput={data.endRoomNumber?.toString() || ''}
+                      setEndInput={(value) => {
+                        handleSetFloorInput(index, 'endRoomNumber', value, true);
+                      }}
+                      isOne={buildingInfo.floorAndRoomNumberRes.length === 0 ? index === 0 : false}
+                      pressOkBtn={false} //확인 버튼
+                      hovered={buildingInfo.floorAndRoomNumberRes.length === 0 ? index !== 0 : true}
+                      deleteDetailRoom={() => {
+                        setNewFloor((prev) => prev.filter((_, i) => i !== index));
+                      }} //newFloor에서 해당층 삭제
+                      readOnly={false}
+                      handleCreate={() => {
+                        handleRoomCreate(data.floor, data.startRoomNumber, data.endRoomNumber, index);
+                      }} //확인, 추가 버튼 클릭
+                    />
+                  );
+                })}
+              </div>
             </div>
-            <div className='h-13'></div>
             <AddRoomBtn
               onClick={() =>
                 setNewFloor([...newFloor, { floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') }])
@@ -441,29 +476,45 @@ const Page = () => {
       <div className='flex mt-21'>
         <div className='flex-1'></div>
         <div className='flex-1 flex justify-center'>
-          <BtnMidVariant label='완료' disabled={!buildingInfo.name} variant='blue' />
+          <BtnMidVariant
+            label='완료'
+            disabled={!buildingInfo.name || editFilter || !!selectFilter}
+            variant='blue'
+            onClick={() => setEditState(false)}
+          />
         </div>
         <div className='flex-1 flex justify-end'>
           {selectFilter ? (
             <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} onClick={handleRoomFilter} />
           ) : (
-            <div></div>
+            <></>
           )}
         </div>
       </div>
-      {sameDormModal && (
-        <BackDrop isOpen={sameDormModal}>
+      {isSameDormModal && (
+        <BackDrop isOpen={isSameDormModal}>
           <AlertPrompt
             variant='blue'
             label={'이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'}
             onConfirm={() => {
-              setSameDormModal(false);
+              setIsSameDormModal(false);
             }}
           />
         </BackDrop>
       )}
-      {sameFloorModal && (
-        <BackDrop isOpen={sameFloorModal}>
+      {isNullDormNameModal && (
+        <BackDrop isOpen={isNullDormNameModal}>
+          <AlertPrompt
+            variant='blue'
+            label={'건물명을 입력하여 주시기 바랍니다.'}
+            onConfirm={() => {
+              setIsNullDormNameModal(false);
+            }}
+          />
+        </BackDrop>
+      )}
+      {isSameFloorModal && (
+        <BackDrop isOpen={isSameFloorModal}>
           <AlertPrompt
             variant='blue'
             label={'중복된 층 수의 입력은 불가능합니다.'}
@@ -478,7 +529,7 @@ const Page = () => {
                   return updatedNewFloor;
                 });
               }
-              setSameFloorModal(false);
+              setIsSameFloorModal(false);
             }}
           />
         </BackDrop>
