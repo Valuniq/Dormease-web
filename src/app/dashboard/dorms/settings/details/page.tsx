@@ -10,6 +10,8 @@ import BuildingSelectImageBtn from '@/components/atoms/AllBtn/BuildingSelectImag
 import BuildingSetBtn from '@/components/atoms/AllBtn/BuildingSetBtn/BuildingSetBtn';
 import RoomBtn from '@/components/atoms/AllBtn/RoomBtn/RoomBtn';
 import BuildingNameInputText from '@/components/atoms/InputText/BuildingNameInputText/BuildingNameInputText';
+import BackDrop from '@/components/organisms/BackDrop/Backdrop';
+import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import SettingList from '@/components/templates/Setting/Detail/SettingList';
 import { settingIdState } from '@/recoil/setting';
 import {
@@ -41,6 +43,7 @@ const Page = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const { data: roomData, error: roomError, mutate: roomMutate } = useDormDetailRoom(buildingId, selectedFloor.floor);
   const [roomInfo, setRoomInfo] = useState<DormSettingDetailRoomResponseInformation[]>(); //호실 조회
+  const [sameModal, setSameModal] = useState(false); //건물명 중복 모달창
 
   useEffect(() => {
     if (data && data.information) {
@@ -287,12 +290,23 @@ const Page = () => {
       <div className='flex mt-21'>
         <div className='flex-1'></div>
         <div className='flex-1 flex justify-center'>
-          <BtnMidVariant label='등록' disabled={!buildingInfo.name} variant='blue' />
+          <BtnMidVariant label='완료' disabled={!buildingInfo.name} variant='blue' />
         </div>
         <div className='flex-1 flex justify-end'>
           <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} />
         </div>
       </div>
+      {sameModal && (
+        <BackDrop isOpen={sameModal}>
+          <AlertPrompt
+            variant='blue'
+            label='이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'
+            onConfirm={() => {
+              setSameModal(false);
+            }}
+          />
+        </BackDrop>
+      )}
     </div>
   );
 };
