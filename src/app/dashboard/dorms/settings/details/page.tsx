@@ -50,6 +50,9 @@ const Page = () => {
     if (data && data.information) {
       setBuildingInfo(data.information);
       setBuildingName(data.information.name);
+      if (data.information.floorAndRoomNumberRes.length === 0) {
+        setNewFloor([{ floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') }]);
+      }
     }
   }, [data]);
 
@@ -65,7 +68,12 @@ const Page = () => {
     );
   };
 
-  const handleSetFloorInput = (index: number, field: 'floor' | 'endRoomNumber', value: string, isNew: boolean) => {
+  const handleSetFloorInput = (
+    index: number,
+    field: 'floor' | 'startRoomNumber' | 'endRoomNumber',
+    value: string,
+    isNew: boolean,
+  ) => {
     if (isNew) {
       setNewFloor((prev) => {
         const updatedNewFloor = [...prev];
@@ -189,35 +197,46 @@ const Page = () => {
                   setFloorInput={(value) => {
                     handleSetFloorInput(index, 'floor', value, false);
                   }}
+                  startInput={data.startRoomNumber?.toString() || ''}
+                  setStartInput={(value) => {
+                    handleSetFloorInput(index, 'startRoomNumber', value, false);
+                  }}
                   endInput={data.endRoomNumber?.toString() || ''}
                   setEndInput={(value) => {
                     handleSetFloorInput(index, 'endRoomNumber', value, false);
                   }}
-                  isOne={index === 0}
-                  pressOkBtn={true}
-                  hovered={false}
-                  deleteDetailRoom={() => deleteDetailRoom(data.floor)}
-                  onClick={() => setSelectedFloor(data)}
+                  isOne={index === 0} //첫번째인지
+                  pressOkBtn={true} //복제 버튼
+                  hovered={index === 0} //hover가 가능한지
+                  deleteDetailRoom={() => deleteDetailRoom(data.floor)} //해당 층 삭제
+                  onClick={() => setSelectedFloor(data)} //해당 층 선택
+                  readOnly={true}
                 />
               ))}
               {newFloor.map((data, index) => {
                 return (
                   <RoomBtn
                     key={index}
-                    selected={selectedFloor === data}
+                    selected={false}
                     floorInput={data.floor?.toString() || ''}
                     setFloorInput={(value) => {
                       handleSetFloorInput(index, 'floor', value, true);
+                    }}
+                    startInput={data.startRoomNumber?.toString() || ''}
+                    setStartInput={(value) => {
+                      handleSetFloorInput(index, 'startRoomNumber', value, true);
                     }}
                     endInput={data.endRoomNumber?.toString() || ''}
                     setEndInput={(value) => {
                       handleSetFloorInput(index, 'endRoomNumber', value, true);
                     }}
-                    isOne={false}
-                    pressOkBtn={false}
-                    hovered={false}
-                    deleteDetailRoom={() => deleteDetailRoom(data.floor)}
-                    onClick={() => setSelectedFloor(data)}
+                    isOne={buildingInfo.floorAndRoomNumberRes.length === 0 ? index === 0 : false}
+                    pressOkBtn={false} //확인 버튼
+                    hovered={buildingInfo.floorAndRoomNumberRes.length === 0 ? index !== 0 : true}
+                    deleteDetailRoom={() => {
+                      setNewFloor((prev) => prev.filter((_, i) => i !== index));
+                    }} //newFloor에서 해당층 삭제
+                    readOnly={false}
                   />
                 );
               })}

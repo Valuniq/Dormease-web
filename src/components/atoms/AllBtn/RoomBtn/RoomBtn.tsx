@@ -1,5 +1,4 @@
 import React from 'react';
-import KebabMenu from '@public/images/KebabMenu.svg';
 import CloseBtnRed from '@public/images/CloseBtnRed.svg';
 import TextBoxes from '../../InputText/JoinSettingEntryTextBoxes/TextBoxes';
 import BtnMiniVariant from '../BtnMiniVariant/BtnMiniVariant';
@@ -9,11 +8,16 @@ type Props = {
   hovered: boolean;
   floorInput: string;
   setFloorInput: (value: string) => void;
+  startInput: string;
+  setStartInput: (value: string) => void;
   endInput: string;
   setEndInput: (value: string) => void;
   isOne: boolean;
   pressOkBtn: boolean;
   deleteDetailRoom: () => void;
+  readOnly: boolean;
+  handleCreate?: () => void;
+  handleDuplicate?: () => void;
 };
 
 const RoomBtn = ({
@@ -21,11 +25,16 @@ const RoomBtn = ({
   hovered = false,
   floorInput,
   setFloorInput,
+  startInput,
+  setStartInput,
   endInput,
   setEndInput,
   isOne,
   pressOkBtn,
   deleteDetailRoom,
+  readOnly,
+  handleCreate,
+  handleDuplicate,
   ...props
 }: Props & React.HtmlHTMLAttributes<HTMLDivElement>) => {
   return (
@@ -33,7 +42,7 @@ const RoomBtn = ({
       {...props}
       className={`group flex justify-between items-center w-403 h-52 rounded-r-8 rounded-l-50 ${
         !isOne ? (hovered ? 'bg-gray-grayscale5' : 'hover:bg-gray-grayscale5 hover:hover-transition') : ''
-      } `}
+      } ${readOnly && 'cursor-pointer'} `}
     >
       <div
         onClick={(e) => {
@@ -43,18 +52,45 @@ const RoomBtn = ({
       >
         <CloseBtnRed
           className={`ml-21 opacity-0 ${
-            !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
+            !isOne
+              ? hovered
+                ? 'opacity-100 cursor-pointer'
+                : 'group-hover:opacity-100 group-hover:hover-transition'
+              : ''
           }`}
         />
       </div>
       <div
-        className={`flex items-center ${selected ? (hovered ? '' : 'bg-blue-blue15 py-9 px-14 rounded-8 group-hover:bg-gray-grayscale5 group-hover:hover-transition:') : ''}`}
+        className={`flex items-center ${selected && 'bg-blue-blue15 py-9 px-14 rounded-8'} ${
+          !isOne && 'hover:bg-gray-grayscale5 hover:hover-transition'
+        }`}
       >
-        <TextBoxes input={floorInput} setInput={setFloorInput} placeholder='층' type='textBox7' />
+        <TextBoxes
+          input={floorInput}
+          setInput={setFloorInput}
+          placeholder='층'
+          type='textBox7'
+          readOnly={readOnly}
+          maxLength={2}
+        />
         <h5 className='Caption2 text-gray-grayscale50 ml-4 mr-17'>층</h5>
-        <TextBoxes input='1' setInput={(id) => {}} placeholder='시작' type='textBox7' readOnly={true} />
+        <TextBoxes
+          input={startInput}
+          setInput={setStartInput}
+          placeholder='시작'
+          type='textBox7'
+          readOnly={readOnly}
+          maxLength={2}
+        />
         <h5 className='Caption2 text-gray-grayscale50 mx-6'>-</h5>
-        <TextBoxes input={endInput} setInput={setEndInput} placeholder='끝' type='textBox7' />
+        <TextBoxes
+          input={endInput}
+          setInput={setEndInput}
+          placeholder='끝'
+          type='textBox7'
+          readOnly={readOnly}
+          maxLength={2}
+        />
         <div className='w-22'></div>
         {pressOkBtn ? (
           <BtnMiniVariant
@@ -62,23 +98,32 @@ const RoomBtn = ({
             disabled={false}
             selected={false}
             variant='blue'
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDuplicate && handleDuplicate();
+            }}
           />
         ) : (
           <BtnMiniVariant
-            label='확인'
-            disabled={floorInput === '' || endInput === ''}
+            label={isOne ? '확인' : '추가'}
+            disabled={
+              floorInput === '' ||
+              startInput === '' ||
+              endInput === '' ||
+              isNaN(Number(floorInput)) ||
+              isNaN(Number(startInput)) ||
+              isNaN(Number(endInput))
+            }
             selected={false}
             variant='blue'
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCreate && handleCreate();
+            }}
           />
         )}
       </div>
-      <KebabMenu
-        className={`mr-11 opacity-0 ${
-          !isOne ? (hovered ? 'opacity-100' : 'group-hover:opacity-100 group-hover:hover-transition') : ''
-        }`}
-      />
+      <div />
     </div>
   );
 };
