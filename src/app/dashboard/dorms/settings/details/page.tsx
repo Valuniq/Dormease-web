@@ -44,7 +44,7 @@ const Page = () => {
   const [selectedFloor, setSelectedFloor] = useState<DormSettingDetailResponseInformationFloor>({
     floor: 2,
     startRoomNumber: 1,
-    endRoomNumber: 1,
+    endRoomNumber: 99,
   }); //선택된 층
   const [selectFilter, setSelectFilter] = useState(0);
   const [completedFilter, setCompletedFilter] = useState<Number[]>([]);
@@ -54,6 +54,8 @@ const Page = () => {
   const [sameDormModal, setSameDormModal] = useState(false); //건물명 중복 모달창
   const [sameFloorModal, setSameFloorModal] = useState(false); //층 중복 모달창
   const [floorToUpdate, setFloorToUpdate] = useState<number | null>(null); //지우려는 층 index
+  const [editFilter, setEditFilter] = useState(false); //필터 수정 중
+  const [isFilterModal, setIsFilterModal] = useState(false); //필터 수정 중 모달창
 
   useEffect(() => {
     if (data && data.information) {
@@ -188,6 +190,49 @@ const Page = () => {
       }
   };
 
+  //필터에 대한 리스트 수정
+  const handleFilter = (filter: string, data: number | string | boolean) => {
+    if (!roomInfo) return;
+
+    const updateRoomInfo = (room: DormSettingDetailRoomResponseInformation) => {
+      if (checkedItems.includes(room.id)) {
+        switch (filter) {
+          case 'gender':
+            return { ...room, gender: data as 'FEMALE' | 'MALE' };
+          case 'roomSize':
+            return { ...room, roomSize: data as number };
+          case 'hasKey':
+            return { ...room, hasKey: data as boolean };
+          case 'isActivated':
+            return { ...room, isActivated: data as boolean };
+          default:
+            return room;
+        }
+      }
+      return room;
+    };
+
+    setEditFilter(true);
+    setRoomInfo(roomInfo.map(updateRoomInfo));
+  };
+
+  //필터 저장
+  const handleRoomFilter = () => {
+    if (
+      (selectFilter === 1 && roomInfo?.some((room) => room.gender === 'EMPTY')) ||
+      (selectFilter === 2 && roomInfo?.some((room) => room.roomSize === null)) ||
+      (selectFilter === 3 && roomInfo?.some((room) => room.hasKey === null))
+    ) {
+      setIsFilterModal(true);
+    } else {
+      //서버에 필터 저장
+      setCompletedFilter([...completedFilter, selectFilter]);
+      setSelectFilter(0);
+      setCheckedItems([]);
+      setEditFilter(false);
+    }
+  };
+
   return (
     <div className='flex flex-col relative w-[1331px]'>
       <div className='flex justify-center w-full mb-30'>
@@ -252,7 +297,6 @@ const Page = () => {
                 return (
                   <RoomBtn
                     key={index}
-                    selected={false}
                     floorInput={data.floor?.toString() || ''}
                     setFloorInput={(value) => {
                       handleSetFloorInput(index, 'floor', value, true);
@@ -298,54 +342,88 @@ const Page = () => {
                   detail={false}
                   selected={selectFilter === 1}
                   done={completedFilter.includes(1)}
-                  onClick={() => setSelectFilter(1)}
+                  onClick={() => {
+                    if (editFilter) {
+                      setIsFilterModal(true);
+                    } else {
+                      setSelectFilter(1);
+                    }
+                  }}
                 />
                 <BuildingSetBtn
                   label='호실 타입'
                   detail={false}
                   selected={selectFilter === 2}
                   done={completedFilter.includes(2)}
-                  onClick={() => setSelectFilter(2)}
+                  onClick={() => {
+                    if (editFilter) {
+                      setIsFilterModal(true);
+                    } else {
+                      setSelectFilter(2);
+                    }
+                  }}
                 />
                 <BuildingSetBtn
                   label='열쇠 수령 여부'
                   detail={false}
                   selected={selectFilter === 3}
                   done={completedFilter.includes(3)}
-                  onClick={() => setSelectFilter(3)}
+                  onClick={() => {
+                    if (editFilter) {
+                      setIsFilterModal(true);
+                    } else {
+                      setSelectFilter(3);
+                    }
+                  }}
                 />
                 <BuildingSetBtn
                   label='비활성화'
                   detail={false}
                   selected={selectFilter === 4}
                   done={completedFilter.includes(4)}
-                  onClick={() => setSelectFilter(4)}
+                  onClick={() => {
+                    if (editFilter) {
+                      setIsFilterModal(true);
+                    } else {
+                      setSelectFilter(4);
+                    }
+                  }}
                 />
               </div>
-              <div className='h-53 flex gap-15 justify-end items-end '>
+              <div className='h-53 flex gap-15 justify-end items-end'>
                 {selectFilter === 1 ? (
                   <>
-                    <BuildingSetBtn label='남자' detail={true} selected={false} />
-                    <BuildingSetBtn label='여자' detail={true} selected={false} />
+                    <BuildingSetBtn label='남자' detail={true} onClick={() => handleFilter('gender', 'MALE')} />
+                    <BuildingSetBtn label='여자' detail={true} onClick={() => handleFilter('gender', 'FEMALE')} />
                   </>
                 ) : selectFilter === 2 ? (
                   <>
-                    <BuildingSetBtn label='1인실' detail={true} selected={false} />
-                    <BuildingSetBtn label='2인실' detail={true} selected={false} />
-                    <BuildingSetBtn label='3인실' detail={true} selected={false} />
-                    <BuildingSetBtn label='4인실' detail={true} selected={false} />
-                    <BuildingSetBtn label='5인실' detail={true} selected={false} />
-                    <BuildingSetBtn label='6인실' detail={true} selected={false} />
+                    <BuildingSetBtn label='1인실' detail={true} onClick={() => handleFilter('roomSize', 1)} />
+                    <BuildingSetBtn label='2인실' detail={true} onClick={() => handleFilter('roomSize', 2)} />
+                    <BuildingSetBtn label='3인실' detail={true} onClick={() => handleFilter('roomSize', 3)} />
+                    <BuildingSetBtn label='4인실' detail={true} onClick={() => handleFilter('roomSize', 4)} />
+                    <BuildingSetBtn label='5인실' detail={true} onClick={() => handleFilter('roomSize', 5)} />
+                    <BuildingSetBtn label='6인실' detail={true} onClick={() => handleFilter('roomSize', 6)} />
                   </>
                 ) : selectFilter === 3 ? (
                   <>
-                    <BuildingSetBtn label='수령' detail={true} selected={false} />
-                    <BuildingSetBtn label='미수령' detail={true} selected={false} />
+                    <BuildingSetBtn label='수령' detail={true} onClick={() => handleFilter('hasKey', true)} />
+                    <BuildingSetBtn label='미수령' detail={true} onClick={() => handleFilter('hasKey', false)} />
                   </>
                 ) : selectFilter === 4 ? (
                   <>
-                    <BtnLargeVariant label='활성화' disabled={false} variant='green' />
-                    <BtnLargeVariant label='비활성화' disabled={false} variant='red' />
+                    <BtnLargeVariant
+                      label='활성화'
+                      disabled={false}
+                      variant='green'
+                      onClick={() => handleFilter('isActivated', true)}
+                    />
+                    <BtnLargeVariant
+                      label='비활성화'
+                      disabled={false}
+                      variant='red'
+                      onClick={() => handleFilter('isActivated', false)}
+                    />
                   </>
                 ) : (
                   <></>
@@ -366,7 +444,11 @@ const Page = () => {
           <BtnMidVariant label='완료' disabled={!buildingInfo.name} variant='blue' />
         </div>
         <div className='flex-1 flex justify-end'>
-          <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} />
+          {selectFilter ? (
+            <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} onClick={handleRoomFilter} />
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
       {sameDormModal && (
@@ -397,6 +479,17 @@ const Page = () => {
                 });
               }
               setSameFloorModal(false);
+            }}
+          />
+        </BackDrop>
+      )}
+      {isFilterModal && (
+        <BackDrop isOpen={isFilterModal}>
+          <AlertPrompt
+            variant='blue'
+            label={'일부 호실이 아직 설정되지 않았습니다.'}
+            onConfirm={() => {
+              setIsFilterModal(false);
             }}
           />
         </BackDrop>

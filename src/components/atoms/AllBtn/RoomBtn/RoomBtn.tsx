@@ -4,7 +4,7 @@ import TextBoxes from '../../InputText/JoinSettingEntryTextBoxes/TextBoxes';
 import BtnMiniVariant from '../BtnMiniVariant/BtnMiniVariant';
 
 type Props = {
-  selected: boolean;
+  selected?: boolean;
   hovered: boolean;
   floorInput: string;
   setFloorInput: (value: string) => void;

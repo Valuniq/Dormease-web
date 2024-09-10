@@ -44,7 +44,7 @@ export type DormSettingDetailRoomResponseInformation = {
   id: number;
   roomNumber: number;
   floor: number;
-  gender: 'FEMALE' | 'MALE';
+  gender: 'FEMALE' | 'MALE' | 'EMPTY';
   roomSize: number;
   hasKey: boolean;
   isActivated: boolean;
