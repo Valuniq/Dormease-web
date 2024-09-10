@@ -1,6 +1,7 @@
 import {
   DormAddDeleteResponse,
   DormSettingDetailResponse,
+  DormSettingDetailResponseInformationFloor,
   DormSettingDetailRoomResponse,
   DormSettingResponse,
 } from '@/types/setting';
@@ -77,6 +78,21 @@ export const useDormDetailRoom = (dormitoryId: number, floor: number) => {
     fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
+};
+
+//호실 생성
+export const postRoom = async (
+  dormitoryId: number,
+  floorAndRoomNumberRes: DormSettingDetailResponseInformationFloor,
+) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/room`, {
+    method: 'POST',
+    body: JSON.stringify(floorAndRoomNumberRes),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
 };
 
 //호실 삭제

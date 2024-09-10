@@ -1,6 +1,13 @@
 'use client';
 
-import { deleteRoom, postDormSettingImage, putDormitoryName, useDormDetail, useDormDetailRoom } from '@/apis/setting';
+import {
+  deleteRoom,
+  postDormSettingImage,
+  postRoom,
+  putDormitoryName,
+  useDormDetail,
+  useDormDetailRoom,
+} from '@/apis/setting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import AddRoomBtn from '@/components/atoms/AllBtn/AddRoomBtn/AddRoomBtn';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
@@ -44,7 +51,9 @@ const Page = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const { data: roomData, error: roomError, mutate: roomMutate } = useDormDetailRoom(buildingId, selectedFloor.floor);
   const [roomInfo, setRoomInfo] = useState<DormSettingDetailRoomResponseInformation[]>(); //호실 조회
-  const [sameModal, setSameModal] = useState(false); //건물명 중복 모달창
+  const [sameDormModal, setSameDormModal] = useState(false); //건물명 중복 모달창
+  const [sameFloorModal, setSameFloorModal] = useState(false); //층 중복 모달창
+  const [floorToUpdate, setFloorToUpdate] = useState<number | null>(null); //지우려는 층 index
 
   useEffect(() => {
     if (data && data.information) {
@@ -121,6 +130,31 @@ const Page = () => {
     }
   };
 
+  //호실 생성
+  const handleRoomCreate = async (floor: number, startRoomNumber: number, endRoomNumber: number, index: number) => {
+    if (buildingInfo.floorAndRoomNumberRes.find((item) => item.floor === floor)) {
+      setFloorToUpdate(index);
+      setSameFloorModal(true);
+    } else {
+      try {
+        const response = await postRoom(buildingId, {
+          floor,
+          startRoomNumber,
+          endRoomNumber,
+        });
+        if (response.check) {
+          setNewFloor((prev) => prev.filter((_, i) => i !== index));
+          await mutate();
+        } else {
+          console.log('실패');
+        }
+      } catch (error) {
+        console.error(error);
+        console.log('오류가 발생했습니다.');
+      }
+    }
+  };
+
   //호실 삭제
   const deleteDetailRoom = async (floor: number) => {
     try {
@@ -145,12 +179,12 @@ const Page = () => {
           await mutate();
         } else {
           //동일한 이름의 건물명이 있는 경우
-          setSameModal(true);
+          setSameDormModal(true);
         }
       } catch (error) {
         console.error(error);
         console.log('오류가 발생했습니다.');
-        setSameModal(true); //추후 삭제 필요
+        setSameDormModal(true); //추후 삭제 필요
       }
   };
 
@@ -211,6 +245,7 @@ const Page = () => {
                   deleteDetailRoom={() => deleteDetailRoom(data.floor)} //해당 층 삭제
                   onClick={() => setSelectedFloor(data)} //해당 층 선택
                   readOnly={true}
+                  handleDuplicate={() => {}} //복제 버튼 클릭
                 />
               ))}
               {newFloor.map((data, index) => {
@@ -237,6 +272,9 @@ const Page = () => {
                       setNewFloor((prev) => prev.filter((_, i) => i !== index));
                     }} //newFloor에서 해당층 삭제
                     readOnly={false}
+                    handleCreate={() => {
+                      handleRoomCreate(data.floor, data.startRoomNumber, data.endRoomNumber, index);
+                    }} //확인, 추가 버튼 클릭
                   />
                 );
               })}
@@ -331,13 +369,34 @@ const Page = () => {
           <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} />
         </div>
       </div>
-      {sameModal && (
-        <BackDrop isOpen={sameModal}>
+      {sameDormModal && (
+        <BackDrop isOpen={sameDormModal}>
           <AlertPrompt
             variant='blue'
             label={'이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'}
             onConfirm={() => {
-              setSameModal(false);
+              setSameDormModal(false);
+            }}
+          />
+        </BackDrop>
+      )}
+      {sameFloorModal && (
+        <BackDrop isOpen={sameFloorModal}>
+          <AlertPrompt
+            variant='blue'
+            label={'중복된 층 수의 입력은 불가능합니다.'}
+            onConfirm={() => {
+              if (floorToUpdate !== null) {
+                setNewFloor((prev) => {
+                  const updatedNewFloor = [...prev];
+                  updatedNewFloor[floorToUpdate] = {
+                    ...updatedNewFloor[floorToUpdate],
+                    floor: parseInt(''),
+                  };
+                  return updatedNewFloor;
+                });
+              }
+              setSameFloorModal(false);
             }}
           />
         </BackDrop>
