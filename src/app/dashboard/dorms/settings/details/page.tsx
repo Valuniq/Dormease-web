@@ -1,6 +1,6 @@
 'use client';
 
-import { postDormSettingImage, useDormDetail, useDormDetailRoom } from '@/apis/setting';
+import { deleteRoom, postDormSettingImage, putDormitoryName, useDormDetail, useDormDetailRoom } from '@/apis/setting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import AddRoomBtn from '@/components/atoms/AllBtn/AddRoomBtn/AddRoomBtn';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
@@ -32,6 +32,7 @@ const Page = () => {
     imageUrl: null,
     floorAndRoomNumberRes: [],
   }); //건물 상세 조회
+  const [buildingName, setBuildingName] = useState('');
   const [newFloor, setNewFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //추가한 층
   const [selectedFloor, setSelectedFloor] = useState<DormSettingDetailResponseInformationFloor>({
     floor: 2,
@@ -48,6 +49,7 @@ const Page = () => {
   useEffect(() => {
     if (data && data.information) {
       setBuildingInfo(data.information);
+      setBuildingName(data.information.name);
     }
   }, [data]);
 
@@ -88,11 +90,11 @@ const Page = () => {
     }
   };
 
+  //건물 이미지 변경
   const onAddPicture = () => {
     inputFileRef.current?.click();
   };
 
-  //건물 이미지 변경
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
       console.log('파일이 선택되지 않았습니다.');
@@ -113,17 +115,35 @@ const Page = () => {
 
   //호실 삭제
   const deleteDetailRoom = async (floor: number) => {
-    // try {
-    //   const response = await deleteRoom(buildingId, floor);
-    //   if (response.check) {
-    //     await mutate();
-    //   } else {
-    //     console.log('실패');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   console.log('오류가 발생했습니다.');
-    // }
+    try {
+      const response = await deleteRoom(buildingId, floor);
+      if (response.check) {
+        await mutate();
+      } else {
+        console.log('실패');
+      }
+    } catch (error) {
+      console.error(error);
+      console.log('오류가 발생했습니다.');
+    }
+  };
+
+  //건물명 수정
+  const handleDormitoryName = async () => {
+    if (buildingInfo.name !== buildingName)
+      try {
+        const response = await putDormitoryName(buildingId, buildingName);
+        if (response.check) {
+          await mutate();
+        } else {
+          //동일한 이름의 건물명이 있는 경우
+          setSameModal(true);
+        }
+      } catch (error) {
+        console.error(error);
+        console.log('오류가 발생했습니다.');
+        setSameModal(true); //추후 삭제 필요
+      }
   };
 
   return (
@@ -131,13 +151,9 @@ const Page = () => {
       <div className='flex justify-center w-full mb-30'>
         <BuildingNameInputText
           placeholder='건물명'
-          input={buildingInfo.name}
-          setInput={(newName: string) => {
-            setBuildingInfo((prev) => ({
-              ...prev,
-              name: newName,
-            }));
-          }}
+          input={buildingName}
+          setInput={setBuildingName}
+          handleDormitoryName={handleDormitoryName}
         />
       </div>
       <div className='flex'>
@@ -300,7 +316,7 @@ const Page = () => {
         <BackDrop isOpen={sameModal}>
           <AlertPrompt
             variant='blue'
-            label='이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'
+            label={'이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'}
             onConfirm={() => {
               setSameModal(false);
             }}

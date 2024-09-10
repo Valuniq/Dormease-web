@@ -89,3 +89,17 @@ export const deleteRoom = async (dormitoryId: number, floor: number) => {
   });
   return res;
 };
+
+//건물명 수정
+export const putDormitoryName = async (dormitoryId: number, name: string) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/name`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      name: name,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};

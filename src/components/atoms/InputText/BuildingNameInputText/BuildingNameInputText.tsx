@@ -5,10 +5,14 @@ type Props = {
   placeholder: string;
   input: string;
   setInput: (input: string) => void;
+  handleDormitoryName: () => void;
 };
 
-const BuildingNameInputText = ({ placeholder, input, setInput }: Props) => {
+const BuildingNameInputText = ({ placeholder, input, setInput, handleDormitoryName }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 10) {
+      e.target.value = e.target.value.slice(0, 10);
+    }
     setInput(e.target.value);
   };
 
@@ -20,6 +24,12 @@ const BuildingNameInputText = ({ placeholder, input, setInput }: Props) => {
         type='text'
         value={input}
         onChange={handleChange}
+        onBlur={handleDormitoryName}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleDormitoryName();
+          }
+        }}
       />
       <Image src={BuildingTextIcon} width={25} height={25} className='object-contain mb-5' alt='BuildingTextIcon' />
     </div>
