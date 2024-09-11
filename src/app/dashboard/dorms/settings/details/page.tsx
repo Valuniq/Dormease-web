@@ -44,7 +44,7 @@ const Page = () => {
   const [newFloor, setNewFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //추가한 층
   const [selectedFloor, setSelectedFloor] = useState(1); //선택된 층
   const [selectFilter, setSelectFilter] = useState(0); //선택된 필터
-  const [completedFilter, setCompletedFilter] = useState<Number[]>([]); //선택 완료된 필터
+  const [completedFilter, setCompletedFilter] = useState<number[]>([]); //선택 완료된 필터
   const [checkedItems, setCheckedItems] = useState<number[]>([]); //체크한 roomId
   const { data: roomData, error: roomError, mutate: roomMutate } = useDormDetailRoom(buildingId, selectedFloor);
   const [roomInfo, setRoomInfo] = useState<DormSettingDetailRoomResponseInformation[]>(); //호실 조회
@@ -146,6 +146,7 @@ const Page = () => {
         });
         if (response.check) {
           setNewFloor((prev) => prev.filter((_, i) => i !== index));
+          setSelectedFloor(floor);
           await mutate();
         } else {
           console.log('실패');
@@ -469,7 +470,12 @@ const Page = () => {
           <SettingList
             list={roomInfo ? roomInfo : []}
             checkedItems={checkedItems}
-            handleCheckboxChange={handleCheckboxChange}
+            handleCheckboxChange={(id) => {
+              if (selectFilter !== 0) {
+                setEditFilter(true);
+                handleCheckboxChange(id);
+              }
+            }}
           />
         </div>
       </div>
