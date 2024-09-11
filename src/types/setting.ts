@@ -30,9 +30,9 @@ export type DormSettingDetailResponseInformation = {
 };
 
 export type DormSettingDetailResponseInformationFloor = {
-  floor: number;
-  startRoomNumber: number;
-  endRoomNumber: number;
+  floor: number | string;
+  startRoomNumber: number | string;
+  endRoomNumber: number | string;
 };
 
 export type DormSettingDetailRoomResponse = {

@@ -42,6 +42,8 @@ const Page = () => {
   }); //건물 상세 조회
   const [buildingName, setBuildingName] = useState('');
   const [newFloor, setNewFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //추가한 층
+  const [newSaveFloor, setNewSaveFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //새롭게 서버에 추가된 층
+  const [completedIsActivated, setCompletedIsActivated] = useState<number[]>([]); //새롭게 서버에 추가된 층 중에 비활성화 필터 선택 완료 층
   const [selectedFloor, setSelectedFloor] = useState(1); //선택된 층
   const [selectFilter, setSelectFilter] = useState(0); //선택된 필터
   const [completedFilter, setCompletedFilter] = useState<number[]>([]); //선택 완료된 필터
@@ -59,20 +61,49 @@ const Page = () => {
 
   useEffect(() => {
     setEditState(true);
+  }, [setEditState]);
+
+  useEffect(() => {
+    //빌딩 정보 업데이트
     if (data && data.information) {
       setBuildingInfo(data.information);
       setBuildingName(data.information.name);
       if (data.information.floorAndRoomNumberRes.length === 0) {
-        setNewFloor([{ floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') }]);
+        setNewFloor([{ floor: '', startRoomNumber: 1, endRoomNumber: '' }]);
       }
     }
   }, [data]);
 
   useEffect(() => {
     if (roomData && roomData.information) {
+      //호실 리스트 업데이트
       setRoomInfo(roomData.information);
+
+      //해당 층에 대해 필터 완료 여부 업데이트
+      const newFilter: number[] = [];
+
+      //남자/여자 필터 완료 여부
+      if (!roomData.information?.some((room) => room.gender === 'EMPTY')) {
+        newFilter.push(1);
+      }
+      //호실 타입 필터 완료 여부
+      if (!roomData.information?.some((room) => room.roomSize === null)) {
+        newFilter.push(2);
+      }
+      //열쇠 수령 여부 필터 완료 여부
+      if (!roomData.information?.some((room) => room.hasKey === null)) {
+        newFilter.push(3);
+      }
+      //비활성화 필터 완료 여부
+      const isActivatedConditionMet = newSaveFloor.some((item) => item.floor === selectedFloor)
+        ? completedIsActivated.includes(selectedFloor)
+        : !roomData.information.some((room) => room.isActivated === null);
+
+      if (isActivatedConditionMet) newFilter.push(4);
+
+      setCompletedFilter(newFilter);
     }
-  }, [roomData]);
+  }, [completedIsActivated, newSaveFloor, roomData, selectedFloor]);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) =>
@@ -91,7 +122,7 @@ const Page = () => {
         const updatedNewFloor = [...prev];
         updatedNewFloor[index] = {
           ...updatedNewFloor[index],
-          [field]: parseInt(value, 10) || '',
+          [field]: value,
         };
         return updatedNewFloor;
       });
@@ -100,7 +131,7 @@ const Page = () => {
         const updatedFloorAndRoomNumberRes = [...prev.floorAndRoomNumberRes];
         updatedFloorAndRoomNumberRes[index] = {
           ...updatedFloorAndRoomNumberRes[index],
-          [field]: parseInt(value, 10) || '',
+          [field]: value,
         };
         return {
           ...prev,
@@ -147,6 +178,14 @@ const Page = () => {
         });
         if (response.check) {
           setNewFloor((prev) => prev.filter((_, i) => i !== index));
+          setNewSaveFloor([
+            ...newSaveFloor,
+            {
+              floor,
+              startRoomNumber,
+              endRoomNumber,
+            },
+          ]);
           setSelectedFloor(floor);
           await mutate();
         } else {
@@ -164,6 +203,8 @@ const Page = () => {
     try {
       const response = await deleteRoom(buildingId, floor);
       if (response.check) {
+        setNewSaveFloor((prev) => prev.filter((item) => item.floor !== floor));
+        setCompletedIsActivated((prev) => prev.filter((item) => item !== floor));
         await mutate();
       } else {
         console.log('실패');
@@ -220,45 +261,50 @@ const Page = () => {
 
   //필터 저장
   const handleRoomFilter = () => {
-    if (
-      (selectFilter === 1 && roomInfo?.some((room) => room.gender === 'EMPTY')) ||
-      (selectFilter === 2 && roomInfo?.some((room) => room.roomSize === null)) ||
-      (selectFilter === 3 && roomInfo?.some((room) => room.hasKey === null))
-    ) {
-      setIsFilterModal(true);
+    //서버에 필터 저장
+    let filter: keyof DormSettingDetailRoomResponseInformation;
+
+    if (selectFilter === 1) {
+      filter = 'gender';
+    } else if (selectFilter === 2) {
+      filter = 'roomSize';
+    } else if (selectFilter === 3) {
+      filter = 'hasKey';
+    } else if (selectFilter === 4) {
+      filter = 'isActivated';
     } else {
-      //서버에 필터 저장
-      let filter: keyof DormSettingDetailRoomResponseInformation;
-
-      if (selectFilter === 1) {
-        filter = 'gender';
-      } else if (selectFilter === 2) {
-        filter = 'roomSize';
-      } else if (selectFilter === 3) {
-        filter = 'hasKey';
-      } else if (selectFilter === 4) {
-        filter = 'isActivated';
-      } else {
-        return;
-      }
-      const filteredData = roomInfo
-        ?.map((room) => {
-          const dataValue = room[filter];
-          return {
-            id: room.id,
-            data: dataValue,
-          };
-        })
-        .filter((room) => room.data !== undefined);
-
-      console.log(filter);
-      console.log(filteredData);
-
-      setCompletedFilter([...completedFilter, selectFilter]);
-      setSelectFilter(0);
-      setCheckedItems([]);
-      setEditFilter(false);
+      return;
     }
+    const filteredData = roomInfo
+      ?.map((room) => {
+        const dataValue = room[filter];
+        return {
+          id: room.id,
+          data: dataValue,
+        };
+      })
+      .filter((room) => room.data !== undefined);
+
+    console.log(filter);
+    console.log(filteredData);
+
+    setCompletedFilter((prev) => {
+      if (!prev.includes(selectFilter)) {
+        return [...prev, selectFilter];
+      }
+      return prev;
+    });
+    if (selectFilter === 4) {
+      setCompletedIsActivated((prev) => {
+        if (!prev.includes(selectedFloor)) {
+          return [...prev, selectedFloor];
+        }
+        return prev;
+      });
+    }
+    setSelectFilter(0);
+    setCheckedItems([]);
+    setEditFilter(false);
   };
 
   return (
@@ -319,14 +365,13 @@ const Page = () => {
                         isOne={index === 0} //첫번째인지
                         pressOkBtn={true} //복제 버튼
                         hovered={index === 0} //hover가 가능한지
-                        deleteDetailRoom={() => deleteDetailRoom(data.floor)} //해당 층 삭제
+                        deleteDetailRoom={() => deleteDetailRoom(Number(data.floor))} //해당 층 삭제
                         onClick={() => {
                           if (editFilter) {
                             setIsFilterModal(true);
                           } else {
-                            setCompletedFilter([]);
                             setSelectFilter(0);
-                            setSelectedFloor(data.floor);
+                            setSelectedFloor(Number(data.floor));
                           }
                         }} //해당 층 선택
                         readOnly={true}
@@ -357,7 +402,12 @@ const Page = () => {
                           }} //newFloor에서 해당층 삭제
                           readOnly={false}
                           handleCreate={() => {
-                            handleRoomCreate(data.floor, data.startRoomNumber, data.endRoomNumber, index);
+                            handleRoomCreate(
+                              Number(data.floor),
+                              Number(data.startRoomNumber),
+                              Number(data.endRoomNumber),
+                              index,
+                            );
                           }} //확인, 추가 버튼 클릭
                         />
                       );
@@ -368,7 +418,7 @@ const Page = () => {
                     <div
                       className={`flex justify-between items-center pl-67 pr-72 rounded-5 w-331 h-38 cursor-pointer ${selectedFloor === data.floor && 'bg-gray-grayscale10'}`}
                       key={index}
-                      onClick={() => setSelectedFloor(data.floor)}
+                      onClick={() => setSelectedFloor(Number(data.floor))}
                     >
                       <span className='H4 text-gray-grayscale50'>{data.floor}층</span>
                       <span className='H4 text-gray-grayscale50'>
@@ -381,9 +431,7 @@ const Page = () => {
             </div>
             {isEdit && (
               <AddRoomBtn
-                onClick={() =>
-                  setNewFloor([...newFloor, { floor: parseInt(''), startRoomNumber: 1, endRoomNumber: parseInt('') }])
-                }
+                onClick={() => setNewFloor([...newFloor, { floor: '', startRoomNumber: 1, endRoomNumber: '' }])}
               />
             )}
           </div>
@@ -521,7 +569,18 @@ const Page = () => {
         </div>
         <div className='flex-1 flex justify-end'>
           {selectFilter ? (
-            <BtnMiniVariant label='저장' disabled={false} variant='blue' selected={false} onClick={handleRoomFilter} />
+            <BtnMiniVariant
+              label='저장'
+              disabled={
+                (selectFilter === 1 && roomInfo?.some((room) => room.gender === 'EMPTY')) ||
+                (selectFilter === 2 && roomInfo?.some((room) => room.roomSize === null)) ||
+                (selectFilter === 3 && roomInfo?.some((room) => room.hasKey === null)) ||
+                false
+              }
+              variant='blue'
+              selected={false}
+              onClick={handleRoomFilter}
+            />
           ) : (
             <></>
           )}
@@ -560,7 +619,7 @@ const Page = () => {
                   const updatedNewFloor = [...prev];
                   updatedNewFloor[floorToUpdate] = {
                     ...updatedNewFloor[floorToUpdate],
-                    floor: parseInt(''),
+                    floor: '',
                   };
                   return updatedNewFloor;
                 });
