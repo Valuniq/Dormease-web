@@ -24,6 +24,7 @@ import { settingIdState } from '@/recoil/setting';
 import {
   DormSettingDetailResponseInformation,
   DormSettingDetailResponseInformationFloor,
+  DormSettingDetailResponseInformationFloorDuplicate,
   DormSettingDetailRoomResponseInformation,
 } from '@/types/setting';
 import React, { useEffect, useRef, useState } from 'react';
@@ -43,6 +44,7 @@ const Page = () => {
   }); //건물 상세 조회
   const [buildingName, setBuildingName] = useState('');
   const [newFloor, setNewFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //추가한 층
+  const [newDuplicateFloor, setNewDuplicateFloor] = useState<DormSettingDetailResponseInformationFloorDuplicate[]>([]); //추가한 층
   const [newSaveFloor, setNewSaveFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //새롭게 서버에 추가된 층
   const [completedIsActivated, setCompletedIsActivated] = useState<number[]>([]); //새롭게 서버에 추가된 층 중에 비활성화 필터 선택 완료 층
   const [selectedFloor, setSelectedFloor] = useState(1); //선택된 층
@@ -54,7 +56,10 @@ const Page = () => {
   const [isSameDormModal, setIsSameDormModal] = useState(false); //건물명 중복 모달창
   const [isNullDormNameModal, setIsNullDormNameModal] = useState(false); //건물명 null 모달창
   const [isSameFloorModal, setIsSameFloorModal] = useState(false); //층 중복 모달창
-  const [floorToUpdate, setFloorToUpdate] = useState<number | null>(null); //지우려는 층 input index
+  const [floorToUpdate, setFloorToUpdate] = useState({
+    index: 0,
+    isDuplicate: false,
+  }); //지울 층 정보
   const [editFilter, setEditFilter] = useState(false); //필터 수정 중
   const [isFilterModal, setIsFilterModal] = useState(false); //필터 수정 중 모달창
   const setEditState = useSetRecoilState(editState);
@@ -119,10 +124,10 @@ const Page = () => {
     index: number,
     field: 'floor' | 'startRoomNumber' | 'endRoomNumber',
     value: string,
-    isNew: boolean,
+    isDuplicate: boolean,
   ) => {
-    if (isNew) {
-      setNewFloor((prev) => {
+    if (isDuplicate) {
+      setNewDuplicateFloor((prev) => {
         const updatedNewFloor = [...prev];
         updatedNewFloor[index] = {
           ...updatedNewFloor[index],
@@ -131,16 +136,13 @@ const Page = () => {
         return updatedNewFloor;
       });
     } else {
-      setBuildingInfo((prev) => {
-        const updatedFloorAndRoomNumberRes = [...prev.floorAndRoomNumberRes];
-        updatedFloorAndRoomNumberRes[index] = {
-          ...updatedFloorAndRoomNumberRes[index],
+      setNewFloor((prev) => {
+        const updatedNewFloor = [...prev];
+        updatedNewFloor[index] = {
+          ...updatedNewFloor[index],
           [field]: value,
         };
-        return {
-          ...prev,
-          floorAndRoomNumberRes: updatedFloorAndRoomNumberRes,
-        };
+        return updatedNewFloor;
       });
     }
   };
@@ -169,35 +171,67 @@ const Page = () => {
   };
 
   //호실 생성
-  const handleRoomCreate = async (floor: number, startRoomNumber: number, endRoomNumber: number, index: number) => {
+  const handleRoomCreate = async (
+    floor: number,
+    startRoomNumber: number,
+    endRoomNumber: number,
+    index: number,
+    duplicateFloor?: number,
+  ) => {
     if (buildingInfo.floorAndRoomNumberRes.find((item) => item.floor === floor)) {
-      setFloorToUpdate(index);
+      setFloorToUpdate({
+        index,
+        isDuplicate: duplicateFloor !== undefined,
+      });
       setIsSameFloorModal(true);
     } else {
-      try {
-        const response = await postRoom(buildingId, {
-          floor,
-          startRoomNumber,
-          endRoomNumber,
-        });
-        if (response.check) {
-          setNewFloor((prev) => prev.filter((_, i) => i !== index));
-          setNewSaveFloor([
-            ...newSaveFloor,
-            {
-              floor,
-              startRoomNumber,
-              endRoomNumber,
-            },
-          ]);
-          setSelectedFloor(floor);
-          await mutate();
-        } else {
-          console.log('실패');
+      if (duplicateFloor !== undefined) {
+        //층 복제
+        console.log(duplicateFloor);
+        try {
+          const response = await postRoom(buildingId, {
+            floor,
+            startRoomNumber,
+            endRoomNumber,
+          });
+          if (response.check) {
+            setNewDuplicateFloor((prev) => prev.filter((_, i) => i !== index));
+            setSelectedFloor(floor);
+            await mutate();
+          } else {
+            console.log('실패');
+          }
+        } catch (error) {
+          console.error(error);
+          console.log('오류가 발생했습니다.');
         }
-      } catch (error) {
-        console.error(error);
-        console.log('오류가 발생했습니다.');
+      } else {
+        //층 새로 만들기
+        try {
+          const response = await postRoom(buildingId, {
+            floor,
+            startRoomNumber,
+            endRoomNumber,
+          });
+          if (response.check) {
+            setNewFloor((prev) => prev.filter((_, i) => i !== index));
+            setNewSaveFloor([
+              ...newSaveFloor,
+              {
+                floor,
+                startRoomNumber,
+                endRoomNumber,
+              },
+            ]);
+            setSelectedFloor(floor);
+            await mutate();
+          } else {
+            console.log('실패');
+          }
+        } catch (error) {
+          console.error(error);
+          console.log('오류가 발생했습니다.');
+        }
       }
     }
   };
@@ -385,11 +419,21 @@ const Page = () => {
                             setSelectedFloor(Number(data.floor));
                           }
                         }} //해당 층 선택
-                        readOnly={true}
-                        handleDuplicate={() => {}} //복제 버튼 클릭
+                        readOnly={[true, true, true]}
+                        handleDuplicate={() =>
+                          setNewDuplicateFloor([
+                            ...newDuplicateFloor,
+                            {
+                              duplicateFloor: Number(data.floor),
+                              floor: '',
+                              startRoomNumber: Number(data.startRoomNumber),
+                              endRoomNumber: Number(data.endRoomNumber),
+                            },
+                          ])
+                        } //복제 버튼 클릭
                       />
                     ))}
-                    {newFloor.map((data, index) => {
+                    {newDuplicateFloor.map((data, index) => {
                       return (
                         <RoomBtn
                           key={index}
@@ -405,13 +449,48 @@ const Page = () => {
                           setEndInput={(value) => {
                             handleSetFloorInput(index, 'endRoomNumber', value, true);
                           }}
+                          isOne={false}
+                          pressOkBtn={false} //확인, 추가 버튼
+                          hovered={true}
+                          deleteDetailRoom={() => {
+                            setNewDuplicateFloor((prev) => prev.filter((_, i) => i !== index));
+                          }} //newDuplicateFloor에서 해당층 삭제
+                          readOnly={[false, true, true]}
+                          handleCreate={() => {
+                            handleRoomCreate(
+                              Number(data.floor),
+                              Number(data.startRoomNumber),
+                              Number(data.endRoomNumber),
+                              index,
+                              Number(data.duplicateFloor),
+                            );
+                          }} //확인, 추가 버튼 클릭
+                        />
+                      );
+                    })}
+                    {newFloor.map((data, index) => {
+                      return (
+                        <RoomBtn
+                          key={index}
+                          floorInput={data.floor?.toString() || ''}
+                          setFloorInput={(value) => {
+                            handleSetFloorInput(index, 'floor', value, false);
+                          }}
+                          startInput={data.startRoomNumber?.toString() || ''}
+                          setStartInput={(value) => {
+                            handleSetFloorInput(index, 'startRoomNumber', value, false);
+                          }}
+                          endInput={data.endRoomNumber?.toString() || ''}
+                          setEndInput={(value) => {
+                            handleSetFloorInput(index, 'endRoomNumber', value, false);
+                          }}
                           isOne={buildingInfo.floorAndRoomNumberRes.length === 0 ? index === 0 : false}
-                          pressOkBtn={false} //확인 버튼
+                          pressOkBtn={false} //확인, 추가 버튼
                           hovered={buildingInfo.floorAndRoomNumberRes.length === 0 ? index !== 0 : true}
                           deleteDetailRoom={() => {
                             setNewFloor((prev) => prev.filter((_, i) => i !== index));
                           }} //newFloor에서 해당층 삭제
-                          readOnly={false}
+                          readOnly={[false, false, false]}
                           handleCreate={() => {
                             handleRoomCreate(
                               Number(data.floor),
@@ -625,16 +704,26 @@ const Page = () => {
             variant='blue'
             label={'중복된 층 수의 입력은 불가능합니다.'}
             onConfirm={() => {
-              if (floorToUpdate !== null) {
+              if (floorToUpdate.isDuplicate) {
+                setNewDuplicateFloor((prev) => {
+                  const updatedNewDuplicateFloor = [...prev];
+                  updatedNewDuplicateFloor[floorToUpdate.index] = {
+                    ...updatedNewDuplicateFloor[floorToUpdate.index],
+                    floor: '',
+                  };
+                  return updatedNewDuplicateFloor;
+                });
+              } else {
                 setNewFloor((prev) => {
                   const updatedNewFloor = [...prev];
-                  updatedNewFloor[floorToUpdate] = {
-                    ...updatedNewFloor[floorToUpdate],
+                  updatedNewFloor[floorToUpdate.index] = {
+                    ...updatedNewFloor[floorToUpdate.index],
                     floor: '',
                   };
                   return updatedNewFloor;
                 });
               }
+
               setIsSameFloorModal(false);
             }}
           />

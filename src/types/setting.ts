@@ -35,6 +35,13 @@ export type DormSettingDetailResponseInformationFloor = {
   endRoomNumber: number | string;
 };
 
+export type DormSettingDetailResponseInformationFloorDuplicate = {
+  duplicateFloor: number;
+  floor: number | string;
+  startRoomNumber: number;
+  endRoomNumber: number;
+};
+
 export type DormSettingDetailRoomResponse = {
   check: boolean;
   information: DormSettingDetailRoomResponseInformation[];

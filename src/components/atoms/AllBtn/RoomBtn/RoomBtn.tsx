@@ -15,7 +15,7 @@ type Props = {
   isOne: boolean;
   pressOkBtn: boolean;
   deleteDetailRoom: () => void;
-  readOnly: boolean;
+  readOnly: boolean[];
   handleCreate?: () => void;
   handleDuplicate?: () => void;
 };
@@ -70,7 +70,7 @@ const RoomBtn = ({
           setInput={setFloorInput}
           placeholder='층'
           type='textBox7'
-          readOnly={readOnly}
+          readOnly={readOnly[0]}
           maxLength={2}
         />
         <h5 className='Caption2 text-gray-grayscale50 ml-4 mr-17'>층</h5>
@@ -79,7 +79,7 @@ const RoomBtn = ({
           setInput={setStartInput}
           placeholder='시작'
           type='textBox7'
-          readOnly={readOnly}
+          readOnly={readOnly[1]}
           maxLength={2}
         />
         <h5 className='Caption2 text-gray-grayscale50 mx-6'>-</h5>
@@ -88,7 +88,7 @@ const RoomBtn = ({
           setInput={setEndInput}
           placeholder='끝'
           type='textBox7'
-          readOnly={readOnly}
+          readOnly={readOnly[2]}
           maxLength={2}
         />
         <div className='w-22'></div>
