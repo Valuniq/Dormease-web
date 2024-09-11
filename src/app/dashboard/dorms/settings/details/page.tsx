@@ -29,6 +29,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
 const Page = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -53,11 +54,14 @@ const Page = () => {
   const [isSameDormModal, setIsSameDormModal] = useState(false); //건물명 중복 모달창
   const [isNullDormNameModal, setIsNullDormNameModal] = useState(false); //건물명 null 모달창
   const [isSameFloorModal, setIsSameFloorModal] = useState(false); //층 중복 모달창
-  const [floorToUpdate, setFloorToUpdate] = useState<number | null>(null); //지우려는 층 index
+  const [floorToUpdate, setFloorToUpdate] = useState<number | null>(null); //지우려는 층 input index
   const [editFilter, setEditFilter] = useState(false); //필터 수정 중
   const [isFilterModal, setIsFilterModal] = useState(false); //필터 수정 중 모달창
   const setEditState = useSetRecoilState(editState);
   const [isEdit, setIsEdit] = useState(true); //현재 페이지가 edit 상태인지
+  const [alreadyModal, setAlreadyModal] = useState(false); //층 삭제 시 배정된 학생이 있는 경우 모달창
+  const [deleteModal, setDeleteModal] = useState(false); //층 삭제 시 확인 모달창
+  const [deleteSelectedFloor, setDeleteSelectedFloor] = useState<number | null>(null); //지우려는 층 floor
 
   useEffect(() => {
     setEditState(true);
@@ -206,8 +210,11 @@ const Page = () => {
         setNewSaveFloor((prev) => prev.filter((item) => item.floor !== floor));
         setCompletedIsActivated((prev) => prev.filter((item) => item !== floor));
         await mutate();
+        setDeleteModal(false);
       } else {
         console.log('실패');
+        setDeleteModal(false);
+        setAlreadyModal(true);
       }
     } catch (error) {
       console.error(error);
@@ -366,7 +373,10 @@ const Page = () => {
                         isOne={index === 0} //첫번째인지
                         pressOkBtn={true} //복제 버튼
                         hovered={index === 0} //hover가 가능한지
-                        deleteDetailRoom={() => deleteDetailRoom(Number(data.floor))} //해당 층 삭제
+                        deleteDetailRoom={() => {
+                          setDeleteModal(true);
+                          setDeleteSelectedFloor(Number(data.floor));
+                        }} //해당 층 삭제
                         onClick={() => {
                           if (editFilter) {
                             setIsFilterModal(true);
@@ -637,6 +647,35 @@ const Page = () => {
             label={'일부 호실이 아직 설정되지 않았습니다.'}
             onConfirm={() => {
               setIsFilterModal(false);
+            }}
+          />
+        </BackDrop>
+      )}
+      {deleteModal && (
+        <BackDrop isOpen={deleteModal}>
+          <ConfirmPrompt
+            variant='red'
+            label='층을 삭제하면 적용된 필터도 함께 삭제됩니다.\n층을 삭제하시겠습니까?'
+            onCancel={() => {
+              setDeleteModal(false);
+              setDeleteSelectedFloor(null);
+            }}
+            onConfirm={() => {
+              if (deleteSelectedFloor !== null) {
+                deleteDetailRoom(deleteSelectedFloor);
+              }
+            }}
+          />
+        </BackDrop>
+      )}
+      {alreadyModal && (
+        <BackDrop isOpen={alreadyModal}>
+          <AlertPrompt
+            variant='red'
+            label='해당 층에 배정된 학생이 있습니다.'
+            onConfirm={() => {
+              setAlreadyModal(false);
+              setDeleteSelectedFloor(null);
             }}
           />
         </BackDrop>
