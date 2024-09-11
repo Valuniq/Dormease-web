@@ -32,6 +32,7 @@ const BuildingNameInputText = ({ placeholder, input, setInput, handleDormitoryNa
           }
         }}
         readOnly={readOnly}
+        spellCheck={false}
       />
       {!readOnly && (
         <Image src={BuildingTextIcon} width={25} height={25} className='object-contain mb-5' alt='BuildingTextIcon' />

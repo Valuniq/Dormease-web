@@ -217,7 +217,9 @@ const Page = () => {
 
   //건물명 수정
   const handleDormitoryName = async () => {
-    if (buildingInfo.name !== buildingName)
+    if (buildingName === '') {
+      setIsNullDormNameModal(true);
+    } else if (buildingInfo.name !== buildingName)
       try {
         const response = await putDormitoryName(buildingId, buildingName);
         if (response.check) {
@@ -229,7 +231,6 @@ const Page = () => {
       } catch (error) {
         console.error(error);
         console.log('오류가 발생했습니다.');
-        setIsNullDormNameModal(true);
       }
   };
 
