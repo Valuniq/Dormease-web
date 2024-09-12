@@ -26,11 +26,17 @@ const Page = () => {
   const handleSearch = () => {
     if (input.trim() === '') {
       setIsSearch(false);
-    } else if (input !== searchKeyword) {
+    } else if (input !== searchKeyword || !isSearch) {
       setSearchKeyword(input);
       setIsSearch(true);
     }
   };
+
+  useEffect(() => {
+    if (input.trim() === '') {
+      setIsSearch(false);
+    }
+  }, [input]);
 
   return (
     <div className='flex flex-col w-[1145px] relative'>
