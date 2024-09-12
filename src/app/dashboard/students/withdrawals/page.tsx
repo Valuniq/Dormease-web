@@ -1,6 +1,6 @@
 'use client';
 
-import { useWithdrawalList, useWithdrawalSearch } from '@/apis/Withdrawal';
+import { useWithdrawalList, useWithdrawalSearch } from '@/apis/withdrawal';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import WithdrawalList from '@/components/templates/Withdrawal/WithdrawalList';
 import React, { useEffect, useState } from 'react';
