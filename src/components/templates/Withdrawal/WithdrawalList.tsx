@@ -31,44 +31,50 @@ const WithdrawalsList = ({ list, isLoading, isEndReached, setSize }: Props) => {
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      {list && list.length > 0 ? (
-        <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
-          <tr className='h-15' />
-          {list.map((data, index) => {
-            if (index === list.length - 1) {
-              return (
-                <WithdrawalListBody
-                  key={index}
-                  id={data.id}
-                  index={index}
-                  name={data.name}
-                  studentNumber={data.studentNumber}
-                  bonusPoint={data.bonusPoint}
-                  minusPoint={data.minusPoint}
-                  deletedAt={data.deletedAt}
-                  ref={lastElementRef}
-                />
-              );
-            } else {
-              return (
-                <WithdrawalListBody
-                  key={index}
-                  id={data.id}
-                  index={index}
-                  name={data.name}
-                  studentNumber={data.studentNumber}
-                  bonusPoint={data.bonusPoint}
-                  minusPoint={data.minusPoint}
-                  deletedAt={data.deletedAt}
-                />
-              );
-            }
-          })}
-        </tbody>
+      {isLoading ? (
+        <tbody></tbody>
       ) : (
-        <tbody>
-          <NoneList colspan={6} />
-        </tbody>
+        <>
+          {list && list.length > 0 ? (
+            <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
+              <tr className='h-15' />
+              {list.map((data, index) => {
+                if (index === list.length - 1) {
+                  return (
+                    <WithdrawalListBody
+                      key={index}
+                      id={data.id}
+                      index={index}
+                      name={data.name}
+                      studentNumber={data.studentNumber}
+                      bonusPoint={data.bonusPoint}
+                      minusPoint={data.minusPoint}
+                      deletedAt={data.deletedAt}
+                      ref={lastElementRef}
+                    />
+                  );
+                } else {
+                  return (
+                    <WithdrawalListBody
+                      key={index}
+                      id={data.id}
+                      index={index}
+                      name={data.name}
+                      studentNumber={data.studentNumber}
+                      bonusPoint={data.bonusPoint}
+                      minusPoint={data.minusPoint}
+                      deletedAt={data.deletedAt}
+                    />
+                  );
+                }
+              })}
+            </tbody>
+          ) : (
+            <tbody>
+              <NoneList colspan={6} />
+            </tbody>
+          )}
+        </>
       )}
     </table>
   );
