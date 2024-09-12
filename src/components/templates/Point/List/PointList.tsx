@@ -3,8 +3,12 @@ import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import React, { Fragment, useEffect, useState } from 'react';
 import PointManagementListBody from './PointListBody';
 import { PointMemberResponseDataList } from '@/types/point';
-import { selectedMemberIdForPointState, selectedPointsForPenaltyState } from '@/recoil/point';
-import { useRecoilState } from 'recoil';
+import {
+  pointManagementModalState,
+  selectedMemberIdForPointState,
+  selectedPointsForPenaltyState,
+} from '@/recoil/point';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import usePointManagementModal from '@/hooks/usePointManagmentModal';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import NoneList from '@/components/organisms/NoneList/NoneList';
@@ -29,6 +33,7 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
   const [isAllChecked, setIsAllChecked] = useState(false);
   const { isOpened, handleOpenModal } = usePointManagementModal();
   const [selectedResidentId, setSelectedResidentId] = useState<number | null>(null); // 클릭된 사생 ID
+  const setPointManagementModal = useSetRecoilState(pointManagementModalState);
 
   // 전체 선택/해제 체크박스 클릭 시 호출되는 함수
   const handleAllCheck = () => {
@@ -72,27 +77,33 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
     onIntersect: () => setSize((prevSize) => prevSize + 1),
   });
 
-  const handleOpenPenaltyHistory = (residentId: number) => {
-    setSelectedResidentId(residentId); // 선택된 사생 ID 저장
-    handleOpenModal('pointHistory'); // 모달 열기
-  };
-
   const handleDeleteSelectedPoints = async () => {
     if (selectedResidentId === null || selectedPoints.length === 0) return;
 
-    try {
-      // 선택된 사생의 상/벌점 항목을 하나씩 삭제 요청
-      for (const pointId of selectedPoints) {
-        await deleteResidentsPointsDetail(selectedResidentId, [pointId]); // 배열에 하나의 ID만 포함
-      }
+    // 'pointHistoryConfirm' 모달을 열어 확인을 받는 로직
+    handleOpenModal('pointHistoryConfirm');
 
-      setSelectedPoints([]);
-      handleOpenModal('pointGiveConfirm'); // 모달 닫기
-      setSize(1); // 데이터 새로고침
-    } catch (error) {
-      console.error('Error deleting points:', error);
-    }
+    // 사용자 확인 후 삭제 로직 진행
+    const deletePoints = async () => {
+      try {
+        // 선택된 사생의 상/벌점 항목을 하나씩 삭제 요청
+        for (const pointId of selectedPoints) {
+          await deleteResidentsPointsDetail(selectedResidentId, [pointId]); // 배열에 하나의 ID만 포함
+        }
+
+        setSelectedPoints([]);
+        setPointManagementModal((prev) => ({ ...prev, pointHistoryConfirm: false })); // 모달 창 닫기
+        setSize(1); // 데이터 새로고침
+      } catch (error) {
+        console.error('Error deleting points:', error);
+      }
+    };
+
+    // 확인 모달에서 확인 버튼을 눌렀을 때 삭제 함수 호출
+    return deletePoints();
   };
+
+  //setPointManagementModal((prev) => ({ ...prev, pointHistoryConfirm: false }))
 
   return (
     <>
@@ -107,7 +118,7 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
             variant={'blue'}
             label={'선택한 내역을 삭제하시겠습니까?'}
             modalName={'pointHistoryConfirm'}
-            onConfirm={handleDeleteSelectedPoints} // 삭제 함수 연결
+            onConfirm={handleDeleteSelectedPoints}
           />
         </BackDrop>
       )}

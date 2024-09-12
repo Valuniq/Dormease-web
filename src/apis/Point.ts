@@ -167,7 +167,7 @@ export const deleteResidentsPointsDetail = async (residentId: number, userPointI
     },
     body: JSON.stringify(
       userPointIds.map((id) => ({
-        userPointID: id,
+        userPointId: id,
       })),
     ),
   });
