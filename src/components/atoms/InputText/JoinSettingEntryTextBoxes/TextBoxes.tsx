@@ -3,11 +3,15 @@ type Props = {
   setInput: (id: string) => void;
   placeholder: string;
   readOnly?: boolean;
+  maxLength?: number;
   type: 'textBox1' | 'textBox2' | 'textBox3' | 'textBox4' | 'textBox5' | 'textBox6' | 'textBox7' | 'textBox8';
 };
 
-const TextBoxes = ({ input, setInput, placeholder, readOnly, type }: Props) => {
+const TextBoxes = ({ input, setInput, placeholder, readOnly, maxLength, type }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (maxLength) {
+      e.target.value = e.target.value.slice(0, maxLength);
+    }
     setInput(e.target.value);
   };
 
@@ -73,11 +77,12 @@ const TextBoxes = ({ input, setInput, placeholder, readOnly, type }: Props) => {
 
   return (
     <input
-      className={`${input ? 'border-gray-grayscale50' : 'border-gray-grayscale30'} H4-caption  border-[0.5px] outline-none px-8 ${boxSize} ${textAlign}  rounded-8 text-gray-grayscale50 placeholder:text-gray-grayscale30`}
+      className={`${input ? 'border-gray-grayscale50' : 'border-gray-grayscale30'} H4-caption border-[0.5px] outline-none px-8 ${boxSize} ${textAlign} ${readOnly && 'cursor-pointer'} rounded-8 text-gray-grayscale50 placeholder:text-gray-grayscale30`}
       placeholder={placeholder}
       type={inputType}
       value={input}
       readOnly={readOnly}
+      maxLength={maxLength}
       onChange={handleChange}
     />
   );
