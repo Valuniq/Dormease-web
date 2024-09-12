@@ -6,23 +6,30 @@ type Props = {
   isChecked: boolean;
   handleCheckboxChange: (id: number) => void;
   item: DormSettingDetailRoomResponseInformation;
+  isEdit: boolean;
 };
 
-const SettingListBody = ({ isChecked, handleCheckboxChange, item }: Props) => {
+const SettingListBody = ({ isChecked, handleCheckboxChange, item, isEdit }: Props) => {
   return (
     <>
       <tr
-        className={`table rounded-5 w-[917px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${isChecked ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
+        className={`table rounded-5 w-[917px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${!item.isActivated ? 'bg-gray-grayscale20 text-gray-grayscale30' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
       >
-        <td className='w-[10%]'>{item.roomNumber}</td>
-        <td className='w-[25%]'>{item.roomSize === null ? '-' : item.roomSize + '인실'}</td>
-        <td className='w-[20%]'>{item.gender === 'MALE' ? '남' : item.gender === 'FEMALE' ? '여' : '-'}</td>
-        <td className='w-[35%]'>{item.hasKey === true ? '수령' : item.hasKey === false ? '미수령' : '-'}</td>
-        <td className='w-[10%]'>
-          <div className='flex justify-center items-center'>
-            <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(item.id)} />
-          </div>
+        <td className={`${isEdit ? 'w-[10%]' : 'w-[10%]'}`}>{item.roomNumber}</td>
+        <td className={`${isEdit ? 'w-[25%]' : 'w-[40%]'}`}>{item.roomSize === null ? '-' : item.roomSize + '인실'}</td>
+        <td className={`${isEdit ? 'w-[20%]' : 'w-[30%]'}`}>
+          {item.gender === 'MALE' ? '남' : item.gender === 'FEMALE' ? '여' : '-'}
         </td>
+        <td className={`${isEdit ? 'w-[35%]' : 'w-[20%]'}`}>
+          {item.hasKey === true ? '수령' : item.hasKey === false ? '미수령' : '-'}
+        </td>
+        {isEdit && (
+          <td className='w-[10%]'>
+            <div className='flex justify-center items-center'>
+              <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(item.id)} />
+            </div>
+          </td>
+        )}
       </tr>
       <tr className='h-10' />
     </>

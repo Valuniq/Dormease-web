@@ -30,7 +30,14 @@ export type DormSettingDetailResponseInformation = {
 };
 
 export type DormSettingDetailResponseInformationFloor = {
-  floor: number;
+  floor: number | string;
+  startRoomNumber: number | string;
+  endRoomNumber: number | string;
+};
+
+export type DormSettingDetailResponseInformationFloorDuplicate = {
+  duplicateFloor: number;
+  floor: number | string;
   startRoomNumber: number;
   endRoomNumber: number;
 };
@@ -44,7 +51,7 @@ export type DormSettingDetailRoomResponseInformation = {
   id: number;
   roomNumber: number;
   floor: number;
-  gender: 'FEMALE' | 'MALE';
+  gender: 'FEMALE' | 'MALE' | 'EMPTY';
   roomSize: number;
   hasKey: boolean;
   isActivated: boolean;
