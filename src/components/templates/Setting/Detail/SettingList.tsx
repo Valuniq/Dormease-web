@@ -15,10 +15,11 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
     <table className='text-nowrap text-center text-gray-grayscale50'>
       <thead className='table w-[917px]'>
         <tr>
-          <th className={`H4 ${isEdit ? 'w-[10%]' : 'w-[10%]'}`}>호 실</th>
-          <th className={`H4 ${isEdit ? 'w-[25%]' : 'w-[40%]'}`}>인 실</th>
-          <th className={`H4 ${isEdit ? 'w-[20%]' : 'w-[30%]'}`}>성 별</th>
-          <th className={`H4 ${isEdit ? 'w-[35%]' : 'w-[20%]'}`}>열쇠 수령 여부</th>
+          <th className='H4 w-[10%]'>호 실</th>
+          <th className={`H4 ${isEdit ? 'w-[19%]' : 'w-[27%]'}`}>인 실</th>
+          <th className={`H4 ${isEdit ? 'w-[17%]' : 'w-[18%]'}`}>성 별</th>
+          <th className={`H4 ${isEdit ? 'w-[22%]' : 'w-[35%]'}`}>열쇠 수령 여부</th>
+          <th className={`H4 ${isEdit ? 'w-[22%]' : 'w-[10%]'}`}>활성화</th>
           {isEdit && (
             <th className='H4 w-[10%]'>
               <div className='flex items-center justify-center text-center w-full gap-6'>
