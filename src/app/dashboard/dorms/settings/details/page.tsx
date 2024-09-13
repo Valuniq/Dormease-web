@@ -44,9 +44,7 @@ const Page = () => {
   }); //건물 상세 조회
   const [buildingName, setBuildingName] = useState('');
   const [newFloor, setNewFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //추가한 층
-  const [newDuplicateFloor, setNewDuplicateFloor] = useState<DormSettingDetailResponseInformationFloorDuplicate[]>([]); //추가한 층
-  const [newSaveFloor, setNewSaveFloor] = useState<DormSettingDetailResponseInformationFloor[]>([]); //새롭게 서버에 추가된 층
-  const [completedIsActivated, setCompletedIsActivated] = useState<number[]>([]); //새롭게 서버에 추가된 층 중에 비활성화 필터 선택 완료 층
+  const [newDuplicateFloor, setNewDuplicateFloor] = useState<DormSettingDetailResponseInformationFloorDuplicate[]>([]); //복제한 층
   const [selectedFloor, setSelectedFloor] = useState(1); //선택된 층
   const [selectFilter, setSelectFilter] = useState(0); //선택된 필터
   const [completedFilter, setCompletedFilter] = useState<number[]>([]); //선택 완료된 필터
@@ -104,15 +102,13 @@ const Page = () => {
         newFilter.push(3);
       }
       //비활성화 필터 완료 여부
-      const isActivatedConditionMet = newSaveFloor.some((item) => item.floor === selectedFloor)
-        ? completedIsActivated.includes(selectedFloor)
-        : !roomData.information.some((room) => room.isActivated === null);
-
-      if (isActivatedConditionMet) newFilter.push(4);
+      if (!roomData.information?.some((room) => room.isActivated === null)) {
+        newFilter.push(4);
+      }
 
       setCompletedFilter(newFilter);
     }
-  }, [completedIsActivated, newSaveFloor, roomData, selectedFloor]);
+  }, [roomData, selectedFloor]);
 
   const handleCheckboxChange = (id: number) => {
     setCheckedItems((prevCheckedItems) =>
@@ -215,14 +211,6 @@ const Page = () => {
           });
           if (response.check) {
             setNewFloor((prev) => prev.filter((_, i) => i !== index));
-            setNewSaveFloor([
-              ...newSaveFloor,
-              {
-                floor,
-                startRoomNumber,
-                endRoomNumber,
-              },
-            ]);
             setSelectedFloor(floor);
             await mutate();
           } else {
@@ -241,8 +229,6 @@ const Page = () => {
     try {
       const response = await deleteRoom(buildingId, floor);
       if (response.check) {
-        setNewSaveFloor((prev) => prev.filter((item) => item.floor !== floor));
-        setCompletedIsActivated((prev) => prev.filter((item) => item !== floor));
         await mutate();
         setDeleteModal(false);
       } else {
@@ -299,6 +285,7 @@ const Page = () => {
 
     setEditFilter(true);
     setRoomInfo(roomInfo.map(updateRoomInfo));
+    setCheckedItems([]);
   };
 
   //필터 저장
@@ -330,20 +317,6 @@ const Page = () => {
     console.log(filter);
     console.log(filteredData);
 
-    setCompletedFilter((prev) => {
-      if (!prev.includes(selectFilter)) {
-        return [...prev, selectFilter];
-      }
-      return prev;
-    });
-    if (selectFilter === 4) {
-      setCompletedIsActivated((prev) => {
-        if (!prev.includes(selectedFloor)) {
-          return [...prev, selectedFloor];
-        }
-        return prev;
-      });
-    }
     setSelectFilter(0);
     setCheckedItems([]);
     setEditFilter(false);
@@ -536,53 +509,35 @@ const Page = () => {
                     label='남자/여자'
                     detail={false}
                     selected={selectFilter === 1}
-                    done={completedFilter.includes(1)}
-                    onClick={() => {
-                      if (editFilter) {
-                        setIsFilterModal(true);
-                      } else {
-                        setSelectFilter(1);
-                      }
-                    }}
+                    done={
+                      completedFilter.includes(1) || (roomData && !roomInfo?.some((room) => room.gender === 'EMPTY'))
+                    }
+                    onClick={() => setSelectFilter(1)}
                   />
                   <BuildingSetBtn
                     label='호실 타입'
                     detail={false}
                     selected={selectFilter === 2}
-                    done={completedFilter.includes(2)}
-                    onClick={() => {
-                      if (editFilter) {
-                        setIsFilterModal(true);
-                      } else {
-                        setSelectFilter(2);
-                      }
-                    }}
+                    done={
+                      completedFilter.includes(2) || (roomData && !roomInfo?.some((room) => room.roomSize === null))
+                    }
+                    onClick={() => setSelectFilter(2)}
                   />
                   <BuildingSetBtn
                     label='열쇠 수령 여부'
                     detail={false}
                     selected={selectFilter === 3}
-                    done={completedFilter.includes(3)}
-                    onClick={() => {
-                      if (editFilter) {
-                        setIsFilterModal(true);
-                      } else {
-                        setSelectFilter(3);
-                      }
-                    }}
+                    done={completedFilter.includes(3) || (roomData && !roomInfo?.some((room) => room.hasKey === null))}
+                    onClick={() => setSelectFilter(3)}
                   />
                   <BuildingSetBtn
                     label='비활성화'
                     detail={false}
                     selected={selectFilter === 4}
-                    done={completedFilter.includes(4)}
-                    onClick={() => {
-                      if (editFilter) {
-                        setIsFilterModal(true);
-                      } else {
-                        setSelectFilter(4);
-                      }
-                    }}
+                    done={
+                      completedFilter.includes(4) || (roomData && !roomInfo?.some((room) => room.isActivated === null))
+                    }
+                    onClick={() => setSelectFilter(4)}
                   />
                 </div>
                 <div className='h-53 flex gap-15 justify-end items-end'>
@@ -662,10 +617,12 @@ const Page = () => {
             <BtnMiniVariant
               label='저장'
               disabled={
-                (selectFilter === 1 && roomInfo?.some((room) => room.gender === 'EMPTY')) ||
-                (selectFilter === 2 && roomInfo?.some((room) => room.roomSize === null)) ||
-                (selectFilter === 3 && roomInfo?.some((room) => room.hasKey === null)) ||
-                false
+                roomInfo
+                  ? roomInfo?.some((room) => room.gender === 'EMPTY') ||
+                    roomInfo?.some((room) => room.roomSize === null) ||
+                    roomInfo?.some((room) => room.hasKey === null) ||
+                    roomInfo?.some((room) => room.isActivated === null)
+                  : false
               }
               variant='blue'
               selected={false}
