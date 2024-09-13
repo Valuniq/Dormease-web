@@ -63,9 +63,10 @@ const Page = () => {
   const [isFilterModal, setIsFilterModal] = useState(false); //필터 수정 중 모달창
   const setEditState = useSetRecoilState(editState);
   const [isEdit, setIsEdit] = useState(true); //현재 페이지가 edit 상태인지
-  const [alreadyModal, setAlreadyModal] = useState(false); //층 삭제 시 배정된 학생이 있는 경우 모달창
-  const [deleteModal, setDeleteModal] = useState(false); //층 삭제 시 확인 모달창
   const [deleteSelectedFloor, setDeleteSelectedFloor] = useState<number | null>(null); //지우려는 층 floor
+  const [isAlreadyModal, setIsAlreadyModal] = useState(false); //층 삭제 시 배정된 학생이 있는 경우 모달창
+  const [isDeleteModal, setIsDeleteModal] = useState(false); //층 삭제 시 확인 모달창
+  const [isNotSaveModal, setIsNotSaveModal] = useState(false); //저장되지 않은 상태의 층이 있는 경우 모달창
 
   useEffect(() => {
     setEditState(true);
@@ -75,6 +76,8 @@ const Page = () => {
     //빌딩 정보 업데이트
     if (data && data.information) {
       setBuildingInfo(data.information);
+      if (data.information.floorAndRoomNumberRes.length > 0)
+        setSelectedFloor(Number(data.information.floorAndRoomNumberRes[0].floor));
       setBuildingName(data.information.name);
       if (data.information.floorAndRoomNumberRes.length === 0) {
         setNewFloor([{ floor: '', startRoomNumber: 1, endRoomNumber: '' }]);
@@ -87,27 +90,28 @@ const Page = () => {
       //호실 리스트 업데이트
       setRoomInfo(roomData.information);
 
-      //해당 층에 대해 필터 완료 여부 업데이트
-      const newFilter: number[] = [];
+      if (roomData.information.length > 0) {
+        //해당 층에 대해 필터 완료 여부 업데이트
+        const newFilter: number[] = [];
 
-      //남자/여자 필터 완료 여부
-      if (!roomData.information?.some((room) => room.gender === 'EMPTY')) {
-        newFilter.push(1);
+        //남자/여자 필터 완료 여부
+        if (!roomData.information?.some((room) => room.gender === 'EMPTY')) {
+          newFilter.push(1);
+        }
+        //호실 타입 필터 완료 여부
+        if (!roomData.information?.some((room) => room.roomSize === null)) {
+          newFilter.push(2);
+        }
+        //열쇠 수령 여부 필터 완료 여부
+        if (!roomData.information?.some((room) => room.hasKey === null)) {
+          newFilter.push(3);
+        }
+        //비활성화 필터 완료 여부
+        if (!roomData.information?.some((room) => room.isActivated === null)) {
+          newFilter.push(4);
+        }
+        setCompletedFilter(newFilter);
       }
-      //호실 타입 필터 완료 여부
-      if (!roomData.information?.some((room) => room.roomSize === null)) {
-        newFilter.push(2);
-      }
-      //열쇠 수령 여부 필터 완료 여부
-      if (!roomData.information?.some((room) => room.hasKey === null)) {
-        newFilter.push(3);
-      }
-      //비활성화 필터 완료 여부
-      if (!roomData.information?.some((room) => room.isActivated === null)) {
-        newFilter.push(4);
-      }
-
-      setCompletedFilter(newFilter);
     }
   }, [roomData, selectedFloor]);
 
@@ -231,11 +235,11 @@ const Page = () => {
       const response = await deleteRoom(buildingId, floor);
       if (response.check) {
         await mutate();
-        setDeleteModal(false);
+        setIsDeleteModal(false);
       } else {
         console.log('실패');
-        setDeleteModal(false);
-        setAlreadyModal(true);
+        setIsDeleteModal(false);
+        setIsAlreadyModal(true);
       }
     } catch (error) {
       console.error(error);
@@ -371,7 +375,7 @@ const Page = () => {
                         pressOkBtn={true} //복제 버튼
                         hovered={index === 0} //hover가 가능한지
                         deleteDetailRoom={() => {
-                          setDeleteModal(true);
+                          setIsDeleteModal(true);
                           setDeleteSelectedFloor(Number(data.floor));
                         }} //해당 층 삭제
                         onClick={() => {
@@ -501,7 +505,10 @@ const Page = () => {
                     detail={false}
                     selected={selectFilter === 1}
                     done={
-                      completedFilter.includes(1) || (roomData && !roomInfo?.some((room) => room.gender === 'EMPTY'))
+                      completedFilter.includes(1) ||
+                      (roomData &&
+                        roomData.information.length > 0 &&
+                        !roomInfo?.some((room) => room.gender === 'EMPTY'))
                     }
                     onClick={() => setSelectFilter(1)}
                   />
@@ -510,7 +517,8 @@ const Page = () => {
                     detail={false}
                     selected={selectFilter === 2}
                     done={
-                      completedFilter.includes(2) || (roomData && !roomInfo?.some((room) => room.roomSize === null))
+                      completedFilter.includes(2) ||
+                      (roomData && roomData.information.length > 0 && !roomInfo?.some((room) => room.roomSize === null))
                     }
                     onClick={() => setSelectFilter(2)}
                   />
@@ -518,7 +526,10 @@ const Page = () => {
                     label='열쇠 수령 여부'
                     detail={false}
                     selected={selectFilter === 3}
-                    done={completedFilter.includes(3) || (roomData && !roomInfo?.some((room) => room.hasKey === null))}
+                    done={
+                      completedFilter.includes(3) ||
+                      (roomData && roomData.information.length > 0 && !roomInfo?.some((room) => room.hasKey === null))
+                    }
                     onClick={() => setSelectFilter(3)}
                   />
                   <BuildingSetBtn
@@ -526,7 +537,10 @@ const Page = () => {
                     detail={false}
                     selected={selectFilter === 4}
                     done={
-                      completedFilter.includes(4) || (roomData && !roomInfo?.some((room) => room.isActivated === null))
+                      completedFilter.includes(4) ||
+                      (roomData &&
+                        roomData.information.length > 0 &&
+                        !roomInfo?.some((room) => room.isActivated === null))
                     }
                     onClick={() => setSelectFilter(4)}
                   />
@@ -595,11 +609,11 @@ const Page = () => {
             variant='blue'
             onClick={() => {
               if (isEdit) {
-                setEditState(false);
+                setIsNotSaveModal(true);
               } else {
                 setEditState(true);
+                setIsEdit(true);
               }
-              setIsEdit(!isEdit);
             }}
           />
         </div>
@@ -681,20 +695,20 @@ const Page = () => {
         <BackDrop isOpen={isFilterModal}>
           <AlertPrompt
             variant='blue'
-            label={'일부 호실이 아직 설정되지 않았습니다.'}
+            label='일부 호실이 아직 설정되지 않았습니다.'
             onConfirm={() => {
               setIsFilterModal(false);
             }}
           />
         </BackDrop>
       )}
-      {deleteModal && (
-        <BackDrop isOpen={deleteModal}>
+      {isDeleteModal && (
+        <BackDrop isOpen={isDeleteModal}>
           <ConfirmPrompt
             variant='red'
             label='층을 삭제하면 적용된 필터도 함께 삭제됩니다.\n층을 삭제하시겠습니까?'
             onCancel={() => {
-              setDeleteModal(false);
+              setIsDeleteModal(false);
               setDeleteSelectedFloor(null);
             }}
             onConfirm={() => {
@@ -705,14 +719,35 @@ const Page = () => {
           />
         </BackDrop>
       )}
-      {alreadyModal && (
-        <BackDrop isOpen={alreadyModal}>
+      {isAlreadyModal && (
+        <BackDrop isOpen={isAlreadyModal}>
           <AlertPrompt
             variant='red'
             label='해당 층에 배정된 학생이 있습니다.'
             onConfirm={() => {
-              setAlreadyModal(false);
+              setIsAlreadyModal(false);
               setDeleteSelectedFloor(null);
+            }}
+          />
+        </BackDrop>
+      )}
+      {isNotSaveModal && (
+        <BackDrop isOpen={isNotSaveModal}>
+          <ConfirmPrompt
+            variant='red'
+            label='아직 저장하지 않은 층이 있습니다.\n저장되지 않은 층을 삭제하시겠습니까?'
+            onCancel={() => {
+              setIsNotSaveModal(false);
+            }}
+            onConfirm={() => {
+              //저장하지 않은 층 삭제 필요
+              deleteDetailRoom(3);
+              deleteDetailRoom(4);
+              setNewFloor([]);
+              setNewDuplicateFloor([]);
+              setIsNotSaveModal(false);
+              setEditState(false);
+              setIsEdit(false);
             }}
           />
         </BackDrop>
