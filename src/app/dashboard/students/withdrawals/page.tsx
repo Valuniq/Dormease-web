@@ -9,19 +9,11 @@ const Page = () => {
   const [input, setInput] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [isSearch, setIsSearch] = useState(false);
-  const { withdrawalData, error: withdrawalError, isLoadingMore, size, setSize, isReachingEnd } = useWithdrawalList();
-  const {
-    withdrawalSearchData,
-    error: searchError,
-    isLoadingMore: isSearchingMore,
-    size: searchSize,
-    setSize: setSearchSize,
-    isReachingEnd: isSearchReachingEnd,
-  } = useWithdrawalSearch(searchKeyword);
 
-  const dataToShow = isSearch ? withdrawalSearchData : withdrawalData;
-  const isLoading = isSearch ? isSearchingMore : isLoadingMore;
-  const isEndReached = isSearch ? isSearchReachingEnd : isReachingEnd;
+  const withdrawalList = useWithdrawalList();
+  const withdrawalSearch = useWithdrawalSearch(searchKeyword);
+
+  const { withdrawalData, isLoading, setSize, isEndReached } = isSearch ? withdrawalSearch : withdrawalList;
 
   const handleSearch = () => {
     if (input.trim() === '') {
@@ -49,10 +41,11 @@ const Page = () => {
         </div>
       </div>
       <WithdrawalList
-        list={dataToShow}
+        list={withdrawalData}
         isLoading={isLoading ?? false}
-        isEndReached={isEndReached ?? false}
-        setSize={isSearch ? setSearchSize : setSize}
+        isEndReached={isEndReached}
+        setSize={setSize}
+        isSearch={isSearch}
       />
     </div>
   );
