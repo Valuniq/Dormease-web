@@ -404,6 +404,7 @@ const Page = () => {
                             },
                           ])
                         } //복제 버튼 클릭
+                        duplicateDisabled={!(data.floor === 1)} //복제 조건 수정 필요
                       />
                     ))}
                     {newDuplicateFloor.map((data, index) => {
