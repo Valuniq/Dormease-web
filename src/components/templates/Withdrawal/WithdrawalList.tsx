@@ -9,6 +9,7 @@ type Props = {
   isLoading: boolean;
   isEndReached: boolean;
   setSize: (size: number | ((size: number) => number)) => void;
+  isSearch: boolean;
 };
 
 const WithdrawalsList = ({ list, isLoading, isEndReached, setSize }: Props) => {
@@ -31,50 +32,46 @@ const WithdrawalsList = ({ list, isLoading, isEndReached, setSize }: Props) => {
         </tr>
         <tr className='h-15 border-b-1' />
       </thead>
-      {isLoading ? (
+      {list && list.length > 0 ? (
+        <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
+          <tr className='h-15' />
+          {list.map((data, index) => {
+            if (index === list.length - 1) {
+              return (
+                <WithdrawalListBody
+                  key={index}
+                  id={data.id}
+                  index={index}
+                  name={data.name}
+                  studentNumber={data.studentNumber}
+                  bonusPoint={data.bonusPoint}
+                  minusPoint={data.minusPoint}
+                  deletedAt={data.deletedAt}
+                  ref={lastElementRef}
+                />
+              );
+            } else {
+              return (
+                <WithdrawalListBody
+                  key={index}
+                  id={data.id}
+                  index={index}
+                  name={data.name}
+                  studentNumber={data.studentNumber}
+                  bonusPoint={data.bonusPoint}
+                  minusPoint={data.minusPoint}
+                  deletedAt={data.deletedAt}
+                />
+              );
+            }
+          })}
+        </tbody>
+      ) : isLoading ? (
         <tbody></tbody>
       ) : (
-        <>
-          {list && list.length > 0 ? (
-            <tbody className='w-[1104px] block h-677 overflow-y-auto scrollbar-table'>
-              <tr className='h-15' />
-              {list.map((data, index) => {
-                if (index === list.length - 1) {
-                  return (
-                    <WithdrawalListBody
-                      key={index}
-                      id={data.id}
-                      index={index}
-                      name={data.name}
-                      studentNumber={data.studentNumber}
-                      bonusPoint={data.bonusPoint}
-                      minusPoint={data.minusPoint}
-                      deletedAt={data.deletedAt}
-                      ref={lastElementRef}
-                    />
-                  );
-                } else {
-                  return (
-                    <WithdrawalListBody
-                      key={index}
-                      id={data.id}
-                      index={index}
-                      name={data.name}
-                      studentNumber={data.studentNumber}
-                      bonusPoint={data.bonusPoint}
-                      minusPoint={data.minusPoint}
-                      deletedAt={data.deletedAt}
-                    />
-                  );
-                }
-              })}
-            </tbody>
-          ) : (
-            <tbody>
-              <NoneList colspan={6} />
-            </tbody>
-          )}
-        </>
+        <tbody>
+          <NoneList colspan={6} />
+        </tbody>
       )}
     </table>
   );
