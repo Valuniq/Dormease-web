@@ -4,6 +4,7 @@ import {
   deleteRoom,
   postDormSettingImage,
   postRoom,
+  postSettingFilter,
   putDormitoryName,
   useDormDetail,
   useDormDetailRoom,
@@ -289,33 +290,22 @@ const Page = () => {
   };
 
   //필터 저장
-  const handleRoomFilter = () => {
-    //서버에 필터 저장
-    let filter: keyof DormSettingDetailRoomResponseInformation;
+  const handleRoomFilter = async () => {
+    if (!roomInfo) return;
 
-    if (selectFilter === 1) {
-      filter = 'gender';
-    } else if (selectFilter === 2) {
-      filter = 'roomSize';
-    } else if (selectFilter === 3) {
-      filter = 'hasKey';
-    } else if (selectFilter === 4) {
-      filter = 'isActivated';
-    } else {
-      return;
+    const updatedRoomInfo = roomInfo.map(({ floor, roomNumber, ...rest }) => ({
+      ...rest,
+    }));
+
+    try {
+      const response = await postSettingFilter(updatedRoomInfo);
+      if (response.check) {
+        await mutate();
+      }
+    } catch (error) {
+      console.error(error);
+      console.log('오류가 발생했습니다.');
     }
-    const filteredData = roomInfo
-      ?.map((room) => {
-        const dataValue = room[filter];
-        return {
-          id: room.id,
-          data: dataValue,
-        };
-      })
-      .filter((room) => room.data !== undefined);
-
-    console.log(filter);
-    console.log(filteredData);
 
     setSelectFilter(0);
     setCheckedItems([]);

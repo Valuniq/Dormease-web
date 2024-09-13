@@ -119,3 +119,23 @@ export const putDormitoryName = async (dormitoryId: number, name: string) => {
   });
   return res;
 };
+
+//호실 정보 추가
+export const postSettingFilter = async (
+  list: {
+    id: number;
+    gender: 'FEMALE' | 'MALE' | 'EMPTY';
+    roomSize: number;
+    hasKey: boolean;
+    isActivated: boolean;
+  }[],
+) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/room/setting`, {
+    method: 'POST',
+    body: JSON.stringify(list),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};
