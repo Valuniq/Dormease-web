@@ -601,7 +601,7 @@ const Page = () => {
         <div className='flex-1 flex justify-center'>
           <BtnMidVariant
             label={isEdit ? '완료' : '수정'}
-            disabled={isEdit ? !buildingInfo.name || editFilter || !!selectFilter : false}
+            disabled={false}
             variant='blue'
             onClick={() => {
               if (isEdit) {
