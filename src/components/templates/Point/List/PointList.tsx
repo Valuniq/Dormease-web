@@ -1,6 +1,6 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PointManagementListBody from './PointListBody';
 import { PointMemberResponseDataList } from '@/types/point';
 import {
@@ -16,7 +16,7 @@ import PenaltyHistoryPrompt from '../Prompt/PenaltyHistoryPrompt/PenaltyHistoryP
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import SortIcon from '@/components/atoms/AllBtn/SortBtn/SortBtn';
 import AlertPrompt from '../Prompt/AlertPrompt/AlertPrompt';
-import { deletePointsDetail, deleteResidentsPointsDetail } from '@/apis/point';
+import { deleteResidentsPointsDetail } from '@/apis/point';
 
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];
@@ -29,10 +29,10 @@ type Props = {
 
 const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig, isEndReached, setSize }: Props) => {
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
-  const [selectedPoints, setSelectedPoints] = useRecoilState(selectedPointsForPenaltyState); // 추가된 Recoil 상태
+  const [selectedPoints, setSelectedPoints] = useRecoilState(selectedPointsForPenaltyState);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const { isOpened, handleOpenModal } = usePointManagementModal();
-  const [selectedResidentId, setSelectedResidentId] = useState<number | null>(null); // 클릭된 사생 ID
+  const [selectedResidentId, setSelectedResidentId] = useState<number | null>(null);
   const setPointManagementModal = useSetRecoilState(pointManagementModalState);
 
   // 전체 선택/해제 체크박스 클릭 시 호출되는 함수
@@ -55,11 +55,13 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
     }
   };
 
+  // 정렬 핸들러
   const handleSort = (sortBy: 'bonusPoint' | 'minusPoint' | 'name') => {
     const isAscending = sortConfig.sortBy === sortBy ? !sortConfig.isAscending : true;
     setSortConfig({ sortBy, isAscending });
   };
 
+  // 정렬 아이콘 클래스 설정
   const getSortIconClass = (sortBy: 'bonusPoint' | 'minusPoint' | 'name') => {
     if (sortConfig.sortBy === sortBy) {
       return sortConfig.isAscending ? 'rotate-0 ' : 'rotate-180';
@@ -67,46 +69,42 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
     return '';
   };
 
+  // 정렬 아이콘 색상 설정
   const getFillColor = (sortBy: 'bonusPoint' | 'minusPoint' | 'name') => {
     return sortConfig.sortBy === sortBy ? '#3678D8' : '#323232';
   };
 
+  // 무한 스크롤 설정
   const lastElementRef = useInfiniteScroll({
     isLoading,
     isEndReached,
     onIntersect: () => setSize((prevSize) => prevSize + 1),
   });
 
+  // 선택된 상/벌점 삭제 핸들러
   const handleDeleteSelectedPoints = async () => {
     if (selectedResidentId === null || selectedPoints.length === 0) return;
 
-    // 'pointHistoryConfirm' 모달을 열어 확인을 받는 로직
-    handleOpenModal('pointHistoryConfirm');
+    handleOpenModal('pointHistoryConfirm'); // 모달 열기
 
-    // 사용자 확인 후 삭제 로직 진행
     const deletePoints = async () => {
       try {
-        // 선택된 사생의 상/벌점 항목을 하나씩 삭제 요청
         for (const pointId of selectedPoints) {
-          await deleteResidentsPointsDetail(selectedResidentId, [pointId]); // 배열에 하나의 ID만 포함
+          await deleteResidentsPointsDetail(selectedResidentId, [pointId]);
         }
-
         setSelectedPoints([]);
-        setPointManagementModal((prev) => ({ ...prev, pointHistoryConfirm: false })); // 모달 창 닫기
+        setPointManagementModal((prev) => ({ ...prev, pointHistoryConfirm: false })); // 모달 닫기
         setSize(1); // 데이터 새로고침
       } catch (error) {
-        console.error('Error deleting points:', error);
+        console.error('Error deleting points', error);
       }
     };
-
-    // 확인 모달에서 확인 버튼을 눌렀을 때 삭제 함수 호출
     return deletePoints();
   };
 
-  //setPointManagementModal((prev) => ({ ...prev, pointHistoryConfirm: false }))
-
   return (
     <>
+      {/* 모달 관리 */}
       {isOpened.pointHistory && selectedResidentId !== null && (
         <BackDrop isOpen={isOpened.pointHistory}>
           <PenaltyHistoryPrompt residentId={selectedResidentId} />
@@ -122,13 +120,15 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
           />
         </BackDrop>
       )}
+
+      {/* 테이블 및 데이터 목록 */}
       <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
         <table className='w-[1250px]'>
           <thead className='w-full h-36 bg-white sticky top-0 z-1'>
             <tr className='text-gray-grayscale50'>
               <th className='H4 w-[8%]'>번호</th>
               <th
-                className='h-30 rounded-8  cursor-pointer w-[8%]'
+                className='h-30 rounded-8 cursor-pointer w-[8%]'
                 onClick={() => handleSort('name')}
                 style={{ backgroundColor: sortConfig.sortBy === 'name' ? '#DAE9FF' : 'transparent' }}
               >
@@ -145,7 +145,7 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
               <th className='H4 w-[12%]'>학번</th>
               <th className='H4 w-[16%]'>전화번호</th>
               <th
-                className='h-30 rounded-8  cursor-pointer w-[10%]'
+                className='h-30 rounded-8 cursor-pointer w-[10%]'
                 onClick={() => handleSort('bonusPoint')}
                 style={{ backgroundColor: sortConfig.sortBy === 'bonusPoint' ? '#DAE9FF' : 'transparent' }}
               >
@@ -160,7 +160,7 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
                 </div>
               </th>
               <th
-                className='h-30 rounded-8  cursor-pointer  w-[10%]'
+                className='h-30 rounded-8 cursor-pointer w-[10%]'
                 onClick={() => handleSort('minusPoint')}
                 style={{ backgroundColor: sortConfig.sortBy === 'minusPoint' ? '#DAE9FF' : 'transparent' }}
               >
@@ -174,11 +174,11 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
                   />
                 </div>
               </th>
-              <th className='H4  w-[20%]'>건물</th>
+              <th className='H4 w-[20%]'>건물</th>
               <th className='H4 w-[8%]'>호실</th>
               <th className='w-[8%]'>
                 <div className='H4 flex items-center justify-center text-center w-full'>
-                  <h1 className='mr-4 '>전체</h1>
+                  <h1 className='mr-4'>전체</h1>
                   <Checkbox isChecked={isAllChecked} setIsChecked={handleAllCheck} />
                 </div>
               </th>
@@ -189,14 +189,21 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
               </th>
             </tr>
           </thead>
-          {pointManagementLists && pointManagementLists.length > 0 ? (
+          {isLoading ? (
+            <tbody>
+              <tr>
+                <td colSpan={9}> 로딩 컴포넌트 제작 후 import</td>
+              </tr>
+            </tbody>
+          ) : pointManagementLists && pointManagementLists.length > 0 ? (
             <tbody className='overflow-y-scroll'>
               <tr className='h-14' />
               {pointManagementLists.map((i, key) => (
                 <Fragment key={i.id}>
                   <PointManagementListBody
                     onClick={() => {
-                      handleOpenModal('pointHistory'), setSelectedResidentId(i.id);
+                      handleOpenModal('pointHistory');
+                      setSelectedResidentId(i.id);
                     }}
                     index={key + 1}
                     data={{
@@ -209,8 +216,8 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
                       dormitory: i.dormitory,
                       room: i.room,
                     }}
-                    isChecked={selectedMemberId.includes(i.id)} // Recoil 상태를 기반으로 체크 상태 관리
-                    setIsChecked={(isChecked) => handleMemberCheck(i.id, isChecked)} // 개별 학생 선택 시 상태 업데이트
+                    isChecked={selectedMemberId.includes(i.id)}
+                    setIsChecked={(isChecked) => handleMemberCheck(i.id, isChecked)}
                     ref={lastElementRef}
                   />
                   <tr className='h-14' />

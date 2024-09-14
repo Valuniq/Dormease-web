@@ -18,8 +18,25 @@ import {
 // 상벌점 관리 page의 복잡도를 줄이기 위한 hook
 export const usePointManagement = () => {
   // 검색어 상태 및 검색 여부를 관리하는 상태
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [input, setInput] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [isSearch, setIsSearch] = useState(false);
+
+  // 검색어 핸들러
+  const handleSearch = () => {
+    if (input.trim() === '') {
+      setIsSearch(false);
+    } else if (input !== searchKeyword || !isSearch) {
+      setSearchKeyword(input);
+      setIsSearch(true);
+    }
+  };
+
+  useEffect(() => {
+    if (input.trim() === '') {
+      setIsSearch(false);
+    }
+  }, [input]);
 
   // 정렬 설정을 관리하는 상태
   const [sortConfig, setSortConfig] = useState<{ sortBy: 'name' | 'bonusPoint' | 'minusPoint'; isAscending: boolean }>({
@@ -45,31 +62,13 @@ export const usePointManagement = () => {
 
   // 무한 스크롤을 사용자 목록 및 검색 결과
   const infiniteUser = useInfinitePointMember(sortConfig.sortBy, sortConfig.isAscending);
-  const userSearch = useInfinitePointMemberSearch(searchTerm, sortConfig.sortBy, sortConfig.isAscending);
+  const userSearch = useInfinitePointMemberSearch(searchKeyword, sortConfig.sortBy, sortConfig.isAscending);
 
-  const {
-    userData,
-    isLoadingMore,
-    setSize,
-    isEndReached,
-    mutate: userMutate,
-  } = isSearching ? userSearch : infiniteUser;
+  const { userData, isLoadingMore, setSize, isEndReached, mutate: userMutate } = isSearch ? userSearch : infiniteUser;
 
   // 상점/벌점 부여에 필요한 상태 추가
   const [selectedBonusPoints, setSelectedBonusPoints] = useState<number[]>([]); // 선택된 상점 포인트 목록
   const [selectedMinusPoints, setSelectedMinusPoints] = useState<number[]>([]); // 선택된 벌점 포인트 목록
-
-  // 검색어 핸들러
-  useEffect(() => {
-    if (searchTerm === '') {
-      setIsSearching(false);
-    }
-  }, [searchTerm]);
-
-  const handleSearchChange = (value: string) => {
-    setSearchTerm(value);
-    setIsSearching(true);
-  };
 
   // 상벌점 내역 삭제 핸들러
   const handleDelete = async () => {
@@ -120,9 +119,11 @@ export const usePointManagement = () => {
 
   return {
     // 검색창 관리
-    searchTerm,
-    isSearching,
-    handleSearchChange,
+    input,
+    setInput,
+    searchKeyword,
+    isSearch,
+    handleSearch,
     // 무한 스크롤 관리
     userData,
     isLoadingMore,

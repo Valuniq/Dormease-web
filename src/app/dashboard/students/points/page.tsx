@@ -12,8 +12,10 @@ import { usePointManagement } from '@/hooks/usePointManagement';
 
 const Page = () => {
   const {
-    searchTerm,
-    handleSearchChange,
+    input,
+    setInput,
+    searchKeyword,
+    handleSearch,
     userData,
     isLoadingMore,
     setSize,
@@ -73,7 +75,7 @@ const Page = () => {
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>
           <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
-          <SearchTextBox input={searchTerm} setInput={handleSearchChange} placeholder={'이름 또는 학번'} />
+          <SearchTextBox input={input} setInput={setInput} handleSearch={handleSearch} placeholder={'이름 또는 학번'} />
         </div>
         <div className='w-full bg-red-red40 ml-auto '></div>
         <PointList
