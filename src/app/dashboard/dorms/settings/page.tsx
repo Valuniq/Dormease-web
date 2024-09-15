@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteDorm, useDormList } from '@/apis/setting';
+import { deleteDorm, postAddDorm, useDormList } from '@/apis/setting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import SettingItem from '@/components/templates/Setting/Item/SettingItem';
@@ -31,14 +31,14 @@ const Page = () => {
   }, [data, error]);
 
   const onAddBuilding = async () => {
-    // try {
-    //   const response = await postAddDorm(); //건물 생성 API
-    //   if (response.check) {
-    //     await mutate();
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const response = await postAddDorm();
+      if (response.check) {
+        await mutate();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onDeleteBuilding = async (dormitoryId: number | null) => {

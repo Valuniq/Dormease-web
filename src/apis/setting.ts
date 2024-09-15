@@ -35,18 +35,9 @@ export const useDormList = () => {
 };
 
 //건물 추가
-export const postAddDorm = async (name: string, image: File | null): Promise<DormAddDeleteResponse> => {
-  const formData = new FormData();
-  formData.append('registerDormitoryReq', new Blob([JSON.stringify({ name: name })], { type: 'application/json' }));
-  if (image !== null) {
-    formData.append('image', image);
-  } else {
-    formData.append('image', new Blob([]));
-  }
-
+export const postAddDorm = async () => {
   const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting`, {
     method: 'POST',
-    body: formData,
   });
   return res;
 };
