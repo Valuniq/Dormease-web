@@ -5,7 +5,7 @@ import { DormSettingDetailRoomResponseInformation } from '@/types/setting';
 
 type Props = {
   checkedItems: number[];
-  handleCheckboxChange: (id: number) => void;
+  handleCheckboxChange: (roomNumber: number) => void;
   list: DormSettingDetailRoomResponseInformation[];
   isEdit: boolean;
 };
@@ -29,14 +29,14 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
                   setIsChecked={(isChecked) => {
                     if (isChecked) {
                       list.forEach((item) => {
-                        if (!checkedItems.includes(item.id)) {
-                          handleCheckboxChange(item.id);
+                        if (!checkedItems.includes(item.roomNumber)) {
+                          handleCheckboxChange(item.roomNumber);
                         }
                       });
                     } else {
                       list.forEach((item) => {
-                        if (checkedItems.includes(item.id)) {
-                          handleCheckboxChange(item.id);
+                        if (checkedItems.includes(item.roomNumber)) {
+                          handleCheckboxChange(item.roomNumber);
                         }
                       });
                     }
@@ -54,7 +54,7 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
           return (
             <BuildingSettingsListBody
               key={index}
-              isChecked={checkedItems.includes(data.id)}
+              isChecked={checkedItems.includes(data.roomNumber)}
               handleCheckboxChange={handleCheckboxChange}
               item={data}
               isEdit={isEdit}

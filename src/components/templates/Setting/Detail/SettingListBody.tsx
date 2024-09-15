@@ -4,7 +4,7 @@ import React from 'react';
 
 type Props = {
   isChecked: boolean;
-  handleCheckboxChange: (id: number) => void;
+  handleCheckboxChange: (roomNumber: number) => void;
   item: DormSettingDetailRoomResponseInformation;
   isEdit: boolean;
 };
@@ -27,7 +27,7 @@ const SettingListBody = ({ isChecked, handleCheckboxChange, item, isEdit }: Prop
         {isEdit && (
           <td className='w-[10%]'>
             <div className='flex justify-center items-center'>
-              <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(item.id)} />
+              <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(item.roomNumber)} />
             </div>
           </td>
         )}
