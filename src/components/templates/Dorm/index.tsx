@@ -36,13 +36,14 @@ import { useSetRecoilState } from 'recoil';
 
 type Props = {
   buildingList: DormNameResponseInformation[];
+  mounted: boolean;
+  setMounted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Index = ({ buildingList }: Props) => {
+const Index = ({ buildingList, mounted, setMounted }: Props) => {
   const setEditState = useSetRecoilState(editState);
-  const [mounted, setMounted] = useState(false);
   const [buildingIsOn, setBuildingIsOn] = useState(false);
-  const [selectBuilding, setSelectBuilding] = useState(buildingList[0]);
+  const [selectBuilding, setSelectBuilding] = useState(buildingList[0] || []);
   const [floorList, setFloorList] = useState<DormFloorResponseInformation[]>([]);
   const [floorIsOn, setFloorIsOn] = useState(false);
   const [selectFloor, setSelectFloor] = useState(0);
@@ -110,11 +111,13 @@ const Index = ({ buildingList }: Props) => {
   useEffect(() => {
     const initialFetch = async () => {
       setMounted(true);
-      await fetchBuildingInfo(selectBuilding.id);
+      if (selectBuilding.id) {
+        await fetchBuildingInfo(selectBuilding.id);
+      }
     };
 
     initialFetch();
-  }, [selectBuilding]);
+  }, [selectBuilding, setMounted]);
 
   //건물 층 목록 불러오기
   const getFloor = async (id: number) => {
@@ -296,10 +299,23 @@ const Index = ({ buildingList }: Props) => {
                   <BuildingSelectImageBtn
                     image={buildingInfo.imageUrl}
                     name={buildingInfo.name}
-                    onClick={onAddPicture}
+                    onClick={() => {
+                      if (selectBuilding.id) {
+                        onAddPicture();
+                      }
+                    }}
                   />
                 ) : (
-                  <BtnLargeVariant label={'사진 추가'} disabled={false} variant={'blue'} onClick={onAddPicture} />
+                  <BtnLargeVariant
+                    label={'사진 추가'}
+                    disabled={false}
+                    variant={'blue'}
+                    onClick={() => {
+                      if (selectBuilding.id) {
+                        onAddPicture();
+                      }
+                    }}
+                  />
                 )}
                 <input
                   id='fileInput'
@@ -338,6 +354,7 @@ const Index = ({ buildingList }: Props) => {
                       className='H4-caption leading-[34px] w-full h-204 bg-yellow-memoyellow border-none outline-none scrollbar-table resize-none'
                       value={memoText === null ? '' : memoText}
                       onChange={(e) => setMemoText(e.target.value)}
+                      readOnly={!selectBuilding.id}
                     />
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-28'></hr>
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-63'></hr>
@@ -405,9 +422,11 @@ const Index = ({ buildingList }: Props) => {
                       setSaveModal(!saveModal);
                       setEditState(false);
                     } else {
-                      setListClick(0);
-                      setEditAssign(!editAssign);
-                      setEditState(true);
+                      if (selectBuilding.id) {
+                        setListClick(0);
+                        setEditAssign(!editAssign);
+                        setEditState(true);
+                      }
                     }
                   }}
                 />
@@ -434,7 +453,7 @@ const Index = ({ buildingList }: Props) => {
                     setListClick(0);
                   }
                 }}
-                setIsOn={() => setBuildingIsOn(!buildingIsOn)}
+                setIsOn={() => selectBuilding.id && setBuildingIsOn(!buildingIsOn)}
               />
               <SelectFloorDropdown
                 list={floorList}
