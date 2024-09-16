@@ -9,6 +9,7 @@ import PenaltyManagementPrompt from '@/components/templates/Point/Prompt/Penalty
 import AlertPrompt from '@/components/templates/Point/Prompt/AlertPrompt/AlertPrompt';
 import PointList from '@/components/templates/Point/List/PointList';
 import { usePointManagement } from '@/hooks/usePointManagement';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
 const Page = () => {
   const {
@@ -34,7 +35,7 @@ const Page = () => {
     setSelectedMinusPoints,
   } = usePointManagement();
 
-  const { isOpened, handleOpenModal } = usePointManagementModal();
+  const { isOpened, handleOpenModal, handleCloseModal } = usePointManagementModal();
 
   return (
     <>
@@ -45,10 +46,12 @@ const Page = () => {
       )}
       {isOpened.pointManagementConfirm && (
         <BackDrop isOpen={isOpened.pointManagementConfirm}>
-          <AlertPrompt
+          <ConfirmPrompt
             variant={'blue'}
             label={'상/벌점 리스트를 저장하시겠습니까?'}
-            modalName={'pointManagementConfirm'}
+            onCancel={() => {
+              handleCloseModal('pointManagementConfirm'), handleOpenModal('pointManagement');
+            }}
             onConfirm={handlePointManagemengConfirm}
           />
         </BackDrop>
