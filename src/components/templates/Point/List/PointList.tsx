@@ -17,6 +17,7 @@ import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import SortIcon from '@/components/atoms/AllBtn/SortBtn/SortBtn';
 import AlertPrompt from '../Prompt/AlertPrompt/AlertPrompt';
 import { deleteResidentsPointsDetail, usePointsDetail } from '@/apis/point';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];
@@ -40,7 +41,7 @@ const PointList = ({
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
   const [selectedPoints, setSelectedPoints] = useRecoilState(selectedPointsForPenaltyState);
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const { isOpened, handleOpenModal } = usePointManagementModal();
+  const { isOpened, handleOpenModal, handleCloseModal } = usePointManagementModal();
   const [selectedResidentId, setSelectedResidentId] = useState<number | null>(null);
   const setPointManagementModal = useSetRecoilState(pointManagementModalState);
 
@@ -137,10 +138,12 @@ const PointList = ({
       )}
       {isOpened.pointHistoryConfirm && selectedResidentId !== null && (
         <BackDrop isOpen={isOpened.pointHistoryConfirm}>
-          <AlertPrompt
+          <ConfirmPrompt
             variant={'blue'}
             label={'선택한 내역을 삭제하시겠습니까?'}
-            modalName={'pointHistoryConfirm'}
+            onCancel={() => {
+              handleCloseModal('pointHistoryConfirm'), handleOpenModal('pointHistory');
+            }}
             onConfirm={handleDeleteSelectedPoints}
           />
         </BackDrop>
