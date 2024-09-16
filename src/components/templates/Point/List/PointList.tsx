@@ -21,13 +21,22 @@ import { deleteResidentsPointsDetail } from '@/apis/point';
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];
   isLoading: boolean;
+  isLoadingInitialData: boolean;
   sortConfig: { sortBy: 'bonusPoint' | 'minusPoint' | 'name'; isAscending: boolean };
   setSortConfig: (config: { sortBy: 'bonusPoint' | 'minusPoint' | 'name'; isAscending: boolean }) => void;
   isEndReached: boolean;
   setSize: (size: number | ((size: number) => number)) => void;
 };
 
-const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig, isEndReached, setSize }: Props) => {
+const PointList = ({
+  pointManagementLists,
+  isLoading,
+  isLoadingInitialData,
+  sortConfig,
+  setSortConfig,
+  isEndReached,
+  setSize,
+}: Props) => {
   const [selectedMemberId, setSelectedMemberId] = useRecoilState(selectedMemberIdForPointState);
   const [selectedPoints, setSelectedPoints] = useRecoilState(selectedPointsForPenaltyState);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -189,7 +198,7 @@ const PointList = ({ pointManagementLists, isLoading, sortConfig, setSortConfig,
               </th>
             </tr>
           </thead>
-          {isLoading ? (
+          {isLoadingInitialData ? (
             <tbody>
               <tr>
                 <td colSpan={9}> 로딩 컴포넌트 제작 후 import</td>

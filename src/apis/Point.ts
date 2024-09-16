@@ -42,7 +42,7 @@ export const useInfinitePointMember = (sortBy: string = 'name', isAscending: boo
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { userData, error, isLoadingMore, size, setSize, isEndReached, mutate };
+  return { userData, error, isLoadingMore, size, setSize, isEndReached, isLoadingInitialData, mutate };
 };
 
 // 사생 검색 및 정렬
@@ -77,7 +77,7 @@ export const useInfinitePointMemberSearch = (keyword: string, sortBy: string = '
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { userData, error, isLoadingMore, size, setSize, isEndReached, mutate };
+  return { userData, error, isLoadingMore, size, setSize, isEndReached, isLoadingInitialData, mutate };
 };
 
 // * 사생 상벌점 부여
@@ -95,12 +95,7 @@ export const postMemberPoint = async (residentId: number, points: { pointId: num
 // 무한 스크롤을 위한 사생 상/벌점 내역 상세 조회
 export const useInfinitePointsByResidentId = (residentId: number) => {
   const getKey = (pageIndex: number, previousPageData: ResidentPointResponse | null) => {
-    if (
-      previousPageData &&
-      previousPageData.information.pageInfo.currentPage >= previousPageData.information.pageInfo.totalPage
-    ) {
-      return null; // 모든 페이지를 불러왔을 때 멈춤
-    }
+    if (previousPageData && previousPageData.information.userPointDetailRes.length === 0) return null; // 더 이상 데이터가 없을 때 멈춤
     return `${BASE_URL}/api/v1/web/points/${residentId}?page=${pageIndex + 1}`; // 다음 페이지의 URL 생성
   };
 
@@ -116,14 +111,29 @@ export const useInfinitePointsByResidentId = (residentId: number) => {
     : [];
 
   const isLoadingInitialData = !data && !error;
-  const isLoadingMore =
-    isLoadingInitialData || (size > 0 && isValidating && data && typeof data[size - 1] === 'undefined');
-  const isEmpty = data?.[0]?.information.userPointDetailRes.length === 0;
-  const isEndReached =
-    data &&
-    data[data.length - 1]?.information.pageInfo.currentPage >= data[data.length - 1]?.information.pageInfo.totalPage;
 
-  return { data, allPenaltyLists, error, isLoadingMore, size, setSize, isEndReached };
+  // 현재 데이터를 로딩 중인지 확인
+  const isLoading = isValidating && size > 0;
+
+  const isEmpty = data?.[0]?.information.userPointDetailRes.length === 0;
+
+  // 마지막 페이지에 도달했는지 확인
+  const isEndReached =
+    isEmpty ||
+    (data &&
+      data[data.length - 1]?.information.pageInfo.currentPage ===
+        data[data.length - 1]?.information.pageInfo.totalPage) ||
+    false;
+
+  console.log({
+    isLoadingInitialData,
+    isLoading,
+    isEndReached,
+    currentPage: data && data[data.length - 1]?.information.pageInfo.currentPage,
+    totalPage: data && data[data.length - 1]?.information.pageInfo.totalPage,
+  }); // 상태 값 디버깅용 로그 추가
+
+  return { data, allPenaltyLists, error, isLoading, size, setSize, isEndReached };
 };
 
 // * 상/벌점 리스트 조회

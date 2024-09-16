@@ -18,6 +18,7 @@ const Page = () => {
     handleSearch,
     userData,
     isLoadingMore,
+    isLoadingInitialData,
     setSize,
     isEndReached,
     sortConfig,
@@ -83,6 +84,7 @@ const Page = () => {
           sortConfig={sortConfig}
           setSortConfig={setSortConfig}
           isLoading={isLoadingMore ?? false}
+          isLoadingInitialData={isLoadingInitialData}
           isEndReached={isEndReached}
           setSize={setSize}
         />

@@ -64,7 +64,14 @@ export const usePointManagement = () => {
   const infiniteUser = useInfinitePointMember(sortConfig.sortBy, sortConfig.isAscending);
   const userSearch = useInfinitePointMemberSearch(searchKeyword, sortConfig.sortBy, sortConfig.isAscending);
 
-  const { userData, isLoadingMore, setSize, isEndReached, mutate: userMutate } = isSearch ? userSearch : infiniteUser;
+  const {
+    userData,
+    isLoadingMore,
+    isLoadingInitialData,
+    setSize,
+    isEndReached,
+    mutate: userMutate,
+  } = isSearch ? userSearch : infiniteUser;
 
   // 상점/벌점 부여에 필요한 상태 추가
   const [selectedBonusPoints, setSelectedBonusPoints] = useState<number[]>([]); // 선택된 상점 포인트 목록
@@ -127,6 +134,7 @@ export const usePointManagement = () => {
     // 무한 스크롤 관리
     userData,
     isLoadingMore,
+    isLoadingInitialData,
     setSize,
     isEndReached,
     sortConfig,
