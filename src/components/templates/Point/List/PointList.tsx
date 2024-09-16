@@ -227,7 +227,7 @@ const PointList = ({
             <tbody className='overflow-y-scroll'>
               <tr className='h-14' />
               {pointManagementLists.map((i, key) => (
-                <Fragment key={i.id}>
+                <Fragment key={key}>
                   <PointManagementListBody
                     onClick={() => {
                       handleOpenModal('pointHistory');
