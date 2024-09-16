@@ -68,10 +68,12 @@ const Page = () => {
       )}
       {isOpened.pointGiveConfirm && (
         <BackDrop isOpen={isOpened.pointGiveConfirm}>
-          <AlertPrompt
+          <ConfirmPrompt
             variant={'blue'}
             label={'선택한 인원에게 상/벌점을 부여하시겠습니까?'}
-            modalName={'pointGiveConfirm'}
+            onCancel={() => {
+              handleCloseModal('pointGiveConfirm'), handleOpenModal('pointGive');
+            }}
             onConfirm={handleGrantPoints}
           />
         </BackDrop>
