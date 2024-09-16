@@ -1,7 +1,7 @@
 'use client';
 import PenaltyBox from './PenaltyBox';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   pointManagementModalState,
   promptBonusState,
@@ -25,8 +25,8 @@ const PenaltyManagementPrompt = ({ onDelete }: Props) => {
   const { data: pointsDetailData, error, isLoading } = usePointsDetail();
   const [bonusLists, setBonusLists] = useRecoilState(promptBonusState);
   const [minusLists, setMinusLists] = useRecoilState(promptMinusState);
-  const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
-  const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
+  const tempBonusLists = useRecoilValue(promptClientBonusState);
+  const tempMinusLists = useRecoilValue(promptClientMinusState);
   const setPointManagementModal = useSetRecoilState(pointManagementModalState);
 
   const [initialBonusLists, setInitialBonusLists] = useState<PointListResponseInfo[]>([]);

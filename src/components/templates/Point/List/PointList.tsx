@@ -16,7 +16,7 @@ import PenaltyHistoryPrompt from '../Prompt/PenaltyHistoryPrompt/PenaltyHistoryP
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import SortIcon from '@/components/atoms/AllBtn/SortBtn/SortBtn';
 import AlertPrompt from '../Prompt/AlertPrompt/AlertPrompt';
-import { deleteResidentsPointsDetail } from '@/apis/point';
+import { deleteResidentsPointsDetail, usePointsDetail } from '@/apis/point';
 
 type Props = {
   pointManagementLists: PointMemberResponseDataList[];
@@ -111,12 +111,28 @@ const PointList = ({
     return deletePoints();
   };
 
+  // 상벌점 내역 조회
+  const { data: pointsDetailData, error } = usePointsDetail();
+
+  const handlePointHistoryIsNull = () => {
+    setPointManagementModal((prev) => ({ ...prev, pointHistory: false }));
+  };
+
   return (
     <>
       {/* 모달 관리 */}
       {isOpened.pointHistory && selectedResidentId !== null && (
         <BackDrop isOpen={isOpened.pointHistory}>
-          <PenaltyHistoryPrompt residentId={selectedResidentId} />
+          {pointsDetailData?.information.length === 0 ? (
+            <AlertPrompt
+              variant={'blue'}
+              label={'상/벌점 리스트를 작성해주시기 바랍니다.'}
+              modalName={'pointHistory'}
+              onConfirm={handlePointHistoryIsNull}
+            />
+          ) : (
+            <PenaltyHistoryPrompt residentId={selectedResidentId} />
+          )}
         </BackDrop>
       )}
       {isOpened.pointHistoryConfirm && selectedResidentId !== null && (
