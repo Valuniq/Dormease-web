@@ -20,11 +20,10 @@ const PenaltyHistoryPrompt = ({ residentId }: Props) => {
   const setPointManagementModal = useSetRecoilState(pointManagementModalState);
 
   // 무한 스크롤을 사용하여 데이터 가져오기
-  const { allPenaltyLists, data, error, isLoading, size, setSize, isEndReached } =
-    useInfinitePointsByResidentId(residentId);
+  const { data, allPenaltyLists, isLoading, size, setSize, isEndReached } = useInfinitePointsByResidentId(residentId);
 
   const lastElementRef = useInfiniteScroll({
-    isLoading,
+    isLoading: isLoading ?? false, // undefined일 경우 false로 설정
     isEndReached,
     onIntersect: () => setSize((prevSize) => prevSize + 1),
   });
@@ -79,22 +78,26 @@ const PenaltyHistoryPrompt = ({ residentId }: Props) => {
           </thead>
           <tbody>
             {allPenaltyLists.length > 0 ? (
-              allPenaltyLists.map((p, index) => (
-                <Fragment key={index}>
-                  {/* 여백용 tr */}
-                  <tr className='h-19' />
-                  <tr>
-                    <PenaltyHistoryListBody
-                      date={p.createdDate}
-                      reason={p.content}
-                      score={p.score}
-                      division={p.pointType}
-                      isChecked={selectedPoints.includes(p.userPointId)}
-                      setIsChecked={(isChecked) => handleSelectPoint(p.userPointId, isChecked)}
-                    />
-                  </tr>
-                </Fragment>
-              ))
+              <>
+                {allPenaltyLists.map((p, index) => (
+                  <Fragment key={index}>
+                    {/* 여백용 tr */}
+                    <tr className='h-19' />
+                    <tr>
+                      <PenaltyHistoryListBody
+                        date={p.createdDate}
+                        reason={p.content}
+                        score={p.score}
+                        division={p.pointType}
+                        isChecked={selectedPoints.includes(p.userPointId)}
+                        setIsChecked={(isChecked) => handleSelectPoint(p.userPointId, isChecked)}
+                      />
+                    </tr>
+                  </Fragment>
+                ))}
+
+                <tr ref={lastElementRef} />
+              </>
             ) : (
               <tr>
                 <td colSpan={5} className='text-center'>
@@ -106,8 +109,6 @@ const PenaltyHistoryPrompt = ({ residentId }: Props) => {
             <tr className='h-19' />
           </tbody>
         </table>
-        {/* 마지막 요소의 ref 설정 */}
-        <div ref={lastElementRef} />
       </div>
       <div className='mt-17 flex ml-auto mr-29 w-393 justify-between'>
         <BtnMiniVariant
