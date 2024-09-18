@@ -53,16 +53,16 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChang
       <table className='w-[1305px]'>
         <thead className='w-full h-36 bg-white sticky top-0 z-1'>
           <tr className='text-gray-grayscale50'>
-            <th className='H4'>번호</th>
-            <th className='H4'>이름</th>
-            <th className='H4'>학번</th>
-            <th className='H4'>전화번호</th>
-            <th className='H4'>벌점</th>
-            <th className='H4'>사유</th>
-            <th className='H4'>등록일자</th>
-            <th>
+            <th className='H4 w-[8%]'>번호</th>
+            <th className='H4 w-[8%]'>이름</th>
+            <th className='H4 w-[12%]'>학번</th>
+            <th className='H4 w-[16%]'>전화번호</th>
+            <th className='H4 w-[10%]'>벌점</th>
+            <th className='H4 w-[26%]'>사유</th>
+            <th className='H4 w-[12%]'>등록일자</th>
+            <th className='w-[8%]'>
               <div className='H4 flex  items-center justify-center text-center w-full'>
-                <h1 className='mr-4'>전체</h1>
+                <h1 className='mr-4 '>전체</h1>
                 <Checkbox isChecked={isAllChecked} setIsChecked={handleAllCheck} />
               </div>
             </th>
