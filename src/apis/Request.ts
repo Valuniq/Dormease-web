@@ -4,10 +4,11 @@ import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 
+//요청사항 목록 조회
 export const useRequestList = () => {
   const getKey = (pageIndex: number, previousPageData: RequestListResponse) => {
     if (previousPageData && previousPageData.information.dataList.length === 0) return null; // 끝에 도달
-    return `${BASE_URL}/api/v1/app/requestments?page=${pageIndex + 1}`;
+    return `${BASE_URL}/api/v1/web/requestments?page=${pageIndex + 1}`;
   };
 
   const { data, error, size, setSize } = useSWRInfinite<RequestListResponse>(getKey, fetchWithTokens);
@@ -29,10 +30,38 @@ export const useRequestList = () => {
   return { requestData, error, isLoadingMore, size, setSize, isReachingEnd };
 };
 
+//요청사항 상세 조회
 export const useRequestDetail = (requestmentId: number) => {
   const { data, error } = useSWR<RequestDetailResponse>(
-    `${BASE_URL}/api/v1/app/requestments/${requestmentId}`,
+    `${BASE_URL}/api/v1/web/requestments/${requestmentId}`,
     fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data };
+};
+
+//요청사항 검토 상태 변경
+export const putRequest = async (requestmentId: number, progression: string) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/requestments/${requestmentId}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      progression,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return res;
+};
+
+//요청사항 삭제
+export const deleteRequest = async (requestmentId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/requestments/${requestmentId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return res;
 };
