@@ -31,6 +31,10 @@ const fetchWithTokens = async (url: string, options: RequestInit = {}) => {
     throw new Error('Failed to fetch data');
   }
 
+  if (response.status === 204) {
+    return {}; //204 No Content인 경우 빈 객체 반환
+  }
+
   return response.json();
 };
 
