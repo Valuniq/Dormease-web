@@ -423,6 +423,11 @@ const Page = () => {
                         deleteDetailRoom={() => {
                           if (addFloor.some((item) => item.floor === data.floor)) {
                             setAddFloor((prev) => prev.filter((item) => item.floor !== data.floor));
+                            setRoomNoneInfo((prev) => {
+                              const updatedRoomInfo = { ...prev };
+                              delete updatedRoomInfo[Number(data.floor)];
+                              return updatedRoomInfo;
+                            });
                           } else {
                             setIsDeleteModal(true);
                             setDeleteSelectedFloor(Number(data.floor));
@@ -659,7 +664,7 @@ const Page = () => {
               if (isEdit) {
                 if (addFloor.length > 0) {
                   setIsNotSaveModal(true);
-                }else {
+                } else {
                   setIsEdit(false);
                 }
               } else {
@@ -799,6 +804,7 @@ const Page = () => {
             }}
             onConfirm={() => {
               setAddFloor([]);
+              setRoomNoneInfo({});
               setNewFloor([]);
               setNewDuplicateFloor([]);
               setIsNotSaveModal(false);
