@@ -1,6 +1,6 @@
 'use client';
 
-import { useRequestDetail } from '@/apis/request';
+import { deleteRequest, putRequest, useRequestDetail } from '@/apis/request';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -9,10 +9,12 @@ import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPr
 import { editState } from '@/recoil/nav';
 import { requestIdState } from '@/recoil/request';
 import { RequestDetailResponseInformation } from '@/types/request';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 const Page = () => {
+  const router = useRouter();
   const requestId = useRecoilValue(requestIdState);
   const { data, error, isLoading } = useRequestDetail(requestId);
   const [detailData, setDetailData] = useState<RequestDetailResponseInformation>({
@@ -36,15 +38,40 @@ const Page = () => {
 
   useEffect(() => {
     if (data && data.information) {
+      //요청사항 상세 조회
       setDetailData(data.information);
     }
   }, [data]);
+
+  //요청사항 검토 상태 변경
+  const handleConfirm = async () => {
+    try {
+      await putRequest(requestId, detailData.progression);
+      setProgressionModal(!progressionModal);
+      setEditState(false);
+      router.push(`/dashboard/requests`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //요청사항 삭제
+  const handleDelete = async () => {
+    try {
+      await deleteRequest(requestId);
+      setDeleteModal(!deleteModal);
+      setEditState(false);
+      router.push(`/dashboard/requests`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
       {detailData && (
         <div className='flex flex-col w-[1200px]'>
-          <h1 className='text-left H0 text-gray-grayscale50 text-nowrap'>요청사항</h1>
+          <h1 className='text-left H0 text-gray-grayscale50 text-nowrap w-[1200px]'>요청사항</h1>
           <hr className='text-gray-grayscale50 mt-25' />
           <h4 className='pl-12 pt-21 pb-17 H4 text-gray-grayscale50'>{detailData.title}</h4>
           <hr className='text-gray-grayscale30' />
@@ -112,9 +139,7 @@ const Page = () => {
             onCancel={() => {
               setProgressionModal(!progressionModal);
             }}
-            onConfirm={() => {
-              setProgressionModal(!progressionModal);
-            }}
+            onConfirm={handleConfirm}
           />
         </BackDrop>
       )}
@@ -126,9 +151,7 @@ const Page = () => {
             onCancel={() => {
               setDeleteModal(!deleteModal);
             }}
-            onConfirm={() => {
-              setDeleteModal(!deleteModal);
-            }}
+            onConfirm={handleDelete}
           />
         </BackDrop>
       )}
