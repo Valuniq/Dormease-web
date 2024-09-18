@@ -16,6 +16,7 @@ const PenaltyBox = ({ type }: Props) => {
   const [tempBonusLists, setTempBonusLists] = useRecoilState(promptClientBonusState);
   const [tempMinusLists, setTempMinusLists] = useRecoilState(promptClientMinusState);
   const [hoveredPointId, setHoveredPointId] = useState<number>();
+
   const handleMouseEnter = (tempId: number) => {
     setHoveredPointId(tempId);
   };
@@ -114,20 +115,36 @@ const PenaltyBox = ({ type }: Props) => {
             onMouseEnter={() => handleMouseEnter(i.pointId)}
             onMouseLeave={handleMouseLeave}
             key={index}
-            className='box-border flex items-center pl-28 h-45 hover:bg-gray-grayscale10 hover-transition cursor-pointer mb-17 rounded-l-10 rounded-r-50  '
+            className='box-border flex items-center w-471 pl-28 h-45 hover:bg-gray-grayscale10 hover-transition cursor-pointer mb-17 rounded-l-10 rounded-r-50  '
           >
-            <div className='w-10 h-10 rounded-full bg-gray-grayscale50 mr-8' />
-            <MediumInputText
-              placeholder={'내역을 입력하세요.'}
-              input={i.content || ''}
-              setInput={(value) => handleInputChange(i.pointId, value, type)}
-            />
-            <div className='ml-16 flex items-center mr-20'>
+            <div className='flex items-center w-284'>
+              <div className='w-10 h-10 rounded-full bg-gray-grayscale50 mr-8' />
+              <MediumInputText
+                placeholder={'내역을 입력하세요.'}
+                input={i.content || ''}
+                setInput={
+                  type === 'BONUS' && bonusLists.includes(i)
+                    ? () => {} // 서버에서 불러온 값이면 빈 함수
+                    : type === 'MINUS' && minusLists.includes(i)
+                      ? () => {} // 서버에서 불러온 값이면 빈 함수
+                      : (value) => handleInputChange(i.pointId, value, type) // 클라이언트에서 추가된 값이면 handleInputChange 사용
+                }
+                readOnly={(type === 'BONUS' && bonusLists.includes(i)) || (type === 'MINUS' && minusLists.includes(i))} // 서버에서 불러온 값일 때 readOnly 설정
+              />
+            </div>
+            <div className='w-84 ml-16 flex items-center mr-20'>
               <TextBoxes
                 input={i.score?.toString() || ''}
-                setInput={(value) => handleInputNumberChange(i.pointId, value, type)}
+                setInput={
+                  type === 'BONUS' && bonusLists.includes(i)
+                    ? () => {} // 서버에서 불러온 값이면 빈 함수
+                    : type === 'MINUS' && minusLists.includes(i)
+                      ? () => {} // 서버에서 불러온 값이면 빈 함수
+                      : (value) => handleInputNumberChange(i.pointId, value, type) // 클라이언트에서 추가된 값이면 handleInputNumberChange 사용
+                }
                 placeholder={'넘버'}
                 type={'textBox7'}
+                readOnly={(type === 'BONUS' && bonusLists.includes(i)) || (type === 'MINUS' && minusLists.includes(i))} // 서버에서 불러온 값일 때 readOnly 설정
               />
               <h1 className='H4 ml-12 text-gray-grayscale50'>점</h1>
             </div>

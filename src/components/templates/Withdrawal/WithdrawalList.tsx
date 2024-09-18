@@ -9,6 +9,7 @@ type Props = {
   isLoading: boolean;
   isEndReached: boolean;
   setSize: (size: number | ((size: number) => number)) => void;
+  isSearch: boolean;
 };
 
 const WithdrawalsList = ({ list, isLoading, isEndReached, setSize }: Props) => {
@@ -65,6 +66,8 @@ const WithdrawalsList = ({ list, isLoading, isEndReached, setSize }: Props) => {
             }
           })}
         </tbody>
+      ) : isLoading ? (
+        <tbody></tbody>
       ) : (
         <tbody>
           <NoneList colspan={6} />

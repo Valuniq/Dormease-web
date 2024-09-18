@@ -6,9 +6,10 @@ type Props = {
   input: string;
   setInput: (id: string) => void;
   placeholder: string;
+  handleSearch?: () => void;
 };
 
-const SearchTextBox = ({ input, setInput, placeholder }: Props) => {
+const SearchTextBox = ({ input, setInput, placeholder, handleSearch }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -23,8 +24,20 @@ const SearchTextBox = ({ input, setInput, placeholder }: Props) => {
         type='text'
         value={input}
         onChange={handleChange}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleSearch && handleSearch();
+          }
+        }}
       />
-      <Image src={SearchIcon} width={18} height={18} className='ml-auto mr-9 object-contain' alt='SearchIcon' />
+      <Image
+        src={SearchIcon}
+        width={18}
+        height={18}
+        className='ml-auto mr-9 object-contain'
+        alt='SearchIcon'
+        onClick={() => handleSearch && handleSearch()}
+      />
     </div>
   );
 };

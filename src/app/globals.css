@@ -184,6 +184,7 @@
   .scrollbar-table {
     -ms-overflow-style: none;
   }
+
   .noti-file-scrollbar::-webkit-scrollbar {
     width: 5px; /* 스크롤바 너비 */
     height: 5px; /* 수평 스크롤바 높이 */

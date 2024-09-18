@@ -35,16 +35,19 @@ export type PointListResponseInfo = {
 
 // * 사생 상벌점 내역 조회
 export type ResidentPointResponse = {
-  pagdInfo: PageInfo;
-  userPointDetailRes: ResidentPointResponseUserPointDetailRes[];
-  bonusPoint: number;
-  minusPoint: number;
+  check: boolean;
+  information: {
+    pageInfo: PageInfo;
+    userPointDetailRes: ResidentPointResponseUserPointDetailRes[];
+    bonusPoint: number;
+    minusPoint: number;
+  };
 };
 
 export type ResidentPointResponseUserPointDetailRes = {
   userPointId: number;
   content: string;
-  createdAt: string;
+  createdDate: string;
   score: number;
-  pointType: number;
+  pointType: 'BONUS' | 'MINUS';
 };

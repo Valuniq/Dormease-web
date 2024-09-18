@@ -2,7 +2,7 @@ import tokenManager from '@/utils/tokenManager';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/tokenKey';
 import { useRouter } from 'next/router';
 
-const FetchWithTokens = async (url: string, options: RequestInit = {}) => {
+const fetchWithTokens = async (url: string, options: RequestInit = {}) => {
   const token = tokenManager.getToken(ACCESS_TOKEN);
   if (!token) {
     throw new Error('No access token found');
@@ -34,4 +34,4 @@ const FetchWithTokens = async (url: string, options: RequestInit = {}) => {
   return response.json();
 };
 
-export default FetchWithTokens;
+export default fetchWithTokens;

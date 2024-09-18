@@ -1,6 +1,6 @@
 import { WithdrawalListResponse, WithdrawalListResponseDataList } from '@/types/withdrawal';
 import { BASE_URL } from '@/constants/path';
-import swrWithTokens from '@/utils/fetchWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWRInfinite from 'swr/infinite';
 
 export const useWithdrawalList = () => {
@@ -9,23 +9,23 @@ export const useWithdrawalList = () => {
     return `${BASE_URL}/api/v1/web/users/management/delete?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, fetchWithTokens);
 
   const withdrawalData: WithdrawalListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalListResponseDataList[])
     : [];
 
   const isLoadingInitialData = !data && !error;
-  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isLoading = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = data?.[0]?.information.dataList.length === 0;
-  const isReachingEnd =
+  const isEndReached =
     isEmpty ||
     (data &&
       data[data.length - 1]?.information.pageInfo.currentPage ===
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { withdrawalData, error, isLoadingMore, size, setSize, isReachingEnd };
+  return { withdrawalData, error, isLoading, size, setSize, isEndReached };
 };
 
 export const useWithdrawalSearch = (keyword: string) => {
@@ -34,21 +34,21 @@ export const useWithdrawalSearch = (keyword: string) => {
     return `${BASE_URL}/api/v1/web/users/management/delete/search?page=${pageIndex + 1}&keyword=${keyword}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize } = useSWRInfinite<WithdrawalListResponse>(getKey, fetchWithTokens);
 
-  const withdrawalSearchData: WithdrawalListResponseDataList[] = data
+  const withdrawalData: WithdrawalListResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as WithdrawalListResponseDataList[])
     : [];
 
   const isLoadingInitialData = !data && !error;
-  const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isLoading = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = data?.[0]?.information.dataList.length === 0;
-  const isReachingEnd =
+  const isEndReached =
     isEmpty ||
     (data &&
       data[data.length - 1]?.information.pageInfo.currentPage ===
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { withdrawalSearchData, error, isLoadingMore, size, setSize, isReachingEnd };
+  return { withdrawalData, error, isLoading, size, setSize, isEndReached };
 };

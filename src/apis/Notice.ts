@@ -1,9 +1,7 @@
 import { BASE_URL } from '../constants/path';
 import { noticeResponse, noticeResponseDataList } from '../types/notice';
-
 import useSWRInfinite from 'swr/infinite';
-
-import swrWithTokens from '@/utils/fetchWithTokens';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 
 export const useInfiniteNotifications = () => {
@@ -12,7 +10,7 @@ export const useInfiniteNotifications = () => {
     return `${BASE_URL}/api/v1/web/notifications/ANNOUNCEMENT?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize, mutate } = useSWRInfinite<noticeResponse>(getKey, fetchWithTokens);
 
   const notificationsData: noticeResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as noticeResponseDataList[])
@@ -32,7 +30,7 @@ export const useInfiniteNotifications = () => {
 };
 
 export const postNotification = async (data: FormData) => {
-  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+  const response = await fetchWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
     method: 'POST',
     body: data,
   });
@@ -41,7 +39,10 @@ export const postNotification = async (data: FormData) => {
 };
 
 export const useNoticeDetail = (id: number) => {
-  const { data, error } = useSWR(id ? `${BASE_URL}/api/v1/web/notifications/notification/${id}` : null, swrWithTokens);
+  const { data, error } = useSWR(
+    id ? `${BASE_URL}/api/v1/web/notifications/notification/${id}` : null,
+    fetchWithTokens,
+  );
   return {
     data,
     error,
@@ -50,7 +51,7 @@ export const useNoticeDetail = (id: number) => {
 };
 
 export const deleteNotice = async (id: number) => {
-  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications/notification/${id}`, {
+  const response = await fetchWithTokens(`${BASE_URL}/api/v1/web/notifications/notification/${id}`, {
     method: 'DELETE',
   });
 
@@ -58,7 +59,7 @@ export const deleteNotice = async (id: number) => {
 };
 
 export const patchNotification = async (data: FormData) => {
-  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+  const response = await fetchWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
     method: 'PATCH',
     body: data,
   });

@@ -1,9 +1,8 @@
 import { supportResponse, supportResponseDataList } from '../types/support';
 import { BASE_URL } from '../constants/path';
-
 import useSWRInfinite from 'swr/infinite';
-import swrWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
+import fetchWithTokens from '@/utils/fetchWithTokens';
 
 export const useInfiniteSupport = () => {
   const getKey = (pageIndex: number, previousPageData: supportResponse) => {
@@ -11,7 +10,7 @@ export const useInfiniteSupport = () => {
     return `${BASE_URL}/api/v1/web/notifications/FAQ?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<supportResponse>(getKey, swrWithTokens);
+  const { data, error, size, setSize } = useSWRInfinite<supportResponse>(getKey, fetchWithTokens);
 
   const faqData: supportResponseDataList[] = data
     ? data.reduce((acc, cur) => acc.concat(cur.information.dataList), [] as supportResponseDataList[])
@@ -31,7 +30,7 @@ export const useInfiniteSupport = () => {
 };
 
 export const postFaq = async (data: FormData) => {
-  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+  const response = await fetchWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
     method: 'POST',
     body: data,
   });
@@ -40,7 +39,10 @@ export const postFaq = async (data: FormData) => {
 };
 
 export const useFaqDetail = (id: number) => {
-  const { data, error } = useSWR(id ? `${BASE_URL}/api/v1/web/notifications/notification/${id}` : null, swrWithTokens);
+  const { data, error } = useSWR(
+    id ? `${BASE_URL}/api/v1/web/notifications/notification/${id}` : null,
+    fetchWithTokens,
+  );
   return {
     data,
     error,
@@ -49,14 +51,14 @@ export const useFaqDetail = (id: number) => {
 };
 
 export const deleteFaq = async (id: number) => {
-  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications/notification/${id}`, {
+  const response = await fetchWithTokens(`${BASE_URL}/api/v1/web/notifications/notification/${id}`, {
     method: 'DELETE',
   });
 
   return response;
 };
 export const patchFaq = async (data: FormData) => {
-  const response = await swrWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
+  const response = await fetchWithTokens(`${BASE_URL}/api/v1/web/notifications`, {
     method: 'PATCH',
     body: data,
   });
