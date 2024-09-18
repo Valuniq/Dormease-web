@@ -95,6 +95,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
     if (buildingInfoList.check) {
       setBuildingInfo(buildingInfoList.information);
       setMemoText(buildingInfoList.information.memo);
+      await getFloor(id);
     } else {
       setBuildingInfo({
         name: '',
@@ -108,16 +109,39 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
     }
   };
 
+  //초기 건물 데이터 불러오기
   useEffect(() => {
-    const initialFetch = async () => {
+    if (!selectBuilding.id) return;
+
+    const fetchBuildingData = async () => {
       setMounted(true);
-      if (selectBuilding.id) {
-        await fetchBuildingInfo(selectBuilding.id);
+      const buildingInfoList = await getDormInfoList(selectBuilding.id);
+
+      if (buildingInfoList.check) {
+        setBuildingInfo(buildingInfoList.information);
+        setMemoText(buildingInfoList.information.memo);
+
+        const buildingFloorList = await getDormFloorList(selectBuilding.id);
+        setFloorList(buildingFloorList.information);
+
+        const defaultFloor = buildingFloorList.information.length > 0 ? 999 : 0;
+        setSelectFloor(defaultFloor);
+        await getRoom(selectBuilding.id, defaultFloor);
+      } else {
+        setBuildingInfo({
+          name: '',
+          imageUrl: null,
+          fullRoomCount: 0,
+          roomCount: 0,
+          currentPeopleCount: 0,
+          dormitorySize: 0,
+          memo: null,
+        });
       }
     };
 
-    initialFetch();
-  }, [selectBuilding, setMounted]);
+    fetchBuildingData();
+  }, [selectBuilding.id, setMounted]);
 
   //건물 층 목록 불러오기
   const getFloor = async (id: number) => {
@@ -126,10 +150,10 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
     //빌딩에 층이 없을 때는 0(층), 있을 때는 999(전체)
     if (buildingFloorList.information.length > 0) {
       setSelectFloor(999);
-      getRoom(id, 999);
+      await getRoom(id, 999);
     } else {
       setSelectFloor(0);
-      getRoom(id, 0);
+      await getRoom(id, 0);
     }
   };
 
@@ -170,8 +194,8 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
   };
 
   //미배정 사생 조회
-  const getRoomNotAssigned = async (id: number) => {
-    const roomNotAssignedList = await getRoomNotAssignedList(id);
+  const getRoomNotAssigned = async (roomId: number) => {
+    const roomNotAssignedList = await getRoomNotAssignedList(roomId);
     if (roomNotAssignedList.check) {
       setRoomNotAssignedList(roomNotAssignedList.information);
     } else {
@@ -269,12 +293,10 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
       getFloor(pendingBuilding.building.id);
       setFloorIsOn(false);
       fetchBuildingInfo(pendingBuilding.building.id);
-      getRoomNotAssigned(pendingBuilding.building.id);
     } else if (pendingBuilding.floor) {
       //층 이동
       setSelectFloor(pendingBuilding.floor);
       getRoom(selectBuilding.id, pendingBuilding.floor);
-      getRoomNotAssigned(selectBuilding.id);
     }
     //저장해둔 데이터 초기화
     setEditAssign(false);
@@ -385,6 +407,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                       setListClick(0);
                     } else {
                       getRoomAssigned(roomId);
+                      getRoomNotAssigned(roomId);
                     }
                   }}
                   onStudentClick={onStudentClick}
@@ -449,7 +472,6 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                     getFloor(id);
                     setFloorIsOn(false);
                     fetchBuildingInfo(id);
-                    getRoomNotAssigned(id);
                     setListClick(0);
                   }
                 }}
