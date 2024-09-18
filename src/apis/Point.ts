@@ -42,7 +42,7 @@ export const useInfinitePointMember = (sortBy: string = 'name', isAscending: boo
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { userData, error, isLoadingMore, size, setSize, isEndReached, mutate };
+  return { userData, error, isLoadingMore, size, setSize, isEndReached, isLoadingInitialData, mutate };
 };
 
 // 사생 검색 및 정렬
@@ -77,7 +77,7 @@ export const useInfinitePointMemberSearch = (keyword: string, sortBy: string = '
         data[data.length - 1]?.information.pageInfo.totalPage) ||
     false;
 
-  return { userData, error, isLoadingMore, size, setSize, isEndReached, mutate };
+  return { userData, error, isLoadingMore, size, setSize, isEndReached, isLoadingInitialData, mutate };
 };
 
 // * 사생 상벌점 부여
@@ -94,19 +94,19 @@ export const postMemberPoint = async (residentId: number, points: { pointId: num
 
 // 무한 스크롤을 위한 사생 상/벌점 내역 상세 조회
 export const useInfinitePointsByResidentId = (residentId: number) => {
-  const getKey = (pageIndex: number, previousPageData: ResidentPointResponse | null) => {
-    if (
-      previousPageData &&
-      previousPageData.information.pageInfo.currentPage >= previousPageData.information.pageInfo.totalPage
-    ) {
-      return null; // 모든 페이지를 불러왔을 때 멈춤
-    }
-    return `${BASE_URL}/api/v1/web/points/${residentId}?page=${pageIndex + 1}`; // 다음 페이지의 URL 생성
+  const getKey = (pageIndex: number, previousPageData: ResidentPointResponse) => {
+    if (pageIndex === 0) return `${BASE_URL}/api/v1/web/points/${residentId}?page=1`;
+    if (previousPageData && previousPageData.information.userPointDetailRes.length === 0) return null;
+    return `${BASE_URL}/api/v1/web/points/${residentId}?page=${pageIndex + 1}`;
   };
 
-  const { data, error, size, setSize, isValidating } = useSWRInfinite<ResidentPointResponse>(getKey, fetchWithTokens, {
-    initialSize: 1,
-  });
+  const { data, error, size, setSize, mutate, isValidating } = useSWRInfinite<ResidentPointResponse>(
+    getKey,
+    fetchWithTokens,
+    {
+      initialSize: 1,
+    },
+  );
 
   const allPenaltyLists: ResidentPointResponseUserPointDetailRes[] = data
     ? data.reduce(
@@ -116,14 +116,16 @@ export const useInfinitePointsByResidentId = (residentId: number) => {
     : [];
 
   const isLoadingInitialData = !data && !error;
-  const isLoadingMore =
-    isLoadingInitialData || (size > 0 && isValidating && data && typeof data[size - 1] === 'undefined');
+  const isLoading = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isEmpty = data?.[0]?.information.userPointDetailRes.length === 0;
   const isEndReached =
-    data &&
-    data[data.length - 1]?.information.pageInfo.currentPage >= data[data.length - 1]?.information.pageInfo.totalPage;
+    isEmpty ||
+    (data &&
+      data[data.length - 1]?.information.pageInfo.currentPage ===
+        data[data.length - 1]?.information.pageInfo.totalPage) ||
+    false;
 
-  return { data, allPenaltyLists, error, isLoadingMore, size, setSize, isEndReached };
+  return { data, allPenaltyLists, error, isLoading, size, setSize, isEndReached, isLoadingInitialData, mutate };
 };
 
 // * 상/벌점 리스트 조회
@@ -167,7 +169,7 @@ export const deleteResidentsPointsDetail = async (residentId: number, userPointI
     },
     body: JSON.stringify(
       userPointIds.map((id) => ({
-        userPointID: id,
+        userPointId: id,
       })),
     ),
   });

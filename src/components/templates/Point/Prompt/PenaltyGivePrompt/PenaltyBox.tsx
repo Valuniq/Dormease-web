@@ -39,9 +39,9 @@ const PenaltyBox = ({ type, onSelectedChange }: Props) => {
         {(type === 'BONUS' ? bonusPoints : minusPoints).map((i, index) => (
           <div key={index} className='box-border flex items-center  pl-28 h-45  mb-17'>
             <div className='w-10 h-10 rounded-full bg-gray-grayscale50 mr-8' />
-            <MediumInputText placeholder={'내역을 입력하세요.'} input={i.content} />
+            <div className=' H4  w-260 h-26  pb-6 text-gray-grayscale50'>{i.content}</div>
             <div className='ml-28 w-50 flex justify-center items-center mr-20 whitespace-nowrap'>
-              <h1 className='H4 align-center  text-gray-grayscale50'>{i.score}점</h1>
+              <h1 className='H4 align-center text-gray-grayscale50'>{i.score}점</h1>
             </div>
             <Checkbox
               isChecked={selectedPoints.includes(i.pointId)}

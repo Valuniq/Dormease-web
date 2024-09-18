@@ -9,13 +9,17 @@ import PenaltyManagementPrompt from '@/components/templates/Point/Prompt/Penalty
 import AlertPrompt from '@/components/templates/Point/Prompt/AlertPrompt/AlertPrompt';
 import PointList from '@/components/templates/Point/List/PointList';
 import { usePointManagement } from '@/hooks/usePointManagement';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
 const Page = () => {
   const {
-    searchTerm,
-    handleSearchChange,
+    input,
+    setInput,
+    searchKeyword,
+    handleSearch,
     userData,
     isLoadingMore,
+    isLoadingInitialData,
     setSize,
     isEndReached,
     sortConfig,
@@ -31,7 +35,7 @@ const Page = () => {
     setSelectedMinusPoints,
   } = usePointManagement();
 
-  const { isOpened, handleOpenModal } = usePointManagementModal();
+  const { isOpened, handleOpenModal, handleCloseModal } = usePointManagementModal();
 
   return (
     <>
@@ -42,10 +46,12 @@ const Page = () => {
       )}
       {isOpened.pointManagementConfirm && (
         <BackDrop isOpen={isOpened.pointManagementConfirm}>
-          <AlertPrompt
+          <ConfirmPrompt
             variant={'blue'}
             label={'상/벌점 리스트를 저장하시겠습니까?'}
-            modalName={'pointManagementConfirm'}
+            onCancel={() => {
+              handleCloseModal('pointManagementConfirm'), handleOpenModal('pointManagement');
+            }}
             onConfirm={handlePointManagemengConfirm}
           />
         </BackDrop>
@@ -62,10 +68,12 @@ const Page = () => {
       )}
       {isOpened.pointGiveConfirm && (
         <BackDrop isOpen={isOpened.pointGiveConfirm}>
-          <AlertPrompt
+          <ConfirmPrompt
             variant={'blue'}
             label={'선택한 인원에게 상/벌점을 부여하시겠습니까?'}
-            modalName={'pointGiveConfirm'}
+            onCancel={() => {
+              handleCloseModal('pointGiveConfirm'), handleOpenModal('pointGive');
+            }}
             onConfirm={handleGrantPoints}
           />
         </BackDrop>
@@ -73,7 +81,7 @@ const Page = () => {
       <div className='w-[1250px]'>
         <div className='flex items-center justify-between mb-40'>
           <h1 className='H0 text-gray-grayscale50'>상/벌점 관리</h1>
-          <SearchTextBox input={searchTerm} setInput={handleSearchChange} placeholder={'이름 또는 학번'} />
+          <SearchTextBox input={input} setInput={setInput} handleSearch={handleSearch} placeholder={'이름 또는 학번'} />
         </div>
         <div className='w-full bg-red-red40 ml-auto '></div>
         <PointList
@@ -81,6 +89,7 @@ const Page = () => {
           sortConfig={sortConfig}
           setSortConfig={setSortConfig}
           isLoading={isLoadingMore ?? false}
+          isLoadingInitialData={isLoadingInitialData}
           isEndReached={isEndReached}
           setSize={setSize}
         />
