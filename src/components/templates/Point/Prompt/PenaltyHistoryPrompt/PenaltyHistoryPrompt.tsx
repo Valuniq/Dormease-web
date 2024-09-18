@@ -1,11 +1,10 @@
 'use client';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
-import { ResidentPointResponseUserPointDetailRes } from '@/types/point';
 import PromptHeader from '../PromptHeader/PromptHeader';
 import PenaltyHistoryListBody from './PenaltyHistoryListBody';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import { deletePointsDetail, deleteResidentsPointsDetail, useInfinitePointsByResidentId } from '@/apis/point';
+import { useInfinitePointsByResidentId } from '@/apis/point';
 import { Fragment, useState } from 'react';
 import { pointManagementModalState, selectedPointsForPenaltyState } from '@/recoil/point';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -15,44 +14,41 @@ type Props = {
 };
 
 const PenaltyHistoryPrompt = ({ residentId }: Props) => {
+  // 선택된 포인트 상태 관리
   const [selectedPoints, setSelectedPoints] = useRecoilState(selectedPointsForPenaltyState);
-  const [isAllChecked, setIsAllChecked] = useState(false);
+  const [isAllChecked, setIsAllChecked] = useState(false); // 전체 선택 체크박스 상태 관리
   const setPointManagementModal = useSetRecoilState(pointManagementModalState);
-  const { allPenaltyLists, data, error, isLoadingMore, size, setSize, isEndReached } =
-    useInfinitePointsByResidentId(residentId);
 
-  const handleIntersect = () => {
-    if (!isEndReached && !isLoadingMore) {
-      console.log(`Requesting next page: ${size + 1}`); // 디버깅용 로그
-      setSize(size + 1); // 페이지 증가
-    }
-  };
+  // 무한 스크롤을 사용하여 데이터 가져오기
+  const { data, allPenaltyLists, isLoading, size, setSize, isEndReached } = useInfinitePointsByResidentId(residentId);
 
   const lastElementRef = useInfiniteScroll({
-    isLoading: isLoadingMore ?? false, // undefined를 방지하기 위해 기본값을 false로 설정
-    isEndReached: isEndReached ?? false, // undefined를 방지하기 위해 기본값을 false로 설정
-    onIntersect: handleIntersect,
+    isLoading: isLoading ?? false, // undefined일 경우 false로 설정
+    isEndReached,
+    onIntersect: () => setSize((prevSize) => prevSize + 1),
   });
 
+  // 전체 선택 체크박스 핸들러
   const handleSelectAll = () => {
-    setIsAllChecked((prev) => !prev);
+    setIsAllChecked((prev) => !prev); // 전체 선택 상태 변경
     if (!isAllChecked) {
-      const allIds = allPenaltyLists.map((item) => item.userPointId);
+      const allIds = allPenaltyLists.map((item) => item.userPointId); // 모든 항목의 ID 가져오기
       setSelectedPoints(allIds);
     } else {
-      setSelectedPoints([]);
+      setSelectedPoints([]); // 선택 해제 시 빈 배열로 설정
     }
   };
 
+  // 개별 포인트 선택 핸들러
   const handleSelectPoint = (id: number, isChecked: boolean) => {
     if (isChecked) {
-      setSelectedPoints((prev) => [...prev, id]);
+      setSelectedPoints((prev) => [...prev, id]); // 선택된 포인트 추가
     } else {
-      setSelectedPoints((prev) => prev.filter((pointId) => pointId !== id));
+      setSelectedPoints((prev) => prev.filter((pointId) => pointId !== id)); // 선택 해제된 포인트 제거
     }
   };
 
-  // `bonusPoint`와 `minusPoint`를 서버로부터 직접 받아와서 사용
+  // 서버로부터 직접 받아온 상점 및 벌점 정보
   const bonusPoint = data && data[0]?.information.bonusPoint;
   const minusPoint = data && data[0]?.information.minusPoint;
 
@@ -82,22 +78,26 @@ const PenaltyHistoryPrompt = ({ residentId }: Props) => {
           </thead>
           <tbody>
             {allPenaltyLists.length > 0 ? (
-              allPenaltyLists.map((p, index) => (
-                <Fragment key={index}>
-                  {/* 여백용 tr */}
-                  <tr className='h-19' />
-                  <tr>
-                    <PenaltyHistoryListBody
-                      date={p.createdDate}
-                      reason={p.content}
-                      score={p.score}
-                      division={p.pointType}
-                      isChecked={selectedPoints.includes(p.userPointId)}
-                      setIsChecked={(isChecked) => handleSelectPoint(p.userPointId, isChecked)}
-                    />
-                  </tr>
-                </Fragment>
-              ))
+              <>
+                {allPenaltyLists.map((p, index) => (
+                  <Fragment key={index}>
+                    {/* 여백용 tr */}
+                    <tr className='h-19' />
+                    <tr>
+                      <PenaltyHistoryListBody
+                        date={p.createdDate}
+                        reason={p.content}
+                        score={p.score}
+                        division={p.pointType}
+                        isChecked={selectedPoints.includes(p.userPointId)}
+                        setIsChecked={(isChecked) => handleSelectPoint(p.userPointId, isChecked)}
+                      />
+                    </tr>
+                  </Fragment>
+                ))}
+
+                <tr ref={lastElementRef} />
+              </>
             ) : (
               <tr>
                 <td colSpan={5} className='text-center'>
@@ -109,8 +109,6 @@ const PenaltyHistoryPrompt = ({ residentId }: Props) => {
             <tr className='h-19' />
           </tbody>
         </table>
-        {/* 마지막 요소의 ref 설정 */}
-        <div ref={lastElementRef} />
       </div>
       <div className='mt-17 flex ml-auto mr-29 w-393 justify-between'>
         <BtnMiniVariant

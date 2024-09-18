@@ -5,9 +5,10 @@ type Props = {
   placeholder: string;
   input: string;
   setInput?: (input: string) => void;
+  readOnly?: boolean;
 };
 
-const MediumInputText = ({ placeholder, input, setInput }: Props) => {
+const MediumInputText = ({ placeholder, input, setInput, readOnly }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput && setInput(e.target.value);
   };
@@ -20,6 +21,7 @@ const MediumInputText = ({ placeholder, input, setInput }: Props) => {
       value={input}
       onChange={handleChange}
       style={{ backgroundColor: 'inherit' }}
+      readOnly={readOnly}
     />
   );
 };
