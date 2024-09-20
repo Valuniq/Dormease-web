@@ -12,11 +12,14 @@ type MealTicket = {
 const TicketPriceSetting = () => {
   const [mealTickets, setMealTickets] = useState<MealTicket[]>([]);
 
-  // 식권 항목 추가
+  // 식권 항목 추가 (최대 5개)
   const handleTicket = () => {
-    setMealTickets([...mealTickets, { meal: '', price: '' }]);
+    if (mealTickets.length < 5) {
+      setMealTickets([...mealTickets, { meal: '', price: '' }]);
+    } else {
+      alert('식권은 최대 5개까지만 추가할 수 있습니다.');
+    }
   };
-
   // 입력 값 변경 처리
   const handleInputChange = (index: number, field: keyof MealTicket, value: string) => {
     const updatedTickets = [...mealTickets];

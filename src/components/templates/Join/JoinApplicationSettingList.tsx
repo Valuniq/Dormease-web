@@ -4,8 +4,8 @@ import React from 'react';
 
 const JoinApplicationSettingList = () => {
   return (
-    <table className='w-full table-auto align-center'>
-      <thead className='H4 text-gray-grayscale50 border-b-2 border-gray-300'>
+    <table className='w-full table-auto align-center '>
+      <thead className='H4 text-gray-grayscale50 border-y-1 border-y-gray-grayscale50'>
         <tr>
           <th className='px-4 py-2'>제 목</th>
           <th className='px-4 py-2'>시작일시</th>

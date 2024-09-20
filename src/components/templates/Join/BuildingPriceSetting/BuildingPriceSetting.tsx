@@ -20,8 +20,8 @@ const BuildingPriceSetting = () => {
           <AddPeriodBtn />
         </div>
       )}
-      <div className={`${isActive ? 'opacity-100' : 'opacity-50 pointer-events-none'} text-center `}>
-        <div className='w-full flex items-center justify-around mb-20'>
+      <div className={`${isActive ? 'opacity-100' : 'opacity-50 pointer-events-none'} flex flex-col items-center `}>
+        <div className='w-112 flex items-center justify-around  mb-20'>
           이름
           <TextBoxes
             input={''}
@@ -33,25 +33,25 @@ const BuildingPriceSetting = () => {
           />
         </div>
         <div className='mb-8'>거주기간</div>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between w-143'>
           <TextBoxes
             input={''}
             setInput={function (id: string): void {
               throw new Error('Function not implemented.');
             }}
-            placeholder={'기간 선택'}
+            placeholder={'입사 날짜'}
             type={'textBox5'}
           />
           <Image src={calandarIcon} alt='calendar' />
         </div>
         ~
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between w-143 mb-21'>
           <TextBoxes
             input={''}
             setInput={function (id: string): void {
               throw new Error('Function not implemented.');
             }}
-            placeholder={'기간 선택'}
+            placeholder={'퇴사 날짜'}
             type={'textBox5'}
           />
           <Image src={calandarIcon} alt='calendar' />

@@ -4,7 +4,7 @@ import PeriodSetting from './PeriodSetting';
 
 const DefaultSetting = () => {
   return (
-    <div className='px-8 flex items-center justify-between border-y-gray-grayscale50 border-y-1 py-20'>
+    <div className='px-8 flex items-center justify-between border-t-gray-grayscale50 border-t-1 py-20'>
       <PeriodSetting
         label={'입사 신청 기간'}
         input={''}
