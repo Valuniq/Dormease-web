@@ -1,16 +1,20 @@
 'use client';
-import AddMealticketBtn from '@/components/atoms/AllBtn/AddMealticketBtn/AddMealticketBtn';
+
 import BtnExtraLarge from '@/components/atoms/AllBtn/BtnExtraLarge/BtnExtraLarge';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
-import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
 import JoinSettingInputText from '@/components/atoms/InputText/JoinSettingInputText/JoinSettingInputText';
-import BuildingPriceSetting from '@/components/templates/Join/BuildingPriceSetting';
-import DepositSetting from '@/components/templates/Join/DepositSetting';
+import BuildingPriceSetting from '@/components/templates/Join/BuildingPriceSetting/BuildingPriceSetting';
 import JoinApplicationSettingList from '@/components/templates/Join/JoinApplicationSettingList';
-import PeriodSetting from '@/components/templates/Join/PeriodSetting';
 import React from 'react';
+import DefaultSetting from '@/components/templates/Join/DefaultSetting/DefaultSetting';
+import JoinDormList from '@/components/templates/Join/BuildingPriceSetting/JoinDormList';
+import TicketPriceSetting from '@/components/templates/Join/TicketPriceSetting/TicketPriceSetting';
+import { useGetJoinDormitories } from '@/apis/join';
 
 const Page = () => {
+  const { data: dormitories, error } = useGetJoinDormitories();
+  console.log('Dormitories Data:', dormitories);
+
   return (
     <div className='flex flex-col w-[1418px]'>
       <div className='H0 text-gray-grayscale50 flex items-center justify-center mb-32'>
@@ -26,13 +30,9 @@ const Page = () => {
           placeholder={'제목을 입력하세요.'}
         />
       </div>
-      <div className='px-8 flex items-center justify-between border-y-gray-grayscale50 border-y-1 py-20'>
-        <PeriodSetting label={'입사 신청 기간'} />
-        <PeriodSetting label={'입금 가능 기간'} />
-        <DepositSetting />
-      </div>
-      <div className='H4 w-full '>
-        <div className='w-full flex items-center border-b-1 border-b-gray-grayscale30'>
+      <DefaultSetting />
+      <div className='H4 w-full h-464'>
+        <div className='w-full h-48 flex items-center '>
           <h3 className='py-12 w-285 text-center border-r-1 border-r-gray-grayscale30'>수용 가능 인원</h3>
           <h3 className='py-12 w-[838px] text-center border-r-1 border-r-gray-grayscale30'>건물별 가격</h3>
           <div className='py-12 w-313 flex justify-around'>
@@ -40,80 +40,29 @@ const Page = () => {
             <h3>식권 가격</h3>
           </div>
         </div>
-        <div className='w-full flex h-415 overflow-scroll border-b-gray-grayscale50 border-b-1'>
-          <div className='w-281  px-16 border-r-1 border-r-gray-grayscale30 pt-16'>
+        <div className='w-full flex h-415 overflow-y-scroll border-b-gray-grayscale50 border-b-1'>
+          <div className='w-281 h-fit min-h-svh px-16 border-r-1 border-r-gray-grayscale30 pt-16'>
             <BtnExtraLarge label={'건물 추가로 돌아가기'} disabled={false} />
-            <div className='mt-165'>
-              <div className='mb-32 flex justify-between items-center H4 text-gray-grayscale50'>
-                <div className=''>3동 4인실</div>
-                <div className='w-134 flex items-center justify-around'>
-                  남
-                  <TextBoxes
-                    input={''}
-                    setInput={function (id: string): void {
-                      throw new Error('Function not implemented.');
-                    }}
-                    placeholder={'250'}
-                    type={'textBox3'}
-                  />
-                  명
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className='flex justify-between items-center H4 text-gray-grayscale50'>
-                <div className=''>3동 2인실</div>
-                <div className='w-134 flex items-center justify-around'>
-                  남
-                  <TextBoxes
-                    input={''}
-                    setInput={function (id: string): void {
-                      throw new Error('Function not implemented.');
-                    }}
-                    placeholder={'250'}
-                    type={'textBox3'}
-                  />
-                  명
-                </div>
-              </div>
-            </div>
+            {dormitories &&
+              dormitories.map((i) => (
+                <JoinDormList
+                  key={i.dormitoryRoomTypeId}
+                  dormitoryRoomTypeId={i.dormitoryRoomTypeId}
+                  dormitoryName={i.dormitoryName}
+                  roomSize={i.roomSize}
+                  gender={i.gender}
+                />
+              ))}
           </div>
-          <div className='w-[828px] flex items-center justify-around p-9 border-r-1 border-r-gray-grayscale30'>
+          <div className='w-[828px]  h-fit min-h-svh flex items-start justify-around p-9 border-r-1 border-r-gray-grayscale30'>
             <BuildingPriceSetting /> <BuildingPriceSetting /> <BuildingPriceSetting /> <BuildingPriceSetting />
           </div>
-          <div className='w-300 flex flex-col items-center  pt-26'>
-            <div className='w-300 flex justify-center items-start'>
-              <div className='flex items-center w-78 justify-between mr-9'>
-                <TextBoxes
-                  input={''}
-                  setInput={function (id: string): void {
-                    throw new Error('Function not implemented.');
-                  }}
-                  placeholder={'식권'}
-                  type={'textBox7'}
-                />
-                식
-              </div>
-              <div className='flex items-center justify-between'>
-                <TextBoxes
-                  input={''}
-                  setInput={function (id: string): void {
-                    throw new Error('Function not implemented.');
-                  }}
-                  placeholder={'금액 입력'}
-                  type={'textBox6'}
-                />
-                원
-              </div>
-            </div>
-
-            <div className='mt-20'>
-              <AddMealticketBtn />
-            </div>
+          <div className='w-303 px-10  h-fit min-h-svh flex items-start justify-center'>
+            <TicketPriceSetting />
           </div>
         </div>
       </div>
-      <div className='mb-10'>
+      <div className='mb-10 border-t-1 border-t-gray-grayscale30'>
         <JoinApplicationSettingList />
       </div>
       <div className='flex items-center justify-center w-full'>

@@ -6,7 +6,7 @@ import React from 'react';
 
 const JoinDormList = ({ dormitoryRoomTypeId, dormitoryName, roomSize, gender }: joinDormitoriesResponseInformation) => {
   return (
-    <div className='bg-red-red40  flex justify-between items-center H4 text-gray-grayscale50'>
+    <div className='flex justify-between items-center H4 text-gray-grayscale50'>
       <div className=''>
         {dormitoryName} {roomSize}인실
       </div>
