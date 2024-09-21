@@ -9,9 +9,10 @@ import Overlay from './Overlay';
 type Props = {
   isActive: boolean;
   isEditMode: boolean;
+  setIsEditMode: () => void;
 };
 
-const ManagerPwBox = ({ isActive, isEditMode }: Props) => {
+const ManagerPwBox = ({ isActive, isEditMode, setIsEditMode }: Props) => {
   const [currentPassword, setCurrentPassword] = useState(''); // 현재 비밀번호
   const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
   const [confirmPassword, setConfirmPassword] = useState(''); // 새 비밀번호 확인
@@ -35,7 +36,10 @@ const ManagerPwBox = ({ isActive, isEditMode }: Props) => {
           <div className='mb-12'>
             <div className='flex items-center justify-between mb-15'>
               <span className='caption-1 text-gray-grayscale40'>새 비밀번호</span>
-              <button className='w-68 h-30 rounded-10 bg-red-red10 text-white caption-1 flex items-center justify-center'>
+              <button
+                onClick={setIsEditMode}
+                className='w-68 h-30 rounded-10 bg-red-red10 text-white caption-1 flex items-center justify-center'
+              >
                 취소
               </button>
             </div>
@@ -44,6 +48,7 @@ const ManagerPwBox = ({ isActive, isEditMode }: Props) => {
               isDisabled={false}
               input={newPassword}
               setInput={setNewPassword}
+              isActive={true}
             />
             <div className='mb-12' />
             <PasswordShowAndHideInputText
@@ -51,13 +56,15 @@ const ManagerPwBox = ({ isActive, isEditMode }: Props) => {
               isDisabled={false}
               input={confirmPassword}
               setInput={setConfirmPassword}
+              isActive={true}
             />
           </div>
-          <p className='mb-44 caption-2 text-gray-grayscale-50 w-273'>{RES_ACCOUNTS.password.defaultLabel}</p>
+          <p className='caption-2 text-gray-grayscale-50 w-273'>{RES_ACCOUNTS.password.defaultLabel}</p>
           {errorMessage && <p className='text-red-red20 caption-2 text-center'>{errorMessage}</p>}
           <button
+            onClick={setIsEditMode}
             disabled={!(currentPassword && newPassword && confirmPassword && !errorMessage)}
-            className={`transition-all duration-300 ease-in-out mt-9 w-293 h-50 rounded-10 flex items-center justify-center H4 text-white ${
+            className={`mt-auto mb-20 transition-all duration-300 ease-in-out w-293 h-50 rounded-10 flex items-center justify-center H4 text-white ${
               currentPassword && newPassword && confirmPassword && !errorMessage
                 ? 'bg-blue-blue30'
                 : 'bg-blue-blue20 cursor-not-allowed'
@@ -75,10 +82,14 @@ const ManagerPwBox = ({ isActive, isEditMode }: Props) => {
               isDisabled={true}
               input={currentPassword}
               setInput={setCurrentPassword}
+              isActive={isActive}
             />
           </div>
-          <p className='mb-138 caption-2 text-gray-grayscale30 w-273'>{RES_ACCOUNTS.password.defaultLabel}</p>
-          <button className='w-293 h-50 rounded-10 bg-gray-grayscale10 border-1 border-bg-gray-grayscale20 flex items-center justify-center H4 text-gray-grayscale40'>
+          <p className='caption-2 text-gray-grayscale30 w-273'>{RES_ACCOUNTS.password.defaultLabel}</p>
+          <button
+            onClick={setIsEditMode}
+            className='w-293 mt-auto mb-20  h-50 rounded-10 bg-gray-grayscale10 border-1 border-bg-gray-grayscale20 flex items-center justify-center H4 text-gray-grayscale40'
+          >
             비밀번호 변경
           </button>
         </>

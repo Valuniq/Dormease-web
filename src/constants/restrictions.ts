@@ -25,4 +25,7 @@ export const RES_ACCOUNTS = {
       mismatch: '비밀번호가 서로 일치하지 않습니다.',
     },
   },
+  name: {
+    defaultLabel: '*관리자명은 공지사항과 FAQ 작성 시 표시됩니다.',
+  },
 };

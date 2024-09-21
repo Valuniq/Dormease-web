@@ -10,9 +10,10 @@ type Props = {
   isDisabled: boolean;
   input: string;
   setInput: (id: string) => void;
+  isActive: boolean;
 };
 
-const PasswordShowAndHideInputText = ({ placeholder, isDisabled, input, setInput }: Props) => {
+const PasswordShowAndHideInputText = ({ placeholder, isDisabled, input, setInput, isActive }: Props) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -33,7 +34,9 @@ const PasswordShowAndHideInputText = ({ placeholder, isDisabled, input, setInput
         value={input}
         onChange={handleChange}
         type={showPassword ? 'text' : 'password'}
-        className='w-293 h-50 rounded-10 bg-white outline-none text-gray-grayscale50 H3 placeholder:text-gray-grayscale20 pl-18 pr-40'
+        className={`w-293 h-50 rounded-10 outline-none text-gray-grayscale50 H3 placeholder:text-gray-grayscale20 pl-18 pr-40 ${
+          isActive ? 'bg-white' : 'bg-inherit'
+        }`}
       />
       {!isDisabled && input && (
         <Image
