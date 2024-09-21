@@ -6,6 +6,9 @@ import Overlay from './Overlay';
 import edit from '@public/images/Edit.png';
 import grayLogo from '@public/logo/GrayLogo.png';
 import { RES_ACCOUNTS } from '@/constants/restrictions';
+import { putAdminAccountName } from '@/apis/account';
+import { mutate } from 'swr';
+import { BASE_URL } from '@/constants/path';
 
 type Props = {
   id: string;
@@ -17,9 +20,29 @@ type Props = {
 
 const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props) => {
   const [newName, setNewName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // 이름 변경 처리
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewName(e.target.value);
   };
+
+  const handleSubmit = async () => {
+    if (newName.length > 0) {
+      try {
+        setIsSubmitting(true);
+        await putAdminAccountName(newName);
+        // 성공적으로 변경되면 SWR 캐시를 업데이트
+        mutate(`${BASE_URL}/api/v1/web/admin/account`);
+        setIsEditMode(); // 수정 모드 종료
+      } catch (error) {
+        console.error('이름 변경 중 오류가 발생했습니다.', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   return (
     <div className='relative w-333 h-366 rounded-10 bg-gray-grayscale5 flex flex-col items-start pt-20 pl-16'>
       <Overlay isActive={isActive} />
@@ -48,12 +71,15 @@ const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props
                 className='w-183 h-50 rounded-10 bg-white outline-none H3 placeholder:text-gray-grayscale30 text-gray-grayscale50 pl-18'
               />
               <button
-                disabled={newName.length > 0}
+                onClick={handleSubmit}
+                disabled={newName.length === 0 || isSubmitting}
                 className={`transition-all duration-300 ease-in-out  rounded-10 text-white H4 w-90 h-50 flex items-center justify-center ${
-                  newName.length > 0 ? 'bg-blue-blue30 cursor-pointer' : 'bg-blue-blue20 cursor-not-allowed'
+                  newName.length > 0 && !isSubmitting
+                    ? 'bg-blue-blue30 cursor-pointer'
+                    : 'bg-blue-blue20 cursor-not-allowed'
                 }`}
               >
-                수정완료
+                {isSubmitting ? '처리 중' : '수정완료'}
               </button>
             </div>
             <p className='caption-2 text-red-red20 mt-12'>{RES_ACCOUNTS.name.defaultLabel}</p>
