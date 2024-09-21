@@ -13,3 +13,16 @@ export const RES_NOTIFICATIONS = {
     maxCount: 5, // 파일 선택의 최대 개수
   },
 };
+
+// Accounts
+export const RES_ACCOUNTS = {
+  password: {
+    maxLength: 20,
+    minLength: 6,
+    defaultLabel: '영문 대문자와 소문자, 숫자, 특수문자 중 2가지 이상을 조합하여 6~20자로 입력해주세요.',
+    messages: {
+      invalid: '비밀번호가 기준에 맞지 않습니다.',
+      mismatch: '비밀번호가 서로 일치하지 않습니다.',
+    },
+  },
+};
