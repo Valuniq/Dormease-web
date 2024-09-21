@@ -44,7 +44,7 @@ const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props
                 type='text'
                 value={newName}
                 onChange={handleNameChange}
-                placeholder='김도미'
+                placeholder={name}
                 className='w-183 h-50 rounded-10 bg-white outline-none H3 placeholder:text-gray-grayscale30 text-gray-grayscale50 pl-18'
               />
               <button
@@ -68,11 +68,11 @@ const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props
           </div>
           <div className='pl-14'>
             <span className='caption-1 text-gray-grayscale40'>관리자명</span>
-            <div className='flex items-center mt-15 ml-8'>
-              <p className='H3 text-gray-grayscale50 mr-127 whitespace-nowrap'>{name}</p>
+            <div className='flex items-center mt-15 w-275 '>
+              <p className='H3 text-gray-grayscale50 whitespace-nowrap'>{name}</p>
               <button
                 onClick={setIsEditMode}
-                className='w-90 h-50 rounded-10 bg-gray-grayscale10 border-1 border-gray-grayscale20 flex items-center justify-center'
+                className='ml-auto w-90 h-50 rounded-10 bg-gray-grayscale10 border-1 border-gray-grayscale20 flex items-center justify-center'
               >
                 수정
                 <Image src={edit} alt='edit' width={24} height={24} className='object-contain ml-7' />

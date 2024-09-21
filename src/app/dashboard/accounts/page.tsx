@@ -1,4 +1,5 @@
 'use client';
+import { useAdminAccount } from '@/apis/account';
 import DormeaseInfoBox from '@/components/templates/Accounts/DormeaseInfoBox';
 import DormInfoBox from '@/components/templates/Accounts/DormInfoBox';
 import ManagerNameBox from '@/components/templates/Accounts/ManagerNameBox';
@@ -9,6 +10,7 @@ import { useRecoilState } from 'recoil';
 
 const Page = () => {
   const [activeAreaState, setActiveAreaState] = useRecoilState(accountsActiveAreaState);
+  const { data: adminAccount, error, isLoading } = useAdminAccount();
 
   // NameBox 활성화 상태 변경
   const toggleNameBox = () => {
@@ -38,11 +40,14 @@ const Page = () => {
         className={`w-[1079px] transition-all duration-500 ease-in-out h-594 shadow3 rounded-20 flex items-center justify-center gap-20 ${dormInfoActive ? 'bg-white' : 'bg-[rgba(0,0,0,0.25)]'}`}
       >
         <div className='flex flex-col items-center justify-center gap-20'>
-          <DormInfoBox dormInfo={''} isActive={dormInfoActive} />
+          <DormInfoBox
+            dormInfo={adminAccount?.information.schoolName || '관리자 학교 이름'}
+            isActive={dormInfoActive}
+          />
           <div className='flex gap-20'>
             <ManagerNameBox
-              id={'Dormease1234'}
-              name={'강승정'}
+              id={adminAccount?.information.loginId || '관리자 아이디'}
+              name={adminAccount?.information.adminName || '관리자 이름'}
               isActive={!activeAreaState.passwordBox} // PasswordBox가 편집 모드일 때 비활성화
               isEditMode={activeAreaState.namebox} // nameBox 편집 모드 상태
               setIsEditMode={toggleNameBox} // NameBox 편집 모드 토글 함수
