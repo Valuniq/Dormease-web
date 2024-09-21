@@ -8,9 +8,11 @@ type Props = {
   label: string;
   onConfirm: () => void;
   onCancel: () => void;
+  textLeft?: string;
+  textRight?: string;
 };
 
-const ConfirmPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
+const ConfirmPrompt = ({ variant, label, onConfirm, onCancel, textLeft, textRight }: Props) => {
   const getClassByVariant = (variant: string) => {
     switch (variant) {
       case 'blue':
@@ -38,8 +40,8 @@ const ConfirmPrompt = ({ variant, label, onConfirm, onCancel }: Props) => {
         ))}
       </h1>
       <div className='ml-auto mt-auto'>
-        <AlertBtn label={'취소'} onClick={onCancel} hoverColor={variant} />
-        <AlertBtn label={'확인'} onClick={onConfirm} hoverColor={variant} />
+        <AlertBtn label={textLeft || '취소'} onClick={onCancel} hoverColor={variant} />
+        <AlertBtn label={textRight || '확인'} onClick={onConfirm} hoverColor={variant} />
       </div>
     </div>
   );

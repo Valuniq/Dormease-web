@@ -21,7 +21,7 @@ import {
   DormSettingDetailRoomResponseInformation,
 } from '@/types/setting';
 import React, { useEffect, useRef, useState } from 'react';
-import { constSelector, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
@@ -87,6 +87,7 @@ const Page = () => {
       if (data.information.floorAndRoomNumberRes.length === 0) {
         if (addFloor.length === 0) {
           setSortedFloor([]);
+          setSelectedFloor(0);
           setNewFloor([{ floor: '', startRoomNumber: 1, endRoomNumber: '' }]);
         } else {
           setSortedFloor(addFloor);
@@ -440,8 +441,9 @@ const Page = () => {
                           }
                         }}
                         onClick={() => {
-                          if (editFilter) {
+                          if (editFilter && selectedFloor !== data.floor) {
                             setIsFilterModal(true);
+                            setDeleteSelectedFloor(Number(data.floor));
                           } else {
                             setSelectFilter(0);
                             setSelectedFloor(Number(data.floor));
@@ -766,12 +768,18 @@ const Page = () => {
       )}
       {isFilterModal && (
         <BackDrop isOpen={isFilterModal}>
-          <AlertPrompt
-            variant='blue'
-            label='일부 호실이 아직 설정되지 않았습니다.'
-            onConfirm={() => {
+          <ConfirmPrompt
+            variant='red'
+            label='작성중인 내용이 저장되지 않을 수 있습니다.'
+            onCancel={() => {
               setIsFilterModal(false);
+              setEditFilter(false);
+              if (deleteSelectedFloor) setSelectedFloor(deleteSelectedFloor);
+              setSelectFilter(0);
             }}
+            onConfirm={() => setIsFilterModal(false)}
+            textLeft='나가기'
+            textRight='취소'
           />
         </BackDrop>
       )}
