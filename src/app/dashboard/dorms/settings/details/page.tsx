@@ -21,7 +21,7 @@ import {
   DormSettingDetailRoomResponseInformation,
 } from '@/types/setting';
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { constSelector, useRecoilValue, useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
@@ -85,7 +85,12 @@ const Page = () => {
       }
       setBuildingName(data.information.name);
       if (data.information.floorAndRoomNumberRes.length === 0) {
-        setNewFloor([{ floor: '', startRoomNumber: 1, endRoomNumber: '' }]);
+        if (addFloor.length === 0) {
+          setSortedFloor([]);
+          setNewFloor([{ floor: '', startRoomNumber: 1, endRoomNumber: '' }]);
+        } else {
+          setSortedFloor(addFloor);
+        }
       }
     }
   }, [data, addFloor, selectedFloor]);
@@ -417,9 +422,9 @@ const Page = () => {
                         setEndInput={(value) => {
                           handleSetFloorInput(index, 'endRoomNumber', value, false);
                         }}
-                        isOne={index === 0} //첫번째인지
+                        isOne={false} //첫번째인지
                         pressOkBtn={true} //복제 버튼
-                        hovered={index === 0} //hover가 가능한지
+                        hovered={false} //hover가 가능한지
                         deleteDetailRoom={() => {
                           if (addFloor.some((item) => item.floor === data.floor)) {
                             setAddFloor((prev) => prev.filter((item) => item.floor !== data.floor));
@@ -428,11 +433,12 @@ const Page = () => {
                               delete updatedRoomInfo[Number(data.floor)];
                               return updatedRoomInfo;
                             });
-                          } else {
+                          }
+                          if (buildingInfo.floorAndRoomNumberRes.some((item) => item.floor === data.floor)) {
                             setIsDeleteModal(true);
                             setDeleteSelectedFloor(Number(data.floor));
                           }
-                        }} //해당 층 삭제
+                        }}
                         onClick={() => {
                           if (editFilter) {
                             setIsFilterModal(true);
@@ -509,9 +515,9 @@ const Page = () => {
                           setEndInput={(value) => {
                             handleSetFloorInput(index, 'endRoomNumber', value, false);
                           }}
-                          isOne={buildingInfo.floorAndRoomNumberRes.length === 0 ? index === 0 : false}
+                          isOne={sortedFloor.length === 0 ? index === 0 : false}
                           pressOkBtn={false} //확인, 추가 버튼
-                          hovered={buildingInfo.floorAndRoomNumberRes.length === 0 ? index !== 0 : true}
+                          hovered={sortedFloor.length === 0 ? index !== 0 : true}
                           deleteDetailRoom={() => {
                             setNewFloor((prev) => prev.filter((_, i) => i !== index));
                           }} //newFloor에서 해당층 삭제
@@ -565,6 +571,7 @@ const Page = () => {
                       completedFilter.includes(1) ||
                       (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.gender === null))
                     }
+                    disabled={selectedFloor === 0}
                     onClick={() => setSelectFilter(1)}
                   />
                   <BuildingSetBtn
@@ -575,6 +582,7 @@ const Page = () => {
                       completedFilter.includes(2) ||
                       (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.roomSize === null))
                     }
+                    disabled={selectedFloor === 0}
                     onClick={() => setSelectFilter(2)}
                   />
                   <BuildingSetBtn
@@ -585,6 +593,7 @@ const Page = () => {
                       completedFilter.includes(3) ||
                       (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.hasKey === null))
                     }
+                    disabled={selectedFloor === 0}
                     onClick={() => setSelectFilter(3)}
                   />
                   <BuildingSetBtn
@@ -595,6 +604,7 @@ const Page = () => {
                       completedFilter.includes(4) ||
                       (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.isActivated === null))
                     }
+                    disabled={selectedFloor === 0}
                     onClick={() => setSelectFilter(4)}
                   />
                 </div>
