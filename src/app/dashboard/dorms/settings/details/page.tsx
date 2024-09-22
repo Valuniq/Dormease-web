@@ -1,6 +1,15 @@
 'use client';
 
-import { deleteRoom, postDormSettingImage, putDormitoryName, useDormDetail, useDormDetailRoom } from '@/apis/setting';
+import {
+  deleteRoom,
+  postDormSettingImage,
+  postSettingFilter,
+  postSettingFilterCopy,
+  putDormitoryName,
+  putSettingFilter,
+  useDormDetail,
+  useDormDetailRoom,
+} from '@/apis/setting';
 import AddBuildingBtn from '@/components/atoms/AllBtn/AddBuildingBtn/AddBuildingBtn';
 import AddRoomBtn from '@/components/atoms/AllBtn/AddRoomBtn/AddRoomBtn';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
@@ -190,13 +199,7 @@ const Page = () => {
   };
 
   //호실 복제
-  const handleRoomDuplicate = async (
-    duplicateFloor: number,
-    floor: number,
-    startRoomNumber: number,
-    endRoomNumber: number,
-    index: number,
-  ) => {
+  const handleRoomDuplicate = async (duplicateFloor: number, floor: number, index: number) => {
     if (buildingInfo.floorAndRoomNumberRes.find((item) => item.floor === floor)) {
       setFloorToUpdate({
         index,
@@ -204,21 +207,11 @@ const Page = () => {
       });
       setIsSameFloorModal(true);
     } else {
-      //층 복제
       try {
-        // const response = await postRoom(buildingId, {
-        //   duplicateFloor,
-        //   floor,
-        //   startRoomNumber,
-        //   endRoomNumber,
-        // });
-        // if (response.check) {
-        //   setNewDuplicateFloor((prev) => prev.filter((_, i) => i !== index));
-        //   setSelectedFloor(floor);
-        //   await mutate();
-        // } else {
-        //   console.log('실패');
-        // }
+        await postSettingFilterCopy(buildingId, duplicateFloor, floor);
+        setNewDuplicateFloor((prev) => prev.filter((_, i) => i !== index));
+        setSelectedFloor(floor);
+        await mutate();
       } catch (error) {
         console.error(error);
         console.log('오류가 발생했습니다.');
@@ -305,7 +298,7 @@ const Page = () => {
     if (!roomInfo) return;
 
     const updateRoomInfo = (room: DormSettingDetailRoomResponseInformation) => {
-      if (checkedItems.includes(room.roomNumber)) {
+      if (checkedItems.includes(Number(room.roomNumber))) {
         switch (filter) {
           case 'gender':
             return { ...room, gender: data as 'FEMALE' | 'MALE' };
@@ -335,9 +328,8 @@ const Page = () => {
       ...rest,
     }));
 
-    console.log(buildingId);
-    console.log(selectedFloor);
-    console.log(updatedRoomInfo);
+    await postSettingFilter(buildingId, selectedFloor, updatedRoomInfo);
+    await mutate();
 
     setRoomNoneInfo((prev) => {
       const updatedRoomInfo = { ...prev };
@@ -355,13 +347,13 @@ const Page = () => {
   const handleRoomEdit = async () => {
     if (!roomInfo) return;
 
-    const updatedRoomInfo = roomInfo.map(({ floor, roomNumber, ...rest }) => ({
+    const updatedRoomInfo = roomInfo.map(({ id, floor, roomNumber, hasResident, ...rest }) => ({
+      roomId: id,
       ...rest,
     }));
 
-    console.log(buildingId);
-    console.log(selectedFloor);
-    console.log(updatedRoomInfo);
+    await putSettingFilter(buildingId, selectedFloor, updatedRoomInfo);
+    await mutate();
 
     setSelectFilter(0);
     setCheckedItems([]);
@@ -490,13 +482,7 @@ const Page = () => {
                           }} //newDuplicateFloor에서 해당층 삭제
                           readOnly={[false, true, true]}
                           handleCreate={() => {
-                            handleRoomDuplicate(
-                              Number(data.duplicateFloor),
-                              Number(data.floor),
-                              Number(data.startRoomNumber),
-                              Number(data.endRoomNumber),
-                              index,
-                            );
+                            handleRoomDuplicate(Number(data.duplicateFloor), Number(data.floor), index);
                           }} //확인, 추가 버튼 클릭
                         />
                       );

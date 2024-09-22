@@ -49,8 +49,9 @@ export type DormSettingDetailRoomResponse = {
 
 export type DormSettingDetailRoomResponseInformation = {
   id?: number;
-  roomNumber: number;
-  floor: number;
+  roomNumber?: number;
+  floor?: number;
+  hasResident?: boolean;
   gender: 'FEMALE' | 'MALE' | null;
   roomSize: number | null;
   hasKey: boolean | null;

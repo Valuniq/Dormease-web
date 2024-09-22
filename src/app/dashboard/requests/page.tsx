@@ -1,6 +1,6 @@
 'use client';
 
-import { useRequestList } from '@/apis/request';
+import { useRequestList } from '@/apis/Request';
 import RequestList from '@/components/templates/Request/RequestList';
 import React from 'react';
 import { useRouter } from 'next/navigation';
