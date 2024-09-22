@@ -89,7 +89,9 @@ const ManagerPwBox = ({ isActive, isEditMode, setIsEditMode, setSecureMode, open
               <div className='flex items-center justify-between mb-15'>
                 <span className='caption-1 text-gray-grayscale40'>새 비밀번호</span>
                 <button
-                  onClick={setIsEditMode}
+                  onClick={() => {
+                    setIsEditMode(), setNewPassword(''), setConfirmPassword('');
+                  }}
                   className='w-68 h-30 rounded-10 bg-red-red10 text-white caption-1 flex items-center justify-center'
                 >
                   취소
