@@ -63,7 +63,9 @@ const Page = () => {
           <SecureConfirmPrompt
             variant={'red'}
             label={'비밀번호 변경을 위해 보안코드를 입력해주세요'}
-            onClose={() => closeModal('passwordSecure')}
+            onClose={() => {
+              closeModal('passwordSecure'), setSecure('');
+            }}
             secure={secure}
             setSecure={setSecure}
             activatePasswordEdit={togglePasswordBox}
