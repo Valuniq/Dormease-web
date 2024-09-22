@@ -97,6 +97,7 @@ const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props
             <div className='flex items-center mt-15 w-275 '>
               <p className='H3 text-gray-grayscale50 whitespace-nowrap'>{name}</p>
               <button
+                disabled={!isActive}
                 onClick={setIsEditMode}
                 className='ml-auto w-90 h-50 rounded-10 bg-gray-grayscale10 border-1 border-gray-grayscale20 flex items-center justify-center'
               >
