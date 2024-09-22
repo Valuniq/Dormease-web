@@ -13,19 +13,17 @@ export const accountsActiveAreaState = atom<accountsActiveAreaState>({
   },
 });
 
-export type accountsModalState = {
-  passwordSecure: boolean;
-  passwordConfirm: false;
-  passwordChanged: false;
-  exit: false;
+export type AccountsModalState = {
+  [key: string]: boolean;
 };
 
-export const accountsModalState = atom<accountsModalState>({
-  key: 'accountModalState',
+export const accountsModalState = atom<AccountsModalState>({
+  key: 'accountsModalState',
   default: {
     passwordSecure: false,
     passwordConfirm: false,
     passwordChanged: false,
+    passwordFailed: false,
     exit: false,
   },
 });
