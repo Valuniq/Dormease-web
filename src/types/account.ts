@@ -6,3 +6,10 @@ export type AdminAccountResponse = {
     adminName: string;
   };
 };
+
+export interface SecurityCodeResponse {
+  check: boolean;
+  information: {
+    checked: boolean;
+  };
+}
