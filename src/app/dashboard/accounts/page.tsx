@@ -7,6 +7,7 @@ import DormInfoBox from '@/components/templates/Accounts/DormInfoBox';
 import ManagerNameBox from '@/components/templates/Accounts/ManagerNameBox';
 import ManagerPwBox from '@/components/templates/Accounts/ManagerPwBox';
 import SecureConfirmPrompt from '@/components/templates/Accounts/SecureConfirmPrompt';
+import { DORMEASE_INFO } from '@/constants/dormease';
 import { accountsActiveAreaState, accountsModalState } from '@/recoil/account';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -51,6 +52,7 @@ const Page = () => {
       [modalName]: false,
     }));
   };
+
   // DormInfoBox와 DormeaseInfoBox가 nameBox 또는 passwordBox가 편집 모드일 때 비활성화
   const dormInfoActive = !activeAreaState.namebox && !activeAreaState.passwordBox;
 
@@ -98,7 +100,12 @@ const Page = () => {
             </div>
           </div>
           <div className='flex flex-col gap-20 items-center justify-center'>
-            <DormeaseInfoBox address={''} tel={''} fax={''} isActive={dormInfoActive} />
+            <DormeaseInfoBox
+              address={DORMEASE_INFO.address}
+              tel={DORMEASE_INFO.tel}
+              fax={DORMEASE_INFO.fax}
+              isActive={dormInfoActive}
+            />
             <button
               disabled={dormInfoActive}
               className='w-333 h-57 rounded-10 bg-red-red10 text-white btn-cap flex items-center justify-center'
