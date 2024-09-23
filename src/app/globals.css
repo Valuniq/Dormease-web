@@ -236,6 +236,9 @@
     border: 1px solid #cccccc;
     border-radius: 8px;
     padding: 10px 10px 0;
+    width: auto;
+    max-width: 100%;
+    display: inline-block;
   }
 
   .balloon::before {
@@ -257,6 +260,7 @@
     border: 9px solid transparent;
     border-bottom-color: #f7f7f7;
   }
+
   .border-opacity-30 {
     border-color: rgba(32, 32, 32, 0.3);
   }

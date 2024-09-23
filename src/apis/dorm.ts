@@ -54,8 +54,8 @@ export const getRoomAssignedList = async (roomId: number) => {
 };
 
 //미배정 사생 조회
-export const getRoomNotAssignedList = async (dormitoryId: number) => {
-  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/management/rooms/${dormitoryId}/not-assigned`, {
+export const getRoomNotAssignedList = async (roomId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/management/rooms/${roomId}/not-assigned`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -79,8 +79,8 @@ export const putDormMemo = async (dormitoryId: number, memo: string) => {
 };
 
 //수기 방배정
-export const putRoomManual = async (manual: DormRoomManualRequest[]) => {
-  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/management/rooms/manual`, {
+export const putRoomManual = async (roomId: number, manual: DormRoomManualRequest) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/management/rooms/${roomId}/manual`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

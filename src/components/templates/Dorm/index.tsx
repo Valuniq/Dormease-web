@@ -11,7 +11,6 @@ import {
 } from '@/apis/dorm';
 import { postDormSettingImage } from '@/apis/setting';
 import BtnLargeVariant from '@/components/atoms/AllBtn/BtnLargeVariant/BtnLargeVariant';
-import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import BuildingSelectImageBtn from '@/components/atoms/AllBtn/BuildingSelectImageBtn/BuildingSelectImageBtn';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
@@ -25,9 +24,7 @@ import {
   DormInfoResponseInformation,
   DormNameResponseInformation,
   DormRoomResponseInformation,
-  DormRoomAssigned,
   DormRoomInAssignedResponseInformation,
-  DormRoomManualRequest,
 } from '@/types/dorm';
 import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
@@ -56,16 +53,14 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
     currentPeopleCount: 0,
     dormitorySize: 0,
     memo: null,
-  });
-  const [memoText, setMemoText] = useState(buildingInfo.memo);
-  const [listClick, setListClick] = useState(0);
-  const [roomAssignedList, setRoomAssignedList] = useState<DormRoomInAssignedResponseInformation[]>([]);
-  const [roomsAssignedList, setRoomsAssignedList] = useState<DormRoomAssigned[]>([]);
-  const [roomNotAssignedList, setRoomNotAssignedList] = useState<DormRoomInAssignedResponseInformation[]>([]);
-  const [studentList, setStudentList] = useState<DormRoomInAssignedResponseInformation[]>([]);
-  const [editAssign, setEditAssign] = useState(false);
+  }); //건물 정보
+  const [memoText, setMemoText] = useState(buildingInfo.memo); //메모
+  const [listClick, setListClick] = useState(0); //클릭한 리스트
+  const [studentList, setStudentList] = useState<DormRoomInAssignedResponseInformation[]>([]); //해당 room에 있는 학생 리스트
+  const [roomAssignedList, setRoomAssignedList] = useState<DormRoomInAssignedResponseInformation[]>([]); //해당 room에 배정된 학생 리스트
+  const [roomNotAssignedList, setRoomNotAssignedList] = useState<DormRoomInAssignedResponseInformation[]>([]); //해당 room에 미배정된 학생 리스트
+  const [editAssign, setEditAssign] = useState(false); //배정&미배정 수정 중일 때
   const [saveModal, setSaveModal] = useState(false);
-  const [roomsManual, setRoomsManual] = useState<DormRoomManualRequest[]>([]);
   const [warningModal, setWarningModal] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [pendingBuilding, setPendingBuilding] = useState<{
@@ -77,17 +72,8 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
   });
 
   useEffect(() => {
-    if (roomsAssignedList.some((room) => room.roomId === listClick)) {
-      //배정 버튼을 누른 적이 있는 경우(roomId가 roomsAssinedList에 존재하는 경우)
-      const currentRoom = roomsAssignedList.find((room) => room.roomId === listClick);
-      if (currentRoom) {
-        setStudentList(currentRoom.resident.concat(roomNotAssignedList));
-      }
-    } else {
-      //roomId가 roomsAssignedList에 존재하지 않는 경우
-      setStudentList(roomAssignedList.concat(roomNotAssignedList));
-    }
-  }, [listClick, roomAssignedList, roomNotAssignedList, roomsAssignedList]);
+    setStudentList(roomAssignedList.concat(roomNotAssignedList));
+  }, [roomAssignedList, roomNotAssignedList]);
 
   //건물 정보 불러오기
   const fetchBuildingInfo = async (id: number) => {
@@ -166,106 +152,88 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
   //메모 저장
   const onSaveMemo = async () => {
     if (memoText !== null) {
-      const buildingMemo = await putDormMemo(selectBuilding.id, memoText);
-      if (buildingMemo.check) {
-        setBuildingInfo((prev) => ({
-          ...prev,
-          memo: memoText,
-        }));
-      }
+      await putDormMemo(selectBuilding.id, memoText);
+      setBuildingInfo((prev) => ({
+        ...prev,
+        memo: memoText,
+      }));
     }
   };
 
-  //특정 호실 사생 조회
-  const getRoomAssigned = async (roomId: number) => {
-    const roomAssignedList = await getRoomAssignedList(roomId);
-    if (roomAssignedList.check) {
-      setRoomAssignedList(roomAssignedList.information);
-      if (editAssign && (roomAssignedList.information.length > 0 || roomNotAssignedList.length > 0)) {
-        setListClick(roomId);
-      } else if (roomAssignedList.information.length > 0) {
-        setListClick(roomId);
+  //특정 호실 사생 조회 & 미배정 사생 조회
+  const getRoomStudentList = async (roomId: number) => {
+    try {
+      const [roomAssignedListResponse, roomNotAssignedListResponse] = await Promise.all([
+        getRoomAssignedList(roomId),
+        getRoomNotAssignedList(roomId),
+      ]);
+
+      // 배정된 사생 처리
+      if (roomAssignedListResponse.check) {
+        setRoomAssignedList(roomAssignedListResponse.information);
       } else {
-        setListClick(0);
+        setRoomAssignedList([]);
       }
-    } else {
-      setRoomAssignedList([]);
-    }
-  };
 
-  //미배정 사생 조회
-  const getRoomNotAssigned = async (roomId: number) => {
-    const roomNotAssignedList = await getRoomNotAssignedList(roomId);
-    if (roomNotAssignedList.check) {
-      setRoomNotAssignedList(roomNotAssignedList.information);
-    } else {
+      // 미배정 사생 처리
+      if (roomNotAssignedListResponse.check) {
+        setRoomNotAssignedList(roomNotAssignedListResponse.information);
+      } else {
+        setRoomNotAssignedList([]);
+      }
+      setListClick(roomId);
+    } catch (error) {
+      console.error(error);
+      setRoomAssignedList([]);
       setRoomNotAssignedList([]);
+      setStudentList([]);
+      setListClick(0);
     }
   };
 
   //클릭했을 때 assigned 값 변경
   const onStudentClick = (selectStudent: number) => {
-    setStudentList((prevList) =>
-      prevList.map((student) => (student.id === selectStudent ? { ...student, assigned: !student.assigned } : student)),
+    const updatedList = studentList.map((student) =>
+      student.id === selectStudent ? { ...student, assigned: !student.assigned } : student,
     );
-  };
 
-  //수기 방배정을 위한 배정된 데이터 저장
-  const roomManual = (roomId: number) => {
-    const assignedStudentIds = studentList.filter((student) => student.assigned).map((student) => student.id);
+    //변경되기 전과 후가 같은지 확인
+    const newAssignedRoomIds = updatedList.filter((student) => student.assigned).map((student) => student.id);
+    const existingAssignedStudentIds = roomAssignedList
+      .filter((student) => student.assigned)
+      .map((student) => student.id);
 
-    const roomAssignment: DormRoomManualRequest = {
-      roomId: roomId,
-      residentIds: assignedStudentIds,
-    };
+    const areEqual =
+      newAssignedRoomIds.length === existingAssignedStudentIds.length &&
+      newAssignedRoomIds.every((id) => existingAssignedStudentIds.includes(id));
 
-    setRoomsManual((prevRooms) => {
-      const updatedRooms = prevRooms.filter((room) => room.roomId !== roomId);
-      return [...updatedRooms, roomAssignment];
-    });
+    setEditAssign(!areEqual);
+    setEditState(!areEqual);
 
-    //배정된 사생(assigned가 true)인 것들 setRoomsAssignedList에 추가
-    const assignedStudents = studentList.filter((student) => student.assigned);
-
-    const roomAssigned: DormRoomAssigned = {
-      roomId: roomId,
-      resident: assignedStudents,
-    };
-
-    setRoomsAssignedList((prevRooms) => {
-      const updatedRooms = prevRooms.filter((room) => room.roomId !== roomId);
-      return [...updatedRooms, roomAssigned];
-    });
-
-    //미배정 사생(assigned가 false)인 것들 setRoomNotAssignedList에 추가
-    const notAssignedStudents = studentList.filter((student) => !student.assigned);
-    setRoomNotAssignedList(notAssignedStudents);
-    setListClick(0);
-
-    //roomList의 배정된 인원 수 수정
-    setRoomList((prevList) =>
-      prevList.map((room) => (room.id === roomId ? { ...room, currentPeople: assignedStudents.length } : room)),
-    );
-    console.log(JSON.stringify(roomsManual));
+    setStudentList(updatedList);
   };
 
   //저장 버튼 눌렀을 때 배정
   const onSaveRoom = async () => {
-    const response = await putRoomManual(roomsManual);
-    if (response.check) {
-      setSaveModal(!saveModal);
-      setEditAssign(!editAssign);
+    const roomsManual = studentList.filter((student) => student.assigned).map((student) => student.id);
+
+    if (roomsManual) {
+      await putRoomManual(listClick, { residentIds: roomsManual });
       setListClick(0);
-      setRoomsManual([]);
-      setRoomsAssignedList([]);
+      setRoomList((prevList) =>
+        prevList.map((room) => (room.id === listClick ? { ...room, currentPeople: roomsManual.length } : room)),
+      );
+      setEditAssign(false);
+      setEditState(false);
+      setSaveModal(false);
     }
   };
 
+  //건물 이미지 변경
   const onAddPicture = () => {
     inputFileRef.current?.click();
   };
 
-  //건물 이미지 변경
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
       console.log('파일이 선택되지 않았습니다.');
@@ -305,8 +273,6 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
       building: null,
       floor: null,
     });
-    setRoomsManual([]);
-    setRoomsAssignedList([]);
     setWarningModal(false);
   };
 
@@ -399,61 +365,21 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
             </div>
             <div className='border-r-1 mx-29 h-790'></div>
             <div className='mt-20'>
-              {editAssign ? (
-                <DormList
-                  listClick={listClick}
-                  onListClick={(roomId) => {
-                    if (listClick === roomId) {
-                      setListClick(0);
-                    } else {
-                      getRoomAssigned(roomId);
-                      getRoomNotAssigned(roomId);
-                    }
-                  }}
-                  onStudentClick={onStudentClick}
-                  roomList={roomList}
-                  studentList={studentList}
-                  editAssign={editAssign}
-                  roomManual={roomManual}
-                />
-              ) : (
-                <DormList
-                  listClick={listClick}
-                  onListClick={(roomId) => {
-                    if (listClick === roomId) {
-                      setListClick(0);
-                    } else {
-                      getRoomAssigned(roomId);
-                    }
-                  }}
-                  onStudentClick={() => {
-                    //사생관리 만든 후에 사생관리_상세 내용으로 이동 수정 필요
-                    //router.push(`/dashboard/students/${id}`)
-                  }}
-                  roomList={roomList}
-                  studentList={roomAssignedList}
-                  editAssign={editAssign}
-                />
-              )}
-              <div className='flex justify-end mt-21'>
-                <BtnMidVariant
-                  label={editAssign ? '저장' : '수기배정'}
-                  disabled={false}
-                  variant='blue'
-                  onClick={() => {
-                    if (editAssign) {
-                      setSaveModal(!saveModal);
-                      setEditState(false);
-                    } else {
-                      if (selectBuilding.id) {
-                        setListClick(0);
-                        setEditAssign(!editAssign);
-                        setEditState(true);
-                      }
-                    }
-                  }}
-                />
-              </div>
+              <DormList
+                listClick={listClick}
+                onListClick={(roomId) => {
+                  if (listClick === roomId) {
+                    setListClick(0);
+                  } else {
+                    getRoomStudentList(roomId);
+                  }
+                }}
+                onStudentClick={onStudentClick}
+                roomList={roomList}
+                studentList={studentList}
+                editAssign={!editAssign}
+                roomManual={() => setSaveModal(true)}
+              />
             </div>
           </div>
           <div className='absolute top-0 right-0'>
@@ -501,7 +427,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                 variant='blue'
                 label='배정된 호실을 저장하시겠습니까?'
                 onConfirm={onSaveRoom}
-                onCancel={() => setSaveModal(!saveModal)}
+                onCancel={() => setSaveModal(false)}
               />
             </BackDrop>
           )}
@@ -509,9 +435,9 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
             <BackDrop isOpen={warningModal}>
               <ConfirmPrompt
                 variant='red'
-                label='이 페이지를 떠나시면 설정 내용이 저장되지 않습니다.'
+                label='저장하지 않고 건물이나 층을 변경하면\n이전 배정 내용이 사라집니다.'
                 onConfirm={onCancelMove}
-                onCancel={() => setWarningModal(!warningModal)}
+                onCancel={() => setWarningModal(false)}
               />
             </BackDrop>
           )}
