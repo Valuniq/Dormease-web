@@ -71,6 +71,7 @@ const Page = () => {
   const [isAlreadyModal, setIsAlreadyModal] = useState(false); //층 삭제 시 배정된 학생이 있는 경우 모달창
   const [isDeleteModal, setIsDeleteModal] = useState(false); //층 삭제 시 확인 모달창
   const [isNotSaveModal, setIsNotSaveModal] = useState(false); //저장되지 않은 상태의 층이 있는 경우 모달창
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setEditState(true);
@@ -81,6 +82,7 @@ const Page = () => {
     if (data && data.information) {
       setBuildingInfo(data.information);
       if (data.information.floorAndRoomNumberRes.length > 0) {
+        setIsEdit(false);
         if (selectedFloor === 0) {
           setSelectedFloor(Number(data.information.floorAndRoomNumberRes[0].floor));
         }
@@ -102,6 +104,7 @@ const Page = () => {
           setSortedFloor(addFloor);
         }
       }
+      setIsLoading(true);
     }
   }, [data, addFloor, selectedFloor]);
 
@@ -361,464 +364,470 @@ const Page = () => {
   };
 
   return (
-    <div className='flex flex-col relative w-[1331px]'>
-      <div className='flex justify-center w-full mb-30'>
-        <BuildingNameInputText
-          placeholder='건물명'
-          input={buildingName}
-          setInput={setBuildingName}
-          handleDormitoryName={handleDormitoryName}
-          readOnly={!isEdit}
-        />
-      </div>
-      <div className='flex'>
-        <div className='flex flex-col items-center min-w-410 mr-20'>
-          <div className='w-381 h-241 flex items-center justify-center bg-gray-grayscale5 rounded-8'>
-            {buildingInfo.imageUrl ? (
-              <BuildingSelectImageBtn
-                image={buildingInfo.imageUrl}
-                name={buildingInfo.imageUrl}
-                onClick={onAddPicture}
-              />
-            ) : (
-              <AddBuildingBtn onClick={onAddPicture} />
-            )}
-            <input
-              id='fileInput'
-              type='file'
-              accept='image/*'
-              style={{ display: 'none', visibility: 'hidden' }}
-              ref={inputFileRef}
-              onChange={handleFileChange}
+    <>
+      {isLoading && (
+        <div className='flex flex-col relative w-[1331px]'>
+          <div className='flex justify-center w-full mb-30'>
+            <BuildingNameInputText
+              placeholder='건물명'
+              input={buildingName}
+              setInput={setBuildingName}
+              handleDormitoryName={handleDormitoryName}
+              readOnly={!isEdit}
             />
           </div>
-          <div className='mt-28 flex flex-col items-center'>
-            <h3 className='H3 text-gray-grayscale50 text-center'>호실 개수</h3>
-            <hr className='w-331 border-gray-grayscale50 mt-15 mb-8' />
-            <div className={`${isEdit ? 'max-h-320' : 'max-h-380'} w-410 overflow-y-auto scrollbar-table mb-13 mr-20`}>
-              <div className={`${isEdit ? 'gap-12 mr-5' : 'gap-10 items-center ml-20'} flex flex-col`}>
-                {isEdit ? (
-                  <>
-                    {sortedFloor.map((data, index) => (
-                      <RoomBtn
-                        key={index}
-                        selected={selectedFloor === data.floor}
-                        floorInput={data.floor?.toString() || ''}
-                        setFloorInput={(value) => {
-                          handleSetFloorInput(index, 'floor', value, false);
-                        }}
-                        startInput={data.startRoomNumber?.toString() || ''}
-                        setStartInput={(value) => {
-                          handleSetFloorInput(index, 'startRoomNumber', value, false);
-                        }}
-                        endInput={data.endRoomNumber?.toString() || ''}
-                        setEndInput={(value) => {
-                          handleSetFloorInput(index, 'endRoomNumber', value, false);
-                        }}
-                        isOne={false} //첫번째인지
-                        pressOkBtn={true} //복제 버튼
-                        hovered={false} //hover가 가능한지
-                        deleteDetailRoom={() => {
-                          if (addFloor.some((item) => item.floor === data.floor)) {
-                            setAddFloor((prev) => prev.filter((item) => item.floor !== data.floor));
-                            setRoomNoneInfo((prev) => {
-                              const updatedRoomInfo = { ...prev };
-                              delete updatedRoomInfo[Number(data.floor)];
-                              return updatedRoomInfo;
-                            });
-                          }
-                          if (buildingInfo.floorAndRoomNumberRes.some((item) => item.floor === data.floor)) {
-                            setIsDeleteModal(true);
-                            setDeleteSelectedFloor(Number(data.floor));
-                          }
-                        }}
-                        onClick={() => {
-                          if (editFilter && selectedFloor !== data.floor) {
-                            setIsFilterModal(true);
-                            setDeleteSelectedFloor(Number(data.floor));
-                          } else {
-                            setSelectFilter(0);
-                            setSelectedFloor(Number(data.floor));
-                          }
-                        }} //해당 층 선택
-                        readOnly={[true, true, true]}
-                        handleDuplicate={() =>
-                          setNewDuplicateFloor([
-                            ...newDuplicateFloor,
-                            {
-                              duplicateFloor: Number(data.floor),
-                              floor: '',
-                              startRoomNumber: Number(data.startRoomNumber),
-                              endRoomNumber: Number(data.endRoomNumber),
-                            },
-                          ])
-                        } //복제 버튼 클릭
-                        duplicateDisabled={
-                          !buildingInfo.floorAndRoomNumberRes.some((item) => item.floor === data.floor)
-                        }
-                      />
-                    ))}
-                    {newDuplicateFloor.map((data, index) => {
-                      return (
-                        <RoomBtn
-                          key={index}
-                          floorInput={data.floor?.toString() || ''}
-                          setFloorInput={(value) => {
-                            handleSetFloorInput(index, 'floor', value, true);
-                          }}
-                          startInput={data.startRoomNumber?.toString() || ''}
-                          setStartInput={(value) => {
-                            handleSetFloorInput(index, 'startRoomNumber', value, true);
-                          }}
-                          endInput={data.endRoomNumber?.toString() || ''}
-                          setEndInput={(value) => {
-                            handleSetFloorInput(index, 'endRoomNumber', value, true);
-                          }}
-                          isOne={false}
-                          pressOkBtn={false} //확인, 추가 버튼
-                          hovered={true}
-                          deleteDetailRoom={() => {
-                            setNewDuplicateFloor((prev) => prev.filter((_, i) => i !== index));
-                          }} //newDuplicateFloor에서 해당층 삭제
-                          readOnly={[false, true, true]}
-                          handleCreate={() => {
-                            handleRoomDuplicate(Number(data.duplicateFloor), Number(data.floor), index);
-                          }} //확인, 추가 버튼 클릭
-                        />
-                      );
-                    })}
-                    {newFloor.map((data, index) => {
-                      return (
-                        <RoomBtn
-                          key={index}
-                          floorInput={data.floor?.toString() || ''}
-                          setFloorInput={(value) => {
-                            handleSetFloorInput(index, 'floor', value, false);
-                          }}
-                          startInput={data.startRoomNumber?.toString() || ''}
-                          setStartInput={(value) => {
-                            handleSetFloorInput(index, 'startRoomNumber', value, false);
-                          }}
-                          endInput={data.endRoomNumber?.toString() || ''}
-                          setEndInput={(value) => {
-                            handleSetFloorInput(index, 'endRoomNumber', value, false);
-                          }}
-                          isOne={sortedFloor.length === 0 ? index === 0 : false}
-                          pressOkBtn={false} //확인, 추가 버튼
-                          hovered={sortedFloor.length === 0 ? index !== 0 : true}
-                          deleteDetailRoom={() => {
-                            setNewFloor((prev) => prev.filter((_, i) => i !== index));
-                          }} //newFloor에서 해당층 삭제
-                          readOnly={[false, false, false]}
-                          handleCreate={() => {
-                            handleRoomCreate(
-                              Number(data.floor),
-                              Number(data.startRoomNumber),
-                              Number(data.endRoomNumber),
-                              index,
-                            );
-                          }} //확인, 추가 버튼 클릭
-                        />
-                      );
-                    })}
-                  </>
+          <div className='flex'>
+            <div className='flex flex-col items-center min-w-410 mr-20'>
+              <div className='w-381 h-241 flex items-center justify-center bg-gray-grayscale5 rounded-8'>
+                {buildingInfo.imageUrl ? (
+                  <BuildingSelectImageBtn
+                    image={buildingInfo.imageUrl}
+                    name={buildingInfo.imageUrl}
+                    onClick={onAddPicture}
+                  />
                 ) : (
-                  buildingInfo.floorAndRoomNumberRes.map((data, index) => (
-                    <div
-                      className={`flex justify-between items-center pl-67 pr-72 rounded-5 w-331 h-38 cursor-pointer ${selectedFloor === data.floor && 'bg-gray-grayscale10'}`}
-                      key={index}
-                      onClick={() => setSelectedFloor(Number(data.floor))}
-                    >
-                      <span className='H4 text-gray-grayscale50'>{data.floor}층</span>
-                      <span className='H4 text-gray-grayscale50'>
-                        {data.startRoomNumber} - {data.endRoomNumber}
-                      </span>
-                    </div>
-                  ))
+                  <AddBuildingBtn onClick={onAddPicture} />
+                )}
+                <input
+                  id='fileInput'
+                  type='file'
+                  accept='image/*'
+                  style={{ display: 'none', visibility: 'hidden' }}
+                  ref={inputFileRef}
+                  onChange={handleFileChange}
+                />
+              </div>
+              <div className='mt-28 flex flex-col items-center'>
+                <h3 className='H3 text-gray-grayscale50 text-center'>호실 개수</h3>
+                <hr className='w-331 border-gray-grayscale50 mt-15 mb-8' />
+                <div
+                  className={`${isEdit ? 'max-h-320' : 'max-h-380'} w-410 overflow-y-auto scrollbar-table mb-13 mr-20`}
+                >
+                  <div className={`${isEdit ? 'gap-12 mr-5' : 'gap-10 items-center ml-20'} flex flex-col`}>
+                    {isEdit ? (
+                      <>
+                        {sortedFloor.map((data, index) => (
+                          <RoomBtn
+                            key={index}
+                            selected={selectedFloor === data.floor}
+                            floorInput={data.floor?.toString() || ''}
+                            setFloorInput={(value) => {
+                              handleSetFloorInput(index, 'floor', value, false);
+                            }}
+                            startInput={data.startRoomNumber?.toString() || ''}
+                            setStartInput={(value) => {
+                              handleSetFloorInput(index, 'startRoomNumber', value, false);
+                            }}
+                            endInput={data.endRoomNumber?.toString() || ''}
+                            setEndInput={(value) => {
+                              handleSetFloorInput(index, 'endRoomNumber', value, false);
+                            }}
+                            isOne={false} //첫번째인지
+                            pressOkBtn={true} //복제 버튼
+                            hovered={false} //hover가 가능한지
+                            deleteDetailRoom={() => {
+                              if (addFloor.some((item) => item.floor === data.floor)) {
+                                setAddFloor((prev) => prev.filter((item) => item.floor !== data.floor));
+                                setRoomNoneInfo((prev) => {
+                                  const updatedRoomInfo = { ...prev };
+                                  delete updatedRoomInfo[Number(data.floor)];
+                                  return updatedRoomInfo;
+                                });
+                              }
+                              if (buildingInfo.floorAndRoomNumberRes.some((item) => item.floor === data.floor)) {
+                                setIsDeleteModal(true);
+                                setDeleteSelectedFloor(Number(data.floor));
+                              }
+                            }}
+                            onClick={() => {
+                              if (editFilter && selectedFloor !== data.floor) {
+                                setIsFilterModal(true);
+                                setDeleteSelectedFloor(Number(data.floor));
+                              } else {
+                                setSelectFilter(0);
+                                setSelectedFloor(Number(data.floor));
+                              }
+                            }} //해당 층 선택
+                            readOnly={[true, true, true]}
+                            handleDuplicate={() =>
+                              setNewDuplicateFloor([
+                                ...newDuplicateFloor,
+                                {
+                                  duplicateFloor: Number(data.floor),
+                                  floor: '',
+                                  startRoomNumber: Number(data.startRoomNumber),
+                                  endRoomNumber: Number(data.endRoomNumber),
+                                },
+                              ])
+                            } //복제 버튼 클릭
+                            duplicateDisabled={
+                              !buildingInfo.floorAndRoomNumberRes.some((item) => item.floor === data.floor)
+                            }
+                          />
+                        ))}
+                        {newDuplicateFloor.map((data, index) => {
+                          return (
+                            <RoomBtn
+                              key={index}
+                              floorInput={data.floor?.toString() || ''}
+                              setFloorInput={(value) => {
+                                handleSetFloorInput(index, 'floor', value, true);
+                              }}
+                              startInput={data.startRoomNumber?.toString() || ''}
+                              setStartInput={(value) => {
+                                handleSetFloorInput(index, 'startRoomNumber', value, true);
+                              }}
+                              endInput={data.endRoomNumber?.toString() || ''}
+                              setEndInput={(value) => {
+                                handleSetFloorInput(index, 'endRoomNumber', value, true);
+                              }}
+                              isOne={false}
+                              pressOkBtn={false} //확인, 추가 버튼
+                              hovered={true}
+                              deleteDetailRoom={() => {
+                                setNewDuplicateFloor((prev) => prev.filter((_, i) => i !== index));
+                              }} //newDuplicateFloor에서 해당층 삭제
+                              readOnly={[false, true, true]}
+                              handleCreate={() => {
+                                handleRoomDuplicate(Number(data.duplicateFloor), Number(data.floor), index);
+                              }} //확인, 추가 버튼 클릭
+                            />
+                          );
+                        })}
+                        {newFloor.map((data, index) => {
+                          return (
+                            <RoomBtn
+                              key={index}
+                              floorInput={data.floor?.toString() || ''}
+                              setFloorInput={(value) => {
+                                handleSetFloorInput(index, 'floor', value, false);
+                              }}
+                              startInput={data.startRoomNumber?.toString() || ''}
+                              setStartInput={(value) => {
+                                handleSetFloorInput(index, 'startRoomNumber', value, false);
+                              }}
+                              endInput={data.endRoomNumber?.toString() || ''}
+                              setEndInput={(value) => {
+                                handleSetFloorInput(index, 'endRoomNumber', value, false);
+                              }}
+                              isOne={sortedFloor.length === 0 ? index === 0 : false}
+                              pressOkBtn={false} //확인, 추가 버튼
+                              hovered={sortedFloor.length === 0 ? index !== 0 : true}
+                              deleteDetailRoom={() => {
+                                setNewFloor((prev) => prev.filter((_, i) => i !== index));
+                              }} //newFloor에서 해당층 삭제
+                              readOnly={[false, false, false]}
+                              handleCreate={() => {
+                                handleRoomCreate(
+                                  Number(data.floor),
+                                  Number(data.startRoomNumber),
+                                  Number(data.endRoomNumber),
+                                  index,
+                                );
+                              }} //확인, 추가 버튼 클릭
+                            />
+                          );
+                        })}
+                      </>
+                    ) : (
+                      buildingInfo.floorAndRoomNumberRes.map((data, index) => (
+                        <div
+                          className={`flex justify-between items-center pl-67 pr-72 rounded-5 w-331 h-38 cursor-pointer ${selectedFloor === data.floor && 'bg-gray-grayscale10'}`}
+                          key={index}
+                          onClick={() => setSelectedFloor(Number(data.floor))}
+                        >
+                          <span className='H4 text-gray-grayscale50'>{data.floor}층</span>
+                          <span className='H4 text-gray-grayscale50'>
+                            {data.startRoomNumber} - {data.endRoomNumber}
+                          </span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+                {isEdit && (
+                  <AddRoomBtn
+                    onClick={() => setNewFloor([...newFloor, { floor: '', startRoomNumber: 1, endRoomNumber: '' }])}
+                  />
                 )}
               </div>
             </div>
-            {isEdit && (
-              <AddRoomBtn
-                onClick={() => setNewFloor([...newFloor, { floor: '', startRoomNumber: 1, endRoomNumber: '' }])}
-              />
-            )}
-          </div>
-        </div>
-        <div>
-          {isEdit && (
-            <div className='w-917 h-121 shadow2 rounded-7 bg-white items-center flex justify-between pl-40 pr-23 px-13 mb-30'>
-              <h1 className='H1 text-blue-blue30'>필터</h1>
-              <div>
-                <div className='flex gap-22'>
-                  <BuildingSetBtn
-                    label='남자/여자'
-                    detail={false}
-                    selected={selectFilter === 1}
-                    done={
-                      completedFilter.includes(1) ||
-                      (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.gender === null))
-                    }
-                    disabled={selectedFloor === 0}
-                    onClick={() => setSelectFilter(1)}
-                  />
-                  <BuildingSetBtn
-                    label='호실 타입'
-                    detail={false}
-                    selected={selectFilter === 2}
-                    done={
-                      completedFilter.includes(2) ||
-                      (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.roomSize === null))
-                    }
-                    disabled={selectedFloor === 0}
-                    onClick={() => setSelectFilter(2)}
-                  />
-                  <BuildingSetBtn
-                    label='열쇠 수령 여부'
-                    detail={false}
-                    selected={selectFilter === 3}
-                    done={
-                      completedFilter.includes(3) ||
-                      (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.hasKey === null))
-                    }
-                    disabled={selectedFloor === 0}
-                    onClick={() => setSelectFilter(3)}
-                  />
-                  <BuildingSetBtn
-                    label='비활성화'
-                    detail={false}
-                    selected={selectFilter === 4}
-                    done={
-                      completedFilter.includes(4) ||
-                      (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.isActivated === null))
-                    }
-                    disabled={selectedFloor === 0}
-                    onClick={() => setSelectFilter(4)}
-                  />
-                </div>
-                <div className='h-53 flex gap-15 justify-end items-end'>
-                  {selectFilter === 1 ? (
-                    <>
-                      <BuildingSetBtn label='남자' detail={true} onClick={() => handleFilter('gender', 'MALE')} />
-                      <BuildingSetBtn label='여자' detail={true} onClick={() => handleFilter('gender', 'FEMALE')} />
-                    </>
-                  ) : selectFilter === 2 ? (
-                    <>
-                      <BuildingSetBtn label='1인실' detail={true} onClick={() => handleFilter('roomSize', 1)} />
-                      <BuildingSetBtn label='2인실' detail={true} onClick={() => handleFilter('roomSize', 2)} />
-                      <BuildingSetBtn label='3인실' detail={true} onClick={() => handleFilter('roomSize', 3)} />
-                      <BuildingSetBtn label='4인실' detail={true} onClick={() => handleFilter('roomSize', 4)} />
-                      <BuildingSetBtn label='5인실' detail={true} onClick={() => handleFilter('roomSize', 5)} />
-                      <BuildingSetBtn label='6인실' detail={true} onClick={() => handleFilter('roomSize', 6)} />
-                    </>
-                  ) : selectFilter === 3 ? (
-                    <>
-                      <BuildingSetBtn label='수령' detail={true} onClick={() => handleFilter('hasKey', true)} />
-                      <BuildingSetBtn label='미수령' detail={true} onClick={() => handleFilter('hasKey', false)} />
-                    </>
-                  ) : selectFilter === 4 ? (
-                    <>
-                      <BtnLargeVariant
-                        label='활성화'
-                        disabled={false}
-                        variant='green'
-                        onClick={() => handleFilter('isActivated', true)}
+            <div>
+              {isEdit && (
+                <div className='w-917 h-121 shadow2 rounded-7 bg-white items-center flex justify-between pl-40 pr-23 px-13 mb-30'>
+                  <h1 className='H1 text-blue-blue30'>필터</h1>
+                  <div>
+                    <div className='flex gap-22'>
+                      <BuildingSetBtn
+                        label='남자/여자'
+                        detail={false}
+                        selected={selectFilter === 1}
+                        done={
+                          completedFilter.includes(1) ||
+                          (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.gender === null))
+                        }
+                        disabled={selectedFloor === 0}
+                        onClick={() => setSelectFilter(1)}
                       />
-                      <BtnLargeVariant
+                      <BuildingSetBtn
+                        label='호실 타입'
+                        detail={false}
+                        selected={selectFilter === 2}
+                        done={
+                          completedFilter.includes(2) ||
+                          (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.roomSize === null))
+                        }
+                        disabled={selectedFloor === 0}
+                        onClick={() => setSelectFilter(2)}
+                      />
+                      <BuildingSetBtn
+                        label='열쇠 수령 여부'
+                        detail={false}
+                        selected={selectFilter === 3}
+                        done={
+                          completedFilter.includes(3) ||
+                          (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.hasKey === null))
+                        }
+                        disabled={selectedFloor === 0}
+                        onClick={() => setSelectFilter(3)}
+                      />
+                      <BuildingSetBtn
                         label='비활성화'
-                        disabled={false}
-                        variant='red'
-                        onClick={() => handleFilter('isActivated', false)}
+                        detail={false}
+                        selected={selectFilter === 4}
+                        done={
+                          completedFilter.includes(4) ||
+                          (roomInfo && roomInfo.length > 0 && !roomInfo?.some((room) => room.isActivated === null))
+                        }
+                        disabled={selectedFloor === 0}
+                        onClick={() => setSelectFilter(4)}
                       />
-                    </>
-                  ) : (
-                    <></>
-                  )}
+                    </div>
+                    <div className='h-53 flex gap-15 justify-end items-end'>
+                      {selectFilter === 1 ? (
+                        <>
+                          <BuildingSetBtn label='남자' detail={true} onClick={() => handleFilter('gender', 'MALE')} />
+                          <BuildingSetBtn label='여자' detail={true} onClick={() => handleFilter('gender', 'FEMALE')} />
+                        </>
+                      ) : selectFilter === 2 ? (
+                        <>
+                          <BuildingSetBtn label='1인실' detail={true} onClick={() => handleFilter('roomSize', 1)} />
+                          <BuildingSetBtn label='2인실' detail={true} onClick={() => handleFilter('roomSize', 2)} />
+                          <BuildingSetBtn label='3인실' detail={true} onClick={() => handleFilter('roomSize', 3)} />
+                          <BuildingSetBtn label='4인실' detail={true} onClick={() => handleFilter('roomSize', 4)} />
+                          <BuildingSetBtn label='5인실' detail={true} onClick={() => handleFilter('roomSize', 5)} />
+                          <BuildingSetBtn label='6인실' detail={true} onClick={() => handleFilter('roomSize', 6)} />
+                        </>
+                      ) : selectFilter === 3 ? (
+                        <>
+                          <BuildingSetBtn label='수령' detail={true} onClick={() => handleFilter('hasKey', true)} />
+                          <BuildingSetBtn label='미수령' detail={true} onClick={() => handleFilter('hasKey', false)} />
+                        </>
+                      ) : selectFilter === 4 ? (
+                        <>
+                          <BtnLargeVariant
+                            label='활성화'
+                            disabled={false}
+                            variant='green'
+                            onClick={() => handleFilter('isActivated', true)}
+                          />
+                          <BtnLargeVariant
+                            label='비활성화'
+                            disabled={false}
+                            variant='red'
+                            onClick={() => handleFilter('isActivated', false)}
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+              <SettingList
+                list={roomInfo ? roomInfo : []}
+                checkedItems={checkedItems}
+                handleCheckboxChange={(roomNumber) => {
+                  if (selectFilter !== 0) {
+                    setEditFilter(true);
+                    handleCheckboxChange(roomNumber);
+                  }
+                }}
+                isEdit={isEdit}
+              />
             </div>
+          </div>
+          <div className='flex mt-21'>
+            <div className='flex-1'></div>
+            <div className='flex-1 flex justify-center'>
+              <BtnMidVariant
+                label={isEdit ? '완료' : '수정'}
+                disabled={false}
+                variant='blue'
+                onClick={() => {
+                  if (isEdit) {
+                    if (addFloor.length > 0) {
+                      setIsNotSaveModal(true);
+                    } else {
+                      setIsEdit(false);
+                    }
+                  } else {
+                    setEditState(true);
+                    setIsEdit(true);
+                  }
+                }}
+              />
+            </div>
+            <div className='flex-1 flex justify-end'>
+              {selectFilter ? (
+                <BtnMiniVariant
+                  label='저장'
+                  disabled={
+                    roomInfo
+                      ? roomInfo?.some((room) => room.gender === null) ||
+                        roomInfo?.some((room) => room.roomSize === null) ||
+                        roomInfo?.some((room) => room.hasKey === null) ||
+                        roomInfo?.some((room) => room.isActivated === null)
+                      : false
+                  }
+                  variant='blue'
+                  selected={false}
+                  onClick={() => {
+                    if (addFloor.some((item) => item.floor === selectedFloor)) {
+                      handleRoomSave();
+                    } else {
+                      handleRoomEdit();
+                    }
+                  }}
+                />
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+          {isSameDormModal && (
+            <BackDrop isOpen={isSameDormModal}>
+              <AlertPrompt
+                variant='blue'
+                label={'이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'}
+                onConfirm={() => {
+                  setIsSameDormModal(false);
+                }}
+              />
+            </BackDrop>
           )}
-          <SettingList
-            list={roomInfo ? roomInfo : []}
-            checkedItems={checkedItems}
-            handleCheckboxChange={(roomNumber) => {
-              if (selectFilter !== 0) {
-                setEditFilter(true);
-                handleCheckboxChange(roomNumber);
-              }
-            }}
-            isEdit={isEdit}
-          />
-        </div>
-      </div>
-      <div className='flex mt-21'>
-        <div className='flex-1'></div>
-        <div className='flex-1 flex justify-center'>
-          <BtnMidVariant
-            label={isEdit ? '완료' : '수정'}
-            disabled={false}
-            variant='blue'
-            onClick={() => {
-              if (isEdit) {
-                if (addFloor.length > 0) {
-                  setIsNotSaveModal(true);
-                } else {
-                  setIsEdit(false);
-                }
-              } else {
-                setEditState(true);
-                setIsEdit(true);
-              }
-            }}
-          />
-        </div>
-        <div className='flex-1 flex justify-end'>
-          {selectFilter ? (
-            <BtnMiniVariant
-              label='저장'
-              disabled={
-                roomInfo
-                  ? roomInfo?.some((room) => room.gender === null) ||
-                    roomInfo?.some((room) => room.roomSize === null) ||
-                    roomInfo?.some((room) => room.hasKey === null) ||
-                    roomInfo?.some((room) => room.isActivated === null)
-                  : false
-              }
-              variant='blue'
-              selected={false}
-              onClick={() => {
-                if (addFloor.some((item) => item.floor === selectedFloor)) {
-                  handleRoomSave();
-                } else {
-                  handleRoomEdit();
-                }
-              }}
-            />
-          ) : (
-            <></>
+          {isNullDormNameModal && (
+            <BackDrop isOpen={isNullDormNameModal}>
+              <AlertPrompt
+                variant='blue'
+                label={'건물명을 입력하여 주시기 바랍니다.'}
+                onConfirm={() => {
+                  setIsNullDormNameModal(false);
+                }}
+              />
+            </BackDrop>
           )}
-        </div>
-      </div>
-      {isSameDormModal && (
-        <BackDrop isOpen={isSameDormModal}>
-          <AlertPrompt
-            variant='blue'
-            label={'이미 등록되어 있는 건물명입니다.\n다른 이름을 사용해 주세요.'}
-            onConfirm={() => {
-              setIsSameDormModal(false);
-            }}
-          />
-        </BackDrop>
-      )}
-      {isNullDormNameModal && (
-        <BackDrop isOpen={isNullDormNameModal}>
-          <AlertPrompt
-            variant='blue'
-            label={'건물명을 입력하여 주시기 바랍니다.'}
-            onConfirm={() => {
-              setIsNullDormNameModal(false);
-            }}
-          />
-        </BackDrop>
-      )}
-      {isSameFloorModal && (
-        <BackDrop isOpen={isSameFloorModal}>
-          <AlertPrompt
-            variant='blue'
-            label={'중복된 층 수의 입력은 불가능합니다.'}
-            onConfirm={() => {
-              if (floorToUpdate.isDuplicate) {
-                setNewDuplicateFloor((prev) => {
-                  const updatedNewDuplicateFloor = [...prev];
-                  updatedNewDuplicateFloor[floorToUpdate.index] = {
-                    ...updatedNewDuplicateFloor[floorToUpdate.index],
-                    floor: '',
-                  };
-                  return updatedNewDuplicateFloor;
-                });
-              } else {
-                setNewFloor((prev) => {
-                  const updatedNewFloor = [...prev];
-                  updatedNewFloor[floorToUpdate.index] = {
-                    ...updatedNewFloor[floorToUpdate.index],
-                    floor: '',
-                  };
-                  return updatedNewFloor;
-                });
-              }
+          {isSameFloorModal && (
+            <BackDrop isOpen={isSameFloorModal}>
+              <AlertPrompt
+                variant='blue'
+                label={'중복된 층 수의 입력은 불가능합니다.'}
+                onConfirm={() => {
+                  if (floorToUpdate.isDuplicate) {
+                    setNewDuplicateFloor((prev) => {
+                      const updatedNewDuplicateFloor = [...prev];
+                      updatedNewDuplicateFloor[floorToUpdate.index] = {
+                        ...updatedNewDuplicateFloor[floorToUpdate.index],
+                        floor: '',
+                      };
+                      return updatedNewDuplicateFloor;
+                    });
+                  } else {
+                    setNewFloor((prev) => {
+                      const updatedNewFloor = [...prev];
+                      updatedNewFloor[floorToUpdate.index] = {
+                        ...updatedNewFloor[floorToUpdate.index],
+                        floor: '',
+                      };
+                      return updatedNewFloor;
+                    });
+                  }
 
-              setIsSameFloorModal(false);
-            }}
-          />
-        </BackDrop>
+                  setIsSameFloorModal(false);
+                }}
+              />
+            </BackDrop>
+          )}
+          {isFilterModal && (
+            <BackDrop isOpen={isFilterModal}>
+              <ConfirmPrompt
+                variant='red'
+                label='작성중인 내용이 저장되지 않을 수 있습니다.'
+                onCancel={() => {
+                  setIsFilterModal(false);
+                  setEditFilter(false);
+                  if (deleteSelectedFloor) setSelectedFloor(deleteSelectedFloor);
+                  setSelectFilter(0);
+                }}
+                onConfirm={() => setIsFilterModal(false)}
+                textLeft='나가기'
+                textRight='취소'
+              />
+            </BackDrop>
+          )}
+          {isDeleteModal && (
+            <BackDrop isOpen={isDeleteModal}>
+              <ConfirmPrompt
+                variant='red'
+                label='층을 삭제하면 적용된 필터도 함께 삭제됩니다.\n층을 삭제하시겠습니까?'
+                onCancel={() => {
+                  setIsDeleteModal(false);
+                  setDeleteSelectedFloor(null);
+                }}
+                onConfirm={() => {
+                  if (deleteSelectedFloor !== null) {
+                    deleteDetailRoom(deleteSelectedFloor);
+                  }
+                }}
+              />
+            </BackDrop>
+          )}
+          {isAlreadyModal && (
+            <BackDrop isOpen={isAlreadyModal}>
+              <AlertPrompt
+                variant='red'
+                label='해당 층에 배정된 학생이 있습니다.'
+                onConfirm={() => {
+                  setIsAlreadyModal(false);
+                  setDeleteSelectedFloor(null);
+                }}
+              />
+            </BackDrop>
+          )}
+          {isNotSaveModal && (
+            <BackDrop isOpen={isNotSaveModal}>
+              <ConfirmPrompt
+                variant='red'
+                label='아직 저장하지 않은 층이 있습니다.\n저장되지 않은 층을 삭제하시겠습니까?'
+                onCancel={() => {
+                  setIsNotSaveModal(false);
+                }}
+                onConfirm={() => {
+                  setAddFloor([]);
+                  setRoomNoneInfo({});
+                  setNewFloor([]);
+                  setNewDuplicateFloor([]);
+                  setIsNotSaveModal(false);
+                  setEditState(false);
+                  setIsEdit(false);
+                }}
+              />
+            </BackDrop>
+          )}
+        </div>
       )}
-      {isFilterModal && (
-        <BackDrop isOpen={isFilterModal}>
-          <ConfirmPrompt
-            variant='red'
-            label='작성중인 내용이 저장되지 않을 수 있습니다.'
-            onCancel={() => {
-              setIsFilterModal(false);
-              setEditFilter(false);
-              if (deleteSelectedFloor) setSelectedFloor(deleteSelectedFloor);
-              setSelectFilter(0);
-            }}
-            onConfirm={() => setIsFilterModal(false)}
-            textLeft='나가기'
-            textRight='취소'
-          />
-        </BackDrop>
-      )}
-      {isDeleteModal && (
-        <BackDrop isOpen={isDeleteModal}>
-          <ConfirmPrompt
-            variant='red'
-            label='층을 삭제하면 적용된 필터도 함께 삭제됩니다.\n층을 삭제하시겠습니까?'
-            onCancel={() => {
-              setIsDeleteModal(false);
-              setDeleteSelectedFloor(null);
-            }}
-            onConfirm={() => {
-              if (deleteSelectedFloor !== null) {
-                deleteDetailRoom(deleteSelectedFloor);
-              }
-            }}
-          />
-        </BackDrop>
-      )}
-      {isAlreadyModal && (
-        <BackDrop isOpen={isAlreadyModal}>
-          <AlertPrompt
-            variant='red'
-            label='해당 층에 배정된 학생이 있습니다.'
-            onConfirm={() => {
-              setIsAlreadyModal(false);
-              setDeleteSelectedFloor(null);
-            }}
-          />
-        </BackDrop>
-      )}
-      {isNotSaveModal && (
-        <BackDrop isOpen={isNotSaveModal}>
-          <ConfirmPrompt
-            variant='red'
-            label='아직 저장하지 않은 층이 있습니다.\n저장되지 않은 층을 삭제하시겠습니까?'
-            onCancel={() => {
-              setIsNotSaveModal(false);
-            }}
-            onConfirm={() => {
-              setAddFloor([]);
-              setRoomNoneInfo({});
-              setNewFloor([]);
-              setNewDuplicateFloor([]);
-              setIsNotSaveModal(false);
-              setEditState(false);
-              setIsEdit(false);
-            }}
-          />
-        </BackDrop>
-      )}
-    </div>
+    </>
   );
 };
 
