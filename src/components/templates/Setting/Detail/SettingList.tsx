@@ -5,7 +5,7 @@ import { DormSettingDetailRoomResponseInformation } from '@/types/setting';
 
 type Props = {
   checkedItems: number[];
-  handleCheckboxChange: (id: number) => void;
+  handleCheckboxChange: (roomNumber: number) => void;
   list: DormSettingDetailRoomResponseInformation[];
   isEdit: boolean;
 };
@@ -15,31 +15,36 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
     <table className='text-nowrap text-center text-gray-grayscale50'>
       <thead className='table w-[917px]'>
         <tr>
-          <th className={`H4 ${isEdit ? 'w-[10%]' : 'w-[10%]'}`}>호 실</th>
-          <th className={`H4 ${isEdit ? 'w-[25%]' : 'w-[40%]'}`}>인 실</th>
-          <th className={`H4 ${isEdit ? 'w-[20%]' : 'w-[30%]'}`}>성 별</th>
-          <th className={`H4 ${isEdit ? 'w-[35%]' : 'w-[20%]'}`}>열쇠 수령 여부</th>
+          <th className='H4 w-[10%]'>호 실</th>
+          <th className={`H4 ${isEdit ? 'w-[19%]' : 'w-[27%]'}`}>인 실</th>
+          <th className={`H4 ${isEdit ? 'w-[17%]' : 'w-[18%]'}`}>성 별</th>
+          <th className={`H4 ${isEdit ? 'w-[22%]' : 'w-[35%]'}`}>열쇠 수령 여부</th>
+          <th className={`H4 ${isEdit ? 'w-[22%]' : 'w-[10%]'}`}>활성화</th>
           {isEdit && (
             <th className='H4 w-[10%]'>
               <div className='flex items-center justify-center text-center w-full gap-6'>
                 전 체
                 <Checkbox
-                  isChecked={list.length > 0 && checkedItems.length === list.length}
+                  isChecked={
+                    list.length > 0 &&
+                    checkedItems.length === list.length - list.filter((item) => item.hasResident).length
+                  }
                   setIsChecked={(isChecked) => {
                     if (isChecked) {
                       list.forEach((item) => {
-                        if (!checkedItems.includes(item.id)) {
-                          handleCheckboxChange(item.id);
+                        if (!checkedItems.includes(Number(item.roomNumber)) && !item.hasResident) {
+                          handleCheckboxChange(Number(item.roomNumber));
                         }
                       });
                     } else {
                       list.forEach((item) => {
-                        if (checkedItems.includes(item.id)) {
-                          handleCheckboxChange(item.id);
+                        if (checkedItems.includes(Number(item.roomNumber)) && !item.hasResident) {
+                          handleCheckboxChange(Number(item.roomNumber));
                         }
                       });
                     }
                   }}
+                  disabled={list.every((item) => item.hasResident)}
                 />
               </div>
             </th>
@@ -53,7 +58,7 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
           return (
             <BuildingSettingsListBody
               key={index}
-              isChecked={checkedItems.includes(data.id)}
+              isChecked={checkedItems.includes(Number(data.roomNumber))}
               handleCheckboxChange={handleCheckboxChange}
               item={data}
               isEdit={isEdit}

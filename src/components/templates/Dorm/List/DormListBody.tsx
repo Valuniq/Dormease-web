@@ -30,8 +30,8 @@ const DormListBody = ({ listClick, onListClick, onStudentClick, studentList, edi
         </td>
       </tr>
       {item.id === listClick && (
-        <tr className='relative'>
-          <td colSpan={4}>
+        <tr>
+          <td className='p-0 m-0 relative'>
             <BuildingManagementBody
               studentList={studentList}
               onStudentClick={onStudentClick}

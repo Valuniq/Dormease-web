@@ -36,13 +36,14 @@ import { useSetRecoilState } from 'recoil';
 
 type Props = {
   buildingList: DormNameResponseInformation[];
+  mounted: boolean;
+  setMounted: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Index = ({ buildingList }: Props) => {
+const Index = ({ buildingList, mounted, setMounted }: Props) => {
   const setEditState = useSetRecoilState(editState);
-  const [mounted, setMounted] = useState(false);
   const [buildingIsOn, setBuildingIsOn] = useState(false);
-  const [selectBuilding, setSelectBuilding] = useState(buildingList[0]);
+  const [selectBuilding, setSelectBuilding] = useState(buildingList[0] || []);
   const [floorList, setFloorList] = useState<DormFloorResponseInformation[]>([]);
   const [floorIsOn, setFloorIsOn] = useState(false);
   const [selectFloor, setSelectFloor] = useState(0);
@@ -94,6 +95,7 @@ const Index = ({ buildingList }: Props) => {
     if (buildingInfoList.check) {
       setBuildingInfo(buildingInfoList.information);
       setMemoText(buildingInfoList.information.memo);
+      await getFloor(id);
     } else {
       setBuildingInfo({
         name: '',
@@ -107,14 +109,39 @@ const Index = ({ buildingList }: Props) => {
     }
   };
 
+  //초기 건물 데이터 불러오기
   useEffect(() => {
-    const initialFetch = async () => {
+    if (!selectBuilding.id) return;
+
+    const fetchBuildingData = async () => {
       setMounted(true);
-      await fetchBuildingInfo(selectBuilding.id);
+      const buildingInfoList = await getDormInfoList(selectBuilding.id);
+
+      if (buildingInfoList.check) {
+        setBuildingInfo(buildingInfoList.information);
+        setMemoText(buildingInfoList.information.memo);
+
+        const buildingFloorList = await getDormFloorList(selectBuilding.id);
+        setFloorList(buildingFloorList.information);
+
+        const defaultFloor = buildingFloorList.information.length > 0 ? 999 : 0;
+        setSelectFloor(defaultFloor);
+        await getRoom(selectBuilding.id, defaultFloor);
+      } else {
+        setBuildingInfo({
+          name: '',
+          imageUrl: null,
+          fullRoomCount: 0,
+          roomCount: 0,
+          currentPeopleCount: 0,
+          dormitorySize: 0,
+          memo: null,
+        });
+      }
     };
 
-    initialFetch();
-  }, [selectBuilding]);
+    fetchBuildingData();
+  }, [selectBuilding.id, setMounted]);
 
   //건물 층 목록 불러오기
   const getFloor = async (id: number) => {
@@ -123,10 +150,10 @@ const Index = ({ buildingList }: Props) => {
     //빌딩에 층이 없을 때는 0(층), 있을 때는 999(전체)
     if (buildingFloorList.information.length > 0) {
       setSelectFloor(999);
-      getRoom(id, 999);
+      await getRoom(id, 999);
     } else {
       setSelectFloor(0);
-      getRoom(id, 0);
+      await getRoom(id, 0);
     }
   };
 
@@ -167,8 +194,8 @@ const Index = ({ buildingList }: Props) => {
   };
 
   //미배정 사생 조회
-  const getRoomNotAssigned = async (id: number) => {
-    const roomNotAssignedList = await getRoomNotAssignedList(id);
+  const getRoomNotAssigned = async (roomId: number) => {
+    const roomNotAssignedList = await getRoomNotAssignedList(roomId);
     if (roomNotAssignedList.check) {
       setRoomNotAssignedList(roomNotAssignedList.information);
     } else {
@@ -266,12 +293,10 @@ const Index = ({ buildingList }: Props) => {
       getFloor(pendingBuilding.building.id);
       setFloorIsOn(false);
       fetchBuildingInfo(pendingBuilding.building.id);
-      getRoomNotAssigned(pendingBuilding.building.id);
     } else if (pendingBuilding.floor) {
       //층 이동
       setSelectFloor(pendingBuilding.floor);
       getRoom(selectBuilding.id, pendingBuilding.floor);
-      getRoomNotAssigned(selectBuilding.id);
     }
     //저장해둔 데이터 초기화
     setEditAssign(false);
@@ -296,10 +321,23 @@ const Index = ({ buildingList }: Props) => {
                   <BuildingSelectImageBtn
                     image={buildingInfo.imageUrl}
                     name={buildingInfo.name}
-                    onClick={onAddPicture}
+                    onClick={() => {
+                      if (selectBuilding.id) {
+                        onAddPicture();
+                      }
+                    }}
                   />
                 ) : (
-                  <BtnLargeVariant label={'사진 추가'} disabled={false} variant={'blue'} onClick={onAddPicture} />
+                  <BtnLargeVariant
+                    label={'사진 추가'}
+                    disabled={false}
+                    variant={'blue'}
+                    onClick={() => {
+                      if (selectBuilding.id) {
+                        onAddPicture();
+                      }
+                    }}
+                  />
                 )}
                 <input
                   id='fileInput'
@@ -338,6 +376,7 @@ const Index = ({ buildingList }: Props) => {
                       className='H4-caption leading-[34px] w-full h-204 bg-yellow-memoyellow border-none outline-none scrollbar-table resize-none'
                       value={memoText === null ? '' : memoText}
                       onChange={(e) => setMemoText(e.target.value)}
+                      readOnly={!selectBuilding.id}
                     />
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-28'></hr>
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-63'></hr>
@@ -368,6 +407,7 @@ const Index = ({ buildingList }: Props) => {
                       setListClick(0);
                     } else {
                       getRoomAssigned(roomId);
+                      getRoomNotAssigned(roomId);
                     }
                   }}
                   onStudentClick={onStudentClick}
@@ -405,9 +445,11 @@ const Index = ({ buildingList }: Props) => {
                       setSaveModal(!saveModal);
                       setEditState(false);
                     } else {
-                      setListClick(0);
-                      setEditAssign(!editAssign);
-                      setEditState(true);
+                      if (selectBuilding.id) {
+                        setListClick(0);
+                        setEditAssign(!editAssign);
+                        setEditState(true);
+                      }
                     }
                   }}
                 />
@@ -430,11 +472,10 @@ const Index = ({ buildingList }: Props) => {
                     getFloor(id);
                     setFloorIsOn(false);
                     fetchBuildingInfo(id);
-                    getRoomNotAssigned(id);
                     setListClick(0);
                   }
                 }}
-                setIsOn={() => setBuildingIsOn(!buildingIsOn)}
+                setIsOn={() => selectBuilding.id && setBuildingIsOn(!buildingIsOn)}
               />
               <SelectFloorDropdown
                 list={floorList}
