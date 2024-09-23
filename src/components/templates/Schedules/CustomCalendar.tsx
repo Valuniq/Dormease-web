@@ -23,8 +23,8 @@ const CustomCalendar = () => {
   const [color, setColor] = useState('gray');
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
-  const [currentMonth, setCurrentMonth] = useState('');
   const [currentYear, setCurrentYear] = useState('');
+  const [currentMonth, setCurrentMonth] = useState('');
   const [showEventDetails, setShowEventDetails] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event>();
 
@@ -37,17 +37,20 @@ const CustomCalendar = () => {
   };
 
   const newEventData = [
-    { id: 1, title: '휴강', start: '2024-05-01', end: '2024-05-03', backgroundColor: 'red' },
-    { id: 2, title: '수강신청', start: '2024-05-15', end: '2024-05-18', backgroundColor: 'blue' },
-    { id: 3, title: '종강', start: '2024-05-15', end: '2024-06-01', backgroundColor: 'orange' },
+    { calendarId: 1, title: '휴강', startDate: '2024-05-01', endDate: '2024-05-03', color: 'red' },
+    { calendarId: 2, title: '수강신청', startDate: '2024-05-15', endDate: '2024-05-18', color: 'blue' },
+    { calendarId: 3, title: '종강', startDate: '2024-05-15', endDate: '2024-06-01', color: 'orange' },
+    { calendarId: 4, title: '종강', startDate: '2024-09-24', endDate: '2024-09-24', color: 'orange' },
+    { calendarId: 5, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'orange' },
+    { calendarId: 6, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'orange' },
   ];
 
   const [events, setEvents] = useState<EventInput[]>(
     newEventData.map((data) => ({
       title: data.title,
-      start: data.start,
-      end: data.end,
-      backgroundColor: colors[data.backgroundColor],
+      start: data.startDate,
+      end: data.endDate,
+      backgroundColor: colors[data.color],
       className: 'text-right rounded-8 cursor-pointer',
     })),
   );
@@ -63,6 +66,8 @@ const CustomCalendar = () => {
   };
 
   const handleDatesSet = (dateInfo: any) => {
+    const midDate = new Date((new Date(dateInfo.start).getTime() + new Date(dateInfo.end).getTime()) / 2);
+    const currentYear = midDate.getFullYear();
     const currentDay = new Date(dateInfo.start).toLocaleString('ko-KR', { day: 'numeric' }).replace('일', '');
     const currentMonth = new Date(dateInfo.start).toLocaleString('ko-KR', { month: 'long' }).replace('월', '');
 
@@ -78,7 +83,7 @@ const CustomCalendar = () => {
       setCurrentMonth(String(currentMonth));
     }
 
-    setCurrentYear('2024년'); //연도 받아오는거 수정 필요
+    setCurrentYear(String(currentYear));
   };
 
   return (
@@ -86,18 +91,23 @@ const CustomCalendar = () => {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView='dayGridMonth'
+        height='auto'
         customButtons={{
-          customMonth: {
-            text: '일정 관리 - ' + currentMonth + '월',
+          customText: {
+            text: '일정 관리',
             click: () => {},
           },
           customYear: {
             text: currentYear,
             click: () => {},
           },
+          customMonth: {
+            text: currentMonth,
+            click: () => {},
+          },
         }}
         datesSet={handleDatesSet}
-        headerToolbar={{ start: 'customMonth, prev,next', center: 'customYear', end: '' }}
+        headerToolbar={{ start: 'customText', center: 'prev,customYear,customMonth,next', end: '' }}
         events={events}
         nowIndicator={true}
         selectable={true}
@@ -121,7 +131,7 @@ const CustomCalendar = () => {
           setShowEventDetails(true);
         }}
       />
-      <div className='absolute top-0 left-0 z-10'>
+      <div className='absolute top-0 left-0 z-50'>
         {showAddButton && (
           <BackDrop isOpen={showAddButton}>
             <CalendarPromptAdd

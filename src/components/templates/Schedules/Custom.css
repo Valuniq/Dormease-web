@@ -20,8 +20,7 @@ body {
 
 /* 전체 캘린더 크기 */
 .fc {
-  width: 1290px;
-  height: 820px;
+  width: 1290px !important;
 }
 
 /* 토요일, 일요일 색상 변경 */
@@ -47,7 +46,7 @@ body {
 }
 
 .fc-daygrid-day-number {
-  margin-top: 6px;
+  z-index: 10 !important;
 }
 
 .fc .fc-day-today {
@@ -79,6 +78,21 @@ body {
   color: #323232;
   border-right: none;
   border-left: none;
+  height: 151px !important;
+  width: 184px !important;
+  box-sizing: border-box;
+}
+
+.fc .fc-customText-button {
+  width: 100% !important;
+  padding: 0 !important;
+  color: #323232 !important;
+
+  font-family: 'pretendard';
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: left;
 }
 
 .fc .fc-customMonth-button {
@@ -96,18 +110,11 @@ body {
   padding: 0 !important;
 }
 
-/* prev next 버튼 그룹 */
-.fc-button-group {
-  display: flex;
-  flex-direction: column;
-}
-
 /* prev next 버튼 색상 수정 */
 .fc-button-primary {
   background: transparent !important;
-  width: 34px !important;
   border: none !important;
-  padding: 0 0 5px 0 !important;
+  padding: 0 !important;
   margin: 0 !important;
 }
 
@@ -116,39 +123,80 @@ body {
   box-shadow: none !important;
 }
 
-/* prev 버튼 */
-.fc-prev-button {
-  border-bottom: 1px solid #999999 !important;
-}
-
-/* next 버튼 */
-.fc-next-button {
-  transform: rotate(180deg);
-}
-
 /* button 안 icon 크기 */
 .fc-icon {
-  width: 34px !important;
-  height: 20px !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+}
+
+.fc-prev-button {
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  padding-left: 10px !important;
+  width: 70px !important;
+  height: 72px !important;
+  background-color: #f3f3f3 !important;
+}
+
+.fc-next-button {
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  width: 59px !important;
+  height: 72px !important;
+  background-color: #f3f3f3 !important;
 }
 
 /* icon 이미지 수정 */
-.fc-prev-button .fc-icon:before,
+.fc-prev-button .fc-icon:before {
+  width: 46px !important;
+  height: 46px !important;
+  content: url('../../../../public/images/ArrowLeft.png');
+}
+
 .fc-next-button .fc-icon:before {
-  content: url('../../../../public/images/CalendarArrowBtn.png');
+  width: 46px !important;
+  height: 46px !important;
+  content: url('../../../../public/images/ArrowRight.png');
 }
 
 .fc .fc-customYear-button {
-  width: 100% !important;
-  padding: 0px 25px !important;
-  border: 2px solid #3678d8 !important;
-  border-radius: 50px;
+  width: 173px !important;
+  height: 72px !important;
+  padding-left: 14px !important;
+  padding-right: 10px;
 
   font-family: 'pretendard';
-  font-size: 30px;
+  font-size: 45px;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 600;
   color: #3678d8 !important;
+  background-color: #f3f3f3 !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.fc-customYear-button::after {
+  content: '';
+  background-image: url('../../../../public/images/ArrowUp.png');
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  margin-left: 11px;
+  display: inline-block;
+}
+
+.fc .fc-customMonth-button {
+  font-family: 'pretendard';
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 600;
+  color: #3678d8 !important;
+  width: 60px !important;
+
+  height: 72px !important;
+  background-color: #f3f3f3 !important;
+  padding-right: 24px !important;
 }
 
 .fc-toolbar-chunk:first-child,
@@ -168,6 +216,11 @@ body {
 /* 날짜 왼쪽 정렬 */
 .fc .fc-daygrid-day-top {
   flex-direction: row;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events,
+.fc-daygrid-block-event {
+  position: static !important;
 }
 
 .fc-scrollgrid,
