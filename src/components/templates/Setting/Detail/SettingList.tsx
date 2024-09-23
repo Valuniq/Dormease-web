@@ -25,22 +25,26 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
               <div className='flex items-center justify-center text-center w-full gap-6'>
                 전 체
                 <Checkbox
-                  isChecked={list.length > 0 && checkedItems.length === list.length}
+                  isChecked={
+                    list.length > 0 &&
+                    checkedItems.length === list.length - list.filter((item) => item.hasResident).length
+                  }
                   setIsChecked={(isChecked) => {
                     if (isChecked) {
                       list.forEach((item) => {
-                        if (!checkedItems.includes(item.roomNumber)) {
-                          handleCheckboxChange(item.roomNumber);
+                        if (!checkedItems.includes(Number(item.roomNumber)) && !item.hasResident) {
+                          handleCheckboxChange(Number(item.roomNumber));
                         }
                       });
                     } else {
                       list.forEach((item) => {
-                        if (checkedItems.includes(item.roomNumber)) {
-                          handleCheckboxChange(item.roomNumber);
+                        if (checkedItems.includes(Number(item.roomNumber)) && !item.hasResident) {
+                          handleCheckboxChange(Number(item.roomNumber));
                         }
                       });
                     }
                   }}
+                  disabled={list.every((item) => item.hasResident)}
                 />
               </div>
             </th>
@@ -54,7 +58,7 @@ const SettingList = ({ checkedItems, handleCheckboxChange, list, isEdit }: Props
           return (
             <BuildingSettingsListBody
               key={index}
-              isChecked={checkedItems.includes(data.roomNumber)}
+              isChecked={checkedItems.includes(Number(data.roomNumber))}
               handleCheckboxChange={handleCheckboxChange}
               item={data}
               isEdit={isEdit}

@@ -12,7 +12,9 @@ type Props = {
 const SettingListBody = ({ isChecked, handleCheckboxChange, item, isEdit }: Props) => {
   return (
     <>
-      <tr className='table rounded-5 w-[917px] H4-caption h-38 text-nowrap align-middle cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20'>
+      <tr
+        className={`table rounded-5 w-[917px] H4-caption h-38 text-nowrap align-middle cursor-pointer ${!item.hasResident && 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
+      >
         <td className='w-[10%]'>{item.roomNumber}</td>
         <td className={`${isEdit ? 'w-[19%]' : 'w-[27%]'}`}>{item.roomSize === null ? '-' : item.roomSize + '인실'}</td>
         <td className={`${isEdit ? 'w-[17%]' : 'w-[18%]'}`}>
@@ -27,7 +29,11 @@ const SettingListBody = ({ isChecked, handleCheckboxChange, item, isEdit }: Prop
         {isEdit && (
           <td className='w-[10%]'>
             <div className='flex justify-center items-center'>
-              <Checkbox isChecked={isChecked} setIsChecked={() => handleCheckboxChange(item.roomNumber)} />
+              <Checkbox
+                isChecked={isChecked}
+                setIsChecked={() => handleCheckboxChange(Number(item.roomNumber))}
+                disabled={item.hasResident || false}
+              />
             </div>
           </td>
         )}

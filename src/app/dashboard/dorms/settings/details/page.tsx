@@ -67,7 +67,7 @@ const Page = () => {
   const [isFilterModal, setIsFilterModal] = useState(false); //필터 수정 중 모달창
   const setEditState = useSetRecoilState(editState);
   const [isEdit, setIsEdit] = useState(true); //현재 페이지가 edit 상태인지
-  const [deleteSelectedFloor, setDeleteSelectedFloor] = useState<number | null>(null); //지우려는 층 floor
+  const [selectedSaveFloor, setSelectedSaveFloor] = useState<number | null>(null); //나가기할 때 선택했거나, 지우려는 층 floor
   const [isAlreadyModal, setIsAlreadyModal] = useState(false); //층 삭제 시 배정된 학생이 있는 경우 모달창
   const [isDeleteModal, setIsDeleteModal] = useState(false); //층 삭제 시 확인 모달창
   const [isNotSaveModal, setIsNotSaveModal] = useState(false); //저장되지 않은 상태의 층이 있는 경우 모달창
@@ -81,8 +81,9 @@ const Page = () => {
     //빌딩 정보 업데이트
     if (data && data.information) {
       setBuildingInfo(data.information);
+      setBuildingName(data.information.name);
       if (data.information.floorAndRoomNumberRes.length > 0) {
-        setIsEdit(false);
+        if (!isLoading) setIsEdit(false);
         if (selectedFloor === 0) {
           setSelectedFloor(Number(data.information.floorAndRoomNumberRes[0].floor));
         }
@@ -93,10 +94,8 @@ const Page = () => {
           const sortedMergedData = mergedData.sort((a, b) => Number(a.floor) - Number(b.floor));
           setSortedFloor(sortedMergedData);
         }
-      }
-      setBuildingName(data.information.name);
-      if (data.information.floorAndRoomNumberRes.length === 0) {
-        if (addFloor.length === 0) {
+      } else {
+        if (addFloor.length === 0 && roomNoneInfo[selectedFloor] === undefined) {
           setSortedFloor([]);
           setSelectedFloor(0);
           setNewFloor([{ floor: '', startRoomNumber: 1, endRoomNumber: '' }]);
@@ -106,7 +105,7 @@ const Page = () => {
       }
       setIsLoading(true);
     }
-  }, [data, addFloor, selectedFloor]);
+  }, [data, addFloor, selectedFloor, isLoading, roomNoneInfo]);
 
   useEffect(() => {
     if (roomData && roomData.information) {
@@ -264,12 +263,12 @@ const Page = () => {
     try {
       const response = await deleteRoom(buildingId, floor);
       if (response.check) {
+        floor === selectedFloor && setSelectedFloor(0);
         await mutate();
         setIsDeleteModal(false);
       } else {
-        console.log('실패');
         setIsDeleteModal(false);
-        setIsAlreadyModal(true);
+        setIsAlreadyModal(true); //사생이 있는 층
       }
     } catch (error) {
       console.error(error);
@@ -332,14 +331,17 @@ const Page = () => {
     }));
 
     await postSettingFilter(buildingId, selectedFloor, updatedRoomInfo);
+
+    setAddFloor((prev) => prev.filter((item) => item.floor !== selectedFloor));
+
     await mutate();
+    await roomMutate();
 
     setRoomNoneInfo((prev) => {
       const updatedRoomInfo = { ...prev };
       delete updatedRoomInfo[selectedFloor];
       return updatedRoomInfo;
     });
-    setAddFloor((prev) => prev.filter((item) => item.floor !== selectedFloor));
 
     setSelectFilter(0);
     setCheckedItems([]);
@@ -357,6 +359,7 @@ const Page = () => {
 
     await putSettingFilter(buildingId, selectedFloor, updatedRoomInfo);
     await mutate();
+    await roomMutate();
 
     setSelectFilter(0);
     setCheckedItems([]);
@@ -427,6 +430,7 @@ const Page = () => {
                             hovered={false} //hover가 가능한지
                             deleteDetailRoom={() => {
                               if (addFloor.some((item) => item.floor === data.floor)) {
+                                data.floor === selectedFloor && setSelectedFloor(0);
                                 setAddFloor((prev) => prev.filter((item) => item.floor !== data.floor));
                                 setRoomNoneInfo((prev) => {
                                   const updatedRoomInfo = { ...prev };
@@ -436,13 +440,13 @@ const Page = () => {
                               }
                               if (buildingInfo.floorAndRoomNumberRes.some((item) => item.floor === data.floor)) {
                                 setIsDeleteModal(true);
-                                setDeleteSelectedFloor(Number(data.floor));
+                                setSelectedSaveFloor(Number(data.floor));
                               }
                             }}
                             onClick={() => {
                               if (editFilter && selectedFloor !== data.floor) {
                                 setIsFilterModal(true);
-                                setDeleteSelectedFloor(Number(data.floor));
+                                setSelectedSaveFloor(Number(data.floor));
                               } else {
                                 setSelectFilter(0);
                                 setSelectedFloor(Number(data.floor));
@@ -646,7 +650,7 @@ const Page = () => {
                 </div>
               )}
               <SettingList
-                list={roomInfo ? roomInfo : []}
+                list={roomInfo || []}
                 checkedItems={checkedItems}
                 handleCheckboxChange={(roomNumber) => {
                   if (selectFilter !== 0) {
@@ -663,7 +667,7 @@ const Page = () => {
             <div className='flex-1 flex justify-center'>
               <BtnMidVariant
                 label={isEdit ? '완료' : '수정'}
-                disabled={false}
+                disabled={isEdit ? buildingInfo.floorAndRoomNumberRes.length === 0 : false}
                 variant='blue'
                 onClick={() => {
                   if (isEdit) {
@@ -765,10 +769,11 @@ const Page = () => {
                 variant='red'
                 label='작성중인 내용이 저장되지 않을 수 있습니다.'
                 onCancel={() => {
-                  setIsFilterModal(false);
                   setEditFilter(false);
-                  if (deleteSelectedFloor) setSelectedFloor(deleteSelectedFloor);
+                  if (selectedSaveFloor) setSelectedFloor(selectedSaveFloor);
                   setSelectFilter(0);
+                  setCheckedItems([]);
+                  setIsFilterModal(false);
                 }}
                 onConfirm={() => setIsFilterModal(false)}
                 textLeft='나가기'
@@ -783,11 +788,11 @@ const Page = () => {
                 label='층을 삭제하면 적용된 필터도 함께 삭제됩니다.\n층을 삭제하시겠습니까?'
                 onCancel={() => {
                   setIsDeleteModal(false);
-                  setDeleteSelectedFloor(null);
+                  setSelectedSaveFloor(null);
                 }}
                 onConfirm={() => {
-                  if (deleteSelectedFloor !== null) {
-                    deleteDetailRoom(deleteSelectedFloor);
+                  if (selectedSaveFloor !== null) {
+                    deleteDetailRoom(selectedSaveFloor);
                   }
                 }}
               />
@@ -800,7 +805,7 @@ const Page = () => {
                 label='해당 층에 배정된 학생이 있습니다.'
                 onConfirm={() => {
                   setIsAlreadyModal(false);
-                  setDeleteSelectedFloor(null);
+                  setSelectedSaveFloor(null);
                 }}
               />
             </BackDrop>

@@ -108,7 +108,9 @@ const RoomBtn = ({
         ) : (
           <BtnMiniVariant
             label={isOne ? '확인' : '추가'}
-            disabled={floorInput === '' || startInput === '' || endInput === '' || startInput > endInput}
+            disabled={
+              floorInput === '' || startInput === '' || endInput === '' || Number(startInput) > Number(endInput)
+            }
             selected={false}
             variant='blue'
             onClick={(e) => {
