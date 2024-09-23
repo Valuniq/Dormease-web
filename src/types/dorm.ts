@@ -66,11 +66,5 @@ export type DormRoomInAssignedResponseInformation = {
 };
 
 export type DormRoomManualRequest = {
-  roomId: number;
   residentIds: number[];
-};
-
-export type DormRoomAssigned = {
-  roomId: number;
-  resident: DormRoomInAssignedResponseInformation[];
 };

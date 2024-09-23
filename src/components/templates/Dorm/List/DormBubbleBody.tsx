@@ -7,11 +7,10 @@ type Props = {
   onStudentClick: (selectStudent: number) => void;
   editAssign: boolean;
   roomSize: number;
-  roomManual?: (roomId: number) => void;
-  roomId: number;
+  roomManual: () => void;
 };
 
-const DormBubbleBody = ({ studentList, onStudentClick, editAssign, roomSize, roomManual, roomId }: Props) => {
+const DormBubbleBody = ({ studentList, onStudentClick, editAssign, roomSize, roomManual }: Props) => {
   //roomSize랑 assigned가 true(배정된) 사생 비교
   const handleStudentClick = (selectStudent: number) => {
     const assignedCount = studentList.filter((student) => student.assigned).length;
@@ -24,8 +23,8 @@ const DormBubbleBody = ({ studentList, onStudentClick, editAssign, roomSize, roo
 
   return (
     <>
-      <div className='absolute z-10 text-gray-grayscale50 mt-10 left-108'>
-        <div className='balloon'>
+      <div className='absolute z-10 text-gray-grayscale50 mt-10 w-[517px] pointer-events-none'>
+        <div className='balloon pointer-events-auto'>
           <div className='caption-2 max-h-256 overflow-y-auto noscrollbar-table'>
             <table>
               <tbody>
@@ -34,15 +33,15 @@ const DormBubbleBody = ({ studentList, onStudentClick, editAssign, roomSize, roo
                     <React.Fragment key={index}>
                       <tr
                         key={index}
-                        className={`w-[290px] caption-2 py-2 text-nowrap align-middle cursor-pointer ${data.assigned && editAssign ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
+                        className={`caption-2 py-2 text-nowrap align-middle cursor-pointer ${data.assigned ? 'bg-gray-grayscale20' : 'hover:bg-gray-grayscale10 active:bg-gray-grayscale20'}`}
                         onClick={(event) => {
                           event.stopPropagation();
                           handleStudentClick(data.id);
                         }}
                       >
-                        <td className='rounded-l-5 pr-20 pl-10 min-w-100'>{data.studentNumber}</td>
-                        <td className='pr-20 min-w-60'>{data.name}</td>
-                        <td className='rounded-r-5 pr-10 min-w-100'>{data.phoneNumber}</td>
+                        <td className='rounded-l-5 pl-5'>{data.studentNumber}</td>
+                        <td className='px-17'>{data.name}</td>
+                        <td className='rounded-r-5 pr-5'>{data.phoneNumber}</td>
                       </tr>
                       <tr className='h-10' />
                     </React.Fragment>
@@ -50,17 +49,9 @@ const DormBubbleBody = ({ studentList, onStudentClick, editAssign, roomSize, roo
                 })}
               </tbody>
             </table>
-            {editAssign && (
-              <div className='mt-4 mb-14'>
-                <BtnMiniVariant
-                  label='배정'
-                  variant='blue'
-                  disabled={false}
-                  selected={false}
-                  onClick={() => roomManual && roomManual(roomId)}
-                />
-              </div>
-            )}
+          </div>
+          <div className='mt-4 mb-14'>
+            <BtnMiniVariant label='저장' variant='blue' disabled={editAssign} selected={false} onClick={roomManual} />
           </div>
         </div>
       </div>
