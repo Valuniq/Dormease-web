@@ -60,8 +60,8 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
   const [roomAssignedList, setRoomAssignedList] = useState<DormRoomInAssignedResponseInformation[]>([]); //해당 room에 배정된 학생 리스트
   const [roomNotAssignedList, setRoomNotAssignedList] = useState<DormRoomInAssignedResponseInformation[]>([]); //해당 room에 미배정된 학생 리스트
   const [editAssign, setEditAssign] = useState(false); //배정&미배정 수정 중일 때
-  const [saveModal, setSaveModal] = useState(false);
-  const [warningModal, setWarningModal] = useState(false);
+  const [isSaveModal, setIsSaveModal] = useState(false);
+  const [isWarningModal, setIsWarningModal] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [pendingBuilding, setPendingBuilding] = useState<{
     building: { id: number; name: string } | null;
@@ -225,7 +225,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
       );
       setEditAssign(false);
       setEditState(false);
-      setSaveModal(false);
+      setIsSaveModal(false);
     }
   };
 
@@ -273,7 +273,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
       building: null,
       floor: null,
     });
-    setWarningModal(false);
+    setIsWarningModal(false);
   };
 
   return (
@@ -378,7 +378,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                 roomList={roomList}
                 studentList={studentList}
                 editAssign={!editAssign}
-                roomManual={() => setSaveModal(true)}
+                roomManual={() => setIsSaveModal(true)}
               />
             </div>
           </div>
@@ -391,7 +391,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                 setSelect={(id, name) => {
                   if (editAssign) {
                     setPendingBuilding({ building: { id, name }, floor: null });
-                    setWarningModal(!warningModal);
+                    setIsWarningModal(true);
                   } else {
                     setEditAssign(false);
                     setSelectBuilding({ id, name });
@@ -411,7 +411,7 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                 setSelect={(floor) => {
                   if (editAssign) {
                     setPendingBuilding({ building: null, floor: floor });
-                    setWarningModal(!warningModal);
+                    setIsWarningModal(true);
                   } else {
                     setSelectFloor(floor);
                     getRoom(selectBuilding.id, floor);
@@ -421,23 +421,23 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
               />
             </div>
           </div>
-          {saveModal && (
-            <BackDrop isOpen={saveModal}>
+          {isSaveModal && (
+            <BackDrop isOpen={isSaveModal}>
               <ConfirmPrompt
                 variant='blue'
                 label='배정된 호실을 저장하시겠습니까?'
                 onConfirm={onSaveRoom}
-                onCancel={() => setSaveModal(false)}
+                onCancel={() => setIsSaveModal(false)}
               />
             </BackDrop>
           )}
-          {warningModal && (
-            <BackDrop isOpen={warningModal}>
+          {isWarningModal && (
+            <BackDrop isOpen={isWarningModal}>
               <ConfirmPrompt
                 variant='red'
                 label='저장하지 않고 건물이나 층을 변경하면\n이전 배정 내용이 사라집니다.'
                 onConfirm={onCancelMove}
-                onCancel={() => setWarningModal(false)}
+                onCancel={() => setIsWarningModal(false)}
               />
             </BackDrop>
           )}
