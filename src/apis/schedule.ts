@@ -45,3 +45,15 @@ export const getCalendarDetail = async (calendarId: number) => {
   });
   return res;
 };
+
+//일정 수정
+export const putCalendar = async (calendarId: number, data: CalendarRequest) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/calendar/${calendarId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return res;
+};

@@ -27,15 +27,19 @@ const CalendarPrompt = ({ item, onCancel, onDelete, onEdit }: Props) => {
           readOnly
           value={item.startDate}
         />
-        <Image src={Wave} width={18} height={6} alt='wave' className='mx-26' />
-        <input
-          className='rounded-8 border border-gray-grayscale40 H4-caption outline-none px-14 py-5 text-gray-grayscale50 placeholder:text-gray-grayscale30'
-          type='date'
-          id='date'
-          required
-          readOnly
-          value={item.endDate}
-        />
+        {item.startDate !== item.endDate && (
+          <>
+            <Image src={Wave} width={18} height={6} alt='wave' className='mx-26' />
+            <input
+              className='rounded-8 border border-gray-grayscale40 H4-caption outline-none px-14 py-5 text-gray-grayscale50 placeholder:text-gray-grayscale30'
+              type='date'
+              id='date'
+              required
+              readOnly
+              value={item.endDate}
+            />
+          </>
+        )}
       </div>
       <h1 className={`H1 mt-20 mb-12 ${colorList.find((color) => color.name === item.color)?.text}`}>{item.title}</h1>
       <div className='relative w-911 h-160'>
@@ -47,7 +51,7 @@ const CalendarPrompt = ({ item, onCancel, onDelete, onEdit }: Props) => {
         />
       </div>
       <div className='absolute right-0 bottom-23'>
-        <AlertBtn label={'삭제'} onClick={onDelete} hoverColor={'gray'} />
+        <AlertBtn label={'삭제'} onClick={onDelete} hoverColor={'red'} />
         <AlertBtn label={'취소'} onClick={onCancel} hoverColor={'gray'} />
         <AlertBtn label={'수정'} onClick={onEdit} hoverColor={'blue'} />
       </div>

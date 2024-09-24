@@ -20,6 +20,7 @@ type Props = {
   setSelectedDates: React.Dispatch<React.SetStateAction<{ start: string; end: string }>>;
   onCancel: () => void;
   onConfirm: () => void;
+  isColor: boolean;
 };
 
 const MAX_LENGTH = 200; //내용 글자수 제한
@@ -36,6 +37,7 @@ const CalendarPromptAdd = ({
   startDate,
   endDate,
   setSelectedDates,
+  isColor,
 }: Props) => {
   const [isColordropdown, setIsColorDropdown] = useState(false);
   const [isInvalidDateRange, setIsInvalidDateRange] = useState(false); //종료 날짜가 시작 날짜보다 빠를 때 경고 메시지 출력
@@ -126,16 +128,7 @@ const CalendarPromptAdd = ({
       </div>
       <div className='absolute right-0 bottom-23'>
         <AlertBtn label={'취소'} onClick={onCancel} hoverColor={'gray'} />
-        <AlertBtn
-          label={'등록'}
-          onClick={() => {
-            if (title !== '' && startDate !== '' && endDate !== '') {
-              onConfirm();
-            }
-          }}
-          hoverColor={'blue'}
-          isColor={title !== '' && startDate !== '' && endDate !== ''}
-        />
+        <AlertBtn label={'등록'} onClick={onConfirm} hoverColor={'blue'} isColor={isColor} disabled={!isColor} />
       </div>
     </div>
   );

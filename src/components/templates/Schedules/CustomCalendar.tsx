@@ -10,7 +10,7 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
 import { CalendarDateResponseInformation, CalendarDetailResponseInformation } from '@/types/schedule';
-import { getCalendarDateList, getCalendarDetail, postCalendar, useCalendarList } from '@/apis/schedule';
+import { getCalendarDateList, getCalendarDetail, postCalendar, putCalendar, useCalendarList } from '@/apis/schedule';
 
 const colors: { [key: string]: string } = {
   GREY: '#E6E6E6',
@@ -67,6 +67,7 @@ const CustomCalendar = () => {
   } | null>(null); //hover한 이벤트
   const [events, setEvents] = useState<EventInput[]>([]); //연도, 월별 일정 목록 (캘린더)
   const [dateList, setDateList] = useState<CalendarDateResponseInformation[]>([]); //일별 일정 목록
+  const [editId, setEditId] = useState(0); //캘린더 ID
 
   useEffect(() => {
     if (data?.information) {
@@ -147,7 +148,7 @@ const CustomCalendar = () => {
   };
 
   //일정 등록
-  const onAddCalendar = async () => {
+  const handleAddCalendar = async () => {
     const data = {
       startDate: selectedDates.start,
       endDate: selectedDates.end,
@@ -157,6 +158,7 @@ const CustomCalendar = () => {
     };
     await postCalendar(data);
 
+    setIsShowMoreDetail(false);
     setIsShowAddButton(false);
     setTitle('');
     setContents('');
@@ -165,6 +167,28 @@ const CustomCalendar = () => {
     await mutate();
   };
 
+  //일정 수정
+  const handleEditCalendar = async () => {
+    const data = {
+      startDate: selectedDates.start,
+      endDate: selectedDates.end,
+      title: title,
+      content: contents,
+      color: color,
+    };
+    await putCalendar(editId, data);
+
+    setIsShowMoreDetail(false);
+    setIsShowAddButton(false);
+    setTitle('');
+    setContents('');
+    setColor('GREY');
+    setEditId(0);
+
+    await mutate();
+  };
+
+  //일별 일정 목록 조회
   const loadDateSchedule = async (startDate: string) => {
     const response = await getCalendarDateList(startDate);
     if (response.check) {
@@ -173,6 +197,7 @@ const CustomCalendar = () => {
     }
   };
 
+  //일정 상세 조회
   const loadDetailSchedule = async (id: number) => {
     const response = await getCalendarDetail(id);
     if (response.check) {
@@ -277,23 +302,41 @@ const CustomCalendar = () => {
                 setContents('');
                 setColor('GREY');
               }}
-              onConfirm={onAddCalendar}
+              onConfirm={editId === 0 ? handleAddCalendar : handleEditCalendar}
               startDate={selectedDates.start}
               endDate={selectedDates.end}
+              setSelectedDates={setSelectedDates}
               title={title}
               setTitle={setTitle}
               contents={contents}
               setContents={setContents}
               color={color}
               setColor={setColor}
-              setSelectedDates={setSelectedDates}
+              isColor={
+                title !== '' && selectedDates.start !== '' && selectedDates.end !== ''
+                  ? (editId === 0 && selectedEvent?.startDate !== selectedDates.start) ||
+                    selectedEvent?.endDate !== selectedDates.end ||
+                    selectedEvent?.title !== title ||
+                    selectedEvent?.content !== contents ||
+                    selectedEvent?.color !== color
+                  : false
+              }
             />
           ) : isShowEventDetail && selectedEvent ? (
             <CalendarPrompt
               item={selectedEvent}
               onDelete={() => setIsShowEventDetail(false)}
               onCancel={() => setIsShowEventDetail(false)}
-              onEdit={() => setIsShowEventDetail(false)}
+              onEdit={() => {
+                setSelectedDates({ start: selectedEvent.startDate, end: selectedEvent.endDate });
+                setTitle(selectedEvent.title);
+                setContents(selectedEvent.content);
+                setColor(selectedEvent.color);
+                setEditId(selectedEvent.calendarId);
+
+                setIsShowEventDetail(false);
+                setIsShowAddButton(true);
+              }}
             />
           ) : isShowMoreDetail ? (
             <CalendarDatePrompt
