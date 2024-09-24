@@ -218,9 +218,16 @@ body {
   flex-direction: row;
 }
 
-.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events,
-.fc-daygrid-block-event {
-  position: static !important;
+.fc-daygrid-day-events {
+  padding-bottom: 0px !important;
+}
+
+.fc-daygrid-day-bottom {
+  font-family: 'pretendard';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  color: #474747 !important;
 }
 
 .fc-scrollgrid,
