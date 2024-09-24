@@ -9,8 +9,8 @@ import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/Calenda
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
-import { CalendarResponseInformation, TDateResponse, TDayResponse } from '@/types/schedule';
-import { useCalendarList } from '@/apis/schedule';
+import { TDateResponse, TDayResponse } from '@/types/schedule';
+import { postCalendar, useCalendarList } from '@/apis/schedule';
 
 const colors: { [key: string]: string } = {
   GREY: '#E6E6E6',
@@ -117,17 +117,22 @@ const CustomCalendar = () => {
 
   useEffect(() => {
     if (data?.information) {
-      setEvents(
-        data.information.map((data) => ({
-          title: truncateTitle(data.title, 10),
-          start: data.startDate,
-          end: formatDateToString(data.endDate, 1),
-          backgroundColor: colors[data.color],
-          className: 'text-right rounded-8 cursor-pointer pointer-events-none',
-        })),
-      );
+      const newEvents = data.information.map((data) => ({
+        title: truncateTitle(data.title, 10),
+        start: data.startDate,
+        end: formatDateToString(data.endDate, 1),
+        backgroundColor: colors[data.color],
+        className: 'text-right rounded-8 cursor-pointer pointer-events-none',
+      }));
+      setEvents(newEvents);
     }
   }, [data]);
+
+  useEffect(() => {
+    //일정 드롭다운 연도 20개 저장
+    const years = Array.from({ length: 19 }, (_, i) => String(today.getFullYear() + i - 1));
+    setYearList(years);
+  }, []);
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -139,12 +144,6 @@ const CustomCalendar = () => {
         console.error(error);
       }
     }
-  }, [currentYear]);
-
-  useEffect(() => {
-    //일정 드롭다운 연도 20개 출력
-    const years = Array.from({ length: 19 }, (_, i) => String(Number(currentYear) + i - 1));
-    setYearList(years);
   }, [currentYear]);
 
   //일정이 있는지 여부 (있으면 true, 없으면 false)
@@ -192,6 +191,25 @@ const CustomCalendar = () => {
 
   const handleMouseLeave = () => {
     setHoveredDate(null);
+  };
+
+  //일정 등록
+  const onAddCalendar = async () => {
+    const data = {
+      startDate: selectedDates.start,
+      endDate: selectedDates.end,
+      title: title,
+      content: contents,
+      color: color,
+    };
+    await postCalendar(data);
+
+    setIsShowAddButton(false);
+    setTitle('');
+    setContents('');
+    setColor('GREY');
+
+    await mutate();
   };
 
   return (
@@ -294,12 +312,7 @@ const CustomCalendar = () => {
                 setContents('');
                 setColor('GREY');
               }}
-              onConfirm={() => {
-                setIsShowAddButton(false);
-                setTitle('');
-                setContents('');
-                setColor('GREY');
-              }}
+              onConfirm={onAddCalendar}
               startDate={selectedDates.start}
               endDate={selectedDates.end}
               title={title}

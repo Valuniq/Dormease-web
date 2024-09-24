@@ -39,6 +39,8 @@ body {
   color: #ffffff !important;
   width: 33px;
   height: 33px;
+  margin-top: 2.5px;
+  margin-bottom: 2.5px;
   display: inline-flex;
   justify-content: center;
   align-items: center;

@@ -2,9 +2,10 @@ type Props = {
   label: string;
   onClick: () => void;
   hoverColor: 'blue' | 'gray' | 'red' | 'green';
+  isColor?: boolean;
 };
 
-const AlertBtn = ({ label, onClick, hoverColor }: Props) => {
+const AlertBtn = ({ label, onClick, hoverColor, isColor }: Props) => {
   const getClassByHoverColor = (hoverColor: string) => {
     switch (hoverColor) {
       case 'blue':
@@ -32,11 +33,14 @@ const AlertBtn = ({ label, onClick, hoverColor }: Props) => {
   const { btnHoverColor } = getClassByHoverColor(hoverColor);
   return (
     <>
-      <button onClick={onClick} className={`mr-16 w-86 h-32 rounded-20 ${btnHoverColor} hover-transition`}>
+      <button
+        onClick={onClick}
+        className={`mr-16 w-86 h-32 rounded-20 ${btnHoverColor} hover-transition ${isColor && 'bg-blue-blue30'}`}
+      >
         {hoverColor === 'gray' ? (
           <h1 className='H4 text-gray-grayscale40'>{label}</h1>
         ) : (
-          <h1 className='H4 text-gray-grayscale40  hover:text-white'>{label}</h1>
+          <h1 className={`H4 text-gray-grayscale40 hover:text-white ${isColor && 'text-white'}`}>{label}</h1>
         )}
       </button>
     </>

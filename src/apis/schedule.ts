@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/path';
-import { CalendarResponse } from '@/types/schedule';
+import { CalendarRequest, CalendarResponse } from '@/types/schedule';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 
@@ -10,4 +10,16 @@ export const useCalendarList = (year: number, month: number) => {
     fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
+};
+
+//일정 등록
+export const postCalendar = async (data: CalendarRequest) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/calendar`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return res;
 };

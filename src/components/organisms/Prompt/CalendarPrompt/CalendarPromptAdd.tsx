@@ -132,6 +132,7 @@ const CalendarPromptAdd = ({
             }
           }}
           hoverColor={'blue'}
+          isColor={title !== '' && startDate !== '' && endDate !== ''}
         />
       </div>
     </div>

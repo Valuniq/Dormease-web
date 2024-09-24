@@ -11,6 +11,14 @@ export type CalendarResponseInformation = {
   color: string;
 };
 
+export type CalendarRequest = {
+  startDate: string;
+  endDate: string;
+  title: string;
+  content: string;
+  color: string;
+};
+
 export type TDateResponse = {
   calendarId: number;
   title: string;
