@@ -8,7 +8,7 @@ import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
 
 type Props = {
   item: CalendarDetailResponseInformation;
-  onDelete: () => void;
+  onDelete: (id: number) => void;
   onCancel: () => void;
   onEdit: () => void;
 };
@@ -51,7 +51,7 @@ const CalendarPrompt = ({ item, onCancel, onDelete, onEdit }: Props) => {
         />
       </div>
       <div className='absolute right-0 bottom-23'>
-        <AlertBtn label={'삭제'} onClick={onDelete} hoverColor={'red'} />
+        <AlertBtn label={'삭제'} onClick={() => onDelete(item.calendarId)} hoverColor={'red'} />
         <AlertBtn label={'취소'} onClick={onCancel} hoverColor={'gray'} />
         <AlertBtn label={'수정'} onClick={onEdit} hoverColor={'blue'} />
       </div>

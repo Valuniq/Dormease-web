@@ -10,7 +10,14 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
 import { CalendarDateResponseInformation, CalendarDetailResponseInformation } from '@/types/schedule';
-import { getCalendarDateList, getCalendarDetail, postCalendar, putCalendar, useCalendarList } from '@/apis/schedule';
+import {
+  deleteCalendar,
+  getCalendarDateList,
+  getCalendarDetail,
+  postCalendar,
+  putCalendar,
+  useCalendarList,
+} from '@/apis/schedule';
 
 const colors: { [key: string]: string } = {
   GREY: '#E6E6E6',
@@ -69,6 +76,7 @@ const CustomCalendar = () => {
   const [dateList, setDateList] = useState<CalendarDateResponseInformation[]>([]); //일별 일정 목록
   const [editId, setEditId] = useState(0); //캘린더 ID
 
+  //초기 데이터
   useEffect(() => {
     if (data?.information) {
       const newEvents = data.information.map((data) => ({
@@ -82,12 +90,13 @@ const CustomCalendar = () => {
     }
   }, [data]);
 
+  //일정 드롭다운 연도 20개 저장
   useEffect(() => {
-    //일정 드롭다운 연도 20개 저장
     const years = Array.from({ length: 19 }, (_, i) => String(today.getFullYear() + i - 1));
     setYearList(years);
   }, []);
 
+  //연도로 캘린더 불러오기
   useEffect(() => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
@@ -114,6 +123,7 @@ const CustomCalendar = () => {
     });
   };
 
+  //연도, 월 저장
   const handleDatesSet = (dateInfo: any) => {
     const midDate = new Date((new Date(dateInfo.start).getTime() + new Date(dateInfo.end).getTime()) / 2);
     const currentYear = midDate.getFullYear();
@@ -135,6 +145,7 @@ const CustomCalendar = () => {
     setCurrentYear(String(currentYear));
   };
 
+  //마우스 hover 동작 관리
   const handleMouseEnter = (date: Date, cell: HTMLElement) => {
     if (hasEventOnDate(date)) {
       setHoveredDate(null);
@@ -145,47 +156,6 @@ const CustomCalendar = () => {
 
   const handleMouseLeave = () => {
     setHoveredDate(null);
-  };
-
-  //일정 등록
-  const handleAddCalendar = async () => {
-    const data = {
-      startDate: selectedDates.start,
-      endDate: selectedDates.end,
-      title: title,
-      content: contents,
-      color: color,
-    };
-    await postCalendar(data);
-
-    setIsShowMoreDetail(false);
-    setIsShowAddButton(false);
-    setTitle('');
-    setContents('');
-    setColor('GREY');
-
-    await mutate();
-  };
-
-  //일정 수정
-  const handleEditCalendar = async () => {
-    const data = {
-      startDate: selectedDates.start,
-      endDate: selectedDates.end,
-      title: title,
-      content: contents,
-      color: color,
-    };
-    await putCalendar(editId, data);
-
-    setIsShowMoreDetail(false);
-    setIsShowAddButton(false);
-    setTitle('');
-    setContents('');
-    setColor('GREY');
-    setEditId(0);
-
-    await mutate();
   };
 
   //일별 일정 목록 조회
@@ -204,6 +174,54 @@ const CustomCalendar = () => {
       setSelectedEvent(response.information);
       setIsShowEventDetail(true);
     }
+  };
+
+  //일정 등록
+  const handleAddCalendar = async () => {
+    const data = {
+      startDate: selectedDates.start,
+      endDate: selectedDates.end,
+      title: title,
+      content: contents,
+      color: color,
+    };
+    await postCalendar(data);
+    await mutate();
+
+    setIsShowMoreDetail(false);
+    setIsShowAddButton(false);
+    setTitle('');
+    setContents('');
+    setColor('GREY');
+  };
+
+  //일정 수정
+  const handleEditCalendar = async () => {
+    const data = {
+      startDate: selectedDates.start,
+      endDate: selectedDates.end,
+      title: title,
+      content: contents,
+      color: color,
+    };
+    await putCalendar(editId, data);
+    await mutate();
+
+    setIsShowMoreDetail(false);
+    setIsShowAddButton(false);
+    setTitle('');
+    setContents('');
+    setColor('GREY');
+    setEditId(0);
+  };
+
+  //일정 삭제
+  const handleDeleteCalendar = async (id: number) => {
+    await deleteCalendar(id);
+    await mutate();
+
+    setIsShowEventDetail(false);
+    setIsShowMoreDetail(false);
   };
 
   return (
@@ -325,7 +343,7 @@ const CustomCalendar = () => {
           ) : isShowEventDetail && selectedEvent ? (
             <CalendarPrompt
               item={selectedEvent}
-              onDelete={() => setIsShowEventDetail(false)}
+              onDelete={handleDeleteCalendar}
               onCancel={() => setIsShowEventDetail(false)}
               onEdit={() => {
                 setSelectedDates({ start: selectedEvent.startDate, end: selectedEvent.endDate });

@@ -57,3 +57,14 @@ export const putCalendar = async (calendarId: number, data: CalendarRequest) => 
   });
   return res;
 };
+
+//일정 삭제
+export const deleteCalendar = async (calendarId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/calendar/${calendarId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};
