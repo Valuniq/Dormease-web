@@ -8,17 +8,11 @@ import CalendarPromptAdd from '@/components/organisms/Prompt/CalendarPrompt/Cale
 import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/CalendarPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
-
-type TEvent = {
-  title: string;
-  contents?: string;
-  start: string;
-  end: string;
-  color: string;
-};
+import CalendarDatePrompt from './CalendarDatePrompt';
+import { TDateResponse, TDayResponse } from '@/types/schedule';
 
 const colors: { [key: string]: string } = {
-  GREY: '#F3F3F3',
+  GREY: '#E6E6E6',
   RED: '#E29696',
   GREEN: '#95ED8D',
   YELLOW: '#FFD7A9',
@@ -40,6 +34,54 @@ const initialEventsData = [
   { calendarId: 6, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'BLUE' },
   { calendarId: 7, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
   { calendarId: 8, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
+];
+
+const dummyData: TDateResponse[] = [
+  {
+    calendarId: 1,
+    title: '수강신청',
+    color: 'GREEN',
+  },
+  {
+    calendarId: 2,
+    title: '수강신청',
+    color: 'GREY',
+  },
+  {
+    calendarId: 3,
+    title: '이부분에서최대로작성할수있는글자영역입니다.',
+    color: 'BLUE',
+  },
+  {
+    calendarId: 4,
+    title: '수강신청',
+    color: 'GREEN',
+  },
+  {
+    calendarId: 5,
+    title: '수강신청',
+    color: 'GREY',
+  },
+  {
+    calendarId: 6,
+    title: '이부분에서최대로작성할수있는글자영역입니다.',
+    color: 'BLUE',
+  },
+  {
+    calendarId: 7,
+    title: '수강신청',
+    color: 'GREEN',
+  },
+  {
+    calendarId: 8,
+    title: '수강신청',
+    color: 'GREY',
+  },
+  {
+    calendarId: 9,
+    title: '이부분에서최대로작성할수있는글자영역입니다.',
+    color: 'BLUE',
+  },
 ];
 
 //글자수 제한
@@ -80,7 +122,7 @@ const CustomCalendar = () => {
   const [isShowEventDetail, setIsShowEventDetail] = useState(false); //일정 조회 프롬프트
   const [isShowMoreDetail, setIsShowMoreDetail] = useState(false); //일별 일정 목록 조회 프롬프트
   const [isShowAddButton, setIsShowAddButton] = useState(false); //새로운 일정 추가 프롬프트
-  const [selectedEvent, setSelectedEvent] = useState<TEvent>(); //이벤트 자세히 보기
+  const [selectedEvent, setSelectedEvent] = useState<TDayResponse>(); //이벤트 자세히 보기
   const [hoveredDate, setHoveredDate] = useState<{
     date: Date;
     cell: HTMLElement;
@@ -91,12 +133,44 @@ const CustomCalendar = () => {
       start: data.startDate,
       end: formatDateToString(data.endDate, 1),
       backgroundColor: colors[data.color],
-      className: 'text-right rounded-8 cursor-pointer',
+      className: 'text-right rounded-8 cursor-pointer pointer-events-none',
     })),
   ); //이벤트 목록
 
   const addNewEvent = (newEvent: EventInput) => {
     setEvents((currentEvents) => [...currentEvents, newEvent]);
+  };
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      const formattedMonth = currentMonth.padStart(2, '0');
+      try {
+        calendarApi.gotoDate(`${currentYear}-${formattedMonth}-01`);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [currentYear]);
+
+  useEffect(() => {
+    //일정 드롭다운 연도 20개 출력
+    const years = Array.from({ length: 19 }, (_, i) => String(Number(currentYear) + i - 1));
+    setYearList(years);
+  }, [currentYear]);
+
+  //일정이 있는지 여부 (있으면 true, 없으면 false)
+  const hasEventOnDate = (date: Date): boolean => {
+    const dateString = formatDateToString(date, 0);
+
+    return events.some((event) => {
+      if (event.start !== undefined && event.end !== undefined) {
+        const eventStart = event.start;
+        const eventEnd = formatDateToString(String(event.end), -1);
+        return (dateString >= eventStart && dateString <= eventEnd) || dateString === eventStart;
+      }
+      return false;
+    });
   };
 
   const handleDatesSet = (dateInfo: any) => {
@@ -120,11 +194,6 @@ const CustomCalendar = () => {
     setCurrentYear(String(currentYear));
   };
 
-  useEffect(() => {
-    const years = Array.from({ length: 19 }, (_, i) => String(Number(currentYear) + i - 1));
-    setYearList(years);
-  }, [currentYear]);
-
   const handleMouseEnter = (date: Date, cell: HTMLElement) => {
     if (hasEventOnDate(date)) {
       setHoveredDate(null);
@@ -137,37 +206,12 @@ const CustomCalendar = () => {
     setHoveredDate(null);
   };
 
-  const hasEventOnDate = (date: Date): boolean => {
-    const dateString = formatDateToString(date, 0);
-
-    return events.some((event) => {
-      if (event.start !== undefined && event.end !== undefined) {
-        const eventStart = event.start;
-        const eventEnd = formatDateToString(String(event.end), -1);
-        return (dateString >= eventStart && dateString <= eventEnd) || dateString === eventStart;
-      }
-      return true;
-    });
-  };
-
-  useEffect(() => {
-    if (calendarRef.current) {
-      const calendarApi = calendarRef.current.getApi();
-      const formattedMonth = currentMonth.padStart(2, '0');
-      try {
-        calendarApi.gotoDate(`${currentYear}-${formattedMonth}-01`);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [currentYear]);
-
   return (
     <div className='w-[1290px]'>
       {isShowYearList && (
         <div className='absolute z-[40] flex flex-col gap-5 items-center mt-78 ml-[520px] w-178 rounded-10 bg-gray-grayscale5 max-h-324 overflow-y-auto scrollbar-table'>
           {yearList.map((year, index) => (
-            <ul key={index} className=''>
+            <ul key={index}>
               <li
                 className={`h-58 cursor-pointer year-text w-154 ${currentYear === year ? 'text-blue-blue30' : 'text-gray-grayscale30'}`}
                 onClick={() => {
@@ -232,16 +276,11 @@ const CustomCalendar = () => {
           const endDate = selectInfo.end.toISOString().split('T')[0];
 
           setSelectedDates({ start: startDate, end: endDate });
-          setIsShowAddButton(true);
-        }}
-        eventClick={(clickInfo) => {
-          setSelectedEvent({
-            title: clickInfo.event.title,
-            start: clickInfo.event.startStr,
-            end: clickInfo.event.endStr,
-            color: clickInfo.event.backgroundColor,
-          });
-          setIsShowEventDetail(true);
+          if (startDate === endDate && hasEventOnDate(new Date(startDate))) {
+            setIsShowMoreDetail(true);
+          } else {
+            setIsShowAddButton(true);
+          }
         }}
       />
       {hoveredDate && (
@@ -295,11 +334,7 @@ const CustomCalendar = () => {
         {isShowEventDetail && selectedEvent && (
           <BackDrop isOpen={isShowEventDetail}>
             <CalendarPrompt
-              title={selectedEvent.title}
-              contents={selectedEvent.contents}
-              color={selectedEvent.color}
-              startDate={selectedEvent.start}
-              endDate={selectedEvent.end}
+              item={selectedEvent}
               onDelete={() => setIsShowEventDetail(false)}
               onCancel={() => setIsShowEventDetail(false)}
               onEdit={() => setIsShowEventDetail(false)}
@@ -308,7 +343,16 @@ const CustomCalendar = () => {
         )}
         {isShowMoreDetail && (
           <BackDrop isOpen={isShowMoreDetail}>
-            <div onClick={() => setIsShowMoreDetail(false)}>아아</div>
+            <CalendarDatePrompt
+              date={selectedDates.start}
+              item={dummyData}
+              onCancel={() => setIsShowMoreDetail(false)}
+              onCreate={() => {
+                setIsShowMoreDetail(false);
+                setIsShowAddButton(true);
+              }}
+              onDetail={() => setIsShowEventDetail(true)}
+            />
           </BackDrop>
         )}
       </div>

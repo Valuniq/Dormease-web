@@ -5,7 +5,7 @@ import CalendarInputText from '@/components/atoms/InputText/CalendarInputText/Ca
 import ColorDropDown from '@/components/organisms/Prompt/CalendarPrompt/ColorDropDown';
 import Wave from '@public/images/Wave.png';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Props = {
   title: string;

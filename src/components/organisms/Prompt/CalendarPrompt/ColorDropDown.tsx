@@ -2,6 +2,7 @@ import DropDownBtn from '@public/images/DropDownBtn.png';
 import Image from 'next/image';
 import Check from '@public/images/ColorSelectCheck.svg';
 import { useState } from 'react';
+import { colorList } from '@/types/schedule';
 
 type Props = {
   isOn: boolean;
@@ -18,14 +19,6 @@ const ColorDropDown = ({ isOn, onColorDropdownClick, select, setSelect, setIsOn 
     setSelect(color);
     setIsOn(false);
   };
-
-  const colorList = [
-    { name: 'GREY', value: 'bg-gray-grayscale5' },
-    { name: 'RED', value: 'bg-red-red10' },
-    { name: 'GREEN', value: 'bg-green-green10' },
-    { name: 'YELLOW', value: 'bg-orange-orange' },
-    { name: 'BLUE', value: 'bg-blue-blue20' },
-  ];
 
   return (
     <div>
