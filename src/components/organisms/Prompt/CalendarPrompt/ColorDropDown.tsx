@@ -20,11 +20,11 @@ const ColorDropDown = ({ isOn, onColorDropdownClick, select, setSelect, setIsOn 
   };
 
   const colorList = [
-    { name: 'gray', value: 'bg-gray-grayscale5' },
-    { name: 'red', value: 'bg-red-red10' },
-    { name: 'green', value: 'bg-green-green10' },
-    { name: 'orange', value: 'bg-orange-orange' },
-    { name: 'blue', value: 'bg-blue-blue20' },
+    { name: 'GREY', value: 'bg-gray-grayscale5' },
+    { name: 'RED', value: 'bg-red-red10' },
+    { name: 'GREEN', value: 'bg-green-green10' },
+    { name: 'YELLOW', value: 'bg-orange-orange' },
+    { name: 'BLUE', value: 'bg-blue-blue20' },
   ];
 
   return (
@@ -45,7 +45,10 @@ const ColorDropDown = ({ isOn, onColorDropdownClick, select, setSelect, setIsOn 
         </div>
       </button>
       {isOn && (
-        <div className='flex items-center px-7 w-400 h-72 rounded-36 shadow-2xl mt-7'>
+        <div
+          className='absolute z-[10] flex items-center px-7 w-400 h-72 rounded-36 mt-7 bg-white'
+          style={{ boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.25)' }}
+        >
           {colorList.map((color, index) => (
             <ul key={index} className='mr-24'>
               <li

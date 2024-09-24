@@ -7,9 +7,9 @@ import './Custom.css';
 import CalendarPromptAdd from '@/components/organisms/Prompt/CalendarPrompt/CalendarPromptAdd';
 import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/CalendarPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
-import CalendarAddBtn from './CalendarAddBtn';
+import PlusDateBtn from './PlusDateBtn';
 
-type Event = {
+type TEvent = {
   title: string;
   contents?: string;
   start: string;
@@ -17,72 +17,72 @@ type Event = {
   color: string;
 };
 
+const colors: { [key: string]: string } = {
+  GREY: '#F3F3F3',
+  RED: '#E29696',
+  GREEN: '#95ED8D',
+  YELLOW: '#FFD7A9',
+  BLUE: '#A8C5EF',
+};
+
+const initialEventsData = [
+  {
+    calendarId: 1,
+    title: '휴강휴강휴강휴강휴강휴강휴강',
+    startDate: '2024-09-01',
+    endDate: '2024-09-03',
+    color: 'RED',
+  },
+  { calendarId: 2, title: '수강신청수강신청수강신청', startDate: '2024-09-15', endDate: '2024-09-18', color: 'BLUE' },
+  { calendarId: 3, title: '종강', startDate: '2024-09-15', endDate: '2024-09-19', color: 'GREY' },
+  { calendarId: 4, title: '종강', startDate: '2024-09-22', endDate: '2024-09-21', color: 'RED' },
+  { calendarId: 5, title: '종강', startDate: '2024-09-24', endDate: '2024-09-24', color: 'RED' },
+  { calendarId: 6, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'BLUE' },
+  { calendarId: 7, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
+  { calendarId: 8, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
+];
+
+//글자수 제한
+const truncateTitle = (title: string, length: number) => {
+  return title.length > length ? title.slice(0, length) + '...' : title;
+};
+
+//YYYY-MM-DD 형식
+const formatDateToString = (dateString: Date | string, days: number): string => {
+  let date: Date;
+
+  if (typeof dateString === 'string') {
+    date = new Date(dateString);
+  } else {
+    date = dateString;
+  }
+  date.setDate(date.getDate() + days);
+
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
 const CustomCalendar = () => {
-  const [showAddButton, setShowAddButton] = useState(false);
-  const [selectedDates, setSelectedDates] = useState({ start: '', end: '' });
-  const [color, setColor] = useState('GREY');
-  const [title, setTitle] = useState('');
-  const [contents, setContents] = useState('');
+  const [selectedDates, setSelectedDates] = useState({ start: '', end: '' }); //선택한 날짜
+  const [color, setColor] = useState('GREY'); //색상
+  const [title, setTitle] = useState(''); //제목
+  const [contents, setContents] = useState(''); //내용
   const [currentYear, setCurrentYear] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
-  const [showEventDetails, setShowEventDetails] = useState(false);
-  const [isShowMoreDetail, setIsShowMoreDetail] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<Event>();
+  const [isShowEventDetails, setIsShowEventDetails] = useState(false);
+  const [isShowMoreDetail, setIsShowMoreDetail] = useState(false); //일별 일정 목록 조회창
+  const [isShowAddButton, setIsShowAddButton] = useState(false); //새로운 일정 추가 프롬프트
+  const [selectedEvent, setSelectedEvent] = useState<TEvent>();
   const [hoveredDate, setHoveredDate] = useState<{
     date: Date;
     cell: HTMLElement;
   } | null>(null);
-
-  const colors: { [key: string]: string } = {
-    RED: '#E29696',
-    YELLOW: '#FFD7A9',
-    BLUE: '#A8C5EF',
-    GREY: '#F3F3F3',
-    GREEN: '#95ED8D',
-  };
-
-  const newEventData = [
-    {
-      calendarId: 1,
-      title: '휴강휴강휴강휴강휴강휴강휴강',
-      startDate: '2024-09-01',
-      endDate: '2024-09-03',
-      color: 'RED',
-    },
-    { calendarId: 2, title: '수강신청수강신청수강신청', startDate: '2024-09-15', endDate: '2024-09-18', color: 'BLUE' },
-    { calendarId: 3, title: '종강', startDate: '2024-09-15', endDate: '2024-09-19', color: 'GREY' },
-    { calendarId: 4, title: '종강', startDate: '2024-09-22', endDate: '2024-09-21', color: 'RED' },
-    { calendarId: 5, title: '종강', startDate: '2024-09-24', endDate: '2024-09-24', color: 'RED' },
-    { calendarId: 6, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'BLUE' },
-    { calendarId: 7, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
-    { calendarId: 8, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
-  ];
-
-  const truncateTitle = (title: string) => {
-    return title.length > 10 ? title.slice(0, 10) + '...' : title;
-  };
-
-  //YYYY-MM-DD 형식
-  const formatDateToString = (dateString: Date | string, days: number): string => {
-    let date: Date;
-
-    if (typeof dateString === 'string') {
-      date = new Date(dateString);
-    } else {
-      date = dateString;
-    }
-    date.setDate(date.getDate() + days);
-
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  };
-
   const [events, setEvents] = useState<EventInput[]>(
-    newEventData.map((data) => ({
-      title: truncateTitle(data.title),
+    initialEventsData.map((data) => ({
+      title: truncateTitle(data.title, 10),
       start: data.startDate,
       end: formatDateToString(data.endDate, 1),
       backgroundColor: colors[data.color],
@@ -184,7 +184,7 @@ const CustomCalendar = () => {
           const endDate = selectInfo.end.toISOString().split('T')[0];
 
           setSelectedDates({ start: startDate, end: endDate });
-          setShowAddButton(true);
+          setIsShowAddButton(true);
         }}
         eventClick={(clickInfo) => {
           setSelectedEvent({
@@ -193,7 +193,7 @@ const CustomCalendar = () => {
             end: clickInfo.event.endStr,
             color: clickInfo.event.backgroundColor,
           });
-          setShowEventDetails(true);
+          setIsShowEventDetails(true);
         }}
       />
       {hoveredDate && (
@@ -206,15 +206,15 @@ const CustomCalendar = () => {
             pointerEvents: 'none',
           }}
         >
-          <CalendarAddBtn />
+          <PlusDateBtn />
         </div>
       )}
       <div className='absolute top-0 left-0 z-50'>
-        {showAddButton && (
-          <BackDrop isOpen={showAddButton}>
+        {isShowAddButton && (
+          <BackDrop isOpen={isShowAddButton}>
             <CalendarPromptAdd
               onCancel={() => {
-                setShowAddButton(false);
+                setIsShowAddButton(false);
                 setTitle('');
                 setContents('');
                 setColor('GREY');
@@ -227,7 +227,7 @@ const CustomCalendar = () => {
                   color: colors[color],
                   className: 'text-right rounded-8',
                 });
-                setShowAddButton(false);
+                setIsShowAddButton(false);
                 setTitle('');
                 setContents('');
                 setColor('GREY');
@@ -244,36 +244,22 @@ const CustomCalendar = () => {
             />
           </BackDrop>
         )}
-        {showEventDetails && selectedEvent && (
-          <BackDrop isOpen={showEventDetails}>
+        {isShowEventDetails && selectedEvent && (
+          <BackDrop isOpen={isShowEventDetails}>
             <CalendarPrompt
               title={selectedEvent.title}
               contents={selectedEvent.contents}
               color={selectedEvent.color}
               startDate={selectedEvent.start}
               endDate={selectedEvent.end}
-              onDelete={() => setShowEventDetails(false)}
-              onCancel={() => setShowEventDetails(false)}
-              onEdit={() => setShowEventDetails(false)}
-            />
-          </BackDrop>
-        )}
-        {showEventDetails && selectedEvent && (
-          <BackDrop isOpen={showEventDetails}>
-            <CalendarPrompt
-              title={selectedEvent.title}
-              contents={selectedEvent.contents}
-              color={selectedEvent.color}
-              startDate={selectedEvent.start}
-              endDate={selectedEvent.end}
-              onDelete={() => setShowEventDetails(false)}
-              onCancel={() => setShowEventDetails(false)}
-              onEdit={() => setShowEventDetails(false)}
+              onDelete={() => setIsShowEventDetails(false)}
+              onCancel={() => setIsShowEventDetails(false)}
+              onEdit={() => setIsShowEventDetails(false)}
             />
           </BackDrop>
         )}
         {isShowMoreDetail && (
-          <BackDrop isOpen={showEventDetails}>
+          <BackDrop isOpen={isShowMoreDetail}>
             <div onClick={() => setIsShowMoreDetail(false)}>아아</div>
           </BackDrop>
         )}

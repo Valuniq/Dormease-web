@@ -2,7 +2,7 @@ import React from 'react';
 import PlusSquare from '@public/images/PlusSquare.svg';
 import CircleArrowRight from '@public/images/CircleArrowRight.svg';
 
-const CalendarAddBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
+const PlusDateBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button {...props} className='flex flex-col items-center w-100 pt-15 pb-20'>
       <PlusSquare />
@@ -15,4 +15,4 @@ const CalendarAddBtn = ({ ...props }: React.HtmlHTMLAttributes<HTMLButtonElement
   );
 };
 
-export default CalendarAddBtn;
+export default PlusDateBtn;
