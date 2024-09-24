@@ -9,8 +9,8 @@ import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/Calenda
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
-import { CalendarDateResponseInformation, TDayResponse } from '@/types/schedule';
-import { getCalendarDateList, postCalendar, useCalendarList } from '@/apis/schedule';
+import { CalendarDateResponseInformation, CalendarDetailResponseInformation } from '@/types/schedule';
+import { getCalendarDateList, getCalendarDetail, postCalendar, useCalendarList } from '@/apis/schedule';
 
 const colors: { [key: string]: string } = {
   GREY: '#E6E6E6',
@@ -60,7 +60,7 @@ const CustomCalendar = () => {
   const [isShowEventDetail, setIsShowEventDetail] = useState(false); //일정 조회 프롬프트
   const [isShowMoreDetail, setIsShowMoreDetail] = useState(false); //일별 일정 목록 조회 프롬프트
   const [isShowAddButton, setIsShowAddButton] = useState(false); //새로운 일정 추가 프롬프트
-  const [selectedEvent, setSelectedEvent] = useState<TDayResponse>(); //이벤트 자세히 보기
+  const [selectedEvent, setSelectedEvent] = useState<CalendarDetailResponseInformation>(); //일정 상세 조회
   const [hoveredDate, setHoveredDate] = useState<{
     date: Date;
     cell: HTMLElement;
@@ -173,6 +173,14 @@ const CustomCalendar = () => {
     }
   };
 
+  const loadDetailSchedule = async (id: number) => {
+    const response = await getCalendarDetail(id);
+    if (response.check) {
+      setSelectedEvent(response.information);
+      setIsShowEventDetail(true);
+    }
+  };
+
   return (
     <div className='w-[1290px]'>
       {isShowYearList && (
@@ -259,50 +267,45 @@ const CustomCalendar = () => {
           <PlusDateBtn />
         </div>
       )}
-      {isShowAddButton && (
-        <BackDrop isOpen={isShowAddButton}>
-          <CalendarPromptAdd
-            onCancel={() => {
-              setIsShowAddButton(false);
-              setTitle('');
-              setContents('');
-              setColor('GREY');
-            }}
-            onConfirm={onAddCalendar}
-            startDate={selectedDates.start}
-            endDate={selectedDates.end}
-            title={title}
-            setTitle={setTitle}
-            contents={contents}
-            setContents={setContents}
-            color={color}
-            setColor={setColor}
-            setSelectedDates={setSelectedDates}
-          />
-        </BackDrop>
-      )}
-      {isShowEventDetail && selectedEvent && (
-        <BackDrop isOpen={isShowEventDetail}>
-          <CalendarPrompt
-            item={selectedEvent}
-            onDelete={() => setIsShowEventDetail(false)}
-            onCancel={() => setIsShowEventDetail(false)}
-            onEdit={() => setIsShowEventDetail(false)}
-          />
-        </BackDrop>
-      )}
-      {isShowMoreDetail && (
-        <BackDrop isOpen={isShowMoreDetail}>
-          <CalendarDatePrompt
-            date={selectedDates.start}
-            item={dateList}
-            onCancel={() => setIsShowMoreDetail(false)}
-            onCreate={() => {
-              setIsShowMoreDetail(false);
-              setIsShowAddButton(true);
-            }}
-            onDetail={() => setIsShowEventDetail(true)}
-          />
+      {(isShowAddButton || isShowEventDetail || isShowMoreDetail) && (
+        <BackDrop isOpen={true}>
+          {isShowAddButton ? (
+            <CalendarPromptAdd
+              onCancel={() => {
+                setIsShowAddButton(false);
+                setTitle('');
+                setContents('');
+                setColor('GREY');
+              }}
+              onConfirm={onAddCalendar}
+              startDate={selectedDates.start}
+              endDate={selectedDates.end}
+              title={title}
+              setTitle={setTitle}
+              contents={contents}
+              setContents={setContents}
+              color={color}
+              setColor={setColor}
+              setSelectedDates={setSelectedDates}
+            />
+          ) : isShowEventDetail && selectedEvent ? (
+            <CalendarPrompt
+              item={selectedEvent}
+              onDelete={() => setIsShowEventDetail(false)}
+              onCancel={() => setIsShowEventDetail(false)}
+              onEdit={() => setIsShowEventDetail(false)}
+            />
+          ) : isShowMoreDetail ? (
+            <CalendarDatePrompt
+              date={selectedDates.start}
+              item={dateList}
+              onCancel={() => setIsShowMoreDetail(false)}
+              onCreate={() => setIsShowAddButton(true)}
+              onDetail={loadDetailSchedule}
+            />
+          ) : (
+            <></>
+          )}
         </BackDrop>
       )}
     </div>

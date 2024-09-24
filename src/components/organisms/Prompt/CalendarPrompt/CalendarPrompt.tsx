@@ -1,12 +1,13 @@
 'use client';
 
 import AlertBtn from '@/components/atoms/AllBtn/AlertBtn/AlertBtn';
-import { TDayResponse } from '@/types/schedule';
+import { CalendarDetailResponseInformation, colorList } from '@/types/schedule';
 import Wave from '@public/images/Wave.png';
 import Image from 'next/image';
+import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
 
 type Props = {
-  item: TDayResponse;
+  item: CalendarDetailResponseInformation;
   onDelete: () => void;
   onCancel: () => void;
   onEdit: () => void;
@@ -15,6 +16,7 @@ type Props = {
 const CalendarPrompt = ({ item, onCancel, onDelete, onEdit }: Props) => {
   return (
     <div className='flex flex-col items-start bg-white pt-40 pb-79 pl-71 pr-58 shadow1 rounded-8'>
+      <BuildingOutBtn className='absolute top-16 right-16 cursor-pointer' onClick={onCancel} />
       <h1 className='H1 mb-20'>기간</h1>
       <div className='flex items-center'>
         <input
@@ -35,9 +37,7 @@ const CalendarPrompt = ({ item, onCancel, onDelete, onEdit }: Props) => {
           value={item.endDate}
         />
       </div>
-      <h1 className='H1 mt-20 mb-12' style={{ color: item.color }}>
-        {item.title}
-      </h1>
+      <h1 className={`H1 mt-20 mb-12 ${colorList.find((color) => color.name === item.color)?.text}`}>{item.title}</h1>
       <div className='relative w-911 h-160'>
         <textarea
           className='resize-none H4 focus:outline-none rounded-8 w-full h-full border-1 border-gray-grayscale30 p-8'

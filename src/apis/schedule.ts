@@ -34,3 +34,14 @@ export const getCalendarDateList = async (date: string) => {
   });
   return res;
 };
+
+//일정 상세 조회
+export const getCalendarDetail = async (calendarId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/calendar/${calendarId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};

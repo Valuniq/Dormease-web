@@ -6,6 +6,7 @@ import ColorDropDown from '@/components/organisms/Prompt/CalendarPrompt/ColorDro
 import Wave from '@public/images/Wave.png';
 import Image from 'next/image';
 import { useState } from 'react';
+import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
 
 type Props = {
   title: string;
@@ -50,6 +51,7 @@ const CalendarPromptAdd = ({
 
   return (
     <div className='flex flex-col items-start bg-white pt-40 pb-79 pl-71 pr-58 shadow1 rounded-8'>
+      <BuildingOutBtn className='absolute top-16 right-16 cursor-pointer' onClick={onCancel} />
       <div className='flex items-end mb-20'>
         <h1 className='H1'>기간 설정</h1>
         {isInvalidDateRange && (
