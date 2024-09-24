@@ -106,6 +106,14 @@ body {
   font-weight: 500;
 }
 
+.year-text {
+  font-family: 'pretendard';
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}
+
 .fc .fc--button {
   padding: 0 !important;
 }
@@ -161,10 +169,9 @@ body {
 }
 
 .fc .fc-customYear-button {
-  width: 173px !important;
   height: 72px !important;
   padding-left: 14px !important;
-  padding-right: 10px;
+  padding-right: 15px !important;
 
   font-family: 'pretendard';
   font-size: 45px;
@@ -176,14 +183,14 @@ body {
   align-items: center;
 }
 
-.fc-customYear-button::after {
-  content: '';
-  background-image: url('../../../../public/images/ArrowUp.png');
-  background-size: cover;
-  width: 30px;
-  height: 30px;
-  margin-left: 11px;
-  display: inline-block;
+.fc-customYearBtn-button {
+  padding-right: 10px !important;
+  font-family: 'pretendard';
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 600;
+  color: #474747 !important;
+  background-color: #f3f3f3 !important;
 }
 
 .fc .fc-customMonth-button {
