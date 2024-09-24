@@ -19,7 +19,7 @@ export type CalendarRequest = {
   color: string;
 };
 
-export type TDateResponse = {
+export type CalendarDateResponseInformation = {
   calendarId: number;
   title: string;
   color: string;

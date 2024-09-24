@@ -1,11 +1,11 @@
 import React from 'react';
 import EventPlus from '@public/images/EventPlus.svg';
 import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
-import { colorList, TDateResponse } from '@/types/schedule';
+import { colorList, CalendarDateResponseInformation } from '@/types/schedule';
 
 type Props = {
   date: string;
-  item: TDateResponse[];
+  item: CalendarDateResponseInformation[];
   onCancel: () => void;
   onCreate: () => void;
   onDetail: (id: number) => void;

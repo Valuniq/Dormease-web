@@ -237,6 +237,7 @@ body {
   font-style: normal;
   font-weight: 500;
   color: #474747 !important;
+  pointer-events: none;
 }
 
 .fc-scrollgrid,

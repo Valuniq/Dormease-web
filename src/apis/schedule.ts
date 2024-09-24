@@ -23,3 +23,14 @@ export const postCalendar = async (data: CalendarRequest) => {
   });
   return res;
 };
+
+//일별 일정 목록 조회
+export const getCalendarDateList = async (date: string) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/calendar/date/${date}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};

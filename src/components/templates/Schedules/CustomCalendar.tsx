@@ -9,8 +9,8 @@ import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/Calenda
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
-import { TDateResponse, TDayResponse } from '@/types/schedule';
-import { postCalendar, useCalendarList } from '@/apis/schedule';
+import { CalendarDateResponseInformation, TDayResponse } from '@/types/schedule';
+import { getCalendarDateList, postCalendar, useCalendarList } from '@/apis/schedule';
 
 const colors: { [key: string]: string } = {
   GREY: '#E6E6E6',
@@ -19,54 +19,6 @@ const colors: { [key: string]: string } = {
   YELLOW: '#FFD7A9',
   BLUE: '#A8C5EF',
 };
-
-const dummyData: TDateResponse[] = [
-  {
-    calendarId: 1,
-    title: '수강신청',
-    color: 'GREEN',
-  },
-  {
-    calendarId: 2,
-    title: '수강신청',
-    color: 'GREY',
-  },
-  {
-    calendarId: 3,
-    title: '이부분에서최대로작성할수있는글자영역입니이부분에서최대로작성할수있는글자영역입니다다.',
-    color: 'BLUE',
-  },
-  {
-    calendarId: 4,
-    title: '수강신청',
-    color: 'GREEN',
-  },
-  {
-    calendarId: 5,
-    title: '수강신청',
-    color: 'GREY',
-  },
-  {
-    calendarId: 6,
-    title: '이부분에서최대로작성할수있는글자영역입니다.',
-    color: 'BLUE',
-  },
-  {
-    calendarId: 7,
-    title: '수강신청',
-    color: 'GREEN',
-  },
-  {
-    calendarId: 8,
-    title: '수강신청',
-    color: 'GREY',
-  },
-  {
-    calendarId: 9,
-    title: '이부분에서최대로작성할수있는글자영역입니다.',
-    color: 'BLUE',
-  },
-];
 
 //글자수 제한
 const truncateTitle = (title: string, length: number) => {
@@ -113,7 +65,8 @@ const CustomCalendar = () => {
     date: Date;
     cell: HTMLElement;
   } | null>(null); //hover한 이벤트
-  const [events, setEvents] = useState<EventInput[]>([]); //이벤트 목록
+  const [events, setEvents] = useState<EventInput[]>([]); //연도, 월별 일정 목록 (캘린더)
+  const [dateList, setDateList] = useState<CalendarDateResponseInformation[]>([]); //일별 일정 목록
 
   useEffect(() => {
     if (data?.information) {
@@ -212,6 +165,14 @@ const CustomCalendar = () => {
     await mutate();
   };
 
+  const loadDateSchedule = async (startDate: string) => {
+    const response = await getCalendarDateList(startDate);
+    if (response.check) {
+      setDateList(response.information);
+      setIsShowMoreDetail(true);
+    }
+  };
+
   return (
     <div className='w-[1290px]'>
       {isShowYearList && (
@@ -243,10 +204,6 @@ const CustomCalendar = () => {
         height='auto'
         dayMaxEventRows={3}
         moreLinkText={(num) => `+${num}`}
-        moreLinkClick={() => {
-          setIsShowMoreDetail(true);
-          return 'none';
-        }}
         customButtons={{
           customText: {
             text: '일정 관리',
@@ -283,7 +240,7 @@ const CustomCalendar = () => {
 
           setSelectedDates({ start: startDate, end: endDate });
           if (startDate === endDate && hasEventOnDate(new Date(startDate))) {
-            setIsShowMoreDetail(true);
+            loadDateSchedule(startDate);
           } else {
             setIsShowAddButton(true);
           }
@@ -302,54 +259,52 @@ const CustomCalendar = () => {
           <PlusDateBtn />
         </div>
       )}
-      <div className='absolute top-0 left-0 z-50'>
-        {isShowAddButton && (
-          <BackDrop isOpen={isShowAddButton}>
-            <CalendarPromptAdd
-              onCancel={() => {
-                setIsShowAddButton(false);
-                setTitle('');
-                setContents('');
-                setColor('GREY');
-              }}
-              onConfirm={onAddCalendar}
-              startDate={selectedDates.start}
-              endDate={selectedDates.end}
-              title={title}
-              setTitle={setTitle}
-              contents={contents}
-              setContents={setContents}
-              color={color}
-              setColor={setColor}
-              setSelectedDates={setSelectedDates}
-            />
-          </BackDrop>
-        )}
-        {isShowEventDetail && selectedEvent && (
-          <BackDrop isOpen={isShowEventDetail}>
-            <CalendarPrompt
-              item={selectedEvent}
-              onDelete={() => setIsShowEventDetail(false)}
-              onCancel={() => setIsShowEventDetail(false)}
-              onEdit={() => setIsShowEventDetail(false)}
-            />
-          </BackDrop>
-        )}
-        {isShowMoreDetail && (
-          <BackDrop isOpen={isShowMoreDetail}>
-            <CalendarDatePrompt
-              date={selectedDates.start}
-              item={dummyData}
-              onCancel={() => setIsShowMoreDetail(false)}
-              onCreate={() => {
-                setIsShowMoreDetail(false);
-                setIsShowAddButton(true);
-              }}
-              onDetail={() => setIsShowEventDetail(true)}
-            />
-          </BackDrop>
-        )}
-      </div>
+      {isShowAddButton && (
+        <BackDrop isOpen={isShowAddButton}>
+          <CalendarPromptAdd
+            onCancel={() => {
+              setIsShowAddButton(false);
+              setTitle('');
+              setContents('');
+              setColor('GREY');
+            }}
+            onConfirm={onAddCalendar}
+            startDate={selectedDates.start}
+            endDate={selectedDates.end}
+            title={title}
+            setTitle={setTitle}
+            contents={contents}
+            setContents={setContents}
+            color={color}
+            setColor={setColor}
+            setSelectedDates={setSelectedDates}
+          />
+        </BackDrop>
+      )}
+      {isShowEventDetail && selectedEvent && (
+        <BackDrop isOpen={isShowEventDetail}>
+          <CalendarPrompt
+            item={selectedEvent}
+            onDelete={() => setIsShowEventDetail(false)}
+            onCancel={() => setIsShowEventDetail(false)}
+            onEdit={() => setIsShowEventDetail(false)}
+          />
+        </BackDrop>
+      )}
+      {isShowMoreDetail && (
+        <BackDrop isOpen={isShowMoreDetail}>
+          <CalendarDatePrompt
+            date={selectedDates.start}
+            item={dateList}
+            onCancel={() => setIsShowMoreDetail(false)}
+            onCreate={() => {
+              setIsShowMoreDetail(false);
+              setIsShowAddButton(true);
+            }}
+            onDetail={() => setIsShowEventDetail(true)}
+          />
+        </BackDrop>
+      )}
     </div>
   );
 };
