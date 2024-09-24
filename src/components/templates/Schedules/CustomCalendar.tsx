@@ -9,7 +9,8 @@ import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/Calenda
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
-import { TDateResponse, TDayResponse } from '@/types/schedule';
+import { CalendarResponseInformation, TDateResponse, TDayResponse } from '@/types/schedule';
+import { useCalendarList } from '@/apis/schedule';
 
 const colors: { [key: string]: string } = {
   GREY: '#E6E6E6',
@@ -18,23 +19,6 @@ const colors: { [key: string]: string } = {
   YELLOW: '#FFD7A9',
   BLUE: '#A8C5EF',
 };
-
-const initialEventsData = [
-  {
-    calendarId: 1,
-    title: '휴강휴강휴강휴강휴강휴강휴강',
-    startDate: '2024-09-01',
-    endDate: '2024-09-03',
-    color: 'RED',
-  },
-  { calendarId: 2, title: '수강신청수강신청수강신청', startDate: '2024-09-15', endDate: '2024-09-18', color: 'BLUE' },
-  { calendarId: 3, title: '종강', startDate: '2024-09-15', endDate: '2024-09-19', color: 'GREY' },
-  { calendarId: 4, title: '종강', startDate: '2024-09-22', endDate: '2024-09-21', color: 'RED' },
-  { calendarId: 5, title: '종강', startDate: '2024-09-24', endDate: '2024-09-24', color: 'RED' },
-  { calendarId: 6, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'BLUE' },
-  { calendarId: 7, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
-  { calendarId: 8, title: '종강', startDate: '2024-09-24', endDate: '2024-09-26', color: 'GREEN' },
-];
 
 const dummyData: TDateResponse[] = [
   {
@@ -110,13 +94,15 @@ const formatDateToString = (dateString: Date | string, days: number): string => 
 const CustomCalendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const today = new Date();
+  const [currentYear, setCurrentYear] = useState(today.getFullYear().toString()); //오늘 연도
+  const [currentMonth, setCurrentMonth] = useState((today.getMonth() + 1).toString()); //오늘 월
+
+  const { data, error, isLoading, mutate } = useCalendarList(Number(currentYear), Number(currentMonth));
 
   const [selectedDates, setSelectedDates] = useState({ start: '', end: '' }); //선택한 날짜
   const [color, setColor] = useState('GREY'); //색상
   const [title, setTitle] = useState(''); //제목
   const [contents, setContents] = useState(''); //내용
-  const [currentYear, setCurrentYear] = useState(today.getFullYear().toString()); //오늘 연도
-  const [currentMonth, setCurrentMonth] = useState((today.getMonth() + 1).toString()); //오늘 월
   const [yearList, setYearList] = useState<string[]>([]); //연도 드롭다운 리스트
   const [isShowYearList, setIsShowYearList] = useState(false); //연도 드롭다운
   const [isShowEventDetail, setIsShowEventDetail] = useState(false); //일정 조회 프롬프트
@@ -127,19 +113,21 @@ const CustomCalendar = () => {
     date: Date;
     cell: HTMLElement;
   } | null>(null); //hover한 이벤트
-  const [events, setEvents] = useState<EventInput[]>(
-    initialEventsData.map((data) => ({
-      title: truncateTitle(data.title, 10),
-      start: data.startDate,
-      end: formatDateToString(data.endDate, 1),
-      backgroundColor: colors[data.color],
-      className: 'text-right rounded-8 cursor-pointer pointer-events-none',
-    })),
-  ); //이벤트 목록
+  const [events, setEvents] = useState<EventInput[]>([]); //이벤트 목록
 
-  const addNewEvent = (newEvent: EventInput) => {
-    setEvents((currentEvents) => [...currentEvents, newEvent]);
-  };
+  useEffect(() => {
+    if (data?.information) {
+      setEvents(
+        data.information.map((data) => ({
+          title: truncateTitle(data.title, 10),
+          start: data.startDate,
+          end: formatDateToString(data.endDate, 1),
+          backgroundColor: colors[data.color],
+          className: 'text-right rounded-8 cursor-pointer pointer-events-none',
+        })),
+      );
+    }
+  }, [data]);
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -307,13 +295,6 @@ const CustomCalendar = () => {
                 setColor('GREY');
               }}
               onConfirm={() => {
-                addNewEvent({
-                  title: title,
-                  start: selectedDates.start,
-                  end: selectedDates.end,
-                  color: colors[color],
-                  className: 'text-right rounded-8',
-                });
                 setIsShowAddButton(false);
                 setTitle('');
                 setContents('');

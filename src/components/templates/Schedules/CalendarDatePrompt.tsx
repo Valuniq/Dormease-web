@@ -32,7 +32,7 @@ const CalendarDatePrompt = ({ date, item, onCancel, onCreate, onDetail }: Props)
               className='flex items-center py-5 px-13 gap-14 cursor-pointer rounded-12 max-w-[428px] hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
             >
               <div
-                className={`w-14 h-14 rounded-100 ${colorList.find((color) => color.name === data.color)?.value}`}
+                className={`min-w-14 min-h-14 rounded-100 ${colorList.find((color) => color.name === data.color)?.value}`}
               ></div>
               <h4 className='H4 text-gray-grayscale50 truncate'>{data.title}</h4>
             </div>

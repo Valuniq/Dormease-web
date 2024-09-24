@@ -1,3 +1,16 @@
+export type CalendarResponse = {
+  check: boolean;
+  information: CalendarResponseInformation[];
+};
+
+export type CalendarResponseInformation = {
+  calendarId: number;
+  startDate: string;
+  endDate: string;
+  title: string;
+  color: string;
+};
+
 export type TDateResponse = {
   calendarId: number;
   title: string;
