@@ -32,37 +32,43 @@ const Page = () => {
       </div>
       <DefaultSetting />
       <div className='H4 w-full h-464'>
-        <div className='w-full h-48 flex items-center '>
-          <h3 className='py-12 w-285 text-center border-r-1 border-r-gray-grayscale30'>수용 가능 인원</h3>
-          <h3 className='py-12 w-[838px] text-center border-r-1 border-r-gray-grayscale30'>건물별 가격</h3>
-          <div className='py-12 w-313 flex justify-around'>
-            <h3>식권</h3>
-            <h3>식권 가격</h3>
+        <div className='w-full h-48 flex items-center justify-center border-y-1 border-y-gray-grayscale30'>
+          <div className='w-285 h-full flex items-center justify-center border-r-1 border-r-gray-grayscale30'>
+            수용 가능 인원
+          </div>
+          <div className='w-[838px] h-full flex items-center justify-center text-center border-r-1 border-r-gray-grayscale30'>
+            건물별 가격
+          </div>
+          <div className='w-313 h-full flex items-center justify-around'>
+            <span>식권</span>
+            <span>식권 가격</span>
           </div>
         </div>
-        <div className='w-full flex h-415 overflow-y-scroll border-b-gray-grayscale50 border-b-1'>
-          <div className='w-281 h-fit min-h-svh px-16 border-r-1 border-r-gray-grayscale30 pt-16'>
+        <div className='w-full flex h-415 overflow-y-scroll '>
+          <div className='w-281 min-h-full h-fit flex flex-col items-center border-r-1 border-r-gray-grayscale30 pt-34'>
             <BtnExtraLarge label={'건물 추가로 돌아가기'} disabled={false} />
             {dormitories &&
-              dormitories.map((i) => (
-                <JoinDormList
-                  key={i.dormitoryRoomTypeId}
-                  dormitoryRoomTypeId={i.dormitoryRoomTypeId}
-                  dormitoryName={i.dormitoryName}
-                  roomSize={i.roomSize}
-                  gender={i.gender}
-                />
+              dormitories.map((i, index) => (
+                <ul key={index} className='mt-140 '>
+                  <JoinDormList
+                    key={i.dormitoryRoomTypeId}
+                    dormitoryRoomTypeId={i.dormitoryRoomTypeId}
+                    dormitoryName={i.dormitoryName}
+                    roomSize={i.roomSize}
+                    gender={i.gender}
+                  />
+                </ul>
               ))}
           </div>
-          <div className='w-[828px]  h-fit min-h-svh flex items-start justify-around p-9 border-r-1 border-r-gray-grayscale30'>
-            <BuildingPriceSetting /> <BuildingPriceSetting /> <BuildingPriceSetting /> <BuildingPriceSetting />
+          <div className='w-[828px] flex items-start justify-around p-9 border-r-1 border-r-gray-grayscale30'>
+            <BuildingPriceSetting />
           </div>
-          <div className='w-303 px-10  h-fit min-h-svh flex items-start justify-center'>
+          <div className='w-303 px-10  min-h-full h-fit flex items-start justify-center'>
             <TicketPriceSetting />
           </div>
         </div>
       </div>
-      <div className='mb-10 border-t-1 border-t-gray-grayscale30'>
+      <div className='mb-10'>
         <JoinApplicationSettingList />
       </div>
       <div className='flex items-center justify-center w-full'>
