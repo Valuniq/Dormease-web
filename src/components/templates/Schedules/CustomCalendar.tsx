@@ -227,11 +227,11 @@ const CustomCalendar = () => {
   return (
     <div className='w-[994px]'>
       {isShowYearList && (
-        <div className='absolute z-[40] flex flex-col gap-5 items-center mt-78 ml-[520px] w-178 rounded-10 bg-gray-grayscale5 max-h-324 overflow-y-auto scrollbar-table'>
+        <div className='absolute z-[40] flex flex-col gap-5 items-center mt-65 ml-[392px] w-150 rounded-10 bg-gray-grayscale5 max-h-314 overflow-y-auto scrollbar-table'>
           {yearList.map((year, index) => (
             <ul key={index}>
               <li
-                className={`h-58 cursor-pointer year-text w-154 ${currentYear === year ? 'text-blue-blue30' : 'text-gray-grayscale30'}`}
+                className={`h-58 cursor-pointer year-text w-140 hover:text-blue-blue30 ${currentYear === year ? 'text-blue-blue30' : 'text-gray-grayscale30'}`}
                 onClick={() => {
                   setIsShowYearList(false);
                   setCurrentYear(year);
