@@ -127,7 +127,13 @@ const CalendarPromptAdd = ({
       </div>
       <div className='absolute right-0 bottom-23'>
         <AlertBtn label={'취소'} onClick={onCancel} hoverColor={'gray'} />
-        <AlertBtn label={'등록'} onClick={onConfirm} hoverColor={'blue'} isColor={isColor} disabled={!isColor} />
+        <AlertBtn
+          label={'등록'}
+          onClick={onConfirm}
+          hoverColor={'blue'}
+          isColor={isColor && !isInvalidDateRange}
+          disabled={!(isColor && !isInvalidDateRange)}
+        />
       </div>
     </div>
   );
