@@ -185,6 +185,7 @@ const CustomCalendar = () => {
     await postCalendar(data);
     await mutate();
 
+    setHoveredDate(null);
     setIsShowMoreDetail(false);
     setIsShowAddButton(false);
     setTitle('');
@@ -204,6 +205,7 @@ const CustomCalendar = () => {
     await putCalendar(editId, data);
     await mutate();
 
+    setHoveredDate(null);
     setIsShowMoreDetail(false);
     setIsShowAddButton(false);
     setTitle('');
