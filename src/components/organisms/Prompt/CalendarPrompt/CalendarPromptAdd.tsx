@@ -7,6 +7,7 @@ import Wave from '@public/images/Wave.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
+import { CALENDAR } from '@/constants/restrictions';
 
 type Props = {
   title: string;
@@ -22,8 +23,6 @@ type Props = {
   onConfirm: () => void;
   isColor: boolean;
 };
-
-const MAX_LENGTH = 200; //내용 글자수 제한
 
 const CalendarPromptAdd = ({
   title,
@@ -44,8 +43,8 @@ const CalendarPromptAdd = ({
 
   //내용 글자수 계산 & 내용 저장
   const onTextareaHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (event.target.value.length > MAX_LENGTH) {
-      event.target.value = event.target.value.slice(0, MAX_LENGTH);
+    if (event.target.value.length > CALENDAR.description.maxLength) {
+      event.target.value = event.target.value.slice(0, CALENDAR.description.maxLength);
     }
     const target = event.target.value;
     setContents(target);
@@ -117,7 +116,7 @@ const CalendarPromptAdd = ({
           placeholder='내용을 입력하세요.'
           className='placehoder:caption-2 resize-none H4 focus:outline-none rounded-8 w-full h-full border-1 border-gray-grayscale30 p-8 placeholder:text-gray-grayscale30'
           minLength={1}
-          maxLength={MAX_LENGTH}
+          maxLength={CALENDAR.description.maxLength}
           onInput={onTextareaHandler}
           value={contents}
           spellCheck={false}
