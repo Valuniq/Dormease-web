@@ -50,6 +50,8 @@ const RequestList = ({ list, onRequestClick, isLoading, isEndReached, setSize }:
             }
           })}
         </tbody>
+      ) : isLoading ? (
+        <tbody></tbody>
       ) : (
         <tbody>
           <NoneList colspan={5} />

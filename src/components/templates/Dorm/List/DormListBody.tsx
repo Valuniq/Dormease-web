@@ -8,7 +8,7 @@ type Props = {
   onStudentClick: (selectStudent: number) => void;
   studentList: DormRoomInAssignedResponseInformation[];
   editAssign: boolean;
-  roomManual?: (roomId: number) => void;
+  roomManual: () => void;
   item: DormRoomResponseInformation;
 };
 
@@ -29,16 +29,15 @@ const DormListBody = ({ listClick, onListClick, onStudentClick, studentList, edi
           <h3 className='text-blue-blue30 inline-flex'>{item.currentPeople}</h3>/{item.roomSize}
         </td>
       </tr>
-      {item.id === listClick && (
-        <tr className='relative'>
-          <td colSpan={4}>
+      {item.id === listClick && studentList.length > 0 && (
+        <tr>
+          <td className='p-0 m-0 relative'>
             <BuildingManagementBody
               studentList={studentList}
               onStudentClick={onStudentClick}
               editAssign={editAssign}
               roomSize={item.roomSize}
               roomManual={roomManual}
-              roomId={item.id}
             />
           </td>
         </tr>

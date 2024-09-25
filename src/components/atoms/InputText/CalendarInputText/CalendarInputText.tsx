@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { CALENDAR } from '@/constants/restrictions';
 
 type Props = {
   input: string;
   setInput: (id: string) => void;
-
   placeholder: string;
 };
 
@@ -19,6 +18,8 @@ const CalendarInputText = ({ input, setInput, placeholder }: Props) => {
       value={input}
       placeholder={placeholder}
       onChange={handleChange}
+      minLength={1}
+      maxLength={CALENDAR.title.maxLength}
     />
   );
 };
