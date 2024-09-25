@@ -52,9 +52,9 @@ const formatDateToString = (dateString: Date | string, days: number): string => 
 
 const CustomCalendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
-  const today = new Date();
-  const [currentYear, setCurrentYear] = useState(today.getFullYear().toString()); //오늘 연도
-  const [currentMonth, setCurrentMonth] = useState((today.getMonth() + 1).toString()); //오늘 월
+  const todayRef = useRef(new Date());
+  const [currentYear, setCurrentYear] = useState(todayRef.current.getFullYear().toString()); //오늘 연도
+  const [currentMonth, setCurrentMonth] = useState((todayRef.current.getMonth() + 1).toString()); //오늘 월
 
   const { data, error, isLoading, mutate } = useCalendarList(Number(currentYear), Number(currentMonth));
 
@@ -92,7 +92,7 @@ const CustomCalendar = () => {
 
   //일정 드롭다운 연도 20개 저장
   useEffect(() => {
-    const years = Array.from({ length: 19 }, (_, i) => String(today.getFullYear() + i - 1));
+    const years = Array.from({ length: 19 }, (_, i) => String(todayRef.current.getFullYear() + i - 1));
     setYearList(years);
   }, []);
 
@@ -107,7 +107,7 @@ const CustomCalendar = () => {
         console.error(error);
       }
     }
-  }, [currentYear]);
+  }, [currentMonth, currentYear]);
 
   //일정이 있는지 여부 (있으면 true, 없으면 false)
   const hasEventOnDate = (date: Date): boolean => {
