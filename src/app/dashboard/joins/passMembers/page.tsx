@@ -1,4 +1,5 @@
 'use client';
+import { useAllPassMembers } from '@/apis/passMember';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
@@ -7,10 +8,10 @@ import PassMemberList from '@/components/templates/PassMember/PassMemberList';
 
 import { DormNameResponseInformation } from '@/types/dorm';
 import React, { useState } from 'react';
-import { mockPassMemberList } from './mockData';
+
 const initialSelect: DormNameResponseInformation = {
   id: 0,
-  name: '',
+  name: '전체',
 };
 
 const Page = () => {
@@ -18,6 +19,8 @@ const Page = () => {
   const handleSelect = (id: number, name: string) => {
     setSelect({ id, name });
   };
+  const { data: allPassMembers, error, isLoading } = useAllPassMembers();
+
   return (
     <div className='w-[1250px] flex flex-col items-start'>
       <div className='mb-20 w-full flex items-center justify-between'>
@@ -58,7 +61,7 @@ const Page = () => {
           }}
         />
       </div>
-      <PassMemberList passMemberLists={mockPassMemberList} />
+      <PassMemberList passMemberLists={allPassMembers?.information || []} />
       <div className='mt-29 w-691 ml-auto flex items-center justify-between'>
         <BtnMidVariant label={'매칭시작'} disabled={false} variant={'blue'} />
         <BtnMidVariant label={'완료'} disabled={false} variant={'green'} />
