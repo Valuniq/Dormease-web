@@ -6,7 +6,7 @@ body {
 /* 이벤트 부분 */
 .fc-daygrid-block-event .fc-event-title {
   font-family: 'pretendard';
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 300;
   color: #323232;
@@ -83,6 +83,7 @@ body {
   height: 130px !important;
   width: 142px !important;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .fc .fc-customText-button {
