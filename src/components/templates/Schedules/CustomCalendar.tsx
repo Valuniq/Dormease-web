@@ -302,7 +302,7 @@ const CustomCalendar = () => {
           style={{
             position: 'absolute',
             top: hoveredDate.cell.getBoundingClientRect().top + window.scrollY + 30,
-            left: hoveredDate.cell.getBoundingClientRect().left + 42,
+            left: hoveredDate.cell.getBoundingClientRect().left + 31,
             zIndex: 30,
             pointerEvents: 'none',
           }}
