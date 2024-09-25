@@ -29,3 +29,13 @@ export const RES_ACCOUNTS = {
     defaultLabel: '*관리자명은 공지사항과 FAQ 작성 시 표시됩니다.',
   },
 };
+
+// Calendar
+export const CALENDAR = {
+  title: {
+    maxLength: 30, //제목의 최대 길이
+  },
+  description: {
+    maxLength: 200, //내용의 최대 길이
+  },
+};
