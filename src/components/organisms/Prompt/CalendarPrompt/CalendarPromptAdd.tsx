@@ -6,6 +6,7 @@ import ColorDropDown from '@/components/organisms/Prompt/CalendarPrompt/ColorDro
 import Wave from '@public/images/Wave.png';
 import Image from 'next/image';
 import { useState } from 'react';
+import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
 
 type Props = {
   title: string;
@@ -19,9 +20,10 @@ type Props = {
   setSelectedDates: React.Dispatch<React.SetStateAction<{ start: string; end: string }>>;
   onCancel: () => void;
   onConfirm: () => void;
+  isColor: boolean;
 };
 
-const MAX_LENGTH = 200; //편지 내용 글자수 제한
+const MAX_LENGTH = 200; //내용 글자수 제한
 
 const CalendarPromptAdd = ({
   title,
@@ -35,8 +37,10 @@ const CalendarPromptAdd = ({
   startDate,
   endDate,
   setSelectedDates,
+  isColor,
 }: Props) => {
   const [isColordropdown, setIsColorDropdown] = useState(false);
+  const [isInvalidDateRange, setIsInvalidDateRange] = useState(false); //종료 날짜가 시작 날짜보다 빠를 때 경고 메시지 출력
 
   //내용 글자수 계산 & 내용 저장
   const onTextareaHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -49,7 +53,13 @@ const CalendarPromptAdd = ({
 
   return (
     <div className='flex flex-col items-start bg-white pt-40 pb-79 pl-71 pr-58 shadow1 rounded-8'>
-      <h1 className='H1 mb-20'>기간 설정</h1>
+      <BuildingOutBtn className='absolute top-16 right-16 cursor-pointer' onClick={onCancel} />
+      <div className='flex items-end mb-20'>
+        <h1 className='H1'>기간 설정</h1>
+        {isInvalidDateRange && (
+          <p className='mb-6 ml-5 Caption2 text-red-red20'>종료 날짜를 시작 날짜 이후로 설정해 주세요.</p>
+        )}
+      </div>
       <div className='flex items-center'>
         <input
           className='rounded-8 border border-gray-grayscale40 H4-caption outline-none px-14 py-5 text-gray-grayscale50 placeholder:text-gray-grayscale30'
@@ -58,6 +68,11 @@ const CalendarPromptAdd = ({
           required
           value={startDate}
           onChange={(e) => {
+            if (e.target.value > endDate) {
+              setIsInvalidDateRange(true);
+            } else {
+              setIsInvalidDateRange(false);
+            }
             setSelectedDates((prev: { start: string; end: string }) => ({
               ...prev,
               start: e.target.value,
@@ -72,6 +87,11 @@ const CalendarPromptAdd = ({
           required
           value={endDate}
           onChange={(e) => {
+            if (startDate > e.target.value) {
+              setIsInvalidDateRange(true);
+            } else {
+              setIsInvalidDateRange(false);
+            }
             setSelectedDates((prev: { start: string; end: string }) => ({
               ...prev,
               end: e.target.value,
@@ -108,15 +128,7 @@ const CalendarPromptAdd = ({
       </div>
       <div className='absolute right-0 bottom-23'>
         <AlertBtn label={'취소'} onClick={onCancel} hoverColor={'gray'} />
-        <AlertBtn
-          label={'등록'}
-          onClick={() => {
-            if (title !== '' && startDate !== '' && endDate !== '') {
-              onConfirm();
-            }
-          }}
-          hoverColor={'blue'}
-        />
+        <AlertBtn label={'등록'} onClick={onConfirm} hoverColor={'blue'} isColor={isColor} disabled={!isColor} />
       </div>
     </div>
   );
