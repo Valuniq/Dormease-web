@@ -9,7 +9,7 @@ import CalendarPrompt from '@/components/organisms/Prompt/CalendarPrompt/Calenda
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import PlusDateBtn from './PlusDateBtn';
 import CalendarDatePrompt from './CalendarDatePrompt';
-import { CalendarDateResponseInformation, CalendarDetailResponseInformation } from '@/types/schedule';
+import { CalendarDateResponseInformation, CalendarDetailResponseInformation, colorList } from '@/types/schedule';
 import {
   deleteCalendar,
   getCalendarDateList,
@@ -18,14 +18,6 @@ import {
   putCalendar,
   useCalendarList,
 } from '@/apis/schedule';
-
-const colors: { [key: string]: string } = {
-  GREY: '#E6E6E6',
-  RED: '#E29696',
-  GREEN: '#95ED8D',
-  YELLOW: '#FFD7A9',
-  BLUE: '#A8C5EF',
-};
 
 //글자수 제한
 const truncateTitle = (title: string, length: number) => {
@@ -75,6 +67,7 @@ const CustomCalendar = () => {
   const [events, setEvents] = useState<EventInput[]>([]); //연도, 월별 일정 목록 (캘린더)
   const [dateList, setDateList] = useState<CalendarDateResponseInformation[]>([]); //일별 일정 목록
   const [editId, setEditId] = useState(0); //캘린더 ID
+  const eventsRef = useRef(events);
 
   //초기 데이터
   useEffect(() => {
@@ -83,7 +76,7 @@ const CustomCalendar = () => {
         title: truncateTitle(data.title, 10),
         start: data.startDate,
         end: formatDateToString(data.endDate, 1),
-        backgroundColor: colors[data.color],
+        backgroundColor: colorList[data.color],
         className: 'text-right rounded-5 cursor-pointer pointer-events-none',
       }));
       setEvents(newEvents);
@@ -110,16 +103,15 @@ const CustomCalendar = () => {
   }, [currentMonth, currentYear]);
 
   //일정이 있는지 여부 (있으면 true, 없으면 false)
-  const hasEventOnDate = (date: Date): boolean => {
+  const hasEventOnDate = (date: Date, eventsList: EventInput[]): boolean => {
     const dateString = formatDateToString(date, 0);
 
-    return events.some((event) => {
+    return eventsList.some((event) => {
       if (event.start !== undefined && event.end !== undefined) {
         const eventStart = event.start;
         const eventEnd = formatDateToString(String(event.end), -1);
         return (dateString >= eventStart && dateString <= eventEnd) || dateString === eventStart;
       }
-      return false;
     });
   };
 
@@ -145,9 +137,14 @@ const CustomCalendar = () => {
     setCurrentYear(String(currentYear));
   };
 
+  //events가 업데이트될 때마다 ref 업데이트
+  useEffect(() => {
+    eventsRef.current = events;
+  }, [events]);
+
   //마우스 hover 동작 관리
   const handleMouseEnter = (date: Date, cell: HTMLElement) => {
-    if (hasEventOnDate(date)) {
+    if (hasEventOnDate(date, eventsRef.current)) {
       setHoveredDate(null);
     } else {
       setHoveredDate({ date, cell });
@@ -290,7 +287,7 @@ const CustomCalendar = () => {
           const endDate = selectInfo.end.toISOString().split('T')[0];
 
           setSelectedDates({ start: startDate, end: endDate });
-          if (startDate === endDate && hasEventOnDate(new Date(startDate))) {
+          if (startDate === endDate && hasEventOnDate(new Date(startDate), eventsRef.current)) {
             loadDateSchedule(startDate);
           } else {
             setIsShowAddButton(true);

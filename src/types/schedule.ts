@@ -34,10 +34,10 @@ export type CalendarDetailResponseInformation = {
   color: string;
 };
 
-export const colorList = [
-  { name: 'GREY', value: 'bg-gray-grayscale10', text: 'text-gray-grayscale10' },
-  { name: 'RED', value: 'bg-red-red10', text: 'text-red-red10' },
-  { name: 'GREEN', value: 'bg-green-green10', text: 'text-green-green10' },
-  { name: 'YELLOW', value: 'bg-orange-orange', text: 'text-orange-orange' },
-  { name: 'BLUE', value: 'bg-blue-blue20', text: 'text-blue-blue20' },
-];
+export const colorList: { [key: string]: string } = {
+  GREY: '#E6E6E6',
+  RED: '#E29696',
+  GREEN: '#95ED8D',
+  YELLOW: '#FFD7A9',
+  BLUE: '#A8C5EF',
+};

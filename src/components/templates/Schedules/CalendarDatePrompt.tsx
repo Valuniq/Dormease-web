@@ -1,7 +1,7 @@
 import React from 'react';
 import EventPlus from '@public/images/EventPlus.svg';
 import BuildingOutBtn from '@public/images/BuildingOutBtn.svg';
-import { colorList, CalendarDateResponseInformation } from '@/types/schedule';
+import { CalendarDateResponseInformation, colorList } from '@/types/schedule';
 
 type Props = {
   date: string;
@@ -32,7 +32,10 @@ const CalendarDatePrompt = ({ date, item, onCancel, onCreate, onDetail }: Props)
               className='flex items-center py-5 px-13 gap-14 cursor-pointer rounded-12 max-w-[428px] hover:bg-gray-grayscale10 active:bg-gray-grayscale20'
             >
               <div
-                className={`min-w-14 min-h-14 rounded-100 ${colorList.find((color) => color.name === data.color)?.value}`}
+                className='min-w-14 min-h-14 rounded-100'
+                style={{
+                  backgroundColor: colorList[data.color],
+                }}
               ></div>
               <h4 className='H4 text-gray-grayscale50 truncate'>{data.title}</h4>
             </div>
