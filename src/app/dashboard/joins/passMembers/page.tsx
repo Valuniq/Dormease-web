@@ -1,6 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useAllPassMembersWithSearch, useDormIdPassMembersWithSearch, usePassDormitories } from '@/apis/passMember';
+import {
+  useAllPassMembersWithSearch,
+  useDormIdPassMembersWithSearch,
+  usePassDormitories,
+  useAllPassMembers,
+} from '@/apis/passMember';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
@@ -13,24 +18,29 @@ const initialSelect: DormNameResponseInformation = {
   name: '전체',
 };
 
-const dormitoryApplicationSettingId = 1; // 기숙사 목록 조회에 사용할 입사 신청 설정 ID
-
 const Page = () => {
   const [select, setSelect] = useState<DormNameResponseInformation>(initialSelect);
   const [isDropdownOn, setIsDropdownOn] = useState(false);
   const [dormId, setDormId] = useState<number | null>(null);
   const [searchWord, setSearchWord] = useState(''); // 검색어 상태
   const [inputValue, setInputValue] = useState(''); // 검색 입력 상태
+  const [dormitoryApplicationSettingId, setDormitoryApplicationSettingId] = useState<number | null>(null); // 조회 후 얻는 ID
+
+  // 전체 합격자 목록 조회
+  const { data: allPassMembers } = useAllPassMembers();
+
+  useEffect(() => {
+    if (allPassMembers?.information) {
+      setDormitoryApplicationSettingId(allPassMembers.information.dormitoryApplicationSettingId); // 전체 조회 후 얻은 dormitoryApplicationSettingId 설정
+    }
+  }, [allPassMembers]);
 
   // 기숙사 목록 조회
-  const { data: dormitoriesData } = usePassDormitories(dormitoryApplicationSettingId);
-
-  // 전체 합격자 목록 검색 조회
-  const { data: allPassMembers } = useAllPassMembersWithSearch(dormitoryApplicationSettingId, searchWord);
+  const { data: dormitoriesData } = usePassDormitories(dormitoryApplicationSettingId ?? 0);
 
   // 선택된 기숙사별 합격자 목록 검색 조회
   const { data: dormPassMembers } = useDormIdPassMembersWithSearch(
-    dormitoryApplicationSettingId,
+    dormitoryApplicationSettingId ?? 0,
     dormId || 0,
     searchWord,
   );
@@ -63,7 +73,10 @@ const Page = () => {
   ];
 
   // 보여줄 합격자 목록 결정
-  const passMemberLists = dormId === null ? allPassMembers?.information : dormPassMembers?.information;
+  const passMemberLists =
+    dormId === null
+      ? allPassMembers?.information?.passDormitoryApplicationResList
+      : dormPassMembers?.information.passDormitoryApplicationResList;
 
   return (
     <div className='w-[1250px] flex flex-col items-start'>
@@ -73,7 +86,7 @@ const Page = () => {
           <div className='mr-[220px]'>
             <SearchTextBox
               input={inputValue}
-              setInput={setInputValue}
+              setInput={setInputValue} // 검색 입력 상태 업데이트
               placeholder={'검색어를 입력해주세요.'}
               handleSearch={handleSearch} // 검색 실행 함수 전달
             />
