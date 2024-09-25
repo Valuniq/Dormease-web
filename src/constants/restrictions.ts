@@ -39,3 +39,10 @@ export const CALENDAR = {
     maxLength: 200, //내용의 최대 길이
   },
 };
+
+// 건물 관리
+export const DORMMANAGE = {
+  memo: {
+    maxLength: 200, //메모 최대 길이
+  },
+};
