@@ -83,7 +83,10 @@ const Page = () => {
       setBuildingInfo(data.information);
       setBuildingName(data.information.name);
       if (data.information.floorAndRoomNumberRes.length > 0) {
-        if (!isLoading) setIsEdit(false);
+        if (!isLoading) {
+          setEditState(false);
+          setIsEdit(false);
+        }
         if (selectedFloor === 0) {
           setSelectedFloor(Number(data.information.floorAndRoomNumberRes[0].floor));
         }
@@ -105,7 +108,7 @@ const Page = () => {
       }
       setIsLoading(true);
     }
-  }, [data, addFloor, selectedFloor, isLoading, roomNoneInfo]);
+  }, [data, addFloor, selectedFloor, isLoading, roomNoneInfo, setEditState]);
 
   useEffect(() => {
     if (roomData && roomData.information) {
@@ -674,6 +677,7 @@ const Page = () => {
                     if (addFloor.length > 0) {
                       setIsNotSaveModal(true);
                     } else {
+                      setEditState(false);
                       setIsEdit(false);
                     }
                   } else {
