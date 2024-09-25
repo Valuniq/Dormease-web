@@ -14,7 +14,7 @@ const BuildingSelectImageBtn = ({ image, name, ...props }: Props & React.HtmlHTM
         <Image
           className='group-hover:brightness-50 shadow1 rounded-8 group-hover:hover-transition'
           src={image}
-          alt={name ? name : ''}
+          alt=''
           fill
           priority
           style={{ objectFit: 'cover' }}

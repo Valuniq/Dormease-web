@@ -10,7 +10,7 @@ type Props = {
   onStudentClick: (selectStudent: number) => void;
   studentList: DormRoomInAssignedResponseInformation[];
   editAssign: boolean;
-  roomManual?: (roomId: number) => void;
+  roomManual: () => void;
 };
 
 const DormList = ({ roomList, studentList, listClick, onListClick, onStudentClick, editAssign, roomManual }: Props) => {

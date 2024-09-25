@@ -3,6 +3,7 @@ import {
   DormSettingDetailResponse,
   DormSettingDetailResponseInformationFloor,
   DormSettingDetailRoomResponse,
+  DormSettingDetailRoomResponseInformation,
   DormSettingResponse,
 } from '@/types/setting';
 import { BASE_URL } from '@/constants/path';
@@ -35,18 +36,9 @@ export const useDormList = () => {
 };
 
 //건물 추가
-export const postAddDorm = async (name: string, image: File | null): Promise<DormAddDeleteResponse> => {
-  const formData = new FormData();
-  formData.append('registerDormitoryReq', new Blob([JSON.stringify({ name: name })], { type: 'application/json' }));
-  if (image !== null) {
-    formData.append('image', image);
-  } else {
-    formData.append('image', new Blob([]));
-  }
-
+export const postAddDorm = async () => {
   const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting`, {
     method: 'POST',
-    body: formData,
   });
   return res;
 };
@@ -80,21 +72,6 @@ export const useDormDetailRoom = (dormitoryId: number, floor: number) => {
   return { data, error, isLoading: !error && !data, mutate };
 };
 
-//호실 생성
-export const postRoom = async (
-  dormitoryId: number,
-  floorAndRoomNumberRes: DormSettingDetailResponseInformationFloor,
-) => {
-  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/room`, {
-    method: 'POST',
-    body: JSON.stringify(floorAndRoomNumberRes),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return res;
-};
-
 //호실 삭제
 export const deleteRoom = async (dormitoryId: number, floor: number) => {
   const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`, {
@@ -112,6 +89,53 @@ export const putDormitoryName = async (dormitoryId: number, name: string) => {
     method: 'PUT',
     body: JSON.stringify({
       name: name,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};
+
+//호실 저장
+export const postSettingFilter = async (
+  dormitoryId: number,
+  floor: number,
+  list: DormSettingDetailRoomResponseInformation[],
+) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`, {
+    method: 'POST',
+    body: JSON.stringify(list),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};
+
+//호실 정보 수정
+export const putSettingFilter = async (
+  dormitoryId: number,
+  floor: number,
+  list: DormSettingDetailRoomResponseInformation[],
+) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/${floor}/room`, {
+    method: 'PUT',
+    body: JSON.stringify(list),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};
+
+//호실 복제
+export const postSettingFilterCopy = async (dormitoryId: number, originalFloor: number, newFloor: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitory/setting/${dormitoryId}/room/copy`, {
+    method: 'POST',
+    body: JSON.stringify({
+      originalFloor,
+      newFloor,
     }),
     headers: {
       'Content-Type': 'application/json',

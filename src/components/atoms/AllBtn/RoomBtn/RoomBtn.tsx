@@ -18,6 +18,7 @@ type Props = {
   readOnly: boolean[];
   handleCreate?: () => void;
   handleDuplicate?: () => void;
+  duplicateDisabled?: boolean;
 };
 
 const RoomBtn = ({
@@ -35,6 +36,7 @@ const RoomBtn = ({
   readOnly,
   handleCreate,
   handleDuplicate,
+  duplicateDisabled,
   ...props
 }: Props & React.HtmlHTMLAttributes<HTMLDivElement>) => {
   return (
@@ -95,7 +97,7 @@ const RoomBtn = ({
         {pressOkBtn ? (
           <BtnMiniVariant
             label='복제'
-            disabled={false}
+            disabled={duplicateDisabled || false}
             selected={false}
             variant='blue'
             onClick={(e) => {
@@ -106,7 +108,9 @@ const RoomBtn = ({
         ) : (
           <BtnMiniVariant
             label={isOne ? '확인' : '추가'}
-            disabled={floorInput === '' || startInput === '' || endInput === ''}
+            disabled={
+              floorInput === '' || startInput === '' || endInput === '' || Number(startInput) > Number(endInput)
+            }
             selected={false}
             variant='blue'
             onClick={(e) => {

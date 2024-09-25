@@ -7,9 +7,9 @@ export type Props = {
   gender: string;
   isSmoking: boolean;
   appliedRoommate: string;
-  bedNumber: number;
-  room: number;
-  assignment: boolean;
+  bedNumber: number | null;
+  room: number | null;
+  assignment: boolean | null;
 };
 
 const PassMemberListBody = ({
@@ -31,9 +31,9 @@ const PassMemberListBody = ({
       <td className='text-center'>{gender}</td>
       <td className='text-center'>{isSmoking ? 'O' : 'X'}</td>
       <td className='text-center'>{appliedRoommate}</td>
-      <td className='text-center'>{bedNumber}번</td>
-      <td className='text-center'>{room}호</td>
-      <td className='text-center'>{assignment ? 'O' : 'X'}</td>
+      <td className='text-center'>{bedNumber !== null ? `${bedNumber}번` : '-'}</td>
+      <td className='text-center'>{room !== null ? `${room}호` : '-'}</td>
+      <td className='text-center'>{assignment !== null ? (assignment ? 'O' : 'X') : '-'}</td>
     </tr>
   );
 };
