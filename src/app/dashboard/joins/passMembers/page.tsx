@@ -22,15 +22,24 @@ const Page = () => {
     <div className='w-[1250px] flex flex-col items-start'>
       <div className='mb-20 w-full flex items-center justify-between'>
         <h1 className='H0 text-gray-grayscale50'>합격자 명단</h1>
-        <SelectBuildingDropdown
-          isOn={false}
-          list={[]}
-          select={select}
-          setSelect={handleSelect}
-          setIsOn={function (isOn: boolean): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        <div className='flex  items-center gap-87'>
+          <SearchTextBox
+            input={''}
+            setInput={function (id: string): void {
+              throw new Error('Function not implemented.');
+            }}
+            placeholder={'검색어를 입력해주세요.'}
+          />
+          <SelectBuildingDropdown
+            isOn={false}
+            list={[]}
+            select={select}
+            setSelect={handleSelect}
+            setIsOn={function (isOn: boolean): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
+        </div>
       </div>
 
       <div className='mb-40 flex items-center ml-auto'>
@@ -48,15 +57,6 @@ const Page = () => {
             throw new Error('Function not implemented.');
           }}
         />
-        <div className='ml-26'>
-          <SearchTextBox
-            input={''}
-            setInput={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
-            placeholder={'검색어를 입력해주세요.'}
-          />
-        </div>
       </div>
       <PassMemberList passMemberLists={mockPassMemberList} />
       <div className='mt-29 w-691 ml-auto flex items-center justify-between'>
