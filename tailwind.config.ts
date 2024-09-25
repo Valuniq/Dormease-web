@@ -94,6 +94,7 @@ const config: Config = {
     zIndex: {
       header: '100',
       backdrop: '110',
+      joinSettingAddPeriodBtn: '10',
     },
   },
   plugins: [require('tailwindcss'), require('autoprefixer')],

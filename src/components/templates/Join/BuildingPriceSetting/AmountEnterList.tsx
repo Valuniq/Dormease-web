@@ -1,10 +1,11 @@
+'use client';
+
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
 import React from 'react';
 
-const DepositSetting = () => {
+const AmountEnterList = () => {
   return (
-    <div className='flex items-center justify-between H4 text-gray-grayscale50'>
-      <h1 className='mr-31'> 보증금 </h1>
+    <div>
       <TextBoxes
         input={''}
         setInput={function (id: string): void {
@@ -13,9 +14,9 @@ const DepositSetting = () => {
         placeholder={'금액 입력'}
         type={'textBox6'}
       />
-      <div className='w-3' />원
+      원
     </div>
   );
 };
 
-export default DepositSetting;
+export default AmountEnterList;
