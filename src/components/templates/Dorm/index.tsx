@@ -30,6 +30,7 @@ import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { DORM } from '@/constants/restrictions';
 
 type Props = {
   buildingList: DormNameResponseInformation[];
@@ -339,9 +340,14 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                   <Image src={Memo} alt='Memo' width={86.49} height={20.34} />
                   <div className='text-gray-grayscale50 mt-20 w-318 relative'>
                     <textarea
-                      className='H4-caption leading-[34px] w-full h-204 bg-yellow-memoyellow border-none outline-none scrollbar-table resize-none'
+                      className='H4-caption leading-[34px] w-full h-204 bg-yellow-memoyellow border-none outline-none noscrollbar-table resize-none'
                       value={memoText === null ? '' : memoText}
-                      onChange={(e) => setMemoText(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.length > DORM.memo.maxLength) {
+                          e.target.value = e.target.value.slice(0, DORM.memo.maxLength);
+                        }
+                        setMemoText(e.target.value);
+                      }}
                       readOnly={!selectBuilding.id}
                     />
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-28'></hr>
