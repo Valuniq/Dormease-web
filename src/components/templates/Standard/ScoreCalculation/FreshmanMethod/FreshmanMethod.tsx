@@ -3,7 +3,7 @@ import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import React from 'react';
 
 type Props = {
-  freshmanStandard: 'EVERYONE' | 'LONG_DISTANCE';
+  freshmanStandard: 'EVERYONE' | 'LONG_DISTANCE' | '';
   setFreshmanStandard: (value: 'EVERYONE' | 'LONG_DISTANCE') => void;
 };
 

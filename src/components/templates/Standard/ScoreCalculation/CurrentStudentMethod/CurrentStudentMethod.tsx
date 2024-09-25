@@ -4,25 +4,15 @@ import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/Te
 import Boxes from './Boxes';
 import Distance from './Distance';
 import Grade from './Grade';
-import { StandardSettingRequest, StandardSettingRequestDistanceScoreResList } from '@/types/standard';
+import { StandardSettingResponseInformation } from '@/types/standard';
 
 type Props = {
-  standard: StandardSettingRequest;
-  setStandard: (standard: StandardSettingRequest) => void;
+  standard: StandardSettingResponseInformation;
+  setStandard: (standard: StandardSettingResponseInformation) => void;
 };
 
 const CurrentStudentMethod = ({ standard, setStandard }: Props) => {
   const { minScore, scoreRatio, distanceScoreResList, pointReflection, tiePriority } = standard;
-
-  // 컴포넌트가 마운트될 때 기본값 초기화
-  useEffect(() => {
-    if (distanceScoreResList.length === 0) {
-      setStandard({
-        ...standard,
-        distanceScoreResList: distanceScoreResList,
-      });
-    }
-  }, [distanceScoreResList, setStandard, standard]);
 
   // 지역명을 문자열로 처리하는 함수
   const handleSetScoresInput = (index: number, value: string) => {

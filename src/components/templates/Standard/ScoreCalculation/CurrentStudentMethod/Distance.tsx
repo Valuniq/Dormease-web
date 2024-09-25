@@ -9,7 +9,7 @@ type Props = {
 
 const Distance = ({ scores, scoresInput, setScoresInput }: Props) => {
   // 기본 점수 배열: 0부터 4.5까지 0.5 단위로 생성
-  const defaultScores = Array.from({ length: 10 }, (_, i) => i * 0.5);
+  const defaultScores = Array.from({ length: 10 }, (_, i) => i);
 
   useEffect(() => {
     if (scoresInput.length === 0) {
