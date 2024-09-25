@@ -1,10 +1,10 @@
 import NoneList from '@/components/organisms/NoneList/NoneList';
-import { PassDormitoryApplicationRes } from '@/types/passMember';
+import { passMemberResponseInformation } from '@/types/passMember';
 import React from 'react';
 import PassMemberListBody from './PassMemberListBody';
 
 type Props = {
-  passMemberLists: PassDormitoryApplicationRes[];
+  passMemberLists: passMemberResponseInformation[];
 };
 
 const PassMemberList = ({ passMemberLists }: Props) => {
