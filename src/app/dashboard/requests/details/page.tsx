@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteRequest, putRequest, useRequestDetail } from '@/apis/Request';
+import { deleteRequest, putRequest, useRequestDetail } from '@/apis/request';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
