@@ -1,6 +1,9 @@
 export type passMemberResponse = {
   check: boolean;
-  information: passMemberResponseInformation[];
+  information: {
+    dormitoryApplicationSettingId: number;
+    passDormitoryApplicationResList: passMemberResponseInformation[];
+  };
 };
 
 export type passMemberResponseInformation = {
