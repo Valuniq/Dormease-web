@@ -1,9 +1,28 @@
 'use client';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
-import React, { useState } from 'react';
+import React from 'react';
 
-const AcceptanceMethod = () => {
-  const [isOn, setIsOn] = useState(false);
+type Props = {
+  prioritySelection: boolean;
+  setPrioritySelection: (value: boolean) => void;
+  movePassSelection: boolean;
+  setMovePassSelection: (value: boolean) => void;
+  sameSmoke: boolean;
+  setSameSmoke: (value: boolean) => void;
+  sameTerm: boolean;
+  setSameTerm: (value: boolean) => void;
+};
+
+const AcceptanceMethod = ({
+  prioritySelection,
+  setPrioritySelection,
+  movePassSelection,
+  setMovePassSelection,
+  sameSmoke,
+  setSameSmoke,
+  sameTerm,
+  setSameTerm,
+}: Props) => {
   return (
     <div className='w-full grid gap-28'>
       <h1 className='H1 text-blue-blue30'>합격 및 배정 방식</h1>
@@ -31,20 +50,20 @@ const AcceptanceMethod = () => {
           <div className='h-160 w-2 bg-gray-grayscale20 ml-22 mr-53' />
           <ul className='grid gap-25 w-98'>
             <li className='flex items-center justify-between'>
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
+              <RadioBtn isOn={prioritySelection} setIsOn={setPrioritySelection} />
+              <RadioBtn isOn={!prioritySelection} setIsOn={() => setPrioritySelection(!prioritySelection)} />
             </li>
             <li className='flex items-center justify-between'>
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
+              <RadioBtn isOn={movePassSelection} setIsOn={setMovePassSelection} />
+              <RadioBtn isOn={!movePassSelection} setIsOn={() => setMovePassSelection(!movePassSelection)} />
             </li>
             <li className='flex items-center justify-between'>
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
+              <RadioBtn isOn={sameSmoke} setIsOn={setSameSmoke} />
+              <RadioBtn isOn={!sameSmoke} setIsOn={() => setSameSmoke(!sameSmoke)} />
             </li>
             <li className='flex items-center justify-between'>
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
-              <RadioBtn isOn={isOn} setIsOn={setIsOn} />
+              <RadioBtn isOn={sameTerm} setIsOn={setSameTerm} />
+              <RadioBtn isOn={!sameTerm} setIsOn={() => setSameTerm(!sameTerm)} />
             </li>
           </ul>
         </div>
