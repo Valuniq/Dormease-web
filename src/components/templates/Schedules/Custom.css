@@ -6,12 +6,12 @@ body {
 /* 이벤트 부분 */
 .fc-daygrid-block-event .fc-event-title {
   font-family: 'pretendard';
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 300;
   color: #323232;
 
-  padding-right: 9px;
+  padding-right: 5px;
 }
 
 .fc-daygrid-block-event {
@@ -20,7 +20,7 @@ body {
 
 /* 전체 캘린더 크기 */
 .fc {
-  width: 1290px !important;
+  width: 994px !important;
 }
 
 /* 토요일, 일요일 색상 변경 */
@@ -37,10 +37,10 @@ body {
 .fc-day-today .fc-daygrid-day-number {
   background: #3678d8 !important;
   color: #ffffff !important;
-  width: 33px;
-  height: 33px;
-  margin-top: 2.5px;
-  margin-bottom: 2.5px;
+  width: 30px;
+  height: 30px;
+  margin-top: 2px;
+  margin-bottom: 0px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +63,7 @@ body {
 /* 요일 칸 */
 .fc th {
   font-family: 'pretendard';
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 300;
   color: #323232;
@@ -74,14 +74,14 @@ body {
 /* 날짜 칸 */
 .fc td {
   font-family: 'pretendard';
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 300;
   color: #323232;
   border-right: none;
   border-left: none;
-  height: 151px !important;
-  width: 184px !important;
+  height: 130px !important;
+  width: 142px !important;
   box-sizing: border-box;
 }
 
@@ -91,26 +91,15 @@ body {
   color: #323232 !important;
 
   font-family: 'pretendard';
-  font-size: 45px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 400;
   text-align: left;
 }
 
-.fc .fc-customMonth-button {
-  width: 100% !important;
-  padding: 0 !important;
-  color: #323232 !important;
-
-  font-family: 'pretendard';
-  font-size: 45px;
-  font-style: normal;
-  font-weight: 500;
-}
-
 .year-text {
   font-family: 'pretendard';
-  font-size: 45px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 700;
   text-align: center;
@@ -144,39 +133,35 @@ body {
   border-top-left-radius: 10px !important;
   border-bottom-left-radius: 10px !important;
   padding-left: 10px !important;
-  width: 70px !important;
-  height: 72px !important;
+  width: 60px !important;
+  height: 60px !important;
   background-color: #f3f3f3 !important;
 }
 
 .fc-next-button {
   border-top-right-radius: 10px !important;
   border-bottom-right-radius: 10px !important;
-  width: 59px !important;
-  height: 72px !important;
+  width: 55px !important;
+  height: 60px !important;
   background-color: #f3f3f3 !important;
 }
 
 /* icon 이미지 수정 */
 .fc-prev-button .fc-icon:before {
-  width: 46px !important;
-  height: 46px !important;
   content: url('../../../../public/images/ArrowLeft.png');
 }
 
 .fc-next-button .fc-icon:before {
-  width: 46px !important;
-  height: 46px !important;
   content: url('../../../../public/images/ArrowRight.png');
 }
 
 .fc .fc-customYear-button {
-  height: 72px !important;
+  height: 60px !important;
   padding-left: 10px !important;
   padding-right: 15px !important;
 
   font-family: 'pretendard';
-  font-size: 45px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 600;
   color: #3678d8 !important;
@@ -188,7 +173,7 @@ body {
 .fc-customYearBtn-button {
   padding-right: 10px !important;
   font-family: 'pretendard';
-  font-size: 50px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 600;
   color: #474747 !important;
@@ -197,15 +182,15 @@ body {
 
 .fc .fc-customMonth-button {
   font-family: 'pretendard';
-  font-size: 45px;
+  font-size: 35px;
   font-style: normal;
   font-weight: 600;
   color: #3678d8 !important;
-  width: 60px !important;
+  width: 40px !important;
 
-  height: 72px !important;
+  height: 60px !important;
   background-color: #f3f3f3 !important;
-  padding-right: 24px !important;
+  padding-right: 0px !important;
 }
 
 .fc-toolbar-chunk:first-child,
