@@ -30,7 +30,7 @@ import Memo from '@public/images/Memo.png';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { DORMMANAGE } from '@/constants/restrictions';
+import { DORM } from '@/constants/restrictions';
 
 type Props = {
   buildingList: DormNameResponseInformation[];
@@ -343,14 +343,12 @@ const Index = ({ buildingList, mounted, setMounted }: Props) => {
                       className='H4-caption leading-[34px] w-full h-204 bg-yellow-memoyellow border-none outline-none noscrollbar-table resize-none'
                       value={memoText === null ? '' : memoText}
                       onChange={(e) => {
-                        if (e.target.value.length > DORMMANAGE.memo.maxLength) {
-                          e.target.value = e.target.value.slice(0, DORMMANAGE.memo.maxLength);
+                        if (e.target.value.length > DORM.memo.maxLength) {
+                          e.target.value = e.target.value.slice(0, DORM.memo.maxLength);
                         }
                         setMemoText(e.target.value);
                       }}
                       readOnly={!selectBuilding.id}
-                      minLength={1}
-                      maxLength={DORMMANAGE.memo.maxLength}
                     />
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-28'></hr>
                     <hr className='border-b-1 border-gray-grayscale30 w-318 absolute top-63'></hr>

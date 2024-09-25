@@ -40,8 +40,11 @@ export const CALENDAR = {
   },
 };
 
-// 건물 관리
-export const DORMMANAGE = {
+// 건물 관리 + 건물 설정
+export const DORM = {
+  name: {
+    maxLength: 10, //건물명 최대 길이
+  },
   memo: {
     maxLength: 200, //메모 최대 길이
   },
