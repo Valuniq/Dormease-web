@@ -84,7 +84,7 @@ const CustomCalendar = () => {
         start: data.startDate,
         end: formatDateToString(data.endDate, 1),
         backgroundColor: colors[data.color],
-        className: 'text-right rounded-8 cursor-pointer pointer-events-none',
+        className: 'text-right rounded-5 cursor-pointer pointer-events-none',
       }));
       setEvents(newEvents);
     }
