@@ -3,7 +3,7 @@ import { useGetJoinThreeLists } from '@/apis/join';
 import React from 'react';
 import JoinHistoryListBody from './JoinHistoryListBody';
 
-const JoinApplicationSettingList = () => {
+const JoinHistoryList = () => {
   const { data, error, isLoading } = useGetJoinThreeLists();
 
   return (
@@ -34,11 +34,13 @@ const JoinApplicationSettingList = () => {
           </tr>
         ) : data?.length === 0 ? (
           // 데이터가 없을 때 NoneList 컴포넌트 표시
-          <td colSpan={4} className='h-full'>
-            <div className='flex justify-center items-center h-full'>
-              <h1 className='H1 text-gray-grayscale30'>리스트가 비었습니다.</h1>
-            </div>
-          </td>
+          <tr>
+            <td colSpan={4} className='h-full'>
+              <div className='flex justify-center items-center h-full'>
+                <h1 className='H1 text-gray-grayscale30'>리스트가 비었습니다.</h1>
+              </div>
+            </td>
+          </tr>
         ) : (
           // 데이터가 있을 때 테이블에 데이터 표시
           data?.map((i, index) => (
@@ -58,4 +60,4 @@ const JoinApplicationSettingList = () => {
   );
 };
 
-export default JoinApplicationSettingList;
+export default JoinHistoryList;
