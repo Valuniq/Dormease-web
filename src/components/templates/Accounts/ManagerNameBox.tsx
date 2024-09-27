@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import Overlay from './Overlay';
 import edit from '@public/images/Edit.png';
 import grayLogo from '@public/logo/GrayLogo.png';
-import { RES_ACCOUNTS } from '@/constants/restrictions';
+import { POL_ACCOUNTS } from '@/constants/policy';
 import { putAdminAccountName } from '@/apis/account';
 import { mutate } from 'swr';
 import { BASE_URL } from '@/constants/path';
@@ -64,6 +64,7 @@ const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props
             <span className='caption-1 text-gray-grayscale40 pl-14'>관리자명</span>
             <div className='flex items-center gap-20 mt-15'>
               <input
+                maxLength={POL_ACCOUNTS.name.maxLength}
                 type='text'
                 value={newName}
                 onChange={handleNameChange}
@@ -82,7 +83,7 @@ const ManagerNameBox = ({ id, name, isActive, isEditMode, setIsEditMode }: Props
                 {isSubmitting ? '처리 중' : '수정완료'}
               </button>
             </div>
-            <p className='caption-2 text-red-red20 mt-12'>{RES_ACCOUNTS.name.defaultLabel}</p>
+            <p className='caption-2 text-red-red20 mt-12'>{POL_ACCOUNTS.name.defaultLabel}</p>
           </div>
           <Image src={grayLogo} alt='gray logo' width={123.16} height={36.77} className='object-contain' />
         </>

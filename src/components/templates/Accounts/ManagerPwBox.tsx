@@ -5,8 +5,8 @@ import PasswordShowAndHideInputText from '@/components/atoms/InputText/PasswordS
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
-import { RES_ACCOUNTS } from '@/constants/restrictions';
-import { accountsActiveAreaState, accountsModalState } from '@/recoil/account';
+import { POL_ACCOUNTS } from '@/constants/policy';
+import { accountsModalState } from '@/recoil/account';
 import { validatePassword } from '@/utils/validatePassword';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -29,9 +29,9 @@ const ManagerPwBox = ({ isActive, isEditMode, setIsEditMode, setSecureMode, open
 
   useEffect(() => {
     if (newPassword && !validatePassword(newPassword)) {
-      setErrorMessage(RES_ACCOUNTS.password.messages.invalid);
+      setErrorMessage(POL_ACCOUNTS.password.messages.invalid);
     } else if (newPassword && confirmPassword && newPassword !== confirmPassword) {
-      setErrorMessage(RES_ACCOUNTS.password.messages.mismatch);
+      setErrorMessage(POL_ACCOUNTS.password.messages.mismatch);
     } else {
       setErrorMessage('');
     }
@@ -113,7 +113,7 @@ const ManagerPwBox = ({ isActive, isEditMode, setIsEditMode, setSecureMode, open
                 isActive={true}
               />
             </div>
-            <p className='caption-2 text-gray-grayscale-50 w-273'>{RES_ACCOUNTS.password.defaultLabel}</p>
+            <p className='caption-2 text-gray-grayscale-50 w-273'>{POL_ACCOUNTS.password.defaultLabel}</p>
             {errorMessage && <p className='text-red-red20 caption-2 text-center'>{errorMessage}</p>}
             <button
               onClick={() => openModal('passwordConfirm')}
@@ -139,7 +139,7 @@ const ManagerPwBox = ({ isActive, isEditMode, setIsEditMode, setSecureMode, open
                 isActive={isActive}
               />
             </div>
-            <p className='caption-2 text-gray-grayscale30 w-273'>{RES_ACCOUNTS.password.defaultLabel}</p>
+            <p className='caption-2 text-gray-grayscale30 w-273'>{POL_ACCOUNTS.password.defaultLabel}</p>
             <button
               disabled={!isActive}
               onClick={setSecureMode}

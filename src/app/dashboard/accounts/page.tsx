@@ -1,7 +1,6 @@
 'use client';
 import { useAdminAccount } from '@/apis/account';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
-import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import DormeaseInfoBox from '@/components/templates/Accounts/DormeaseInfoBox';
 import DormInfoBox from '@/components/templates/Accounts/DormInfoBox';
 import ManagerNameBox from '@/components/templates/Accounts/ManagerNameBox';

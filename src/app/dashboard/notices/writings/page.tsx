@@ -4,7 +4,7 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import React, { useState } from 'react';
 
 import { postNotification } from '@/apis/notice';
-import { RES_NOTIFICATIONS } from '@/constants/restrictions';
+import { POL_NOTIFICATIONS } from '@/constants/policy';
 import { noticePostRequest, ImageReq, FileReq } from '@/types/notice';
 import { useRouter } from 'next/navigation';
 import { noticesRoutes } from '@/constants/navigation';
@@ -31,10 +31,10 @@ const Page = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    if (fileLists.length + files.length <= RES_NOTIFICATIONS.file.maxCount) {
+    if (fileLists.length + files.length <= POL_NOTIFICATIONS.file.maxCount) {
       setFileLists((prevFiles) => [...prevFiles, ...files.map((file) => ({ fileName: file.name, file }))]);
     } else {
-      alert(`파일은 최대 ${RES_NOTIFICATIONS.file.maxCount}개까지 선택할 수 있습니다.`);
+      alert(`파일은 최대 ${POL_NOTIFICATIONS.file.maxCount}개까지 선택할 수 있습니다.`);
     }
   };
 
