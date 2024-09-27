@@ -1,6 +1,6 @@
 'use client';
 
-import { RES_ACCOUNTS } from '@/constants/restrictions';
+import { POL_ACCOUNTS } from '@/constants/policy';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import eyeBtn from '@public/images/EyeBtn.png';
@@ -27,8 +27,8 @@ const PasswordShowAndHideInputText = ({ placeholder, isDisabled, input, setInput
   return (
     <div className='relative'>
       <input
-        minLength={RES_ACCOUNTS.password.minLength}
-        maxLength={RES_ACCOUNTS.password.maxLength}
+        minLength={POL_ACCOUNTS.password.minLength}
+        maxLength={POL_ACCOUNTS.password.maxLength}
         placeholder={placeholder}
         disabled={isDisabled}
         value={input}

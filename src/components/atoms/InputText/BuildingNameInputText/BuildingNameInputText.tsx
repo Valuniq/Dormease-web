@@ -1,4 +1,4 @@
-import { DORM } from '@/constants/restrictions';
+import { POL_DORM } from '@/constants/policy';
 import BuildingTextIcon from '@public/images/BuildingTextIcon.png';
 import Image from 'next/image';
 
@@ -12,8 +12,8 @@ type Props = {
 
 const BuildingNameInputText = ({ placeholder, input, setInput, handleDormitoryName, readOnly }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > DORM.name.maxLength) {
-      e.target.value = e.target.value.slice(0, DORM.name.maxLength);
+    if (e.target.value.length > POL_DORM.name.maxLength) {
+      e.target.value = e.target.value.slice(0, POL_DORM.name.maxLength);
     }
     setInput(e.target.value);
   };

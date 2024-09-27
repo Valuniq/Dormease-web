@@ -1,4 +1,4 @@
-import { CALENDAR } from '@/constants/restrictions';
+import { POL_CALENDAR } from '@/constants/policy';
 
 type Props = {
   input: string;
@@ -19,7 +19,7 @@ const CalendarInputText = ({ input, setInput, placeholder }: Props) => {
       placeholder={placeholder}
       onChange={handleChange}
       minLength={1}
-      maxLength={CALENDAR.title.maxLength}
+      maxLength={POL_CALENDAR.title.maxLength}
     />
   );
 };
