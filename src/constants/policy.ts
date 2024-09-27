@@ -1,5 +1,5 @@
 // Notice, FAQ
-export const RES_NOTIFICATIONS = {
+export const POL_NOTIFICATIONS = {
   title: {
     maxLength: 50, // 제목의 최대 길이
   },
@@ -15,7 +15,7 @@ export const RES_NOTIFICATIONS = {
 };
 
 // Accounts
-export const RES_ACCOUNTS = {
+export const POL_ACCOUNTS = {
   password: {
     maxLength: 20,
     minLength: 6,
@@ -27,11 +27,12 @@ export const RES_ACCOUNTS = {
   },
   name: {
     defaultLabel: '*관리자명은 공지사항과 FAQ 작성 시 표시됩니다.',
+    maxLength: 8, // 이름 최대 길이
   },
 };
 
 // Calendar
-export const CALENDAR = {
+export const POL_CALENDAR = {
   title: {
     maxLength: 30, //제목의 최대 길이
   },
@@ -41,7 +42,7 @@ export const CALENDAR = {
 };
 
 // 건물 관리 + 건물 설정
-export const DORM = {
+export const POL_DORM = {
   name: {
     maxLength: 10, //건물명 최대 길이
   },
