@@ -7,8 +7,12 @@ import Image from 'next/image';
 import AmountEnterList from './AmountEnterList';
 import AddPeriodBtn from '@/components/atoms/AllBtn/AddPeriodBtn/AddPeriodBtn';
 
-const BuildingPriceSetting = () => {
-  const [isActive, setIsActive] = useState(false);
+type Props = {
+  isActive: boolean;
+  setIsActive: (isActive: boolean) => void;
+};
+
+const BuildingPriceElement = ({ isActive, setIsActive }: Props) => {
   const handleIsActive = () => {
     setIsActive(!isActive);
   };
@@ -62,4 +66,4 @@ const BuildingPriceSetting = () => {
   );
 };
 
-export default BuildingPriceSetting;
+export default BuildingPriceElement;

@@ -9,7 +9,7 @@ type MealTicket = {
   price: string;
 };
 
-const TicketPriceSetting = () => {
+const TicketPrice = () => {
   const [mealTickets, setMealTickets] = useState<MealTicket[]>([]);
 
   // 식권 항목 추가 (최대 5개)
@@ -72,4 +72,4 @@ const TicketPriceSetting = () => {
   );
 };
 
-export default TicketPriceSetting;
+export default TicketPrice;

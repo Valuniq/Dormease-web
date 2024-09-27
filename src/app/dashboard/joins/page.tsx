@@ -1,22 +1,17 @@
 'use client';
 
-import BtnExtraLarge from '@/components/atoms/AllBtn/BtnExtraLarge/BtnExtraLarge';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import JoinSettingInputText from '@/components/atoms/InputText/JoinSettingInputText/JoinSettingInputText';
-import BuildingPriceSetting from '@/components/templates/Join/BuildingPriceSetting/BuildingPriceSetting';
-import JoinApplicationSettingList from '@/components/templates/Join/JoinApplicationSettingList';
+import JoinHistoryList from '@/components/templates/Join/JoinHistory/JoinHistoryList';
 import React from 'react';
-import DefaultSetting from '@/components/templates/Join/DefaultSetting/DefaultSetting';
-import JoinDormList from '@/components/templates/Join/BuildingPriceSetting/JoinDormList';
-import TicketPriceSetting from '@/components/templates/Join/TicketPriceSetting/TicketPriceSetting';
-import { useGetJoinDormitories } from '@/apis/join';
+import Default from '@/components/templates/Join/Default/Default';
+import TicketPrice from '@/components/templates/Join/TicketPrice/TicketPrice';
+import JoinDorm from '@/components/templates/Join/Detail/JoinDorm/JoinDorm';
+import BuildingPrice from '@/components/templates/Join/Detail/BuildingPrice/BuildingPrice';
 
 const Page = () => {
-  const { data: dormitories, error } = useGetJoinDormitories();
-  console.log('Dormitories Data:', dormitories);
-
   return (
-    <div className='flex flex-col w-[1418px]'>
+    <div className='flex flex-col w-[1483px]'>
       <div className='H0 text-gray-grayscale50 flex items-center justify-center mb-32'>
         <h1>입사 신청 설정</h1>
       </div>
@@ -30,46 +25,42 @@ const Page = () => {
           placeholder={'제목을 입력하세요.'}
         />
       </div>
-      <DefaultSetting />
+      {/* 입사 신청 기본 설정 */}
+      <Default />
       <div className='H4 w-full h-464'>
         <div className='w-full h-48 flex items-center justify-center border-y-1 border-y-gray-grayscale30'>
-          <div className='w-285 h-full flex items-center justify-center border-r-1 border-r-gray-grayscale30'>
+          <div className='w-[285px] h-full flex items-center justify-center border-r-1 border-r-gray-grayscale30'>
             수용 가능 인원
           </div>
           <div className='w-[838px] h-full flex items-center justify-center text-center border-r-1 border-r-gray-grayscale30'>
             건물별 가격
           </div>
-          <div className='w-313 h-full flex items-center justify-around'>
+          <div className='w-[313px] h-full flex items-center justify-around'>
             <span>식권</span>
             <span>식권 가격</span>
           </div>
         </div>
-        <div className='w-full flex h-415 overflow-y-scroll '>
-          <div className='w-281 min-h-full h-fit flex flex-col items-center border-r-1 border-r-gray-grayscale30 pt-34'>
-            <BtnExtraLarge label={'건물 추가로 돌아가기'} disabled={false} />
-            {dormitories &&
-              dormitories.map((i, index) => (
-                <ul key={index} className='mt-140 '>
-                  <JoinDormList
-                    key={i.dormitoryRoomTypeId}
-                    dormitoryRoomTypeId={i.dormitoryRoomTypeId}
-                    dormitoryName={i.dormitoryName}
-                    roomSize={i.roomSize}
-                    gender={i.gender}
-                  />
-                </ul>
-              ))}
+        <div className='w-full h-415 flex overflow-y-scroll'>
+          {/* 기숙사/인실/성별 별 수용 가능 인원 */}
+          <div className='w-[285px] h-full flex flex-col items-center pt-34 pr-16'>
+            <JoinDorm />
           </div>
-          <div className='w-[828px] flex items-start justify-around p-9 border-r-1 border-r-gray-grayscale30'>
-            <BuildingPriceSetting />
+          {/* 중간 divider */}
+          <div className='w-1 h-full bg-gray-grayscale30 sticky top-0' />
+          {/* 건물별 가격 */}
+          <div className='w-[838px] h-full flex items-start justify-around p-9'>
+            <BuildingPrice />
           </div>
-          <div className='w-303 px-10  min-h-full h-fit flex items-start justify-center'>
-            <TicketPriceSetting />
+          {/* 중간 divider */}
+          <div className='w-1 h-full bg-gray-grayscale30 sticky top-0' />
+          {/* 식권/식권 가격 */}
+          <div className='w-[313px] px-10 h-full'>
+            <TicketPrice />
           </div>
         </div>
       </div>
-      <div className='mb-10'>
-        <JoinApplicationSettingList />
+      <div className='mb-30'>
+        <JoinHistoryList />
       </div>
       <div className='flex items-center justify-center w-full'>
         <BtnMidVariant label={'작성 완료'} disabled={false} variant={'blue'} />
