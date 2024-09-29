@@ -24,7 +24,7 @@ export type joinTopThreeListResponseInformation = {
   endDate: string;
 };
 
-// 입사 신청 설정
+// 입사 신청 설정 생성
 export type joinPostRequest = {
   schoolId: number;
   title: string;

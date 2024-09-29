@@ -3,8 +3,11 @@
 import { useGetJoinDormitories } from '@/apis/join';
 import BtnExtraLarge from '@/components/atoms/AllBtn/BtnExtraLarge/BtnExtraLarge';
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
+import { dormitoryRoomTypeState } from '@/recoil/join';
 import { joinDormitoriesResponseInformation } from '@/types/join';
-import React from 'react';
+
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
 interface GroupedDormitories {
   male: joinDormitoriesResponseInformation | null;
@@ -15,6 +18,13 @@ interface GroupedDormitories {
 
 const JoinDorm = () => {
   const { data: dormitories, error } = useGetJoinDormitories();
+  const [dormitoryRoomTypes, setDormitoryRoomTypes] = useRecoilState(dormitoryRoomTypeState);
+
+  useEffect(() => {
+    if (dormitories) {
+      setDormitoryRoomTypes(dormitories);
+    }
+  }, [dormitories]);
 
   const groupDormitories = (dormitories: joinDormitoriesResponseInformation[]) => {
     const grouped = dormitories.reduce<Record<string, GroupedDormitories>>((acc, dorm) => {
@@ -36,17 +46,17 @@ const JoinDorm = () => {
   const groupedDormitories = dormitories ? groupDormitories(dormitories) : [];
 
   return (
-    <>
+    <div className='w-full'>
       <BtnExtraLarge label={'건물 추가로 돌아가기'} disabled={false} />
       <div className='mt-150' />
       {groupedDormitories.map((group, index) => (
-        <div key={index} className='w-full flex items-center justify-end mb-1'>
+        <div key={index} className=' w-full flex items-center justify-end mb-27'>
           <div className='whitespace-nowrap'>
             {group.dormitoryName} {group.roomSize}인실
           </div>
           <div className='ml-40 flex flex-col items-end  text-right'>
             {group.male && (
-              <div className='flex items-center justify-between w-134 mb-12'>
+              <div className={`flex items-center justify-between w-134 ${group.female ? 'mb-12' : ''}`}>
                 남
                 <TextBoxes
                   input={''}
@@ -60,7 +70,7 @@ const JoinDorm = () => {
               </div>
             )}
             {group.female && (
-              <div className='flex items-center justify-between w-134 mb-12'>
+              <div className='flex items-center justify-between w-134 '>
                 여
                 <TextBoxes
                   input={''}
@@ -76,7 +86,7 @@ const JoinDorm = () => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
