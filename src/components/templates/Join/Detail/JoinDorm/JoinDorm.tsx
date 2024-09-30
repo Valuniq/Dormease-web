@@ -50,14 +50,17 @@ const JoinDorm = () => {
       <BtnExtraLarge label={'건물 추가로 돌아가기'} disabled={false} />
       <div className='mt-150' />
       {groupedDormitories.map((group, index) => (
-        <div key={index} className=' w-full flex items-center justify-end mb-27'>
+        <div key={index} className='w-full flex items-center justify-end bg-blue-blue15  mb-22'>
           <div className='whitespace-nowrap'>
             {group.dormitoryName} {group.roomSize}인실
           </div>
-          <div className='ml-40 flex flex-col items-end  text-right'>
+          <div className={`ml-40 flex flex-col items-end text-right `}>
+            {/* 남성 정보 */}
             {group.male && (
-              <div className={`flex items-center justify-between w-134 ${group.female ? 'mb-12' : ''}`}>
-                남
+              <div
+                className={`flex h-34 bg-red-red10 items-center justify-between w-134 ${group.female ? 'mb-22' : ''} `}
+              >
+                <span>남</span>
                 <TextBoxes
                   input={''}
                   setInput={function (id: string): void {
@@ -66,12 +69,13 @@ const JoinDorm = () => {
                   placeholder={'250'}
                   type={'textBox3'}
                 />
-                명
+                <span>명</span>
               </div>
             )}
+            {/* 여성 정보 */}
             {group.female && (
-              <div className='flex items-center justify-between w-134 '>
-                여
+              <div className='bg-orange-orange h-34  flex items-center justify-between w-134'>
+                <span>여</span>
                 <TextBoxes
                   input={''}
                   setInput={function (id: string): void {
@@ -80,7 +84,7 @@ const JoinDorm = () => {
                   placeholder={'250'}
                   type={'textBox3'}
                 />
-                명
+                <span>명</span>
               </div>
             )}
           </div>
