@@ -1,20 +1,25 @@
 'use client';
 
-import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
-import React from 'react';
+type AmountEnterListProps = {
+  roomTypeId: number;
+  onPriceChange: (newPrice: number) => void;
+};
 
-const AmountEnterList = () => {
+const AmountEnterList = ({ roomTypeId, onPriceChange }: AmountEnterListProps) => {
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPrice = parseFloat(e.target.value);
+    onPriceChange(newPrice);
+  };
+
   return (
-    <div>
-      <TextBoxes
-        input={''}
-        setInput={function (id: string): void {
-          throw new Error('Function not implemented.');
-        }}
-        placeholder={'금액 입력'}
-        type={'textBox6'}
+    <div className='flex items-center justify-center bg-green-green20'>
+      <input
+        type='number'
+        placeholder='금액 입력'
+        onChange={handlePriceChange} // 입력 변경 시 호출
+        className='outline-none w-145 h-34 pr-8 bg-white border border-gray-grayscale30 placeholder:text-gray-grayscale30 H4-caption text-gray-grayscale50 rounded-8 text-right'
       />
-      원
+      <span className='H4 text-gray-grayscale50 ml-5'>원</span>
     </div>
   );
 };

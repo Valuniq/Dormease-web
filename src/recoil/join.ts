@@ -15,7 +15,50 @@ export const termReqListState = atom<joinPostRequestTermReqList[]>({
       termName: '',
       startDate: '',
       endDate: '',
-      dormitoryTermReqList: [],
+      dormitoryTermReqList: [
+        {
+          dormitoryRoomTypeId: 0,
+          price: 0,
+        },
+      ],
     },
-  ], // 초기값으로 1개의 기간 설정, 여러 기간이 추가될 수 있음
+    {
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermReqList: [
+        {
+          dormitoryRoomTypeId: 0,
+          price: 0,
+        },
+      ],
+    },
+    {
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermReqList: [
+        {
+          dormitoryRoomTypeId: 0,
+          price: 0,
+        },
+      ],
+    },
+    {
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermReqList: [
+        {
+          dormitoryRoomTypeId: 0,
+          price: 0,
+        },
+      ],
+    },
+  ],
+});
+
+export const termReqIsActiveState = atom<boolean[]>({
+  key: 'isActiveState',
+  default: [true, false, false, false], // 각 기간의 활성화 상태
 });

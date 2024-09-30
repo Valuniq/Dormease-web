@@ -1,30 +1,16 @@
-import React, { useState } from 'react';
-import BuildingPriceSetting from './BuildingPriceElement';
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { termReqIsActiveState, termReqListState } from '@/recoil/join'; // 경로 수정 필요
+import BuildingPriceElement from './BuildingPriceElement';
 
 const BuildingPrice = () => {
-  // 각 BuildingPriceSetting에 대해 isActive 상태 관리
-  const [buildingPriceSettings, setBuildingPriceSettings] = useState([
-    { isActive: true },
-    { isActive: false },
-    { isActive: false },
-    { isActive: false },
-  ]);
-
-  // isActive 상태 변경 핸들러
-  const handleSetIsActive = (index: number, isActive: boolean) => {
-    setBuildingPriceSettings((prevSettings) =>
-      prevSettings.map((setting, i) => (i === index ? { ...setting, isActive } : setting)),
-    );
-  };
+  const [termReqList] = useRecoilState(termReqListState);
+  const [isActive] = useRecoilState(termReqIsActiveState);
 
   return (
     <>
-      {buildingPriceSettings.map((setting, index) => (
-        <BuildingPriceSetting
-          key={index}
-          isActive={setting.isActive}
-          setIsActive={(isActive: boolean) => handleSetIsActive(index, isActive)}
-        />
+      {termReqList.map((_, index) => (
+        <BuildingPriceElement key={index} index={index} isActive={isActive[index]} />
       ))}
     </>
   );
