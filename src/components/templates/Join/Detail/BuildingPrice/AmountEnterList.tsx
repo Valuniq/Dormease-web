@@ -26,7 +26,7 @@ const AmountEnterList = ({ roomTypeId, price, onPriceChange, disabled }: AmountE
         value={price !== null ? price : ''} // null일 경우 빈 문자열로 표시
         onChange={handlePriceChange}
         disabled={disabled} // 비활성화 적용
-        className={`outline-none w-145 h-34 pr-8 bg-white border border-gray-grayscale30 
+        className={`H4-caption text-bg-gray-grayscale5 placeholder:text-gray-grayscale40 outline-none w-145 h-34 pr-8 bg-white border border-gray-grayscale30 
         ${disabled ? 'cursor-not-allowed text-gray-400 bg-gray-100' : 'placeholder:text-gray-grayscale30 text-gray-grayscale50'}
         rounded-8 text-right`}
       />
