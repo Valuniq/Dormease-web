@@ -152,6 +152,13 @@
     font-weight: 300;
   }
 
+  .caption-0 {
+    font-family: 'pretendard';
+    font-size: 18px;
+    font-style: medium;
+    font-weight: 500;
+  }
+
   .caption-1 {
     font-family: 'pretendard';
     font-size: 17px;
@@ -179,6 +186,10 @@
 
   .shadow3 {
     box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow4 {
+    box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.05);
   }
 
   .scrollbar-table {

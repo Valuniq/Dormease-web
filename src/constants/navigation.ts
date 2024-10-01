@@ -14,6 +14,10 @@ export const studentsRoutes = '/dashboard/students';
 export const joinsRoutes = '/dashboard/joins';
 // 건물 관리
 export const dorms = '/dashboard/dorms';
+// 일정 관리
+export const schedules = '/dashboard/schedules';
+// 요청 사항
+export const requests = '/dashboard/requests';
 
 // 공지사항
 export const noticesRoutes = '/dashboard/notices';
