@@ -65,6 +65,12 @@ const JoinDorm = () => {
       ...applicationData,
       dormitoryRoomTypeReqList: newRoomTypeReqList,
     });
+
+    // 0이 입력되면 해당 roomTypeId의 관련된 필드를 비활성화 처리
+    setDisabledFields((prev) => ({
+      ...prev,
+      [roomTypeId]: parsedLimit === 0,
+    }));
   };
 
   const groupedDormitories = dormitories ? groupDormitories(dormitories) : [];
