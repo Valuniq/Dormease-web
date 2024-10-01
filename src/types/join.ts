@@ -32,15 +32,15 @@ export type joinPostRequest = {
   endDate: string;
   depositStartDate: string; //입금 시작일
   depositEndDate: string; //입금 마감일
-  securityDepoist: number; //보증금
+  securityDepoist: number | null; //보증금
   dormitoryRoomTypeReqList: joinPostRequestDormitoryRoomTypeReqList[]; //입사 신청 설정에 사용되는 기숙사 정보 리스트
   termReqList: joinPostRequestTermReqList[]; //거주 기간 리스트
-  mealTicketReqList: joinPoistRequestMealTicketReqList[];
+  mealTicketReqList: joinPoistRequestMealTicketReqList[] | [];
 };
 
 export type joinPostRequestDormitoryRoomTypeReqList = {
   dormitoryRoomTypeId: number; // 기숙사(인실/성별) 구분 ID
-  acceptLimit: number; //수용 인원
+  acceptLimit: number | null; //수용 인원
 };
 
 export type joinPostRequestTermReqList = {
@@ -52,7 +52,7 @@ export type joinPostRequestTermReqList = {
 
 export type joinPostRequestTermReqListDormitoryTermReqList = {
   dormitoryRoomTypeId: number;
-  price: number;
+  price: number | null;
 };
 
 export type joinPoistRequestMealTicketReqList = {

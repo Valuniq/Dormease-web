@@ -1,5 +1,3 @@
-'use client';
-
 import { useGetJoinDormitories } from '@/apis/join';
 import BtnExtraLarge from '@/components/atoms/AllBtn/BtnExtraLarge/BtnExtraLarge';
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
@@ -16,7 +14,7 @@ interface GroupedDormitories {
 }
 
 const JoinDorm = () => {
-  const { data: dormitories, error } = useGetJoinDormitories();
+  const { data: dormitories } = useGetJoinDormitories();
   const [dormitoryRoomTypes, setDormitoryRoomTypes] = useRecoilState(dormitoryRoomTypeState);
   const [applicationData, setApplicationData] = useRecoilState(joinApplicationState);
   const [disabledFields, setDisabledFields] = useRecoilState(disabledFieldsState);
@@ -24,6 +22,17 @@ const JoinDorm = () => {
   useEffect(() => {
     if (dormitories) {
       setDormitoryRoomTypes(dormitories);
+
+      // dormitoryRoomTypeReqList를 기숙사 정보로 초기화
+      const initialRoomTypeReqList = dormitories.map((dorm) => ({
+        dormitoryRoomTypeId: dorm.dormitoryRoomTypeId,
+        acceptLimit: null, // null로 초기화
+      }));
+
+      setApplicationData((prev) => ({
+        ...prev,
+        dormitoryRoomTypeReqList: initialRoomTypeReqList,
+      }));
     }
   }, [dormitories]);
 
@@ -44,28 +53,19 @@ const JoinDorm = () => {
   };
 
   // 수용 인원 변경 핸들러
-  const handleAcceptLimitChange = (roomTypeId: number, gender: 'MALE' | 'FEMALE', newLimit: number) => {
-    // 기존 상태값을 깊은 복사하여 불변성을 유지
+  const handleAcceptLimitChange = (roomTypeId: number, newLimit: string) => {
+    const parsedLimit = newLimit === '' ? null : parseInt(newLimit, 10); // 빈 값은 null, 숫자는 파싱
+
+    // 기존 상태값을 복사하여 불변성을 유지
     const newRoomTypeReqList = applicationData.dormitoryRoomTypeReqList.map((room) =>
-      room.dormitoryRoomTypeId === roomTypeId ? { ...room, acceptLimit: newLimit } : { ...room },
+      room.dormitoryRoomTypeId === roomTypeId ? { ...room, acceptLimit: parsedLimit } : room,
     );
 
-    // 만약 해당 roomTypeId에 대한 데이터가 없다면 새롭게 추가
-    if (!newRoomTypeReqList.some((room) => room.dormitoryRoomTypeId === roomTypeId)) {
-      newRoomTypeReqList.push({ dormitoryRoomTypeId: roomTypeId, acceptLimit: newLimit });
-    }
-
-    // 상태 업데이트: 새로운 배열을 만들어 상태를 업데이트
+    // 상태 업데이트
     setApplicationData({
       ...applicationData,
       dormitoryRoomTypeReqList: newRoomTypeReqList,
     });
-
-    // 0이 입력되면 해당 roomTypeId의 관련된 필드 비활성화 처리
-    setDisabledFields((prev) => ({
-      ...prev,
-      [roomTypeId]: newLimit === 0,
-    }));
   };
 
   const groupedDormitories = dormitories ? groupDormitories(dormitories) : [];
@@ -87,11 +87,9 @@ const JoinDorm = () => {
                   input={
                     applicationData.dormitoryRoomTypeReqList
                       .find((room) => room.dormitoryRoomTypeId === group.male?.dormitoryRoomTypeId)
-                      ?.acceptLimit.toString() || ''
+                      ?.acceptLimit?.toString() || ''
                   }
-                  setInput={(value) =>
-                    handleAcceptLimitChange(group.male?.dormitoryRoomTypeId || 0, 'MALE', parseInt(value))
-                  }
+                  setInput={(value) => handleAcceptLimitChange(group.male?.dormitoryRoomTypeId || 0, value)}
                   placeholder={'250'}
                   type={'textBox3'}
                 />
@@ -105,11 +103,9 @@ const JoinDorm = () => {
                   input={
                     applicationData.dormitoryRoomTypeReqList
                       .find((room) => room.dormitoryRoomTypeId === group.female?.dormitoryRoomTypeId)
-                      ?.acceptLimit.toString() || ''
+                      ?.acceptLimit?.toString() || ''
                   }
-                  setInput={(value) =>
-                    handleAcceptLimitChange(group.female?.dormitoryRoomTypeId || 0, 'FEMALE', parseInt(value))
-                  }
+                  setInput={(value) => handleAcceptLimitChange(group.female?.dormitoryRoomTypeId || 0, value)}
                   placeholder={'250'}
                   type={'textBox3'}
                 />
