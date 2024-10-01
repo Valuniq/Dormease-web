@@ -8,13 +8,17 @@ import Default from '@/components/templates/Join/Default/Default';
 import TicketPrice from '@/components/templates/Join/TicketPrice/TicketPrice';
 import JoinDorm from '@/components/templates/Join/Detail/JoinDorm/JoinDorm';
 import BuildingPrice from '@/components/templates/Join/Detail/BuildingPrice/BuildingPrice';
-import { joinApplicationState, termReqIsActiveState, termReqListState } from '@/recoil/join';
+import { joinApplicationState, joinModalState, termReqIsActiveState, termReqListState } from '@/recoil/join';
 import { useRecoilState } from 'recoil';
+import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
+import BackDrop from '@/components/organisms/BackDrop/Backdrop';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 
 const Page = () => {
   const [applicationData, setApplicationData] = useRecoilState(joinApplicationState);
   const [termReqList, setTermReqList] = useRecoilState(termReqListState);
   const [termReqIsActive, setIsTermReqIsActive] = useRecoilState(termReqIsActiveState);
+  const [modalState, setModalState] = useRecoilState(joinModalState);
 
   const updateTitle = (title: string) => {
     setApplicationData({
@@ -57,65 +61,108 @@ const Page = () => {
     return true; // 모든 필드가 올바르게 입력된 경우 true 반환
   };
 
-  // 작성 완료 버튼 클릭 시 실행되는 함수
   const handleSubmit = () => {
     if (validateFields()) {
-      // 제출할 수 있는 상태라면 필요한 추가 작업을 여기서 진행
-      alert('입력된 모든 필드가 유효합니다. 데이터를 제출합니다.');
-      // 여기에 추가적인 제출 로직을 넣으세요
+      setModalState((prevState) => ({
+        ...prevState,
+        isPostChecked: true,
+      }));
+    } else {
+      setModalState((prevState) => ({
+        ...prevState,
+        isEmptyAlert: true,
+      }));
     }
   };
 
+  //
   return (
-    <div className='flex flex-col w-[1483px]'>
-      <div className='H0 text-gray-grayscale50 flex items-center justify-center mb-32'>
-        <h1>입사 신청 설정</h1>
-      </div>
-      <div className='flex itmes-center mb-27'>
-        <h2 className='H4 text-gray-grayscale40 whitespace-nowrap mr-100'>제목</h2>
-        <JoinSettingInputText input={applicationData.title} setInput={updateTitle} placeholder={'제목을 입력하세요.'} />
-      </div>
-      {/* 입사 신청 기본 설정 */}
-      <Default />
-      <div className='H4 w-full h-464'>
-        <div className='w-full h-48 flex items-center justify-center border-y-1 border-y-gray-grayscale30'>
-          <div className='w-[285px] h-full flex items-center justify-center border-r-1 border-r-gray-grayscale30'>
-            수용 가능 인원
+    <>
+      {modalState.isPostChecked && (
+        <BackDrop isOpen={modalState.isPostChecked}>
+          <ConfirmPrompt
+            variant={'blue'}
+            label={'작성을 완료하시겠습니까?'}
+            onConfirm={function (): void {
+              throw new Error('Function not implemented.');
+            }}
+            onCancel={() =>
+              setModalState((prevState) => ({
+                ...prevState,
+                isPostChecked: false,
+              }))
+            }
+          />
+        </BackDrop>
+      )}
+      {modalState.isEmptyAlert && (
+        <BackDrop isOpen={modalState.isEmptyAlert}>
+          <AlertPrompt
+            variant={'blue'}
+            label={'모든 내용을 작성해 주시기 바랍니다.'}
+            onConfirm={() =>
+              setModalState((prevState) => ({
+                ...prevState,
+                isEmptyAlert: false,
+              }))
+            }
+          />
+        </BackDrop>
+      )}
+      <div className='flex flex-col w-[1483px]'>
+        <div className='H0 text-gray-grayscale50 flex items-center justify-center mb-32'>
+          <h1>입사 신청 설정</h1>
+        </div>
+        <div className='flex itmes-center mb-27'>
+          <h2 className='H4 text-gray-grayscale40 whitespace-nowrap mr-100'>제목</h2>
+          <JoinSettingInputText
+            input={applicationData.title}
+            setInput={updateTitle}
+            placeholder={'제목을 입력하세요.'}
+          />
+        </div>
+        {/* 입사 신청 기본 설정 */}
+        <Default />
+        <div className='H4 w-full h-464'>
+          <div className='w-full h-48 flex items-center justify-center border-y-1 border-y-gray-grayscale30'>
+            <div className='w-[285px] h-full flex items-center justify-center border-r-1 border-r-gray-grayscale30'>
+              수용 가능 인원
+            </div>
+            <div className='w-[838px] h-full flex items-center justify-center text-center border-r-1 border-r-gray-grayscale30'>
+              건물별 가격
+            </div>
+            <div className='w-[313px] h-full flex items-center justify-around'>
+              <span>식권</span>
+              <span>식권 가격</span>
+            </div>
           </div>
-          <div className='w-[838px] h-full flex items-center justify-center text-center border-r-1 border-r-gray-grayscale30'>
-            건물별 가격
-          </div>
-          <div className='w-[313px] h-full flex items-center justify-around'>
-            <span>식권</span>
-            <span>식권 가격</span>
+          <div className='w-full h-415 flex overflow-y-scroll'>
+            {/* 기숙사/인실/성별 별 수용 가능 인원 */}
+            <div className='w-[285px] h-full flex flex-col items-center pt-34 pr-16'>
+              <JoinDorm />
+            </div>
+            {/* 중간 divider */}
+            <div className='w-1 h-full bg-gray-grayscale30 sticky top-0' />
+            {/* 건물별 가격 */}
+            <div className='w-[838px] h-full flex items-start justify-around p-9'>
+              <BuildingPrice />
+            </div>
+            {/* 중간 divider */}
+            <div className='w-1 h-full bg-gray-grayscale30 sticky top-0' />
+            {/* 식권/식권 가격 */}
+            <div className='w-[313px] px-10 h-full'>
+              <TicketPrice />
+            </div>
           </div>
         </div>
-        <div className='w-full h-415 flex overflow-y-scroll'>
-          {/* 기숙사/인실/성별 별 수용 가능 인원 */}
-          <div className='w-[285px] h-full flex flex-col items-center pt-34 pr-16'>
-            <JoinDorm />
-          </div>
-          {/* 중간 divider */}
-          <div className='w-1 h-full bg-gray-grayscale30 sticky top-0' />
-          {/* 건물별 가격 */}
-          <div className='w-[838px] h-full flex items-start justify-around p-9'>
-            <BuildingPrice />
-          </div>
-          {/* 중간 divider */}
-          <div className='w-1 h-full bg-gray-grayscale30 sticky top-0' />
-          {/* 식권/식권 가격 */}
-          <div className='w-[313px] px-10 h-full'>
-            <TicketPrice />
-          </div>
+        <div className='mb-30'>
+          <JoinHistoryList />
+        </div>
+        <div className='flex items-center justify-center w-full'>
+          <BtnMidVariant label={'작성 완료'} disabled={false} variant={'blue'} onClick={handleSubmit} />
         </div>
       </div>
-      <div className='mb-30'>
-        <JoinHistoryList />
-      </div>
-      <div className='flex items-center justify-center w-full'>
-        <BtnMidVariant label={'작성 완료'} disabled={!validateFields()} variant={'blue'} onClick={handleSubmit} />
-      </div>
-    </div>
+    </>
   );
 };
 
