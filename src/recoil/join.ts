@@ -11,7 +11,6 @@ export const dormitoryRoomTypeState = atom<joinDormitoriesResponseInformation[]>
 export const joinApplicationState = atom<joinPostRequest>({
   key: 'joinApplicationState',
   default: {
-    schoolId: 1, // 예시로 넣은 값
     title: '',
     startDate: '',
     endDate: '',
