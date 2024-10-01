@@ -2,6 +2,7 @@ import { BASE_URL } from '@/constants/path';
 import {
   joinDormitoriesResponse,
   joinDormitoriesResponseInformation,
+  joinPostRequest,
   joinTopThreeListResponse,
   joinTopThreeListResponseInformation,
 } from '@/types/join';
@@ -33,4 +34,17 @@ export const useGetJoinThreeLists = () => {
     error: error as any,
     isLoading: !error && !data, // 데이터와 에러 둘 다 없으면 로딩 중으로 처리
   };
+};
+
+// 입사 신청 설정 생성
+export const postDormitoryApplicationSetting = async (applicationData: joinPostRequest) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/dormitoryApplicationSetting`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(applicationData),
+  });
+
+  return res;
 };

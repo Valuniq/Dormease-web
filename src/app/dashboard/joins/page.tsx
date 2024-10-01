@@ -3,23 +3,38 @@
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import JoinSettingInputText from '@/components/atoms/InputText/JoinSettingInputText/JoinSettingInputText';
 import JoinHistoryList from '@/components/templates/Join/JoinHistory/JoinHistoryList';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Default from '@/components/templates/Join/Default/Default';
 import TicketPrice from '@/components/templates/Join/TicketPrice/TicketPrice';
 import JoinDorm from '@/components/templates/Join/Detail/JoinDorm/JoinDorm';
 import BuildingPrice from '@/components/templates/Join/Detail/BuildingPrice/BuildingPrice';
-import { joinApplicationState, joinModalState, termReqIsActiveState, termReqListState } from '@/recoil/join';
-import { useRecoilState } from 'recoil';
+import {
+  disabledFieldsState,
+  joinApplicationState,
+  joinModalState,
+  termReqIsActiveState,
+  termReqListState,
+} from '@/recoil/join';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import { postDormitoryApplicationSetting } from '@/apis/join';
 
 const Page = () => {
   const [applicationData, setApplicationData] = useRecoilState(joinApplicationState);
   const [termReqList, setTermReqList] = useRecoilState(termReqListState);
   const [termReqIsActive, setIsTermReqIsActive] = useRecoilState(termReqIsActiveState);
   const [modalState, setModalState] = useRecoilState(joinModalState);
+  const disabledFields = useRecoilValue(disabledFieldsState);
 
+  // termReqListState 값을 joinApplicationState에 동기화
+  useEffect(() => {
+    setApplicationData((prev) => ({
+      ...prev,
+      termReqList, // termReqListState의 값을 joinApplicationState에 업데이트
+    }));
+  }, [termReqList, setApplicationData]);
   const updateTitle = (title: string) => {
     setApplicationData({
       ...applicationData,
@@ -27,8 +42,6 @@ const Page = () => {
     });
   };
 
-  // 작성 완료 버튼을 활성화할 조건 확인
-  // 작성 완료 버튼을 활성화할 조건 확인
   const validateFields = () => {
     const { title, startDate, endDate, depositStartDate, depositEndDate, dormitoryRoomTypeReqList } = applicationData;
 
@@ -40,19 +53,30 @@ const Page = () => {
     // 수용 가능 인원의 각 기숙사 인실이 비어있거나 0 이하인 경우 false 반환
     for (let room of dormitoryRoomTypeReqList) {
       if (room.acceptLimit === null || room.acceptLimit <= 0) {
-        return false;
+        continue; // acceptLimit이 0이거나 null이면 해당 방은 검사하지 않음
       }
     }
 
-    // termReqIsActiveState를 통해 활성화된 기간에 대해서만 값을 확인
+    // 활성화된 기간(termReqIsActive[i]가 true인 경우)에 대해서만 체크
     for (let i = 0; i < termReqList.length; i++) {
       const term = termReqList[i];
 
-      // 활성화된 기간에 대해서만 체크 (termReqIsActiveState[i]가 true인 경우)
       if (termReqIsActive[i]) {
+        if (!term.termName || !term.startDate || !term.endDate) {
+          return false; // 기간 이름, 시작일, 종료일이 비어있으면 false 반환
+        }
+
+        // 각 기숙사 방의 가격이 null이거나 0 미만인 경우 false 반환
         for (let dorm of term.dormitoryTermReqList) {
-          if (dorm.price === null || dorm.price <= 0) {
-            return false; // 가격이 null이거나 0 이하일 경우 false 반환
+          // 해당 기숙사 방의 수용 인원이 0이면 가격 검사를 하지 않음
+          const room = dormitoryRoomTypeReqList.find((room) => room.dormitoryRoomTypeId === dorm.dormitoryRoomTypeId);
+          if (room && room.acceptLimit === 0) {
+            continue; // 수용 인원이 0인 방은 검사하지 않음
+          }
+
+          // 가격이 null이거나 0 미만인 경우 false 반환
+          if (dorm.price === null || dorm.price < 0) {
+            return false;
           }
         }
       }
@@ -75,7 +99,27 @@ const Page = () => {
     }
   };
 
-  //
+  const handleConfirmSubmit = async () => {
+    try {
+      console.log('Sending applicationData:', applicationData);
+      const response = await postDormitoryApplicationSetting(applicationData);
+      if (response.check) {
+        // 성공적으로 작성 완료된 경우 추가 작업이 필요 없으므로 알림 생략
+        console.log('작성 완료되었습니다.');
+        setModalState((prevState) => ({
+          ...prevState,
+          isPostChecked: false,
+        }));
+      } else {
+        console.error('작성에 실패하였습니다.');
+        alert('작성에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('서버 통신 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <>
       {modalState.isPostChecked && (
@@ -83,9 +127,7 @@ const Page = () => {
           <ConfirmPrompt
             variant={'blue'}
             label={'작성을 완료하시겠습니까?'}
-            onConfirm={function (): void {
-              throw new Error('Function not implemented.');
-            }}
+            onConfirm={handleConfirmSubmit} // onConfirm에 handleConfirmSubmit 연결
             onCancel={() =>
               setModalState((prevState) => ({
                 ...prevState,
