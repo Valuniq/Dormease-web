@@ -1,3 +1,4 @@
+// 입사 신청 설정 중 기숙사명, 인실, 성별 정보
 export type joinDormitoriesResponse = {
   check: boolean;
   information: joinDormitoriesResponseInformation[];
@@ -7,5 +8,87 @@ export type joinDormitoriesResponseInformation = {
   dormitoryRoomTypeId: number;
   dormitoryName: string;
   roomSize: number;
-  gender: 'MALE' | 'FEMAIL' | 'EMPTY';
+  gender: 'MALE' | 'FEMALE' | 'EMPTY';
+};
+
+// 이전 입사 신청 설정 내역 3개 조회
+export type joinTopThreeListResponse = {
+  check: boolean;
+  information: joinTopThreeListResponseInformation[];
+};
+
+export type joinTopThreeListResponseInformation = {
+  dormitoryApplicationSettingId: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+};
+
+// 입사 신청 설정 생성
+export type joinPostRequest = {
+  title: string;
+  startDate: string;
+  endDate: string;
+  depositStartDate: string; //입금 시작일
+  depositEndDate: string; //입금 마감일
+  securityDepoist: number | null; //보증금
+  dormitoryRoomTypeReqList: joinPostRequestDormitoryRoomTypeReqList[]; //입사 신청 설정에 사용되는 기숙사 정보 리스트
+  termReqList: joinPostRequestTermReqList[]; //거주 기간 리스트
+  mealTicketReqList: joinPoistRequestMealTicketReqList[] | [];
+};
+
+export type joinPostRequestDormitoryRoomTypeReqList = {
+  dormitoryRoomTypeId: number; // 기숙사(인실/성별) 구분 ID
+  acceptLimit: number | null; //수용 인원
+};
+
+export type joinPostRequestTermReqList = {
+  termName: string;
+  startDate: string;
+  endDate: string;
+  dormitoryTermReqList: joinPostRequestTermReqListDormitoryTermReqList[]; //기숙사와 거주기간 중간 테이블을 위한 리스트
+};
+
+export type joinPostRequestTermReqListDormitoryTermReqList = {
+  dormitoryRoomTypeId: number;
+  price: number | null;
+};
+
+export type joinPoistRequestMealTicketReqList = {
+  count: number;
+  price: number;
+};
+
+// 입사 신청 기간인지 조회
+export type isJoinPeriodResponse = {
+  check: boolean;
+  information: {
+    isPeriod: boolean;
+  };
+};
+
+// 이전 작성 내용 목록 조회
+export type joinHistoryResponse = {
+  check: boolean;
+  information: joinHistoryResponseInformation[];
+};
+
+export type joinHistoryResponseInformation = {
+  dormitoryApplicationSettingId: number;
+  titile: string;
+  createdDate: string;
+};
+
+// 입사 신청 설정 생성
+export type nowJoinResponse = {
+  dormitoryApplicationSettingId: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  depositStartDate: string; //입금 시작일
+  depositEndDate: string; //입금 마감일
+  securityDepoist: number | null; //보증금
+  dormitoryRoomTypeReqList: joinPostRequestDormitoryRoomTypeReqList[]; //입사 신청 설정에 사용되는 기숙사 정보 리스트
+  termReqList: joinPostRequestTermReqList[]; //거주 기간 리스트
+  mealTicketReqList: joinPoistRequestMealTicketReqList[] | [];
 };
