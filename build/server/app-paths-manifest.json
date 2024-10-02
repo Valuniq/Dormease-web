@@ -1,7 +1,7 @@
 {
   "/page": "app/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/notices/page": "app/dashboard/notices/page.js",
-  "/dashboard/notices/writings/page": "app/dashboard/notices/writings/page.js",
-  "/dashboard/notices/details/page": "app/dashboard/notices/details/page.js"
+  "/dashboard/joins/page": "app/dashboard/joins/page.js",
+  "/dashboard/joins/(applicants)/applicants/page": "app/dashboard/joins/(applicants)/applicants/page.js",
+  "/dashboard/joins/passMembers/page": "app/dashboard/joins/passMembers/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

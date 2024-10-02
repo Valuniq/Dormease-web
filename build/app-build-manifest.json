@@ -1,15 +1,15 @@
 {
   "pages": {
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
+    ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
     ],
     "/dashboard/page": [
       "static/chunks/webpack.js",
@@ -21,21 +21,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/layout.js"
     ],
-    "/dashboard/notices/page": [
+    "/dashboard/joins/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/notices/page.js"
+      "static/chunks/app/dashboard/joins/page.js"
     ],
-    "/dashboard/notices/writings/page": [
+    "/dashboard/joins/(applicants)/applicants/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/notices/writings/page.js"
+      "static/chunks/app/dashboard/joins/(applicants)/applicants/page.js"
     ],
-    "/dashboard/notices/details/page": [
+    "/dashboard/joins/passMembers/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/dashboard/notices/details/page.css",
-      "static/chunks/app/dashboard/notices/details/page.js"
+      "static/chunks/app/dashboard/joins/passMembers/page.js"
     ]
   }
 }
