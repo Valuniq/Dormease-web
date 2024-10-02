@@ -1,9 +1,7 @@
 'use client';
 
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
-import React, { useState, useEffect } from 'react';
-import calandarIcon from '@public/images/calendarIcon.png';
-import Image from 'next/image';
+import React, { useEffect } from 'react';
 import AmountEnterList from './AmountEnterList';
 import AddPeriodBtn from '@/components/atoms/AllBtn/AddPeriodBtn/AddPeriodBtn';
 import { useRecoilState } from 'recoil';
@@ -33,7 +31,7 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
       }));
       setTermReqList(updatedTermReqList);
     }
-  }, [dormitoryRoomType, setTermReqList, termReqList]);
+  }, [dormitoryRoomType, setTermReqList]);
 
   // isActive 상태 토글
   const handleIsActive = () => {
