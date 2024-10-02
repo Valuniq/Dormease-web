@@ -11,7 +11,7 @@ export const useMainRefund = () => {
 
 // 공지사항 목록 조회
 export const useMainNotice = () => {
-  const { data, error } = useSWR<NoticeResponse>(`${BASE_URL}/api/v1/app/notifications`, fetchWithTokens);
+  const { data, error } = useSWR<NoticeResponse>(`${BASE_URL}/api/v1/web/notifications/main`, fetchWithTokens);
   return { data, error, isLoading: !error && !data };
 };
 
