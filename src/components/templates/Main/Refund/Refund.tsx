@@ -29,7 +29,7 @@ const Refund = () => {
         ) : error ? (
           <div className='H2 text-red-red30 mx-auto my-auto'>에러가 발생했습니다. 다시 시도해주세요.</div>
         ) : !data || data.information.length === 0 ? (
-          <div className='H2 text-gray-grayscale30 mx-auto my-auto'>환불 신청 데이터가 없습니다.</div>
+          <div className='H2 text-gray-grayscale30 mx-auto my-auto'>환불 신청이 없습니다.</div>
         ) : (
           data.information.map((i, index) => (
             <ul className='mb-8' key={index}>
