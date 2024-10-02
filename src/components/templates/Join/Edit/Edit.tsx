@@ -27,7 +27,8 @@ const Edit = () => {
       ...prev,
       termReqList, // termReqListState의 값을 joinApplicationState에 업데이트
     }));
-  }, [termReqList, setApplicationData]);
+  }, [termReqList]);
+
   const updateTitle = (title: string) => {
     setApplicationData({
       ...applicationData,

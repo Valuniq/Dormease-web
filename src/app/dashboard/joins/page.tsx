@@ -1,6 +1,7 @@
 'use client';
 
 import { useIsJoinPeriod, useJoinHistory, useNowJoin } from '@/apis/join';
+import Edit from '@/components/templates/Join/Edit/Edit';
 import Writing from '@/components/templates/Join/Writing/Writing';
 import React from 'react';
 
@@ -19,10 +20,19 @@ const Page = () => {
   if (nowJoin) {
     if (isJoinPeriod?.information?.isPeriod) {
       // 작성된 내용이 있고, 입사 신청 기간일 때: 가져오기
-      return <div className='flex flex-col w-[1483px]'>이전 신청 내용을 가져옵니다.</div>;
+      return (
+        <div className='flex flex-col w-[1483px]'>
+          {' '}
+          <Edit />
+        </div>
+      );
     } else {
       // 작성된 내용이 있고, 입사 신청 기간이 아닐 때: 수정하기
-      return <div className='flex flex-col w-[1483px]'>이전 신청 내용을 수정합니다.</div>;
+      return (
+        <div className='flex flex-col w-[1483px]'>
+          <Edit />
+        </div>
+      );
     }
   } else {
     // 작성된 내용이 없는 경우: 작성하기

@@ -19,7 +19,7 @@ const AmountEnterList = ({ roomTypeId, price, onPriceChange, disabled }: AmountE
   };
 
   return (
-    <div className={`bg-green-green10 flex items-center justify-center ${disabled ? 'opacity-30' : ''}`}>
+    <div className={`flex items-center justify-center ${disabled ? 'opacity-30' : ''}`}>
       <input
         type='text' // 숫자만 입력 가능하지만, 숫자가 아닌 값에 대해 즉각 검증할 수 있도록 'text'로 설정
         placeholder='금액 입력'
