@@ -9,9 +9,9 @@ type Props = {
 
 const RequestList = ({ content, date }: Props) => {
   return (
-    <div className='w-500 h-120 rounded-30 shadow4 bg-white flex items-center p-17'>
+    <div className='hover-transition hover:opacity-80  w-500 h-120 rounded-30 shadow4 bg-white flex items-center p-17'>
       <Image src={user} alt='user ' width={52} height={52} className='object-contain' />
-      <div className='ml-11 flex flex-col'>
+      <div className='ml-11 w-full flex flex-col'>
         <div
           className='h-40 caption-1 text-gray-grayscale40 mb-21'
           style={{
