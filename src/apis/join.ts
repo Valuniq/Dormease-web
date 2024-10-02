@@ -1,10 +1,14 @@
 import { BASE_URL } from '@/constants/path';
+
 import {
+  joinHistoryResponse,
+  isJoinPeriodResponse,
   joinDormitoriesResponse,
   joinDormitoriesResponseInformation,
   joinPostRequest,
   joinTopThreeListResponse,
   joinTopThreeListResponseInformation,
+  nowJoinResponse,
 } from '@/types/join';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
@@ -47,4 +51,31 @@ export const postDormitoryApplicationSetting = async (applicationData: joinPostR
   });
 
   return res;
+};
+
+// 입사 신청 기간 조회
+export const useIsJoinPeriod = () => {
+  const { data, error, mutate } = useSWR<isJoinPeriodResponse>(
+    `${BASE_URL}/api/v1/app/dormitoryApplicationSetting`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 이전 입사 신청 설정 내역 조회
+export const useJoinHistory = () => {
+  const { data, error, mutate } = useSWR<joinHistoryResponse>(
+    `${BASE_URL}/api/v1/web/dormitoryApplicationSetting/history`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 현재 입사 신청 설정 내역 조회
+export const useNowJoin = () => {
+  const { data, error, mutate } = useSWR<nowJoinResponse>(
+    `${BASE_URL}/api/v1/web/dormitoryApplicationSetting`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
 };
