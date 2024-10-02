@@ -58,3 +58,37 @@ export type joinPoistRequestMealTicketReqList = {
   count: number;
   price: number;
 };
+
+// 입사 신청 기간인지 조회
+export type isJoinPeriodResponse = {
+  check: boolean;
+  information: {
+    isPeriod: boolean;
+  };
+};
+
+// 이전 작성 내용 목록 조회
+export type joinHistoryResponse = {
+  check: boolean;
+  information: joinHistoryResponseInformation[];
+};
+
+export type joinHistoryResponseInformation = {
+  dormitoryApplicationSettingId: number;
+  titile: string;
+  createdDate: string;
+};
+
+// 입사 신청 설정 생성
+export type nowJoinResponse = {
+  dormitoryApplicationSettingId: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  depositStartDate: string; //입금 시작일
+  depositEndDate: string; //입금 마감일
+  securityDepoist: number | null; //보증금
+  dormitoryRoomTypeReqList: joinPostRequestDormitoryRoomTypeReqList[]; //입사 신청 설정에 사용되는 기숙사 정보 리스트
+  termReqList: joinPostRequestTermReqList[]; //거주 기간 리스트
+  mealTicketReqList: joinPoistRequestMealTicketReqList[] | [];
+};

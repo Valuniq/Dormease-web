@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { termReqIsActiveState, termReqListState } from '@/recoil/join'; // 경로 수정 필요
+import { termReqIsActiveState, termReqListState } from '@/recoil/join';
 import BuildingPriceElement from './BuildingPriceElement';
 
 const BuildingPrice = () => {
