@@ -25,7 +25,7 @@ const Notice = () => {
           </div>
         </Link>
       </div>
-      <div className='w-full flex overflow-scroll bg-gray-grayscale5 h-560 rounded-30 p-30'>
+      <div className=' w-full flex justify-center overflow-scroll bg-gray-grayscale5 h-560 rounded-30 p-30'>
         {isLoading ? (
           <div className='H2 text-gray-grayscale30 mx-auto my-auto'>로딩 중...</div>
         ) : error ? (
@@ -35,14 +35,14 @@ const Notice = () => {
         ) : (
           data.information.map((i) => (
             <Link key={i.notificationId} href={noticesDetailRoutes} passHref>
-              <li
-                className='cursor-pointer'
+              <ul
+                className='hover-transition hover:opacity-80 cursor-pointer '
                 onClick={() => {
                   setNoticeId(i.notificationId);
                 }}
               >
                 <NoticeList content={i.title} date={i.createdDate} />
-              </li>
+              </ul>
             </Link>
           ))
         )}
