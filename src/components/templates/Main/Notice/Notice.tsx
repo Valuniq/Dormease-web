@@ -18,8 +18,8 @@ const Notice = () => {
         </Link>
       </div>
       <div className='w-full overflow-scroll bg-gray-grayscale5 h-560  rounded-30 p-30'>
-        {mockupData.map((i, key) => (
-          <ul key={key}>
+        {mockupData.map((i, index) => (
+          <ul key={index}>
             <NoticeList content={i.title} date={i.date} />
           </ul>
         ))}

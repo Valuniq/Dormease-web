@@ -1,5 +1,5 @@
 import MediumInputText from '@/components/atoms/InputText/MediumInputText/MediumInputText';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 type Props = {
   scores: number[]; // 점수 배열
@@ -11,14 +11,17 @@ const Distance = ({ scores, scoresInput, setScoresInput }: Props) => {
   // 기본 점수 배열: 0부터 4.5까지 0.5 단위로 생성
   const defaultScores = Array.from({ length: 10 }, (_, i) => i);
 
+  // useCallback으로 메모이제이션, 종속성 배열에 setScoresInput 추가
+  const memoizedSetScoresInput = useCallback(setScoresInput, [setScoresInput]);
+
   useEffect(() => {
     if (scoresInput.length === 0) {
       // 컴포넌트가 마운트될 때, 기본 점수에 맞는 초기화
       defaultScores.forEach((_, index) => {
-        setScoresInput(index, ''); // 지역명을 빈 문자열로 초기화
+        memoizedSetScoresInput(index, ''); // 지역명을 빈 문자열로 초기화
       });
     }
-  }, [scoresInput]);
+  }, [scoresInput, defaultScores, memoizedSetScoresInput]);
 
   return (
     <div className='w-[1200px] h-fit rounded-20 bg-white flex flex-col shadow3 px-15'>

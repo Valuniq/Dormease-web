@@ -17,8 +17,8 @@ const Refund = () => {
           <div className='flex-1'>이름</div> <div className='flex-1'>학번</div> <div className='flex-1'>호실</div>{' '}
           <div className='flex-1'>일자</div>
         </div>
-        {mockupData.map((i, key) => (
-          <ul className='mb-8' key={key}>
+        {mockupData.map((i, index) => (
+          <ul className='mb-8' key={index}>
             <RefundList name={i.name} studentId={i.studentId} dorm={i.dorm} date={i.date} />
           </ul>
         ))}

@@ -13,9 +13,9 @@ const Request = () => {
         </Link>
       </div>
       <div className='w-full bg-white h-560 rounded-30  overflow-y-scroll'>
-        {mockupData.map((i, key) => (
-          <Link href={'/'} passHref>
-            <ul className='mb-20 flex justify-center ' key={key}>
+        {mockupData.map((i, index) => (
+          <Link key={index} href={'/'} passHref>
+            <ul className='mb-20 flex justify-center '>
               <RequestList content={i.content} date={i.date} />
             </ul>
           </Link>

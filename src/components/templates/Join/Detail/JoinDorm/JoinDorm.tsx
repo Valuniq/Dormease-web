@@ -33,7 +33,7 @@ const JoinDorm = () => {
         dormitoryRoomTypeReqList: initialRoomTypeReqList,
       }));
     }
-  }, [dormitories]);
+  }, [dormitories, setDormitoryRoomTypes, setApplicationData]);
 
   const groupDormitories = (dormitories: joinDormitoriesResponseInformation[]) => {
     const grouped = dormitories.reduce<Record<number, GroupedDormitories>>((acc, dorm) => {

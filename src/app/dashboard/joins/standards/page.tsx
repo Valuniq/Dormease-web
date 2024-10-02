@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import AcceptanceMethod from '@/components/templates/Standard/AcceptanceMethod/AcceptanceMethod';
 import PledgeWriting from '@/components/templates/Standard/PledgeWriting/PledgeWriting';
@@ -68,11 +68,10 @@ const Page = () => {
   };
 
   // 필수 값들이 모두 채워졌는지 확인하는 함수 (거리 점수 제외)
-  const checkFormValidity = () => {
+  const checkFormValidity = useCallback(() => {
     const { minScore, scoreRatio, distanceRatio, pointReflection, tiePriority, freshmanStandard, entrancePledge } =
       standard;
 
-    // 필수 값들이 모두 입력되어 있으면 true 반환, 아니면 false
     if (
       minScore >= 0 &&
       scoreRatio >= 0 &&
@@ -86,7 +85,7 @@ const Page = () => {
     } else {
       setIsFormValid(false);
     }
-  };
+  }, [standard]);
 
   // 응답이 있을 때 기준 데이터를 설정
   useEffect(() => {
@@ -96,12 +95,12 @@ const Page = () => {
         distanceScoreResList: data.information.distanceScoreResList || defaultDistanceScoreList,
       });
     }
-  }, [data]);
+  }, [data, defaultDistanceScoreList]);
 
   // standard 상태가 변경될 때마다 유효성 검사를 수행
   useEffect(() => {
     checkFormValidity();
-  }, [standard]);
+  }, [standard, checkFormValidity]);
 
   return (
     <div className='w-[1200px] flex flex-col justify-center items-center'>

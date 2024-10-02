@@ -44,15 +44,17 @@ const JoinHistoryList = () => {
         ) : (
           // 데이터가 있을 때 테이블에 데이터 표시
           data?.map((i, index) => (
-            <JoinHistoryListBody
-              index={index}
-              title={i.title}
-              startDate={i.startDate}
-              endDate={i.endDate}
-              getList={function (): void {
-                throw new Error('Function not implemented.');
-              }}
-            />
+            <ul key={index}>
+              <JoinHistoryListBody
+                index={index}
+                title={i.title}
+                startDate={i.startDate}
+                endDate={i.endDate}
+                getList={function (): void {
+                  throw new Error('Function not implemented.');
+                }}
+              />
+            </ul>
           ))
         )}
       </tbody>

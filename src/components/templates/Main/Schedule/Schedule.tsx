@@ -30,8 +30,8 @@ const Schedule = () => {
       <div className='w-full bg-gray-grayscale5 h-462 rounded-30 p-30'>
         <div className='font-medium text-20 text-gray-grayscale30 '>2024년 12월 31일</div>
         <div className='font-extrabold text-25 text-blue-blue30 mt-5 mb-34'>오늘은 수요일입니다.</div>
-        {mockupData.map((i, key) => (
-          <ul className='mb-20' key={key}>
+        {mockupData.map((i, index) => (
+          <ul className='mb-20' key={index}>
             <ScheduleList scheduleColor={i.scheduleColor} schedule={i.schedule} />
           </ul>
         ))}

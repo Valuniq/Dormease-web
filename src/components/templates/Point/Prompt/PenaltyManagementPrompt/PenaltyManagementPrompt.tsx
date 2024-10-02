@@ -9,7 +9,7 @@ import {
   promptClientMinusState,
   promptMinusState,
 } from '@/recoil';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { usePointDetailValidation } from '@/hooks/usePointDetailValidation';
 
 import PromptHeader from '../PromptHeader/PromptHeader';
@@ -32,10 +32,15 @@ const PenaltyManagementPrompt = ({ onDelete }: Props) => {
   const [initialBonusLists, setInitialBonusLists] = useState<PointListResponseInfo[]>([]);
   const [initialMinusLists, setInitialMinusLists] = useState<PointListResponseInfo[]>([]);
 
-  const handleSaveDisabled = usePointDetailValidation([bonusLists, minusLists, tempBonusLists, tempMinusLists]);
+  // usePointDetailValidation 훅을 최상위에서 호출
+  const isSaveDisabled = usePointDetailValidation([bonusLists, minusLists, tempBonusLists, tempMinusLists]);
+
+  // 저장 버튼 활성화 여부를 위한 콜백을 useCallback으로 메모이제이션
+  const handleSaveDisabled = useCallback(() => isSaveDisabled, [isSaveDisabled]);
+
   useEffect(() => {
     handleSaveDisabled();
-  }, [bonusLists, minusLists, tempBonusLists, tempMinusLists]);
+  }, [handleSaveDisabled]);
 
   // 데이터가 조회되면 해당 데이터를 사용하여 리스트를 초기화
   useEffect(() => {
@@ -58,7 +63,7 @@ const PenaltyManagementPrompt = ({ onDelete }: Props) => {
       .filter((initial) => !minusLists.some((current) => current.pointId === initial.pointId))
       .map((m) => m.pointId);
     onDelete([...deletedBonusIds, ...deletedMinusIds]); // 삭제할 ID 설정
-  }, [bonusLists, minusLists, initialBonusLists, initialMinusLists]);
+  }, [bonusLists, minusLists, initialBonusLists, initialMinusLists, onDelete]);
 
   return (
     // overflow-y-scroll 임시 삭제

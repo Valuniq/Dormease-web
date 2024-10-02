@@ -1,7 +1,7 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import BlackListReasonInputText from '@/components/atoms/InputText/BlackListReasonInputText/BlackListReasonInputText';
-import { formatDate } from '@/utils/formatDate';
+import { formatDate } from '@/utils/dateUtils';
 import React, { forwardRef, ForwardRefRenderFunction, useState } from 'react';
 
 export type Props = {

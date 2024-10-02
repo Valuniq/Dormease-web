@@ -3,7 +3,7 @@ import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { selectedMemberIdForBlacklistState } from '@/recoil/blacklist';
 import { blacklistResponseDataList } from '@/types/blacklist';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import NoneList from '../../organisms/NoneList/NoneList';
 import BlackListBody from './BlackListBody';

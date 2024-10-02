@@ -33,7 +33,7 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
       }));
       setTermReqList(updatedTermReqList);
     }
-  }, [dormitoryRoomType, setTermReqList]);
+  }, [dormitoryRoomType, setTermReqList, termReqList]);
 
   // isActive 상태 토글
   const handleIsActive = () => {
