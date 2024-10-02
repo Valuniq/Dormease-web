@@ -1,13 +1,14 @@
 'use client';
 
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import calandarIcon from '@public/images/calendarIcon.png';
 import Image from 'next/image';
 import AmountEnterList from './AmountEnterList';
 import AddPeriodBtn from '@/components/atoms/AllBtn/AddPeriodBtn/AddPeriodBtn';
 import { useRecoilState } from 'recoil';
 import { disabledFieldsState, dormitoryRoomTypeState, termReqIsActiveState, termReqListState } from '@/recoil/join';
+import { todayDate } from '@/utils/dateUtils';
 
 type Props = {
   index: number;
@@ -19,6 +20,20 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
   const [termReqList, setTermReqList] = useRecoilState(termReqListState);
   const [dormitoryRoomType] = useRecoilState(dormitoryRoomTypeState);
   const [disabledFields] = useRecoilState(disabledFieldsState);
+
+  useEffect(() => {
+    if (termReqList.length > 0) {
+      // 기간별로 dormitoryTermReqList를 기숙사 방 타입만큼 초기화
+      const updatedTermReqList = termReqList.map((term) => ({
+        ...term,
+        dormitoryTermReqList: dormitoryRoomType.map((room) => ({
+          dormitoryRoomTypeId: room.dormitoryRoomTypeId,
+          price: null, // 가격 초기화
+        })),
+      }));
+      setTermReqList(updatedTermReqList);
+    }
+  }, [dormitoryRoomType, setTermReqList]);
 
   // isActive 상태 토글
   const handleIsActive = () => {
@@ -34,31 +49,19 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
     setTermReqList(newTermReqList);
   };
 
-  // 금액 변경 핸들러: dormitoryRoomTypeId에 해당하는 데이터를 termReqList에 추가하거나 업데이트
-  const handlePriceChange = (roomTypeId: number, newPrice: number) => {
+  // 금액 변경 핸들러: dormitoryRoomTypeId에 해당하는 데이터를 업데이트
+  const handlePriceChange = (roomTypeId: number, newPrice: number | null) => {
     const newTermReqList = [...termReqList];
-
-    // 기존의 dormitoryTermReqList를 깊은 복사
-    const dormitoryTermReqList = newTermReqList[index].dormitoryTermReqList.map((dorm) =>
-      dorm.dormitoryRoomTypeId === roomTypeId ? { ...dorm } : dorm,
+    const updatedDormitoryTermReqList = newTermReqList[index].dormitoryTermReqList.map((dorm) =>
+      dorm.dormitoryRoomTypeId === roomTypeId ? { ...dorm, price: newPrice } : dorm,
     );
 
-    const existingRoomIndex = dormitoryTermReqList.findIndex((dorm) => dorm.dormitoryRoomTypeId === roomTypeId);
-
-    if (existingRoomIndex !== -1) {
-      // 기존에 있으면 업데이트 (객체가 복사된 상태에서 수정됨)
-      dormitoryTermReqList[existingRoomIndex] = {
-        ...dormitoryTermReqList[existingRoomIndex],
-        price: newPrice,
-      };
-    } else {
-      // 기존에 없으면 추가
-      dormitoryTermReqList.push({ dormitoryRoomTypeId: roomTypeId, price: newPrice });
-    }
-
-    newTermReqList[index] = { ...newTermReqList[index], dormitoryTermReqList };
+    newTermReqList[index] = { ...newTermReqList[index], dormitoryTermReqList: updatedDormitoryTermReqList };
     setTermReqList(newTermReqList);
   };
+
+  const startDate = termReqList[index].startDate;
+  const endDate = termReqList[index].endDate;
 
   return (
     <div className='relative'>
@@ -84,35 +87,38 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
             />
           </div>
           <div className='mb-8'>거주기간</div>
-          <div className='flex items-center justify-between w-143'>
-            <TextBoxes
-              input={termReqList[index].startDate}
-              setInput={(value: string) => handleTermChange({ target: { value } } as any, 'startDate')}
-              placeholder={'입사 날짜'}
-              type={'textBox5'}
+          <div className='flex items-center justify-between'>
+            {/* 입사 날짜 입력 (startDate) */}
+            <input
+              type='date'
+              value={termReqList[index].startDate || ''}
+              onChange={(e) => handleTermChange(e, 'startDate')}
+              min={todayDate} // 최소 날짜 설정
+              max={termReqList[index].endDate || ''} // endDate보다 늦을 수 없음
+              className='w-155 H4-caption border-[0.5px] border-gray-grayscale40 outline-none px-8 rounded-8 text-gray-grayscale50 placeholder:text-gray-grayscale30'
             />
-            <Image src={calandarIcon} alt='calendar' />
           </div>
           ~
-          <div className='flex items-center justify-between w-143 mb-25'>
-            <TextBoxes
-              input={termReqList[index].endDate}
-              setInput={(value: string) => handleTermChange({ target: { value } } as any, 'endDate')}
-              placeholder={'퇴사 날짜'}
-              type={'textBox5'}
+          <div className='flex items-center justify-between mb-22'>
+            {/* 퇴사 날짜 입력 (endDate) */}
+            <input
+              type='date'
+              value={termReqList[index].endDate || ''}
+              onChange={(e) => handleTermChange(e, 'endDate')}
+              min={termReqList[index].startDate || todayDate} // startDate보다 이를 수 없음
+              className='w-155 H4-caption border-[0.5px] border-gray-grayscale40  outline-none px-8 rounded-8 text-gray-grayscale50 placeholder:text-gray-grayscale30'
             />
-            <Image src={calandarIcon} alt='calendar' />
           </div>
           {/* dormitoryRoomTypeState의 항목을 모두 렌더링 */}
           {dormitoryRoomType.map((room) => (
             <div key={room.dormitoryRoomTypeId} className='w-full h-34 mb-22'>
               <AmountEnterList
                 roomTypeId={room.dormitoryRoomTypeId}
-                onPriceChange={(newPrice) => handlePriceChange(room.dormitoryRoomTypeId, newPrice)}
+                onPriceChange={(value) => handlePriceChange(room.dormitoryRoomTypeId, value)}
                 price={
                   termReqList[index].dormitoryTermReqList.find(
                     (dormReq) => dormReq.dormitoryRoomTypeId === room.dormitoryRoomTypeId,
-                  )?.price || 0
+                  )?.price ?? null
                 }
                 disabled={disabledFields[room.dormitoryRoomTypeId]}
               />
