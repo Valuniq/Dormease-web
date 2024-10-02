@@ -18,6 +18,7 @@ export const dorms = '/dashboard/dorms';
 export const schedules = '/dashboard/schedules';
 // 요청 사항
 export const requests = '/dashboard/requests';
+export const requestsDetail = '/dashboard/requests/details';
 
 // 공지사항
 export const noticesRoutes = '/dashboard/notices';
