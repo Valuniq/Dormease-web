@@ -18,7 +18,7 @@ type Props = {
   width?: string;
   height?: string;
   setEditorHtml: (content: string) => void;
-  initialContent?: string; // 추가된 부분
+  initialContent?: string;
 };
 
 const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEditorHtml, initialContent }, ref) => {
@@ -68,6 +68,8 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
               const img = document.createElement('img');
               img.src = imageUrl;
               img.alt = 'image';
+              img.style.maxWidth = '100%'; // 너비 최대값 설정
+              img.style.maxHeight = 'auto'; // 높이 최대값
               range.insertNode(img);
               setEditorHtml(quill.innerHTML);
               setIsEditorModified(true);
@@ -166,7 +168,8 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
           onChange={handleEditorChange}
           modules={modules}
           formats={formats}
-          defaultValue={initialContent} // 추가된 부분
+          defaultValue={initialContent}
+          bounds='.ql-editor'
         />
       </div>
       {ConfirmDialogComponent}
