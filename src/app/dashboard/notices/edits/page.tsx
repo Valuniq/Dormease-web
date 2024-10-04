@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { noticesRoutes } from '@/constants/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useConfirmDialog from '@/hooks/useConfirmDialog';
-import BackDrop from '@/components/organisms/BackDrop/Backdrop';
+
 import { isEditorModifiedState } from '@/recoil/editor';
 import { noticeIdState } from '@/recoil/notice';
 import NoticeEdit from '@/components/templates/Notice/Edit/NoticeEdit';
@@ -187,7 +187,7 @@ const Page = () => {
           }
           editorContent={data.information.content}
         />
-        <div className='mt-70'>
+        <div className='my-30 xxl:scale-80 xl:scale-65 lg:scale-65 md:scale-50 sm:scale-40'>
           <BtnMidVariant label={'수정'} disabled={false} variant={'blue'} onClick={showConfirmDialog} />
         </div>
       </div>

@@ -59,7 +59,7 @@ const NoticeWriting = forwardRef<HTMLDivElement, Props>(
                 setInput={setTitle}
               />
             </div>
-            <div className='flex-2 flex items-center bg-blue-blue15'>
+            <div className='flex-2 flex items-center'>
               <Checkbox isChecked={isPinned} setIsChecked={setIsPinned} />
               <h2 className='text-nowrap mx-18  text-gray-grayscale50'>최상단 고정</h2>
               <Image src={pinIcon} width={13} height={20} className='object-contain rotate-[-45deg]' alt='pin' />

@@ -104,7 +104,7 @@ const Page = () => {
             }))
           }
         />
-        <div className='mt-70'>
+        <div className='my-30 xxl:scale-80 xl:scale-65 lg:scale-65 md:scale-50 sm:scale-40'>
           <BtnMidVariant label={'등록'} disabled={false} variant={'blue'} onClick={showConfirmDialog} />
         </div>
       </div>
