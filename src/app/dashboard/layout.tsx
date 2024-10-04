@@ -9,7 +9,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
 
   // Quill이 있는 경로
-  const quillPaths = ['/dashboard/notices/writings', '/dashboard/notices/edits', '/dashboard/supports/writings'];
+  const quillPaths = [
+    '/dashboard/notices/writings',
+    '/dashboard/notices/edits',
+    '/dashboard/supports/writings',
+    '/dashboard/supports/edits',
+  ];
 
   return (
     <div className=''>
