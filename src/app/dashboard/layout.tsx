@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   ];
 
   return (
-    <div className=''>
+    <>
       <div className='z-header fixed top-0 w-full'>
         <Header />
       </div>
@@ -39,6 +39,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
         {children}
       </div>
-    </div>
+    </>
   );
 }
