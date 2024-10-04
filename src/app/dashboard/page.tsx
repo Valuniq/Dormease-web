@@ -7,7 +7,7 @@ import Notice from '@/components/templates/Main/Notice/Notice';
 
 const Page = () => {
   return (
-    <div className='w-full'>
+    <div className='w-full '>
       <h1 className='font-pretendard font-bold text-45 text-blue-blue30 mb-27'>메인 화면</h1>
       <div className='flex items-start gap-63'>
         <div className='flex flex-col gap-25 justify-center'>

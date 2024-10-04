@@ -14,10 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <head>
-        {/* react-quill CSS 파일 링크 */}
-        <link rel='stylesheet' href='https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css' />
-      </head>
+      <head></head>
       <body className='h-0'>
         <RecoilRootWrapper>{children}</RecoilRootWrapper>
       </body>
