@@ -74,7 +74,7 @@ const NoticeEdit = forwardRef<HTMLDivElement, Props>(
         </div>
         <div className='flex w-full items-center justify-center pt-15 mb-60'>
           <h1 className=' h-430 items-center flex mr-51 text-nowrap font-medium text-gray-grayscale50'>내 용</h1>
-          <QuillComponent width='100%' height='70svh' setEditorHtml={setEditorHtml} />
+          <QuillComponent width='100%' height='70svh' initialContent={editorContent} setEditorHtml={setEditorHtml} />
         </div>
         <div className='flex items-center py-15 border-y-1 border-y-gray-grayscale30'>
           <h1 className='font-medium text-gray-grayscale50 mr-20 text-nowrap'>첨부파일</h1>
