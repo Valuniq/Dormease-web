@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PlusBtnVariant from '@/components/atoms/AllBtn/PlusBtnVariant/PlusBtnVariant';
 import GrayBtn from '@/components/atoms/AllBtn/GrayBtn/GrayBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
@@ -7,200 +7,57 @@ import StudentList from '@/components/templates/Student/List/StudentList';
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
+import { useStudentList, useStudentSearchList } from '@/apis/student';
 
 const Page = () => {
   const router = useRouter();
   const [input, setInput] = useState('');
-  const setEditState = useSetRecoilState(editState);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [isSearch, setIsSearch] = useState(false);
 
-  const list = [
-    {
-      id: 1,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 2,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 3,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 4,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 5,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 6,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 7,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 8,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 9,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 10,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 11,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 12,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 13,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 14,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-    {
-      id: 15,
-      name: '김김김',
-      schoolNumber: '99999999',
-      gender: '남성',
-      building: '명덕관(4인실)',
-      room: '999호',
-      bonusPoint: 9,
-      minusPoint: 9,
-      schoolStatus: '재학',
-    },
-  ];
+  const setEditState = useSetRecoilState(editState);
+  const [sortBy, setSortBy] = useState('');
+  const [isAscending, setIsAscending] = useState(true);
+
+  const studentList = useStudentList(sortBy, isAscending);
+  const studentSearchList = useStudentSearchList(searchKeyword, sortBy, isAscending);
+
+  const { studentData, isLoading, setSize, isEndReached } = isSearch ? studentSearchList : studentList;
+
+  const handleSearch = () => {
+    if (input.trim() === '') {
+      setIsSearch(false);
+    } else if (input !== searchKeyword || !isSearch) {
+      setSearchKeyword(input);
+      setIsSearch(true);
+    }
+  };
+
+  useEffect(() => {
+    if (input.trim() === '') {
+      setIsSearch(false);
+    }
+  }, [input]);
 
   return (
     <div className='flex flex-col w-[1225px]'>
-      <div className='flex justify-between items-center mb-32'>
+      <div className='flex justify-between items-center mb-32 w-[1225px]'>
         <h1 className='H0 text-gray-grayscale50 text-nowrap'>사생관리</h1>
         <div className='flex gap-19'>
-          <SearchTextBox input={input} placeholder='이름 또는 학번' setInput={setInput} />
+          <SearchTextBox input={input} setInput={setInput} placeholder='이름 또는 학번' handleSearch={handleSearch} />
           <GrayBtn label='엑셀 업로드' disabled={false} />
           <GrayBtn label='엑셀 다운로드' disabled={false} />
         </div>
       </div>
       <StudentList
-        list={list}
-        genderDown={false}
-        onGenderClick={(genderDown: boolean) => genderDown}
-        buildingDown={false}
-        onBuildingClick={(genderDown: boolean) => genderDown}
-        bonusPointDown={false}
-        onBonusPointClick={(genderDown: boolean) => genderDown}
-        minusPointDown={false}
-        onMinusPointClick={(genderDown: boolean) => genderDown}
+        list={studentData}
+        isLoading={isLoading ?? false}
+        isEndReached={isEndReached}
+        setSize={setSize}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        isAscending={isAscending}
+        setIsAscending={setIsAscending}
       />
       <div className='flex justify-end mt-13'>
         <PlusBtnVariant

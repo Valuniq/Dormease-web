@@ -1,58 +1,49 @@
 import { studentIdState } from '@/recoil/studentManagement';
+import { StudentListResponseDataList } from '@/types/student';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { forwardRef, ForwardRefRenderFunction } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 type Props = {
   index: number;
-  id: number;
-  name: string;
-  schoolNumber: string;
-  gender: string;
-  building: string;
-  room: string;
-  bonusPoint: number;
-  minusPoint: number;
-  schoolStatus: string;
+  list: StudentListResponseDataList;
 };
 
-const StudentListBody = ({
-  index,
-  id,
-  name,
-  schoolNumber,
-  gender,
-  building,
-  room,
-  bonusPoint,
-  minusPoint,
-  schoolStatus,
-}: Props) => {
+const statusText: { [key: string]: string } = {
+  ENROLLMENT: '재학',
+  LEAVE_OF_ABSENCE: '휴학',
+  EXPULSION: '제적',
+};
+
+const StudentListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = ({ index, list }, ref) => {
   const router = useRouter();
   const setStudentId = useSetRecoilState(studentIdState);
 
   return (
     <>
       <tr
+        ref={ref}
         className='table rounded-5 w-[1200px] H4-caption h-38 text-nowrap relative hover:bg-gray-grayscale10 active:bg-gray-grayscale20 align-middle cursor-pointer'
         onClick={() => {
-          setStudentId(id);
+          setStudentId(list.residentId);
           router.push(`/dashboard/students/details`);
         }}
       >
         <td className='w-[5%]'>{index + 1}</td>
-        <td className='w-[13%]'>{name}</td>
-        <td className='w-[13%]'>{schoolNumber}</td>
-        <td className='w-[13%]'>{gender}</td>
-        <td className='w-[15%]'>{building}</td>
-        <td className='w-[13%]'>{room}</td>
-        <td className='w-[10%]'>{bonusPoint}</td>
-        <td className='w-[10%]'>{minusPoint}</td>
-        <td className='w-[8%]'>{schoolStatus}</td>
+        <td className='w-[13%]'>{list.name}</td>
+        <td className='w-[13%]'>{list.studentNumber}</td>
+        <td className='w-[13%]'>{list.gender === 'MALE' ? '남성' : '여성'}</td>
+        <td className='w-[15%]'>
+          {list.dormitoryName}({list.roomSize}인실)
+        </td>
+        <td className='w-[13%]'>{list.roomNumber}호</td>
+        <td className='w-[10%]'>{list.bonusPoint}</td>
+        <td className='w-[10%]'>{list.minusPoint}</td>
+        <td className='w-[8%]'>{statusText[list.schoolStatus]}</td>
       </tr>
       <tr className='h-14' />
     </>
   );
 };
 
-export default StudentListBody;
+export default forwardRef<HTMLTableRowElement, Props>(StudentListBody);
