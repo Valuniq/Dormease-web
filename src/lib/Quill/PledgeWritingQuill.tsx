@@ -18,30 +18,14 @@ type Props = {
   width?: string;
   height?: string;
   setEditorHtml: (content: string) => void;
-  initialContent?: string;
+  initialContent?: string; // 추가된 부분
 };
 
 const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEditorHtml, initialContent }, ref) => {
-  const [isEditorModified, setIsEditorModified] = useRecoilState(isEditorModifiedState);
   const [uploadedImages, setUploadedImages] = useRecoilState(uploadedImagesState);
-  const router = useRouter();
-  const nextUrlRef = useRef<string | null>(null);
-
-  const { confirmChanges, ConfirmDialogComponent } = useTextEditorConfirm(
-    '작성한 내용은 저장되지 않았습니다. \\n 페이지를 벗어나시겠습니까?',
-    () => {
-      if (nextUrlRef.current) {
-        const nextUrl = nextUrlRef.current;
-        nextUrlRef.current = null;
-        router.push(nextUrl);
-      }
-    },
-    'red',
-  );
 
   const handleEditorChange = (content: string) => {
     setEditorHtml(content);
-    setIsEditorModified(true);
   };
 
   const handleImageUpload = async () => {
@@ -68,11 +52,8 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
               const img = document.createElement('img');
               img.src = imageUrl;
               img.alt = 'image';
-              img.style.maxWidth = '100%'; // 너비 최대값 설정
-              img.style.maxHeight = 'auto'; // 높이 최대값
               range.insertNode(img);
               setEditorHtml(quill.innerHTML);
-              setIsEditorModified(true);
             }
           }
         } catch (error) {
@@ -81,41 +62,6 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
       }
     };
   };
-
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (isEditorModified) {
-        e.preventDefault();
-        e.returnValue = '';
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    const originalPush = router.push;
-    const originalReplace = router.replace;
-
-    const handleRouteChange = async (url: string, options: any) => {
-      if (isEditorModified) {
-        nextUrlRef.current = url;
-        const confirmed = await confirmChanges();
-        if (confirmed) {
-          originalPush(url, options);
-        }
-      } else {
-        return originalPush(url, options);
-      }
-    };
-
-    router.push = (url, options) => handleRouteChange(url, options);
-    router.replace = (url, options) => handleRouteChange(url, options);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      router.push = originalPush;
-      router.replace = originalReplace;
-    };
-  }, [isEditorModified, confirmChanges, router]);
 
   const modules = useMemo(
     () => ({
@@ -168,11 +114,9 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
           onChange={handleEditorChange}
           modules={modules}
           formats={formats}
-          defaultValue={initialContent}
-          bounds='.ql-editor'
+          defaultValue={initialContent} // 추가된 부분
         />
       </div>
-      {ConfirmDialogComponent}
     </>
   );
 });

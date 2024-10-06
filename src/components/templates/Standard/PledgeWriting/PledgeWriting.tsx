@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react';
 import PledgeWritingEx from '@public/images/PledgeWritingEx.png';
 import Image from 'next/image';
 
-const PlegeWritingQuill = dynamic(() => import('./PledgeWritingQuill'), { ssr: false });
+const PlegeWritingQuill = dynamic(() => import('@/lib/Quill/PledgeWritingQuill'), { ssr: false });
 
 type Props = {
   setEditorHtml: (content: string) => void;
