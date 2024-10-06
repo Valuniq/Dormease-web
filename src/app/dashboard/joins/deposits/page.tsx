@@ -8,6 +8,7 @@ import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPr
 import { editState } from '@/recoil/nav';
 import { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { useDepositList } from '@/apis/deposits';
 
 const Page = () => {
   const setEditState = useSetRecoilState(editState);
@@ -16,153 +17,7 @@ const Page = () => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelected] = useState<number[]>([]); //입금 확인된 학생들 id 배열 더미 값
 
-  //입금 확인 명단 더미 리스트
-  const list = [
-    {
-      id: 1,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 2,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 3,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 4,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 1,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 2,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 3,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 4,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 1,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 2,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 3,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 4,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 1,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 2,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 3,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-    {
-      id: 4,
-      name: '김김김김',
-      studentNumber: '99999999',
-      gender: '남성',
-      applicationBuilding: '명덕관(4인실)',
-      assignedBuilding: '명덕관(4인실)',
-      isPass: '합격',
-    },
-  ];
+  const { data, error, isLoading, mutate } = useDepositList();
 
   //입금 내역 확인 파일 선택
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,7 +52,7 @@ const Page = () => {
           <h1 className='H0 text-gray-grayscale50 mr-180'>입금 확인 명단</h1>
           <SearchTextBox input={input} setInput={setInput} placeholder='이름 또는 학번' />
         </div>
-        <DepositList list={list} selectedId={selectedId} />
+        <DepositList list={data?.information || []} selectedId={selectedId} isLoading={isLoading ?? false} />
         <hr className='border-gray-grayscale30' />
         <div className='flex mt-12 justify-between'>
           <div className='flex-1'></div>
