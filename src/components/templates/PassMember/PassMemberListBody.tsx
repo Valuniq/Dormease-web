@@ -30,10 +30,10 @@ const PassMemberListBody = ({
       <td className='text-center'>{studentId}</td>
       <td className='text-center'>{gender}</td>
       <td className='text-center'>{isSmoking ? 'O' : 'X'}</td>
-      <td className='text-center'>{appliedRoommate}</td>
-      <td className='text-center'>{bedNumber !== null ? `${bedNumber}번` : '-'}</td>
-      <td className='text-center'>{room !== null ? `${room}호` : '-'}</td>
-      <td className='text-center'>{assignment !== null ? (assignment ? 'O' : 'X') : '-'}</td>
+      <td className='text-center'>{appliedRoommate ? appliedRoommate : '-'}</td>
+      <td className='text-center'>{bedNumber ? `${bedNumber}번` : '-'}</td>
+      <td className='text-center'>{room ? `${room}호` : '-'}</td>
+      <td className='text-center'>{assignment ? (assignment ? 'O' : 'X') : '-'}</td>
     </tr>
   );
 };
