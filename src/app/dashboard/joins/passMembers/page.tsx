@@ -5,6 +5,7 @@ import {
   useDormIdPassMembersWithSearch,
   usePassDormitories,
   useAllPassMembers,
+  useDormIdPassMembers,
 } from '@/apis/passMember';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import SelectBuildingDropdown from '@/components/atoms/Dropdown/SelectBuildingDropdown/SelectBuildingDropdown';
@@ -21,49 +22,66 @@ const initialSelect: DormNameResponseInformation = {
 const Page = () => {
   const [select, setSelect] = useState<DormNameResponseInformation>(initialSelect);
   const [isDropdownOn, setIsDropdownOn] = useState(false);
-  const [dormId, setDormId] = useState<number | null>(null);
-  const [searchWord, setSearchWord] = useState(''); // 검색어 상태
-  const [inputValue, setInputValue] = useState(''); // 검색 입력 상태
-  const [dormitoryApplicationSettingId, setDormitoryApplicationSettingId] = useState<number | null>(null); // 조회 후 얻는 ID
+  const [dormId, setDormId] = useState<number>(0);
+  const [input, setInput] = useState(''); // 검색 입력 상태
+  const [searchKeyword, setSearchKeyword] = useState(''); // 검색어 상태
+  const [isSearch, setIsSearch] = useState(false); // 검색 활성화 여부 상태
+  const [dormitoryApplicationSettingId, setDormitoryApplicationSettingId] = useState<number | null>(null);
 
   // 전체 합격자 목록 조회
-  const { data: allPassMembers } = useAllPassMembers();
+  const { data: allPassMembers, error: allPassMembersError } = useAllPassMembers();
 
-  useEffect(() => {
-    if (allPassMembers?.information) {
-      setDormitoryApplicationSettingId(allPassMembers.information.dormitoryApplicationSettingId); // 전체 조회 후 얻은 dormitoryApplicationSettingId 설정
-    }
-  }, [allPassMembers]);
+  // 기숙사별 합격자 목록 조회
+  const { data: dormPassMembers, error: dormPassMembersError } = useDormIdPassMembers(dormId || 0);
 
-  // 기숙사 목록 조회
-  const { data: dormitoriesData } = usePassDormitories(dormitoryApplicationSettingId ?? 0);
-
-  // 선택된 기숙사별 합격자 목록 검색 조회
-  const { data: dormPassMembers } = useDormIdPassMembersWithSearch(
-    dormitoryApplicationSettingId ?? 0,
-    dormId || 0,
-    searchWord,
+  // 조건부로 전체 합격자 검색 API 호출 (검색어가 있을 때만 호출)
+  const { data: allPassMembersWithSearch, error: allPassMembersWithSearchError } = useAllPassMembersWithSearch(
+    isSearch && searchKeyword ? searchKeyword : null,
   );
+
+  // 조건부로 기숙사별 합격자 검색 API 호출 (검색어와 기숙사 ID가 있을 때만 호출)
+  const { data: dormPassMembersWithSearch, error: dormPassMembersWithSearchError } = useDormIdPassMembersWithSearch(
+    dormId && isSearch && searchKeyword ? dormId : null,
+    searchKeyword ? searchKeyword : null,
+  );
+
+  // **최종적으로 사용할 합격자 목록**
+  const passMemberLists = isSearch
+    ? dormId === 0
+      ? allPassMembersWithSearch?.information
+      : dormPassMembersWithSearch?.information
+    : dormId === 0
+      ? allPassMembers?.information?.passDormitoryApplicationResList
+      : dormPassMembers?.information?.passDormitoryApplicationResList;
+
+  console.log('passMemberLists:', passMemberLists); // 디버그용 콘솔
+
+  // 기숙사 목록 조회 (항상 호출)
+  const { data: dormitoriesData, error: dormitoriesError } = usePassDormitories();
 
   // 기숙사 선택 핸들러
   const handleSelect = (id: number, name: string) => {
     setSelect({ id, name });
-    setDormId(id === 0 ? null : id); // "전체" 선택 시 dormId를 null로 설정
+    setDormId(id); // '전체' 선택 시 dormId를 0으로 설정
+    setIsSearch(false); // 기숙사 선택 시 검색 해제
   };
 
-  // 검색 핸들러
   const handleSearch = () => {
-    setSearchWord(inputValue); // 입력된 검색어로 검색어 상태를 업데이트
+    if (input.trim() === '') {
+      setIsSearch(false);
+    } else if (input !== searchKeyword || !isSearch) {
+      setSearchKeyword(input);
+      setIsSearch(true);
+    }
   };
 
-  // 검색어 지울 때 전체 목록으로 다시 렌더링
   useEffect(() => {
-    if (!inputValue) {
-      setSearchWord('');
+    if (input.trim() === '') {
+      setIsSearch(false);
     }
-  }, [inputValue]);
+  }, [input]);
 
-  // 기숙사 목록에서 "전체" 추가
+  // 기숙사 목록에 '전체' 추가
   const dormitoryList = [
     { id: 0, name: '전체' },
     ...(dormitoriesData?.information.map((dorm) => ({
@@ -72,12 +90,6 @@ const Page = () => {
     })) || []),
   ];
 
-  // 보여줄 합격자 목록 결정
-  const passMemberLists =
-    dormId === null
-      ? allPassMembers?.information?.passDormitoryApplicationResList
-      : dormPassMembers?.information.passDormitoryApplicationResList;
-
   return (
     <div className='w-[1250px] flex flex-col items-start'>
       <div className=' mb-20 w-full flex items-center justify-between'>
@@ -85,10 +97,10 @@ const Page = () => {
         <div className='relative'>
           <div className='mr-[220px]'>
             <SearchTextBox
-              input={inputValue}
-              setInput={setInputValue} // 검색 입력 상태 업데이트
+              input={input}
+              setInput={setInput}
               placeholder={'검색어를 입력해주세요.'}
-              handleSearch={handleSearch} // 검색 실행 함수 전달
+              handleSearch={handleSearch}
             />
           </div>
 
