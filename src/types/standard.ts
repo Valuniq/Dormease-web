@@ -15,11 +15,18 @@ export type StandardSettingResponseInformation = {
   sameSmoke: boolean; // 흡연 설정 활성화 여부
   sameTerm: boolean; // 동일 기간 설정 활성화 여부
   entrancePledge: string; // 입사 서약서
-  distanceScoreResList: {
-    distanceScoreId: number;
-    distanceScore: number;
-    regionResList: StandardSettingRegionResList[];
-  }[];
+  distanceScoreResList: DistanceScoreResList[];
+};
+
+export interface DistanceScoreResList {
+  distanceScoreId: number;
+  distanceScore: number;
+  regionResList: StandardSettingRegionResList[];
+}
+
+export type StandardSettingRegionsResponse = {
+  check: boolean;
+  information: StandardSettingRegionResList[];
 };
 
 export type StandardSettingRegionResList = {
@@ -39,14 +46,5 @@ export type StandardSettingRequest = {
   sameSmoke: boolean; // 흡연 설정 활성화 여부
   sameTerm: boolean; // 동일 기간 설정 활성화 여부
   entrancePledge: string; // 입사 서약서
-  distanceScoreResList: {
-    distanceScoreId: number;
-    distanceScore: number;
-    regionResList: StandardSettingRegionResList[];
-  }[];
-};
-
-export type DistanceScoreReq = {
-  distanceScore: number;
-  regionNameList: string;
+  distanceScoreResList: DistanceScoreResList[];
 };

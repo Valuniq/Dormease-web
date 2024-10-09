@@ -1,4 +1,4 @@
-import { StandardSettingRequest } from '@/types/standard';
+import { StandardSettingRegionResList, StandardSettingRegionsResponse, StandardSettingRequest } from '@/types/standard';
 import { BASE_URL } from '@/constants/path';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
@@ -22,9 +22,22 @@ export const useStandard = () => {
 };
 
 // 광역시도 지역 목록 조회
-// export const useRegions = () => {
-//   const {data, error, mutate} = useSWR
-// }
+export const useRegions = () => {
+  const { data, error, mutate } = useSWR<StandardSettingRegionsResponse>(
+    `${BASE_URL}/api/v1/web/regions`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 광역시도 지역 목록 조회
+export const useRegionsDetail = (regionId: number) => {
+  const { data, error, mutate } = useSWR<StandardSettingRegionsResponse>(
+    `${BASE_URL}/api/v1/web/regions/${regionId}`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
+};
 
 //기준 등록
 export const postStandard = async (StandardSettingInformation: StandardSettingRequest) => {
