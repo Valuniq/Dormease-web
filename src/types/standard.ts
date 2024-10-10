@@ -30,6 +30,7 @@ export type StandardSettingRegionsResponse = {
 };
 
 export type StandardSettingRegionResList = {
+  information: any;
   regionId: number;
   regionName: string;
 };
