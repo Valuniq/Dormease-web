@@ -4,7 +4,7 @@ import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/Te
 import Boxes from './Boxes';
 import Distance from './Distance';
 import Grade from './Grade';
-import { StandardSettingResponseInformation } from '@/types/standard';
+import { DistanceScoreResList, StandardSettingResponseInformation } from '@/types/standard';
 
 type Props = {
   standard: StandardSettingResponseInformation;
@@ -12,23 +12,7 @@ type Props = {
 };
 
 const CurrentStudentMethod = ({ standard, setStandard }: Props) => {
-  const { minScore, scoreRatio, distanceScoreResList, pointReflection, tiePriority } = standard;
-
-  // 지역명을 업데이트하는 함수
-  const handleSetScoresInput = (index: number, value: string) => {
-    const updatedScores = [...standard.distanceScoreResList];
-
-    // 해당 index의 regionResList를 업데이트
-    updatedScores[index].regionResList = updatedScores[index].regionResList.map((region, idx) => ({
-      ...region,
-      regionName: idx === 0 ? value : region.regionName, // 첫 번째 지역 이름만 업데이트
-    }));
-
-    setStandard({
-      ...standard,
-      distanceScoreResList: updatedScores, // 수정된 배열로 상태 업데이트
-    });
-  };
+  const { minScore, scoreRatio, pointReflection, tiePriority } = standard;
 
   const handleScoreRatioChange = (value: string) => {
     setStandard({
@@ -45,13 +29,7 @@ const CurrentStudentMethod = ({ standard, setStandard }: Props) => {
       <Grade initialGrade={minScore} setGrade={(grade) => setStandard({ ...standard, minScore: Number(grade) })} />
 
       {/* 거리 점수 */}
-      <Distance
-        scores={distanceScoreResList.map((item) => item.distanceScore)}
-        scoresInput={distanceScoreResList.map((item) =>
-          item.regionResList.map((region) => region.regionName).join(', '),
-        )} // 배열의 지역 이름들을 문자열로 표시
-        setScoresInput={handleSetScoresInput} // 이 함수로 지역명 문자열을 처리
-      />
+      <Distance />
 
       <div className='flex items-center justify-between'>
         {/* 성적, 거리 점수 비율 */}
