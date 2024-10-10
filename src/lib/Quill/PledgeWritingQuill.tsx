@@ -1,15 +1,11 @@
 'use client';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useMemo, forwardRef, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useMemo, useState, forwardRef } from 'react';
+
 import { ImageResize } from 'quill-image-resize-module-ts';
 import 'react-quill/dist/quill.snow.css';
 import { Quill } from 'react-quill';
-import { useRecoilState } from 'recoil';
-
-import useTextEditorConfirm from '@/hooks/useTextEditorConfirm';
-import { isEditorModifiedState, uploadedImagesState } from '@/recoil/editor';
-import { uploadImage } from '@/apis/editor';
+import { POL_STANDARD } from '@/constants/policy';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 Quill.register('modules/ImageResize', ImageResize);
@@ -18,49 +14,25 @@ type Props = {
   width?: string;
   height?: string;
   setEditorHtml: (content: string) => void;
-  initialContent?: string; // 추가된 부분
+  initialContent?: string;
 };
 
 const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEditorHtml, initialContent }, ref) => {
-  const [uploadedImages, setUploadedImages] = useRecoilState(uploadedImagesState);
+  const [editorContent, setEditorContent] = useState<string>(initialContent || '');
 
   const handleEditorChange = (content: string) => {
-    setEditorHtml(content);
-  };
+    const textContent = content.replace(/<[^>]*>/g, ''); // HTML 태그 제거 후 실제 텍스트 길이 확인
+    const totalLength = textContent.length; // 전체 텍스트 길이 계산
 
-  const handleImageUpload = async () => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.style.display = 'none';
-    document.body.appendChild(input);
-
-    input.click();
-
-    input.onchange = async () => {
-      const file = input.files ? input.files[0] : null;
-      if (file) {
-        try {
-          const response = await uploadImage(file);
-          const imageUrl = response.information.imageUrl;
-          setUploadedImages((prev) => [...prev, imageUrl]);
-
-          const quill = document.querySelector('.ql-editor');
-          if (quill) {
-            const range = window.getSelection()?.getRangeAt(0);
-            if (range) {
-              const img = document.createElement('img');
-              img.src = imageUrl;
-              img.alt = 'image';
-              range.insertNode(img);
-              setEditorHtml(quill.innerHTML);
-            }
-          }
-        } catch (error) {
-          console.error('이미지 업로드 실패:', error);
-        }
-      }
-    };
+    if (totalLength <= POL_STANDARD.pledgeWriting.maxLength) {
+      setEditorContent(content); // 에디터 내부 상태 업데이트
+      setEditorHtml(content); // 부모 컴포넌트에 변경사항 전달
+    } else {
+      // 텍스트가 5000자를 넘으면, 그 이후의 입력을 자름
+      const truncatedContent = content.substring(0, POL_STANDARD.pledgeWriting.maxLength); // 5000자까지만 허용
+      setEditorContent(truncatedContent); // 자른 내용을 에디터에 반영
+      setEditorHtml(truncatedContent); // 부모 컴포넌트에 자른 내용 전달
+    }
   };
 
   const modules = useMemo(
@@ -71,19 +43,12 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
           [{ size: [] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
           [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-          ['link', 'image'],
+          ['link'],
           ['clean'],
         ],
-        handlers: {
-          image: handleImageUpload,
-        },
       },
       clipboard: {
         matchVisual: false,
-      },
-      ImageResize: {
-        parchment: Quill.import('parchment'),
-        modules: ['Resize', 'DisplaySize'],
       },
     }),
     [],
@@ -102,19 +67,18 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
     'bullet',
     'indent',
     'link',
-    'image',
   ];
 
   return (
     <>
       <div ref={ref} style={{ width, height }}>
         <ReactQuill
+          value={editorContent} // editor value를 state로 관리
           style={{ width, height }}
           theme='snow'
           onChange={handleEditorChange}
           modules={modules}
           formats={formats}
-          defaultValue={initialContent} // 추가된 부분
         />
       </div>
     </>

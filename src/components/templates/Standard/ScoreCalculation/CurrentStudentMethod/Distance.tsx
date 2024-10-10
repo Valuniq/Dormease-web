@@ -1,27 +1,24 @@
 import MediumInputText from '@/components/atoms/InputText/MediumInputText/MediumInputText';
+import { distanceScoreState, standardSettingModalState } from '@/recoil/standard';
+import { DistanceScoreResList } from '@/types/standard';
 import React, { useCallback, useEffect } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
-type Props = {
-  scores: number[]; // 점수 배열
-  scoresInput: string[]; // 각 점수에 해당하는 지역명 (문자열)
-  setScoresInput: (index: number, value: string) => void; // 지역명 입력 핸들러
-};
+const Distance = () => {
+  const setModalState = useSetRecoilState(standardSettingModalState);
+  const [distanceScoreResList, setDistanceScoreResList] = useRecoilState(distanceScoreState);
 
-const Distance = ({ scores, scoresInput, setScoresInput }: Props) => {
-  // 기본 점수 배열: 0부터 4.5까지 0.5 단위로 생성
-  const defaultScores = Array.from({ length: 10 }, (_, i) => i);
-
-  // useCallback으로 메모이제이션, 종속성 배열에 setScoresInput 추가
-  const memoizedSetScoresInput = useCallback(setScoresInput, [setScoresInput]);
-
-  useEffect(() => {
-    if (scoresInput.length === 0) {
-      // 컴포넌트가 마운트될 때, 기본 점수에 맞는 초기화
-      defaultScores.forEach((_, index) => {
-        memoizedSetScoresInput(index, ''); // 지역명을 빈 문자열로 초기화
-      });
-    }
-  }, [scoresInput, defaultScores, memoizedSetScoresInput]);
+  // 모달 열기 핸들러
+  const handleOpenModal = (regionScore: number) => {
+    setModalState((prev) => ({
+      ...prev,
+      region: {
+        ...prev.region,
+        isOpened: true, // 모달 열기 상태
+        regionScore, // 몇 점짜리 지역을 설정할지 전달
+      },
+    }));
+  };
 
   return (
     <div className='w-[1200px] h-fit rounded-20 bg-white flex flex-col shadow3 px-15'>
@@ -41,14 +38,13 @@ const Distance = ({ scores, scoresInput, setScoresInput }: Props) => {
         </div>
       </div>
       <div className='flex flex-col items-end mt-36 mb-28 mx-15'>
-        {defaultScores.map((score, index) => (
-          <div className={`flex mb-19`} key={index}>
-            <h1 className='w-54 text-right H3 text-gray-grayscale40 ml-84'>{score}점</h1>
+        {distanceScoreResList.map((score, index) => (
+          <div onClick={() => handleOpenModal(score.distanceScore)} className={`flex mb-19`} key={index}>
+            <h1 className='w-54 text-right H3 text-gray-grayscale40 ml-84'>{score.distanceScore}점</h1>
             <div className='w-920 ml-56'>
               <MediumInputText
                 placeholder={'지역명을 입력해주세요.'}
-                input={scoresInput[index] || ''} // 문자열 그대로 사용
-                setInput={(input) => setScoresInput(index, input)} // 지역명 업데이트
+                input={score.regionResList.map((region) => region.regionName).join(', ')} // 지역명들을 쉼표로 구분한 문자열로 표시
               />
             </div>
           </div>
