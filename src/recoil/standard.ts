@@ -48,5 +48,25 @@ export const distanceScoreState = atom<DistanceScoreResList[]>({
       distanceScore: 2.5,
       regionResList: [],
     },
+    {
+      distanceScoreId: 6,
+      distanceScore: 3,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 7,
+      distanceScore: 3.5,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 8,
+      distanceScore: 4,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 9,
+      distanceScore: 4.5,
+      regionResList: [],
+    },
   ],
 });
