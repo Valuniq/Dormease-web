@@ -58,7 +58,7 @@ export const postStandard = async (StandardSettingInformation: StandardSettingRe
       sameSmoke: StandardSettingInformation.sameSmoke,
       sameTerm: StandardSettingInformation.sameTerm,
       entrancePledge: StandardSettingInformation.entrancePledge,
-      distanceScoreResList: StandardSettingInformation.distanceScoreResList,
+      distanceScoreReqList: StandardSettingInformation.distanceScoreReqList,
     }),
   });
   return res;
