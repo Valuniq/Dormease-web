@@ -20,7 +20,7 @@ export type StandardSettingResponseInformation = {
 
 export interface DistanceScoreResList {
   distanceScoreId: number;
-  distanceScore: number;
+  distanceScore?: number;
   regionResList: StandardSettingRegionResList[];
 }
 
@@ -30,9 +30,9 @@ export type StandardSettingRegionsResponse = {
 };
 
 export type StandardSettingRegionResList = {
-  information: any;
+  information?: any;
   regionId: number;
-  regionName: string;
+  regionName?: string;
 };
 
 export type StandardSettingRequest = {
@@ -47,5 +47,9 @@ export type StandardSettingRequest = {
   sameSmoke: boolean; // 흡연 설정 활성화 여부
   sameTerm: boolean; // 동일 기간 설정 활성화 여부
   entrancePledge: string; // 입사 서약서
-  distanceScoreResList: DistanceScoreResList[];
+  distanceScoreReqList: DistanceScoreReqList[];
 };
+
+export interface DistanceScoreReqList {
+  distanceScoreId: number;
+}

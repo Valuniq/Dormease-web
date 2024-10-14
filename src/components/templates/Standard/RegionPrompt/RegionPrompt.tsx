@@ -45,25 +45,27 @@ const RegionPrompt: React.FC = () => {
   // 서버에서 받은 값들로 초기화
   useEffect(() => {
     const scoreData = distanceScoreResList.find((item) => item.distanceScore === modalState.region.regionScore);
+
     if (scoreData) {
       const selectedRegionIds = scoreData.regionResList.filter((region) =>
-        regions?.information.some((r) => r.regionId === region.regionId),
+        regions?.information?.some((r) => r.regionId === region.regionId),
       );
+
       const selectedSubRegionIds = scoreData.regionResList.filter(
-        (region) => !regions?.information.some((r) => r.regionId === region.regionId),
+        (region) => !regions?.information?.some((r) => r.regionId === region.regionId),
       );
 
       setSelectedRegions(
         selectedRegionIds.map((region) => ({
           regionId: region.regionId,
-          regionName: region.regionName,
+          regionName: region.regionName ?? '',
         })),
       );
 
       setSelectedSubRegions(
         selectedSubRegionIds.map((subRegion) => ({
           regionId: subRegion.regionId,
-          regionName: subRegion.regionName,
+          regionName: subRegion.regionName ?? '',
         })),
       );
     }
@@ -149,7 +151,7 @@ const RegionPrompt: React.FC = () => {
                   {/* 광역시도 체크박스 */}
                   <Checkbox
                     isChecked={selectedRegions.some((r) => r.regionId === region.regionId)}
-                    setIsChecked={() => handleSelectRegion(region.regionId, region.regionName)}
+                    setIsChecked={() => handleSelectRegion(region.regionId, region.regionName!!)}
                   />
                   {/* 상세 지역 보기 */}
                   <div
@@ -174,7 +176,7 @@ const RegionPrompt: React.FC = () => {
                 <li key={region.regionId} className='flex items-center gap-14 H4 text-gray-grayscale50 mb-16'>
                   <Checkbox
                     isChecked={selectedSubRegions.some((subRegion) => subRegion.regionId === region.regionId)}
-                    setIsChecked={() => handleSelectSubRegion(region.regionId, region.regionName)}
+                    setIsChecked={() => handleSelectSubRegion(region.regionId, region.regionName!!)}
                     disabled={selectedRegions.some((r) => r.regionId === regionsId)} // 광역시도가 선택된 경우 비활성화
                   />
                   {region.regionName}
