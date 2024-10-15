@@ -80,7 +80,7 @@ const JoinDorm = () => {
       <BtnExtraLarge label={'건물 추가로 돌아가기'} disabled={false} />
       <div className='mt-150' />
       {groupedDormitories.map((group, index) => (
-        <div key={index} className='w-full flex items-center justify-end bg-blue-blue15 mb-22'>
+        <div key={index} className='w-full flex items-center justify-end mb-22'>
           <div className='whitespace-nowrap'>
             {group.dormitoryName} {group.roomSize}인실
           </div>

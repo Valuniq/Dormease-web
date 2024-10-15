@@ -41,9 +41,10 @@ const CalendarPrompt = ({ item, onCancel, onDelete, onEdit }: Props) => {
           </>
         )}
       </div>
-      <h1 className='H1 mt-20 mb-12' style={{ color: colorList[item.color] }}>
-        {item.title}
-      </h1>
+      <div className='flex items-center gap-10 mt-20 mb-12'>
+        <div className='w-12 h-12 rounded-30' style={{ backgroundColor: colorList[item.color] }}></div>
+        <h1 className='H1 text-gray-grayscale50'>{item.title}</h1>
+      </div>
       <div className='relative w-911 h-160'>
         <textarea
           className='resize-none H4 focus:outline-none rounded-8 w-full h-full border-1 border-gray-grayscale30 p-8'

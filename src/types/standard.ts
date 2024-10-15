@@ -1,9 +1,11 @@
+// 기준 설정 조회
 export type standardSettingResponse = {
   check: boolean;
   information: StandardSettingResponseInformation;
 };
 
 export type StandardSettingResponseInformation = {
+  standardSettingId: number;
   minScore: number; // 최소 학점
   scoreRatio: number; // 성적 비율
   distanceRatio: number; // 거리 비율
@@ -15,14 +17,29 @@ export type StandardSettingResponseInformation = {
   sameSmoke: boolean; // 흡연 설정 활성화 여부
   sameTerm: boolean; // 동일 기간 설정 활성화 여부
   entrancePledge: string; // 입사 서약서
-  distanceScoreResList: StandardSettindResponseDistanceScoreResList[]; // 거리 점수 리스트
+  distanceScoreResList: DistanceScoreResList[];
 };
 
-export type StandardSettindResponseDistanceScoreResList = {
-  distanceScore: number;
-  regionNameList: string;
+export interface DistanceScoreResList {
+  distanceScoreId: number;
+  distanceScore?: number;
+  regionResList: StandardSettingRegionResList[];
+}
+
+// 기준 설정 중 거리 지역 조회
+export type StandardSettingRegionsResponse = {
+  check: boolean;
+  information: StandardSettingRegionResList[];
 };
 
+export type StandardSettingRegionResList = {
+  information?: any;
+  regionId: number;
+  regionName?: string;
+};
+
+// 기준 설정 생성
+// 현재 standard Page에서 resList로 상태를 관리하여둔 상태임
 export type StandardSettingRequest = {
   minScore: number; // 최소 학점
   scoreRatio: number; // 성적 비율
@@ -35,10 +52,9 @@ export type StandardSettingRequest = {
   sameSmoke: boolean; // 흡연 설정 활성화 여부
   sameTerm: boolean; // 동일 기간 설정 활성화 여부
   entrancePledge: string; // 입사 서약서
-  distanceScoreReqList: DistanceScoreReq[]; // 거리 점수 리스트
+  distanceScoreReqList: DistanceScoreReqList[];
 };
 
-export type DistanceScoreReq = {
-  distanceScore: number;
-  regionNameList: string;
-};
+export interface DistanceScoreReqList {
+  distanceScoreId: number;
+}
