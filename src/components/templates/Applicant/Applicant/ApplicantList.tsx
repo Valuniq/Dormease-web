@@ -1,13 +1,14 @@
 'use client';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import NoneList from '@/components/organisms/NoneList/NoneList';
+import { applicantResponseInformation } from '@/types/applicant';
 
-import React from 'react';
+import React, { Fragment } from 'react';
 
-import ApplicantListBody, { Props as ApplicantListBodyType } from './ApplicantListBody';
+import ApplicantListBody from './ApplicantListBody';
 
 type Props = {
-  applicantLists: ApplicantListBodyType[];
+  applicantLists: applicantResponseInformation[];
   isAllChecked: boolean;
   setIsAllChecked: (isAllChecked: boolean) => void;
 };
@@ -34,31 +35,33 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
               </div>
             </th>
           </tr>
-          <th colSpan={10}>
-            <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
-          </th>
+          <tr>
+            <th colSpan={10}>
+              <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
+            </th>
+          </tr>
         </thead>
 
         {applicantLists && applicantLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-15' />
-            {applicantLists.map((i) => (
-              <>
+            {applicantLists.map((i, index) => (
+              <Fragment key={index}>
                 <ApplicantListBody
-                  name={i.name}
-                  studentId={i.studentId}
+                  name={i.studentName}
+                  studentId={i.studentNumber}
                   gender={i.gender}
-                  applicationBuilding={i.applicationBuilding}
-                  residence={i.residence}
-                  certifiedFile={i.certifiedFile}
-                  prioritySelection={i.prioritySelection}
-                  assignedBuilding={i.assignedBuilding}
-                  isPassed={i.isPassed}
-                  isChecked={i.isChecked}
-                  setIsChecked={i.setIsChecked}
+                  applicationBuilding={i.applicationDormitoryRoomTypeRes.dormitoryName || ''}
+                  residence={i.address}
+                  certifiedFile={i.copy}
+                  prioritySelection={i.prioritySelectionCopy}
+                  assignedBuilding={i.resultDormitoryRoomTypeRes.dormitoryName || ''}
+                  isPassed={i.dormitoryApplicationResult}
+                  isChecked={false}
+                  setIsChecked={() => ({})}
                 />
                 <tr className='h-15' />
-              </>
+              </Fragment>
             ))}
           </tbody>
         ) : (

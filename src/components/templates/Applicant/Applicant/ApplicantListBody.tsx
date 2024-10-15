@@ -8,10 +8,10 @@ export type Props = {
   applicationBuilding: string;
   residence: string;
   // File은 임시로 null로 해둠
-  certifiedFile: File | null;
-  prioritySelection: File | null;
+  certifiedFile: null | string;
+  prioritySelection: null | string;
   assignedBuilding: string | null;
-  isPassed: 'pass' | 'out' | 'movingPass';
+  isPassed: 'PASS' | 'NON_PASS' | 'MOVE_PASS' | 'WAIT';
   isChecked: boolean;
   setIsChecked: (isChecked: boolean) => void;
 };
@@ -30,8 +30,8 @@ const ApplicantListBody = ({
   setIsChecked,
 }: Props) => {
   const statusText =
-    isPassed === 'pass' ? '합격' : isPassed === 'out' ? '탈락' : isPassed === 'movingPass' ? '이동합격' : '-';
-  const statusColor = isPassed === 'pass' ? 'text-blue-blue30' : isPassed === 'out' ? 'text-red-red20' : '';
+    isPassed === 'PASS' ? '합격' : isPassed === 'NON_PASS' ? '탈락' : isPassed === 'MOVE_PASS' ? '이동합격' : '-';
+  const statusColor = isPassed === 'PASS' ? 'text-blue-blue30' : isPassed === 'NON_PASS' ? 'text-red-red20' : '';
   return (
     <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
       <td className='text-center'>{name}</td>
@@ -48,7 +48,7 @@ const ApplicantListBody = ({
           </h1>
         </div>
       </td>
-      <td className='text-center'>{certifiedFile ? certifiedFile.name : '-'}</td>
+      <td className='text-center'>{certifiedFile ? certifiedFile : '-'}</td>
       <td className='text-center'>{prioritySelection ? 'O' : 'X'}</td>
       <td className='text-center'>{assignedBuilding && assignedBuilding.length > 0 ? assignedBuilding : '-'}</td>
       <td className={`text-center ${statusColor}`}>{statusText}</td>
