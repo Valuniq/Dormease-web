@@ -9,6 +9,7 @@ export type joinDormitoriesResponseInformation = {
   dormitoryName: string;
   roomSize: number;
   gender: 'MALE' | 'FEMALE' | 'EMPTY';
+  dormitorySize: number;
 };
 
 // 이전 입사 신청 설정 내역 3개 조회
@@ -79,16 +80,55 @@ export type joinHistoryResponseInformation = {
   createdDate: string;
 };
 
-// 입사 신청 설정 생성
+// 현재 입사 신청 설정 조회
 export type nowJoinResponse = {
+  check: boolean;
+  information: nowJoinResponseInformation;
+};
+
+export type nowJoinResponseInformation = {
   dormitoryApplicationSettingId: number;
   title: string;
   startDate: string;
   endDate: string;
   depositStartDate: string; //입금 시작일
   depositEndDate: string; //입금 마감일
-  securityDepoist: number | null; //보증금
-  dormitoryRoomTypeReqList: joinPostRequestDormitoryRoomTypeReqList[]; //입사 신청 설정에 사용되는 기숙사 정보 리스트
-  termReqList: joinPostRequestTermReqList[]; //거주 기간 리스트
-  mealTicketReqList: joinPoistRequestMealTicketReqList[] | [];
+  securityDeposit: number | null; //보증금
+  applicationStatue: 'BEFORE' | 'NOW' | 'READY' | 'DEPOSIT' | 'PASS ';
+
+  dormitorySettingTermResList: nowJoinResponseDormitorySettingTermResList[]; // 기숙사 정보 리스트
+  termResList: nowJoinResponseTermResList[]; //거주 기간 리스트
+  mealTicketResList: nowJoinResponseMealTicketResList[] | [];
+};
+
+// 기숙사 정보 리스트
+export type nowJoinResponseDormitorySettingTermResList = {
+  dormitorySettingTermId: number;
+  dormitoryRoomTypeId: number;
+  dormitoryName: string;
+  roomSize: number;
+  gender: 'MALE' | 'FEMALE' | 'EMPTY';
+  acceptLimit: number;
+};
+
+// 거주 기간 리스트
+export type nowJoinResponseTermResList = {
+  termId: number;
+  termName: string;
+  startDate: string;
+  endDate: string;
+  dormitoryTermResList: nowJoinResponseTermResListDormitoryTermResList[];
+};
+
+export type nowJoinResponseTermResListDormitoryTermResList = {
+  dormitoryTermId: number;
+  dormitoryRoomTypeId: number;
+  price: number;
+};
+
+// 식권 정보 리스트
+export type nowJoinResponseMealTicketResList = {
+  id: number;
+  count: number;
+  price: number;
 };

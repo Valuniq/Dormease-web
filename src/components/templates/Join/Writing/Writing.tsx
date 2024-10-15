@@ -4,16 +4,17 @@ import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant
 import JoinSettingInputText from '@/components/atoms/InputText/JoinSettingInputText/JoinSettingInputText';
 import JoinHistoryList from '@/components/templates/Join/JoinHistory/JoinHistoryList';
 import React, { useEffect } from 'react';
-import Default from '@/components/templates/Join/Default/Default';
-import TicketPrice from '@/components/templates/Join/TicketPrice/TicketPrice';
-import JoinDorm from '@/components/templates/Join/Detail/JoinDorm/JoinDorm';
-import BuildingPrice from '@/components/templates/Join/Detail/BuildingPrice/BuildingPrice';
+
 import { joinApplicationState, joinModalState, termReqIsActiveState, termReqListState } from '@/recoil/join';
 import { useRecoilState } from 'recoil';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { postDormitoryApplicationSetting, useIsJoinPeriod } from '@/apis/join';
+import Default from './Default/Default';
+import JoinDorm from './Detail/JoinDorm/JoinDorm';
+import BuildingPrice from './Detail/BuildingPrice/BuildingPrice';
+import TicketPrice from './TicketPrice/TicketPrice';
 
 const Writing = () => {
   const [applicationData, setApplicationData] = useRecoilState(joinApplicationState);
