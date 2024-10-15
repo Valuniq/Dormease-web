@@ -7,7 +7,6 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
-import { handleFileChange } from '../details/page';
 import { BuildingList, TermResponse, TermResponseInformation } from '@/types/student';
 import TermList from '@/components/templates/Student/Addition/TermList';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
@@ -82,6 +81,33 @@ const Page = () => {
       setTermList(data.information);
     }
   }, [data]);
+
+  //파일 변경
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+
+    const file = e.target.files[0];
+    const sizeInMB = file.size / (1024 * 1024);
+
+    if (sizeInMB > 15) {
+      alert('파일 용량은 15MB를 초과할 수 없습니다.');
+      return;
+    }
+
+    setFile((prevData) => ({
+      ...prevData,
+      [field]: file,
+    }));
+
+    const fileName = file.name;
+    setFileName((prevData) => ({
+      ...prevData,
+      [field]: fileName,
+    }));
+  };
 
   //거주기간 변경
   const handleTerm = async (id: number) => {
@@ -231,7 +257,7 @@ const Page = () => {
               type='file'
               text={fileName.copy}
               value={input.residentPrivateInfoRes.copy}
-              handleFileChange={(e) => handleFileChange(e, 'copy', setFile, setFileName)}
+              handleFileChange={(e) => handleFileChange(e, 'copy')}
             />
             <StudentManagement
               label='우선선발'
@@ -239,7 +265,7 @@ const Page = () => {
               type='file'
               text={fileName.prioritySelectionCopy}
               value={input.residentPrivateInfoRes.prioritySelectionCopy}
-              handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy', setFile, setFileName)}
+              handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy')}
             />
             <StudentManagement
               isEdit={isEdit}

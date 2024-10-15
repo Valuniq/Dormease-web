@@ -23,48 +23,6 @@ import { genderText, statusText } from '@/constants/student';
 import { BuildingList } from '@/types/student';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 
-//파일 변경
-export const handleFileChange = async (
-  e: React.ChangeEvent<HTMLInputElement>,
-  field: string,
-  setFile: React.Dispatch<
-    React.SetStateAction<{
-      copy: File | null;
-      prioritySelectionCopy: File | null;
-    }>
-  >,
-  setFileName: React.Dispatch<
-    React.SetStateAction<{
-      copy: string;
-      prioritySelectionCopy: string;
-    }>
-  >,
-) => {
-  if (!e.target.files || e.target.files.length === 0) {
-    console.log('파일이 선택되지 않았습니다.');
-    return;
-  }
-
-  const file = e.target.files[0];
-  const sizeInMB = file.size / (1024 * 1024);
-
-  if (sizeInMB > 15) {
-    alert('파일 용량은 15MB를 초과할 수 없습니다.');
-    return;
-  }
-
-  setFile((prevData) => ({
-    ...prevData,
-    [field]: file,
-  }));
-
-  const fileName = file.name;
-  setFileName((prevData) => ({
-    ...prevData,
-    [field]: fileName,
-  }));
-};
-
 const Page = () => {
   const router = useRouter();
   const setEditState = useSetRecoilState(editState);
@@ -115,6 +73,33 @@ const Page = () => {
   }, [data, id]);
 
   if (isLoading) return <div></div>;
+
+  //파일 변경
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+
+    const file = e.target.files[0];
+    const sizeInMB = file.size / (1024 * 1024);
+
+    if (sizeInMB > 15) {
+      alert('파일 용량은 15MB를 초과할 수 없습니다.');
+      return;
+    }
+
+    setFile((prevData) => ({
+      ...prevData,
+      [field]: file,
+    }));
+
+    const fileName = file.name;
+    setFileName((prevData) => ({
+      ...prevData,
+      [field]: fileName,
+    }));
+  };
 
   //수정 시 보여는 데이터 변경
   const handleInputChange = (resKey: string, field: string, value: string | number | boolean | string[]) => {
@@ -272,7 +257,7 @@ const Page = () => {
             type='file'
             text={fileName.copy}
             value={studentData?.information.residentPrivateInfoRes.copy}
-            handleFileChange={(e) => handleFileChange(e, 'copy', setFile, setFileName)}
+            handleFileChange={(e) => handleFileChange(e, 'copy')}
           />
           <StudentManagement
             label='우선선발'
@@ -280,7 +265,7 @@ const Page = () => {
             type='file'
             text={fileName.prioritySelectionCopy}
             value={studentData?.information.residentPrivateInfoRes.prioritySelectionCopy}
-            handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy', setFile, setFileName)}
+            handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy')}
           />
           <StudentManagement
             label='식수'
