@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StudentManagement from '@/components/templates/Student/Management/StudentManagement';
 import BtnMidVariant from '@/components/atoms/AllBtn/BtnMidVariant/BtnMidVariant';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
@@ -11,6 +11,7 @@ import { handleFileChange } from '../details/page';
 import { BuildingList, TermResponse, TermResponseInformation } from '@/types/student';
 import TermList from '@/components/templates/Student/Addition/TermList';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
+import { useDormTermList } from '@/apis/student';
 
 const Page = () => {
   const router = useRouter();
@@ -69,6 +70,13 @@ const Page = () => {
   const [isTermListModal, setIsTermListModal] = useState(false); //입사 신청 목록 모달
   const [termList, setTermList] = useState<TermResponse['information']>([]); //입사 신청 목록
   const [availableTermRes, setAvailableTermRes] = useState<TermResponseInformation['availableTermRes']>([]); //거주 기간 목록
+  const { data, error, isLoading } = useDormTermList(); //입사신청 및 거주기간 목록 조회
+
+  useEffect(() => {
+    if (data) {
+      setTermList(data.information);
+    }
+  }, [data]);
 
   //호실 재배치
   const handleRoomNumber = () => {
@@ -76,45 +84,6 @@ const Page = () => {
     setIsRoomNotNullModal(true);
     handleInputChange('residentDormitoryInfoRes', 'bedNumber', 0);
     handleInputChange('residentDormitoryInfoRes', 'roommateNames', ['하하', '하하']);
-  };
-
-  //거주기간 불러오기
-  const handleTermList = () => {
-    setTermList([
-      {
-        dormitoryApplicationSettingId: 1,
-        title: '2024-1학기 명지대학교 자연 생활관 재학생 2차 입사 신청',
-        availableTermRes: [
-          {
-            termId: 1,
-            termName: '학기',
-          },
-          {
-            termId: 2,
-            termName: '6개월',
-          },
-        ],
-      },
-      {
-        dormitoryApplicationSettingId: 2,
-        title: '2024-2학기 명지대학교 자연 생활관 재학생 2차 입사 신청입니다 반가워요',
-        availableTermRes: [
-          {
-            termId: 3,
-            termName: '2개월',
-          },
-          {
-            termId: 4,
-            termName: '6개월',
-          },
-          {
-            termId: 5,
-            termName: '12개월',
-          },
-        ],
-      },
-    ]);
-    setIsTermListModal(true);
   };
 
   //거주기간 변경
@@ -428,7 +397,7 @@ const Page = () => {
                 label='거주기간'
                 text={input.residentDormitoryInfoRes.termName}
                 availableTermRes={availableTermRes}
-                handleTermList={handleTermList}
+                handleTermList={() => setIsTermListModal(true)}
                 handleTerm={handleTerm}
               />
               <StudentManagement

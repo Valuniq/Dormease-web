@@ -4,6 +4,7 @@ import {
   StudentInfoEditRequest,
   StudentListResponse,
   StudentListResponseDataList,
+  TermResponse,
 } from '@/types/student';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
@@ -118,4 +119,13 @@ export const deleteStudentResign = async (residentId: number) => {
     },
   });
   return res;
+};
+
+//입사신청 및 거주기간 목록 조회
+export const useDormTermList = () => {
+  const { data, error } = useSWR<TermResponse>(
+    `${BASE_URL}/api/v1/web/residents/manual/dormitoryApplicationSetting`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data };
 };
