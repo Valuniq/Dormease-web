@@ -6,10 +6,14 @@ type Props = {
   input: string;
   setInput?: (input: string) => void;
   readOnly?: boolean;
+  maxLength?: number;
 };
 
-const MediumInputText = ({ placeholder, input, setInput, readOnly }: Props) => {
+const MediumInputText = ({ placeholder, input, setInput, readOnly, maxLength }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (maxLength && e.target.value.length > maxLength) {
+      e.target.value = e.target.value.slice(0, maxLength);
+    }
     setInput && setInput(e.target.value);
   };
 
@@ -22,6 +26,8 @@ const MediumInputText = ({ placeholder, input, setInput, readOnly }: Props) => {
       onChange={handleChange}
       style={{ backgroundColor: 'inherit' }}
       readOnly={readOnly}
+      spellCheck={false}
+      maxLength={maxLength}
     />
   );
 };
