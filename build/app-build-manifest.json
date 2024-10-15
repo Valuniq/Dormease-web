@@ -21,21 +21,45 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/layout.js"
     ],
-    "/dashboard/notices/page": [
+    "/dashboard/joins/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/notices/page.js"
+      "static/chunks/app/dashboard/joins/page.js"
     ],
-    "/dashboard/notices/writings/page": [
+    "/dashboard/joins/standards/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/notices/writings/page.js"
+      "static/chunks/app/dashboard/joins/standards/page.js"
     ],
-    "/dashboard/notices/details/page": [
+    "/dashboard/students/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/dashboard/notices/details/page.css",
-      "static/chunks/app/dashboard/notices/details/page.js"
+      "static/chunks/app/dashboard/students/page.js"
+    ],
+    "/dashboard/students/points/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/students/points/page.js"
+    ],
+    "/dashboard/students/details/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/students/details/page.js"
+    ],
+    "/dashboard/dorms/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/dorms/page.js"
+    ],
+    "/dashboard/dorms/settings/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/dorms/settings/page.js"
+    ],
+    "/dashboard/students/appMembers/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/students/appMembers/page.js"
     ]
   }
 }
