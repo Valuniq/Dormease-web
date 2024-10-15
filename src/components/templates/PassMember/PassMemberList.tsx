@@ -1,6 +1,6 @@
 import NoneList from '@/components/organisms/NoneList/NoneList';
 import { passMemberResponseInformation } from '@/types/passMember';
-import React from 'react';
+import React, { Fragment } from 'react';
 import PassMemberListBody from './PassMemberListBody';
 
 type Props = {
@@ -33,8 +33,8 @@ const PassMemberList = ({ passMemberLists }: Props) => {
         {passMemberLists && passMemberLists.length > 0 ? (
           <tbody className='overflow-y-scroll'>
             <tr className='h-15' />
-            {passMemberLists.map((i) => (
-              <>
+            {passMemberLists.map((i, index) => (
+              <Fragment key={index}>
                 <PassMemberListBody
                   degree={999}
                   name={i.studentName}
@@ -47,7 +47,7 @@ const PassMemberList = ({ passMemberLists }: Props) => {
                   assignment={i.assignment}
                 />
                 <tr className='h-15' />
-              </>
+              </Fragment>
             ))}
           </tbody>
         ) : (

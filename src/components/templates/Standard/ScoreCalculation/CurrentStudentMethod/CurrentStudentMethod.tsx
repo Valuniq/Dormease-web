@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
 import TextBoxes from '@/components/atoms/InputText/JoinSettingEntryTextBoxes/TextBoxes';
 import Boxes from './Boxes';
 import Distance from './Distance';
 import Grade from './Grade';
-import { StandardSettingResponseInformation } from '@/types/standard';
+import { DistanceScoreResList, StandardSettingResponseInformation } from '@/types/standard';
 
 type Props = {
   standard: StandardSettingResponseInformation;
@@ -12,24 +12,25 @@ type Props = {
 };
 
 const CurrentStudentMethod = ({ standard, setStandard }: Props) => {
-  const { minScore, scoreRatio, distanceScoreResList, pointReflection, tiePriority } = standard;
-
-  // 지역명을 문자열로 처리하는 함수
-  const handleSetScoresInput = (index: number, value: string) => {
-    const updatedScores = [...distanceScoreResList];
-    updatedScores[index].regionNameList = value; // 지역명을 문자열로 업데이트
-
-    setStandard({
-      ...standard,
-      distanceScoreResList: updatedScores,
-    });
-  };
+  const { minScore, scoreRatio, pointReflection, tiePriority } = standard;
 
   const handleScoreRatioChange = (value: string) => {
-    setStandard({
-      ...standard,
-      scoreRatio: parseFloat(value),
-    });
+    // 빈 문자열일 경우 0으로 처리
+    if (value === '') {
+      setStandard({
+        ...standard,
+        scoreRatio: 0,
+      });
+      return;
+    }
+
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 100) {
+      setStandard({
+        ...standard,
+        scoreRatio: numericValue,
+      });
+    }
   };
 
   return (
@@ -37,14 +38,10 @@ const CurrentStudentMethod = ({ standard, setStandard }: Props) => {
       <h1 className='H1 text-blue-blue30'>점수 산정 방식 (재학생)</h1>
 
       {/* 성적 */}
-      <Grade grade={minScore} setGrade={(grade) => setStandard({ ...standard, minScore: Number(grade) })} />
+      <Grade initialGrade={minScore} setGrade={(grade) => setStandard({ ...standard, minScore: Number(grade) })} />
 
       {/* 거리 점수 */}
-      <Distance
-        scores={distanceScoreResList.map((item) => item.distanceScore)}
-        scoresInput={distanceScoreResList.map((item) => item.regionNameList)} // 문자열 그대로 사용
-        setScoresInput={handleSetScoresInput} // 이 함수로 지역명 문자열을 처리
-      />
+      <Distance />
 
       <div className='flex items-center justify-between'>
         {/* 성적, 거리 점수 비율 */}
