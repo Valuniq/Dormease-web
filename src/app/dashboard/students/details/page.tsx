@@ -34,6 +34,11 @@ const Page = () => {
   const [isAddBlackListModal, setIsAddBlackListModal] = useState(false); //블랙리스트 모달
   const [isBlackListModal, setIsBlackListModal] = useState(false); //블랙리스트 페이지 이동 모달
   const [isAddResignModal, setIsAddResignModal] = useState(false); //퇴사처리 모달
+  const [selectedBuilding, setSelectedBuilding] = useState({
+    modal: false,
+    name: '',
+  }); //선택된 건물 저장 및 모달
+  const [buildingList, setBuildingList] = useState<string[]>([]); //건물 목록
 
   useEffect(() => {
     if (data) {
@@ -42,6 +47,16 @@ const Page = () => {
         copy: data.information.residentPrivateInfoRes.copy,
         prioritySelectionCopy: data.information.residentPrivateInfoRes.prioritySelectionCopy,
       });
+      //사생 성별 + 거주기간 id에 맞는 기숙사 조회
+      setBuildingList([
+        '명덕관',
+        '뭥',
+        '두기',
+        '두두두두두두두두',
+        '두두두두두두두두두두',
+        '두두두두두두두두두',
+        '두두두두두두두두두두두',
+      ]);
     }
   }, [data]);
 
@@ -112,21 +127,27 @@ const Page = () => {
   const handleEdit = async () => {
     if (!studentData || !studentData.information) return null;
 
-    const residentPrivateInfoReq = {
-      dormitoryPayment: studentData.information.residentPrivateInfoRes.dormitoryPayment,
-      hasKey: studentData.information.residentPrivateInfoRes.hasKey,
-      bankName: studentData.information.residentPrivateInfoRes.bankName,
-      accountNumber: studentData.information.residentPrivateInfoRes.accountNumber,
-      emergencyContact: studentData.information.residentPrivateInfoRes.emergencyContact,
-      emergencyRelation: studentData.information.residentPrivateInfoRes.emergencyRelation,
-    };
+    if (data?.information.residentPrivateInfoRes !== studentData?.information.residentPrivateInfoRes) {
+      const residentPrivateInfoReq = {
+        dormitoryPayment: studentData.information.residentPrivateInfoRes.dormitoryPayment,
+        hasKey: studentData.information.residentPrivateInfoRes.hasKey,
+        bankName: studentData.information.residentPrivateInfoRes.bankName,
+        accountNumber: studentData.information.residentPrivateInfoRes.accountNumber,
+        emergencyContact: studentData.information.residentPrivateInfoRes.emergencyContact,
+        emergencyRelation: studentData.information.residentPrivateInfoRes.emergencyRelation,
+      };
 
-    const response = await putStudentPrivateInfo(id, file.copy, file.prioritySelectionCopy, residentPrivateInfoReq);
-
-    if (response.check) {
-      setEditState(false);
-      router.push(`/dashboard/students`);
+      await putStudentPrivateInfo(id, file.copy, file.prioritySelectionCopy, residentPrivateInfoReq);
+    } else if (data.information.residentDormitoryInfoRes !== studentData.information.residentDormitoryInfoRes) {
+      console.log('건물 수정');
     }
+    setEditState(false);
+    router.push(`/dashboard/students`);
+  };
+
+  //호실 재배치
+  const handleRoomNumber = () => {
+    console.log(studentData?.information.residentDormitoryInfoRes.roomNumber);
   };
 
   //블랙리스트
@@ -341,9 +362,14 @@ const Page = () => {
               type='building'
               isBuilding={isBuilding}
               setIsBuilding={setIsBuilding}
-              list={['명덕관(4인실)', '명덕관(2인실)', '명덕관(3인실)', '명덕관(1인실)']}
+              list={buildingList}
               select={studentData?.information.residentDormitoryInfoRes.dormitoryName}
-              setSelect={(value) => handleInputChange('residentDormitoryInfoRes', 'dormitoryName', value)}
+              setSelect={(value) => {
+                setSelectedBuilding({
+                  modal: true,
+                  name: value,
+                });
+              }}
               label='건물'
               text={studentData?.information.residentDormitoryInfoRes.dormitoryName}
               value={studentData?.information.residentDormitoryInfoRes.dormitoryName}
@@ -360,6 +386,7 @@ const Page = () => {
               value={studentData?.information.residentDormitoryInfoRes.roomNumber}
               input={studentData?.information.residentDormitoryInfoRes.roomNumber.toString()}
               setInput={(value) => handleInputChange('residentDormitoryInfoRes', 'roomNumber', value)}
+              handleRoomNumber={handleRoomNumber}
             />
             <StudentManagement
               isEdit={isEdit}
@@ -389,6 +416,7 @@ const Page = () => {
             />
             <StudentManagement
               label='인원 정보'
+              readOnly={true}
               text={studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')}
               value={studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')}
             />
@@ -465,6 +493,29 @@ const Page = () => {
             onConfirm={() => {
               setIsAddResignModal(false);
               handleResign();
+            }}
+          />
+        </BackDrop>
+      )}
+      {selectedBuilding.modal && (
+        <BackDrop isOpen={selectedBuilding.modal}>
+          <ConfirmPrompt
+            variant='red'
+            label='건물 변경시 호실 및 침대번호가 초기화 됩니다.\n재배치 하시겠습니까?'
+            onCancel={() => {
+              setSelectedBuilding({
+                modal: false,
+                name: '',
+              });
+            }}
+            onConfirm={() => {
+              setSelectedBuilding({
+                modal: false,
+                name: '',
+              });
+              handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuilding.name);
+              handleInputChange('residentDormitoryInfoRes', 'roomNumber', '');
+              handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
             }}
           />
         </BackDrop>

@@ -34,7 +34,11 @@ const BtnMidVariant = ({
   };
 
   return (
-    <button {...props} disabled={disabled} className={`w-133 h-42 rounded-8 hover:hover-transition ${bgColorClass()}`}>
+    <button
+      {...props}
+      disabled={disabled}
+      className={`w-133 min-h-42 p-5 rounded-8 hover:hover-transition ${bgColorClass()}`}
+    >
       {label}
     </button>
   );

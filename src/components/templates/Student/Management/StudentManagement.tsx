@@ -25,6 +25,8 @@ type Props = {
   setSelect?: (isOn: string) => void;
   setIsOn?: (isOn: boolean) => void;
   handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRoomNumber?: () => void;
+  readOnly?: boolean;
 };
 
 const FileEdit = ({ text, handleFileChange }: Props) => {
@@ -61,8 +63,10 @@ const CheckboxEdit = ({ text, value, setIsChecked }: Props) => {
   );
 };
 
-const StringEdit = ({ input, setInput }: Props) => {
-  return <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} />}</>;
+const StringEdit = ({ input, setInput, readOnly }: Props) => {
+  return (
+    <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} readOnly={readOnly} />}</>
+  );
 };
 
 const RadioEdit = ({ value, setIsOn }: Props) => {
@@ -83,13 +87,19 @@ const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, select, setSelect
     <div className='flex relative cursor-pointer'>
       {setIsBuilding && (
         <>
-          <h4 className='H4 text-gray-grayscale50 mr-5' onClick={() => setIsBuilding(!isBuilding)}>
+          <h4
+            className='H4 text-gray-grayscale50 mr-5'
+            onClick={() => list?.length !== 0 && setIsBuilding(!isBuilding)}
+          >
             {text ? text : '건물 선택'}
           </h4>
-          <button className={`${isBuilding && 'rotate-90'}`} onClick={() => setIsBuilding(!isBuilding)}>
+          <button
+            className={`${isBuilding && 'rotate-90'}`}
+            onClick={() => list?.length !== 0 && setIsBuilding(!isBuilding)}
+          >
             <ArrowDown />
           </button>
-          {isBuilding && setSelect && (
+          {list?.length !== 0 && isBuilding && setSelect && (
             <div className='absolute left-full bottom-0'>
               <RelocationDropdown
                 list={list || []}
@@ -105,12 +115,12 @@ const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, select, setSelect
   );
 };
 
-const RoomNumberEdit = ({ input, setInput }: Props) => {
+const RoomNumberEdit = ({ input, setInput, handleRoomNumber }: Props) => {
   return (
     <div className='flex items-center'>
-      {setInput && <PointBar input={input || ''} setInput={setInput} />}
+      {setInput && <PointBar input={input || ''} setInput={setInput} maxLength={4} />}
       <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>호</h4>
-      <BtnMiniVariant label='재배치' disabled={false} selected={false} variant='blue' />
+      <BtnMiniVariant label='재배치' disabled={!input} selected={false} variant='blue' onClick={handleRoomNumber} />
     </div>
   );
 };
@@ -118,7 +128,7 @@ const RoomNumberEdit = ({ input, setInput }: Props) => {
 const BedNumberEdit = ({ input, setInput }: Props) => {
   return (
     <div className='flex items-center'>
-      {setInput && <PointBar input={input || ''} setInput={setInput} />}
+      {setInput && <PointBar input={input || ''} setInput={setInput} readonly={true} />}
       <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>번</h4>
     </div>
   );
@@ -141,6 +151,8 @@ const StudentManagement = ({
   setSelect,
   setIsOn,
   handleFileChange,
+  handleRoomNumber,
+  readOnly,
 }: Props) => {
   const renderContent = () => {
     if (isEdit) {
@@ -150,7 +162,7 @@ const StudentManagement = ({
         case 'checkbox':
           return <CheckboxEdit text={text} value={value} setIsChecked={setIsChecked} />;
         case 'string':
-          return <StringEdit input={input} setInput={setInput} />;
+          return <StringEdit input={input} setInput={setInput} readOnly={readOnly} />;
         case 'radio':
           return <RadioEdit value={value} setIsOn={setIsOn} />;
         case 'building':
@@ -165,7 +177,7 @@ const StudentManagement = ({
             />
           );
         case 'roomNumber':
-          return <RoomNumberEdit input={input} setInput={setInput} />;
+          return <RoomNumberEdit input={input} setInput={setInput} handleRoomNumber={handleRoomNumber} />;
         case 'bedNumber':
           return <BedNumberEdit input={input} setInput={setInput} />;
         default:
