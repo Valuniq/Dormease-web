@@ -6,7 +6,7 @@ export type standardSettingModalState = {
     isOpened: boolean;
     regionScore: number;
   };
-  standardWriting: boolean;
+  standardWritingEdit: boolean;
 };
 
 export const standardSettingModalState = atom<standardSettingModalState>({
@@ -16,7 +16,7 @@ export const standardSettingModalState = atom<standardSettingModalState>({
       isOpened: false,
       regionScore: 0,
     },
-    standardWriting: false,
+    standardWritingEdit: false,
   },
 });
 

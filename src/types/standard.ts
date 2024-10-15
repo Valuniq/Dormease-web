@@ -1,9 +1,11 @@
+// 기준 설정 조회
 export type standardSettingResponse = {
   check: boolean;
   information: StandardSettingResponseInformation;
 };
 
 export type StandardSettingResponseInformation = {
+  standardSettingId: number;
   minScore: number; // 최소 학점
   scoreRatio: number; // 성적 비율
   distanceRatio: number; // 거리 비율
@@ -24,6 +26,7 @@ export interface DistanceScoreResList {
   regionResList: StandardSettingRegionResList[];
 }
 
+// 기준 설정 중 거리 지역 조회
 export type StandardSettingRegionsResponse = {
   check: boolean;
   information: StandardSettingRegionResList[];
@@ -35,6 +38,8 @@ export type StandardSettingRegionResList = {
   regionName?: string;
 };
 
+// 기준 설정 생성
+// 현재 standard Page에서 resList로 상태를 관리하여둔 상태임
 export type StandardSettingRequest = {
   minScore: number; // 최소 학점
   scoreRatio: number; // 성적 비율

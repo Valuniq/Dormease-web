@@ -63,3 +63,27 @@ export const postStandard = async (StandardSettingInformation: StandardSettingRe
   });
   return res;
 };
+
+export const patchStandard = async (StandardSettingInformation: StandardSettingRequest, standardSettingId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/standardSetting/${standardSettingId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      minScore: StandardSettingInformation.minScore,
+      scoreRatio: StandardSettingInformation.scoreRatio,
+      distanceRatio: StandardSettingInformation.distanceRatio,
+      pointReflection: StandardSettingInformation.pointReflection,
+      tiePriority: StandardSettingInformation.tiePriority,
+      freshmanStandard: StandardSettingInformation.freshmanStandard,
+      prioritySelection: StandardSettingInformation.prioritySelection,
+      movePassSelection: StandardSettingInformation.movePassSelection,
+      sameSmoke: StandardSettingInformation.sameSmoke,
+      sameTerm: StandardSettingInformation.sameTerm,
+      entrancePledge: StandardSettingInformation.entrancePledge,
+      distanceScoreReqList: StandardSettingInformation.distanceScoreReqList,
+    }),
+  });
+  return res;
+};
