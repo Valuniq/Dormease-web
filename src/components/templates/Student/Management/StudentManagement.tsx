@@ -7,6 +7,7 @@ import RelocationDropdown from '@/components/atoms/Dropdown/RelocationDropdown/R
 import PointBar from '@/components/atoms/InputText/PointBar/PointBar';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
+import { BuildingList } from '@/types/student';
 
 type Props = {
   isEdit?: boolean;
@@ -20,13 +21,12 @@ type Props = {
   right?: boolean;
   isBuilding?: boolean;
   setIsBuilding?: (isBuilding: boolean) => void;
-  list?: string[];
-  select?: string;
-  setSelect?: (isOn: string) => void;
+  list?: BuildingList[];
+  dormitoryId?: number;
+  handleSelectedId?: (dormitoryId: number) => void;
   setIsOn?: (isOn: boolean) => void;
   handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRoomNumber?: () => void;
-  readOnly?: boolean;
 };
 
 const FileEdit = ({ text, handleFileChange }: Props) => {
@@ -63,10 +63,8 @@ const CheckboxEdit = ({ text, value, setIsChecked }: Props) => {
   );
 };
 
-const StringEdit = ({ input, setInput, readOnly }: Props) => {
-  return (
-    <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} readOnly={readOnly} />}</>
-  );
+const StringEdit = ({ input, setInput }: Props) => {
+  return <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} />}</>;
 };
 
 const RadioEdit = ({ value, setIsOn }: Props) => {
@@ -82,7 +80,7 @@ const RadioEdit = ({ value, setIsOn }: Props) => {
   );
 };
 
-const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, select, setSelect }: Props) => {
+const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, dormitoryId, handleSelectedId }: Props) => {
   return (
     <div className='flex relative cursor-pointer'>
       {setIsBuilding && (
@@ -99,12 +97,12 @@ const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, select, setSelect
           >
             <ArrowDown />
           </button>
-          {list?.length !== 0 && isBuilding && setSelect && (
-            <div className='absolute left-full bottom-0'>
+          {list?.length !== 0 && isBuilding && handleSelectedId && (
+            <div className='absolute left-full bottom-0 z-joinSettingAddPeriodBtn'>
               <RelocationDropdown
                 list={list || []}
-                select={select || ''}
-                setSelect={setSelect}
+                dormitoryId={dormitoryId || 0}
+                handleSelectedId={handleSelectedId}
                 setIsBuilding={setIsBuilding}
               />
             </div>
@@ -128,7 +126,7 @@ const RoomNumberEdit = ({ input, setInput, handleRoomNumber }: Props) => {
 const BedNumberEdit = ({ input, setInput }: Props) => {
   return (
     <div className='flex items-center'>
-      {setInput && <PointBar input={input || ''} setInput={setInput} readonly={true} />}
+      {setInput && <PointBar input={input || ''} setInput={setInput} />}
       <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>번</h4>
     </div>
   );
@@ -147,12 +145,11 @@ const StudentManagement = ({
   isBuilding,
   setIsBuilding,
   list,
-  select,
-  setSelect,
+  dormitoryId,
+  handleSelectedId,
   setIsOn,
   handleFileChange,
   handleRoomNumber,
-  readOnly,
 }: Props) => {
   const renderContent = () => {
     if (isEdit) {
@@ -162,7 +159,7 @@ const StudentManagement = ({
         case 'checkbox':
           return <CheckboxEdit text={text} value={value} setIsChecked={setIsChecked} />;
         case 'string':
-          return <StringEdit input={input} setInput={setInput} readOnly={readOnly} />;
+          return <StringEdit input={input} setInput={setInput} />;
         case 'radio':
           return <RadioEdit value={value} setIsOn={setIsOn} />;
         case 'building':
@@ -172,8 +169,8 @@ const StudentManagement = ({
               isBuilding={isBuilding}
               setIsBuilding={setIsBuilding}
               list={list}
-              select={select}
-              setSelect={setSelect}
+              dormitoryId={dormitoryId}
+              handleSelectedId={handleSelectedId}
             />
           );
         case 'roomNumber':
@@ -204,7 +201,7 @@ const StudentManagement = ({
   return (
     <div className='flex text-left items-center flex-grow'>
       <h4 className='H4-caption min-w-205 text-gray-grayscale50 relative'>
-        {isEdit && label === '이름' ? (
+        {isEdit && (label === '이름' || label === '성별' || label === '거주기간') ? (
           <>
             {label}
             <p className='H4 text-red-red20 inline-block absolute bottom-3 ml-2'>*</p>

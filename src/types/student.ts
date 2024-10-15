@@ -65,3 +65,9 @@ export type StudentDetailResponseInformationResidentDormitoryInfoRes = {
   isApplyRoommate: boolean;
   roommateNames: string[];
 };
+
+export type BuildingList = {
+  dormitoryId: number;
+  dormitoryName: string;
+  roomSize: number;
+};

@@ -13,6 +13,49 @@ import { studentIdState } from '@/recoil/student';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { genderText, statusText } from '@/constants/student';
+import { BuildingList } from '@/types/student';
+
+//파일 변경
+export const handleFileChange = async (
+  e: React.ChangeEvent<HTMLInputElement>,
+  field: string,
+  setFile: React.Dispatch<
+    React.SetStateAction<{
+      copy: File | null;
+      prioritySelectionCopy: File | null;
+    }>
+  >,
+  setFileName: React.Dispatch<
+    React.SetStateAction<{
+      copy: string;
+      prioritySelectionCopy: string;
+    }>
+  >,
+) => {
+  if (!e.target.files || e.target.files.length === 0) {
+    console.log('파일이 선택되지 않았습니다.');
+    return;
+  }
+
+  const file = e.target.files[0];
+  const sizeInMB = file.size / (1024 * 1024);
+
+  if (sizeInMB > 15) {
+    alert('파일 용량은 15MB를 초과할 수 없습니다.');
+    return;
+  }
+
+  setFile((prevData) => ({
+    ...prevData,
+    [field]: file,
+  }));
+
+  const fileName = file.name;
+  setFileName((prevData) => ({
+    ...prevData,
+    [field]: fileName,
+  }));
+};
 
 const Page = () => {
   const router = useRouter();
@@ -25,20 +68,20 @@ const Page = () => {
   const [fileName, setFileName] = useState({
     copy: '',
     prioritySelectionCopy: '',
-  });
+  }); //등본, 우선선발 파일 이름
   const [file, setFile] = useState<{ copy: File | null; prioritySelectionCopy: File | null }>({
     copy: null,
     prioritySelectionCopy: null,
-  });
+  }); //등본, 우선선발 파일
   const [isEditModal, setIsEditModal] = useState(false); //수정 모달
   const [isAddBlackListModal, setIsAddBlackListModal] = useState(false); //블랙리스트 모달
   const [isBlackListModal, setIsBlackListModal] = useState(false); //블랙리스트 페이지 이동 모달
   const [isAddResignModal, setIsAddResignModal] = useState(false); //퇴사처리 모달
   const [selectedBuilding, setSelectedBuilding] = useState({
-    modal: false,
-    name: '',
+    isModal: false,
+    dormitoryId: 0,
   }); //선택된 건물 저장 및 모달
-  const [buildingList, setBuildingList] = useState<string[]>([]); //건물 목록
+  const [buildingList, setBuildingList] = useState<BuildingList[]>([]); //건물 목록
 
   useEffect(() => {
     if (data) {
@@ -49,61 +92,33 @@ const Page = () => {
       });
       //사생 성별 + 거주기간 id에 맞는 기숙사 조회
       setBuildingList([
-        '명덕관',
-        '뭥',
-        '두기',
-        '두두두두두두두두',
-        '두두두두두두두두두두',
-        '두두두두두두두두두',
-        '두두두두두두두두두두두',
+        {
+          dormitoryId: 1,
+          dormitoryName: '명덕관',
+          roomSize: 2,
+        },
+        {
+          dormitoryId: 2,
+          dormitoryName: '건물명2',
+          roomSize: 3,
+        },
+        {
+          dormitoryId: 3,
+          dormitoryName: '명덕관2',
+          roomSize: 4,
+        },
+        {
+          dormitoryId: 4,
+          dormitoryName: '명덕관이라고합니다요',
+          roomSize: 4,
+        },
       ]);
     }
   }, [data]);
 
   if (isLoading) return <div></div>;
 
-  //파일 변경
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      console.log('파일이 선택되지 않았습니다.');
-      return;
-    }
-
-    const file = e.target.files[0];
-    const sizeInMB = file.size / (1024 * 1024);
-
-    if (sizeInMB > 15) {
-      alert('파일 용량은 15MB를 초과할 수 없습니다.');
-      return;
-    }
-
-    const fileUrl = URL.createObjectURL(file);
-    const fileName = file.name;
-
-    setFileName((prevData) => ({
-      ...prevData,
-      [field]: fileName,
-    }));
-
-    setStudentData((prevData) => {
-      if (!prevData) return prevData;
-
-      return {
-        ...prevData,
-        information: {
-          ...prevData.information,
-          residentPrivateInfoRes: {
-            ...prevData.information.residentPrivateInfoRes,
-            ...prevData.information.residentDormitoryInfoRes,
-            [field]: fileUrl,
-          },
-        },
-        check: prevData.check ?? false,
-      };
-    });
-  };
-
-  //수정 시 보여지는 데이터 변경
+  //수정 시 보여는 데이터 변경
   const handleInputChange = (resKey: string, field: string, value: string | number | boolean) => {
     setStudentData((prevData) => {
       if (!prevData) return prevData;
@@ -240,7 +255,7 @@ const Page = () => {
             type='file'
             text={fileName.copy}
             value={studentData?.information.residentPrivateInfoRes.copy}
-            handleFileChange={(e) => handleFileChange(e, 'copy')}
+            handleFileChange={(e) => handleFileChange(e, 'copy', setFile, setFileName)}
           />
           <StudentManagement
             label='우선선발'
@@ -248,7 +263,7 @@ const Page = () => {
             type='file'
             text={fileName.prioritySelectionCopy}
             value={studentData?.information.residentPrivateInfoRes.prioritySelectionCopy}
-            handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy')}
+            handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy', setFile, setFileName)}
           />
           <StudentManagement
             label='식수'
@@ -363,15 +378,21 @@ const Page = () => {
               isBuilding={isBuilding}
               setIsBuilding={setIsBuilding}
               list={buildingList}
-              select={studentData?.information.residentDormitoryInfoRes.dormitoryName}
-              setSelect={(value) => {
+              dormitoryId={studentData?.information.residentDormitoryInfoRes.dormitoryId}
+              handleSelectedId={(value) => {
                 setSelectedBuilding({
-                  modal: true,
-                  name: value,
+                  isModal: true,
+                  dormitoryId: value,
                 });
               }}
               label='건물'
-              text={studentData?.information.residentDormitoryInfoRes.dormitoryName}
+              text={
+                studentData?.information.residentDormitoryInfoRes.dormitoryName &&
+                studentData?.information.residentDormitoryInfoRes.dormitoryName +
+                  '(' +
+                  studentData?.information.residentDormitoryInfoRes.roomSize +
+                  '인실)'
+              }
               value={studentData?.information.residentDormitoryInfoRes.dormitoryName}
             />
             <StudentManagement
@@ -389,7 +410,6 @@ const Page = () => {
               handleRoomNumber={handleRoomNumber}
             />
             <StudentManagement
-              isEdit={isEdit}
               type='bedNumber'
               label='침대번호'
               text={
@@ -399,26 +419,29 @@ const Page = () => {
               }
               value={studentData?.information.residentDormitoryInfoRes.bedNumber}
               input={studentData?.information.residentDormitoryInfoRes.bedNumber.toString()}
-              setInput={(value) => handleInputChange('residentDormitoryInfoRes', 'bedNumber', value)}
             />
           </div>
           <div className='flex-1 flex flex-col'>
             <StudentManagement
               label='거주기간'
               text={studentData?.information.residentDormitoryInfoRes.termName}
-              value={'period'}
+              value={studentData?.information.residentDormitoryInfoRes.termName}
             />
             <StudentManagement
-              type='checkbox'
               label='룸메이트 신청'
               text={studentData?.information.residentDormitoryInfoRes.isApplyRoommate ? 'O' : 'X'}
               value={studentData?.information.residentDormitoryInfoRes.isApplyRoommate}
             />
             <StudentManagement
               label='인원 정보'
-              readOnly={true}
-              text={studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')}
-              value={studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')}
+              text={
+                studentData?.information.residentDormitoryInfoRes.roommateNames &&
+                studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')
+              }
+              value={
+                studentData?.information.residentDormitoryInfoRes.roommateNames &&
+                studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')
+              }
             />
           </div>
         </div>
@@ -497,25 +520,33 @@ const Page = () => {
           />
         </BackDrop>
       )}
-      {selectedBuilding.modal && (
-        <BackDrop isOpen={selectedBuilding.modal}>
+      {selectedBuilding.isModal && (
+        <BackDrop isOpen={selectedBuilding.isModal}>
           <ConfirmPrompt
             variant='red'
             label='건물 변경시 호실 및 침대번호가 초기화 됩니다.\n재배치 하시겠습니까?'
             onCancel={() => {
               setSelectedBuilding({
-                modal: false,
-                name: '',
+                isModal: false,
+                dormitoryId: 0,
               });
             }}
             onConfirm={() => {
               setSelectedBuilding({
-                modal: false,
-                name: '',
+                isModal: false,
+                dormitoryId: 0,
               });
-              handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuilding.name);
+              handleInputChange('residentDormitoryInfoRes', 'dormitoryId', selectedBuilding.dormitoryId);
+              const selectedBuildingInfo = buildingList.find(
+                (data) => data.dormitoryId === selectedBuilding.dormitoryId,
+              );
+              if (selectedBuildingInfo) {
+                handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuildingInfo.dormitoryName);
+                handleInputChange('residentDormitoryInfoRes', 'roomSize', selectedBuildingInfo.roomSize);
+              }
               handleInputChange('residentDormitoryInfoRes', 'roomNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
+              handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');
             }}
           />
         </BackDrop>

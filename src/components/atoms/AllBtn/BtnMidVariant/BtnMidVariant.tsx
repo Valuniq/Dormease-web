@@ -5,6 +5,7 @@ type Props = {
   disabled: boolean;
   selected?: boolean;
   variant: 'blue' | 'green' | 'red' | 'gray' | 'whiteblue' | 'white';
+  long?: boolean;
 };
 
 const BtnMidVariant = ({
@@ -12,6 +13,7 @@ const BtnMidVariant = ({
   disabled,
   variant,
   selected = false,
+  long,
   ...props
 }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   const bgColorClass = () => {
@@ -37,7 +39,7 @@ const BtnMidVariant = ({
     <button
       {...props}
       disabled={disabled}
-      className={`w-133 min-h-42 p-5 rounded-8 hover:hover-transition ${bgColorClass()}`}
+      className={`min-w-133 h-42 rounded-8 hover:hover-transition ${bgColorClass()} ${long && 'min-w-full whitespace-nowrap px-10'}`}
     >
       {label}
     </button>
