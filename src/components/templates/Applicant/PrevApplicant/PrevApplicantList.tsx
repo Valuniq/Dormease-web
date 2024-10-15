@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+import { useRouter } from 'next/navigation';
+import React, { Fragment } from 'react';
 import NoneList from '../../../organisms/NoneList/NoneList';
 
 type prevApplicantList = {
@@ -11,6 +13,7 @@ type Props = {
 };
 
 const PrevApplicantList = ({ prevApplicantLists }: Props) => {
+  const router = useRouter();
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1250px]'>
@@ -28,13 +31,16 @@ const PrevApplicantList = ({ prevApplicantLists }: Props) => {
           <tbody className='overflow-y-scroll'>
             <tr className='h-15' />
             {prevApplicantLists.map((i, index) => (
-              <>
-                <tr className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'>
+              <Fragment key={index}>
+                <tr
+                  onClick={() => router.push('/dashboard/joins/applicants/details')}
+                  className='h-38 hover-transition cursor-pointer hover:bg-gray-grayscale10 active:bg-gray-grayscale20 H4-caption text-gray-grayscale50'
+                >
                   <td className='text-center'>{i.title}</td>
                   <td className='text-center'>{i.registrationDate}</td>
                 </tr>
                 <tr className='h-15' />{' '}
-              </>
+              </Fragment>
             ))}
           </tbody>
         ) : (

@@ -12,11 +12,9 @@ export type Props = {
   prioritySelection: null | string;
   assignedBuilding: string | null;
   isPassed: 'PASS' | 'NON_PASS' | 'MOVE_PASS' | 'WAIT';
-  isChecked: boolean;
-  setIsChecked: (isChecked: boolean) => void;
 };
 
-const ApplicantListBody = ({
+const PrevApplicationDetailListBody = ({
   name,
   studentId,
   gender,
@@ -26,8 +24,6 @@ const ApplicantListBody = ({
   prioritySelection,
   assignedBuilding,
   isPassed,
-  isChecked,
-  setIsChecked,
 }: Props) => {
   const statusText =
     isPassed === 'PASS' ? '합격' : isPassed === 'NON_PASS' ? '탈락' : isPassed === 'MOVE_PASS' ? '이동합격' : '-';
@@ -52,11 +48,8 @@ const ApplicantListBody = ({
       <td className='text-center'>{prioritySelection ? 'O' : 'X'}</td>
       <td className='text-center'>{assignedBuilding && assignedBuilding.length > 0 ? assignedBuilding : '-'}</td>
       <td className={`text-center ${statusColor}`}>{statusText}</td>
-      <td className='flex justify-center'>
-        <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
-      </td>
     </tr>
   );
 };
 
-export default ApplicantListBody;
+export default PrevApplicationDetailListBody;

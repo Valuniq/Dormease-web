@@ -4,16 +4,13 @@ import NoneList from '@/components/organisms/NoneList/NoneList';
 import { applicantResponseInformation } from '@/types/applicant';
 
 import React, { Fragment } from 'react';
-
-import ApplicantListBody from './ApplicantListBody';
+import PrevApplicationDetailListBody from './PrevApplicantDetailListBody';
 
 type Props = {
   applicantLists: applicantResponseInformation[];
-  isAllChecked: boolean;
-  setIsAllChecked: (isAllChecked: boolean) => void;
 };
 
-const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props) => {
+const PrevApplicantDetailList = ({ applicantLists }: Props) => {
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1305px]'>
@@ -28,15 +25,9 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
             <th className='H4'>우선선발</th>
             <th className='H4'>배정건물</th>
             <th className='H4'>합격여부</th>
-            <th>
-              <div className='H4 flex  items-center justify-center text-center w-full'>
-                <h1 className='mr-4'>전체</h1>
-                <Checkbox isChecked={isAllChecked} setIsChecked={setIsAllChecked} />
-              </div>
-            </th>
           </tr>
           <tr>
-            <th colSpan={10}>
+            <th colSpan={9}>
               <div className='w-full h-18 border-b-1 border-b-gray-grayscale50' />
             </th>
           </tr>
@@ -47,7 +38,7 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
             <tr className='h-15' />
             {applicantLists.map((i, index) => (
               <Fragment key={index}>
-                <ApplicantListBody
+                <PrevApplicationDetailListBody
                   name={i.studentName}
                   studentId={i.studentNumber}
                   gender={i.gender}
@@ -57,8 +48,6 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
                   prioritySelection={i.prioritySelectionCopy}
                   assignedBuilding={i.resultDormitoryRoomTypeRes.dormitoryName || ''}
                   isPassed={i.dormitoryApplicationResult}
-                  isChecked={false}
-                  setIsChecked={() => ({})}
                 />
                 <tr className='h-15' />
               </Fragment>
@@ -74,4 +63,4 @@ const ApplicantList = ({ applicantLists, isAllChecked, setIsAllChecked }: Props)
   );
 };
 
-export default ApplicantList;
+export default PrevApplicantDetailList;
