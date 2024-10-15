@@ -22,8 +22,8 @@ type Props = {
   isBuilding?: boolean;
   setIsBuilding?: (isBuilding: boolean) => void;
   list?: BuildingList[];
-  dormitoryId?: number;
-  handleSelectedId?: (dormitoryId: number) => void;
+  dormInfo?: BuildingList;
+  handleSelectedDorm?: (selectedDorm: BuildingList) => void;
   setIsOn?: (isOn: boolean) => void;
   handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRoomNumber?: () => void;
@@ -135,7 +135,7 @@ const TermNameEdit = ({ availableTermRes, handleTermList, handleTerm }: Props) =
   );
 };
 
-const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, dormitoryId, handleSelectedId }: Props) => {
+const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, dormInfo, handleSelectedDorm }: Props) => {
   return (
     <div className='flex relative cursor-pointer'>
       {setIsBuilding && (
@@ -152,12 +152,18 @@ const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, dormitoryId, hand
           >
             <ArrowDown />
           </button>
-          {list?.length !== 0 && isBuilding && handleSelectedId && (
+          {list?.length !== 0 && isBuilding && handleSelectedDorm && (
             <div className='absolute left-full bottom-0 z-joinSettingAddPeriodBtn'>
               <RelocationDropdown
                 list={list || []}
-                dormitoryId={dormitoryId || 0}
-                handleSelectedId={handleSelectedId}
+                dormInfo={
+                  dormInfo || {
+                    dormitoryId: 0,
+                    dormitoryName: '',
+                    roomSize: 0,
+                  }
+                }
+                handleSelectedDorm={handleSelectedDorm}
                 setIsBuilding={setIsBuilding}
               />
             </div>
@@ -200,8 +206,8 @@ const StudentManagement = ({
   isBuilding,
   setIsBuilding,
   list,
-  dormitoryId,
-  handleSelectedId,
+  dormInfo,
+  handleSelectedDorm,
   setIsOn,
   handleFileChange,
   handleRoomNumber,
@@ -233,8 +239,8 @@ const StudentManagement = ({
               isBuilding={isBuilding}
               setIsBuilding={setIsBuilding}
               list={list}
-              dormitoryId={dormitoryId}
-              handleSelectedId={handleSelectedId}
+              dormInfo={dormInfo}
+              handleSelectedDorm={handleSelectedDorm}
             />
           );
         case 'roomNumber':

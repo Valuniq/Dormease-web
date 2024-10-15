@@ -8,7 +8,13 @@ import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 import { useRouter } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
-import { deleteStudentBlackList, deleteStudentResign, putStudentInfo, useStudentDetail } from '@/apis/student';
+import {
+  deleteStudentBlackList,
+  deleteStudentResign,
+  getDormList,
+  putStudentInfo,
+  useStudentDetail,
+} from '@/apis/student';
 import { studentIdState } from '@/recoil/student';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -82,41 +88,30 @@ const Page = () => {
   const [selectedBuilding, setSelectedBuilding] = useState({
     isModal: false,
     dormitoryId: 0,
+    dormitoryName: '',
+    roomSize: 0,
   }); //선택된 건물 저장 및 모달
   const [buildingList, setBuildingList] = useState<BuildingList[]>([]); //건물 목록
 
   useEffect(() => {
-    if (data) {
-      setStudentData(data);
-      setFileName({
-        copy: data.information.residentPrivateInfoRes.copy,
-        prioritySelectionCopy: data.information.residentPrivateInfoRes.prioritySelectionCopy,
-      });
-      //사생 성별 + 거주기간 id에 맞는 기숙사 조회
-      setBuildingList([
-        {
-          dormitoryId: 1,
-          dormitoryName: '명덕관',
-          roomSize: 2,
-        },
-        {
-          dormitoryId: 2,
-          dormitoryName: '건물명2',
-          roomSize: 3,
-        },
-        {
-          dormitoryId: 3,
-          dormitoryName: '명덕관2',
-          roomSize: 4,
-        },
-        {
-          dormitoryId: 4,
-          dormitoryName: '명덕관이라고합니다요',
-          roomSize: 4,
-        },
-      ]);
-    }
-  }, [data]);
+    const fetchDormList = async () => {
+      if (data) {
+        setStudentData(data);
+        setFileName({
+          copy: data.information.residentPrivateInfoRes.copy,
+          prioritySelectionCopy: data.information.residentPrivateInfoRes.prioritySelectionCopy,
+        });
+
+        //사생 성별 + 거주기간 id에 맞는 기숙사 조회
+        const response = await getDormList(id, data.information.residentDormitoryInfoRes.termId);
+        if (response.check) {
+          setBuildingList(response.information);
+        }
+      }
+    };
+
+    fetchDormList();
+  }, [data, id]);
 
   if (isLoading) return <div></div>;
 
@@ -391,18 +386,24 @@ const Page = () => {
               isBuilding={isBuilding}
               setIsBuilding={setIsBuilding}
               list={buildingList}
-              dormitoryId={studentData?.information.residentDormitoryInfoRes.dormitoryId}
-              handleSelectedId={(value) => {
+              dormInfo={{
+                dormitoryId: studentData?.information.residentDormitoryInfoRes.dormitoryId ?? 0,
+                dormitoryName: studentData?.information.residentDormitoryInfoRes.dormitoryName ?? '',
+                roomSize: studentData?.information.residentDormitoryInfoRes.roomSize ?? 0,
+              }}
+              handleSelectedDorm={(value) => {
                 setSelectedBuilding({
                   isModal: true,
-                  dormitoryId: value,
+                  dormitoryId: value.dormitoryId,
+                  dormitoryName: value.dormitoryName,
+                  roomSize: value.roomSize,
                 });
               }}
               label='건물'
               text={
                 studentData?.information.residentDormitoryInfoRes.dormitoryName
                   ? studentData?.information.residentDormitoryInfoRes.dormitoryName +
-                    (studentData?.information.residentDormitoryInfoRes.roomSize
+                    (studentData?.information.residentDormitoryInfoRes.roomSize !== 0
                       ? '(' + studentData?.information.residentDormitoryInfoRes.roomSize + '인실)'
                       : '')
                   : ''
@@ -551,21 +552,20 @@ const Page = () => {
               setSelectedBuilding({
                 isModal: false,
                 dormitoryId: 0,
+                dormitoryName: '',
+                roomSize: 0,
               });
             }}
             onConfirm={() => {
               setSelectedBuilding({
                 isModal: false,
                 dormitoryId: 0,
+                dormitoryName: '',
+                roomSize: 0,
               });
               handleInputChange('residentDormitoryInfoRes', 'dormitoryId', selectedBuilding.dormitoryId);
-              const selectedBuildingInfo = buildingList.find(
-                (data) => data.dormitoryId === selectedBuilding.dormitoryId,
-              );
-              if (selectedBuildingInfo) {
-                handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuildingInfo.dormitoryName);
-                handleInputChange('residentDormitoryInfoRes', 'roomSize', selectedBuildingInfo.roomSize);
-              }
+              handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuilding.dormitoryName);
+              handleInputChange('residentDormitoryInfoRes', 'roomSize', selectedBuilding.roomSize);
               handleInputChange('residentDormitoryInfoRes', 'roomNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');

@@ -129,3 +129,14 @@ export const useDormTermList = () => {
   );
   return { data, error, isLoading: !error && !data };
 };
+
+//사생 성별에 맞는 기숙사 조회
+export const getDormList = async (residentId: number, termId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/${residentId}/dormitory/${termId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};

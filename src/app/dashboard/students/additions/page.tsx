@@ -48,7 +48,7 @@ const Page = () => {
     residentDormitoryInfoRes: {
       dormitoryId: 0,
       dormitoryName: '',
-      roomSize: null,
+      roomSize: 0,
       roomNumber: null,
       bedNumber: null,
       termId: null,
@@ -65,7 +65,12 @@ const Page = () => {
     copy: null,
     prioritySelectionCopy: null,
   }); //등본, 우선선발 파일
-  const [selectedBuilding, setSelectedBuilding] = useState({ isModal: false, dormitoryId: 0 }); //선택된 건물 저장 및 모달
+  const [selectedBuilding, setSelectedBuilding] = useState({
+    isModal: false,
+    dormitoryId: 0,
+    dormitoryName: '',
+    roomSize: 0,
+  }); //선택된 건물 저장 및 모달
   const [buildingList, setBuildingList] = useState<BuildingList[]>([]); //건물 목록
   const [isTermListModal, setIsTermListModal] = useState(false); //입사 신청 목록 모달
   const [termList, setTermList] = useState<TermResponse['information']>([]); //입사 신청 목록
@@ -87,10 +92,11 @@ const Page = () => {
   };
 
   //거주기간 변경
-  const handleTerm = (id: number) => {
+  const handleTerm = async (id: number) => {
     handleInputChange('residentDormitoryInfoRes', 'termId', id);
     const selectedTerm = availableTermRes.find((data) => data.termId === id);
     if (selectedTerm) handleInputChange('residentDormitoryInfoRes', 'termName', selectedTerm.termName);
+
     setBuildingList([
       {
         dormitoryId: 1,
@@ -358,17 +364,27 @@ const Page = () => {
                 isBuilding={isBuilding}
                 setIsBuilding={setIsBuilding}
                 list={buildingList}
-                dormitoryId={input.residentDormitoryInfoRes.dormitoryId}
-                handleSelectedId={(value) => {
+                dormInfo={{
+                  dormitoryId: input.residentDormitoryInfoRes.dormitoryId,
+                  dormitoryName: input.residentDormitoryInfoRes.dormitoryName,
+                  roomSize: input.residentDormitoryInfoRes.roomSize,
+                }}
+                handleSelectedDorm={(value) => {
                   setSelectedBuilding({
                     isModal: true,
-                    dormitoryId: value,
+                    dormitoryId: value.dormitoryId,
+                    dormitoryName: value.dormitoryName,
+                    roomSize: value.roomSize,
                   });
                 }}
                 label='건물'
                 text={
-                  input.residentDormitoryInfoRes.dormitoryName &&
-                  input.residentDormitoryInfoRes.dormitoryName + '(' + input.residentDormitoryInfoRes.roomSize + '인실)'
+                  input.residentDormitoryInfoRes.dormitoryName
+                    ? input.residentDormitoryInfoRes.dormitoryName +
+                      (input.residentDormitoryInfoRes.roomSize !== 0
+                        ? '(' + input.residentDormitoryInfoRes.roomSize + '인실)'
+                        : '')
+                    : ''
                 }
                 value={input.residentDormitoryInfoRes.dormitoryName}
               />
@@ -472,21 +488,20 @@ const Page = () => {
               setSelectedBuilding({
                 isModal: false,
                 dormitoryId: 0,
+                dormitoryName: '',
+                roomSize: 0,
               });
             }}
             onConfirm={() => {
               setSelectedBuilding({
                 isModal: false,
                 dormitoryId: 0,
+                dormitoryName: '',
+                roomSize: 0,
               });
               handleInputChange('residentDormitoryInfoRes', 'dormitoryId', selectedBuilding.dormitoryId);
-              const selectedBuildingInfo = buildingList.find(
-                (data) => data.dormitoryId === selectedBuilding.dormitoryId,
-              );
-              if (selectedBuildingInfo) {
-                handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuildingInfo.dormitoryName);
-                handleInputChange('residentDormitoryInfoRes', 'roomSize', selectedBuildingInfo.roomSize);
-              }
+              handleInputChange('residentDormitoryInfoRes', 'dormitoryName', selectedBuilding.dormitoryName);
+              handleInputChange('residentDormitoryInfoRes', 'roomSize', selectedBuilding.roomSize);
               handleInputChange('residentDormitoryInfoRes', 'roomNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');
