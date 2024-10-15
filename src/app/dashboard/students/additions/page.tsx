@@ -11,7 +11,7 @@ import { handleFileChange } from '../details/page';
 import { BuildingList, TermResponse, TermResponseInformation } from '@/types/student';
 import TermList from '@/components/templates/Student/Addition/TermList';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
-import { getDormList, getRoomManual, useDormTermList } from '@/apis/student';
+import { getDormList, getRoomManual, postAddStudent, useDormTermList } from '@/apis/student';
 
 const Page = () => {
   const router = useRouter();
@@ -69,7 +69,7 @@ const Page = () => {
       dormitoryName: '',
       roomSize: 0,
       roomNumber: 0,
-      bedNumber: null,
+      bedNumber: 0,
       termId: 0,
       termName: '',
       isApplyRoommate: false,
@@ -90,7 +90,7 @@ const Page = () => {
     if (selectedTerm) handleInputChange('residentDormitoryInfoRes', 'termName', selectedTerm.termName);
 
     //사생 성별 + 거주기간 id에 맞는 기숙사 조회 (사생 id를 알 수 없어서 추후 수정 필요)
-    const response = await getDormList(13, input.residentDormitoryInfoRes.termId);
+    const response = await getDormList(13, id);
     if (response.check) {
       setBuildingList(response.information);
     }
@@ -128,6 +128,20 @@ const Page = () => {
 
   //생성하기 버튼 클릭 시
   const handleCreate = async () => {
+    const addStudentData = {
+      name: input.residentPrivateInfoRes.name,
+      gender: input.residentPrivateInfoRes.gender,
+      hasKey: input.residentPrivateInfoRes.hasKey,
+      residentDormitoryInfoReq: {
+        dormitoryId: input.residentDormitoryInfoRes.dormitoryId,
+        roomSize: input.residentDormitoryInfoRes.roomSize,
+        roomNumber: input.residentDormitoryInfoRes.roomNumber,
+        bedNumber: input.residentDormitoryInfoRes.bedNumber,
+        termId: input.residentDormitoryInfoRes.termId,
+      },
+    };
+
+    await postAddStudent(addStudentData);
     setEditState(false);
     router.push(`/dashboard/students`);
   };
@@ -505,7 +519,12 @@ const Page = () => {
           <AlertPrompt
             variant='red'
             label='해당 호실에는 현재 빈 자리가 없습니다.'
-            onConfirm={() => setIsRoomNotNullModal(false)}
+            onConfirm={() => {
+              setIsRoomNotNullModal(false);
+              handleInputChange('residentDormitoryInfoRes', 'roomNumber', '');
+              handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
+              handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');
+            }}
           />
         </BackDrop>
       )}

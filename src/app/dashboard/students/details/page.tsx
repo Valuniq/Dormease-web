@@ -582,7 +582,12 @@ const Page = () => {
           <AlertPrompt
             variant='red'
             label='해당 호실에는 현재 빈 자리가 없습니다.'
-            onConfirm={() => setIsRoomNotNullModal(false)}
+            onConfirm={() => {
+              setIsRoomNotNullModal(false);
+              handleInputChange('residentDormitoryInfoRes', 'roomNumber', '');
+              handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
+              handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');
+            }}
           />
         </BackDrop>
       )}

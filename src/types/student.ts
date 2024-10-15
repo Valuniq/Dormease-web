@@ -104,3 +104,16 @@ export type StudentInfoEditRequest = {
     emergencyRelation: string;
   };
 };
+
+export type AddStudentRequest = {
+  name: string;
+  gender: string;
+  hasKey: boolean;
+  residentDormitoryInfoReq: {
+    dormitoryId: number;
+    roomSize: number;
+    roomNumber: number;
+    bedNumber: number;
+    termId: number;
+  };
+};

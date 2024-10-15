@@ -1,5 +1,6 @@
 import { BASE_URL } from '@/constants/path';
 import {
+  AddStudentRequest,
   StudentDetailResponse,
   StudentInfoEditRequest,
   StudentListResponse,
@@ -152,5 +153,17 @@ export const getRoomManual = async (dormitoryId: number, roomNumber: number) => 
       },
     },
   );
+  return res;
+};
+
+//사생 직접 추가
+export const postAddStudent = async (addStudentData: AddStudentRequest) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/manual`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(addStudentData),
+  });
   return res;
 };
