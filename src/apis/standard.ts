@@ -1,4 +1,4 @@
-import { StandardSettingRequest } from '@/types/standard';
+import { StandardSettingRegionResList, StandardSettingRegionsResponse, StandardSettingRequest } from '@/types/standard';
 import { BASE_URL } from '@/constants/path';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
@@ -17,6 +17,24 @@ export const useStandard = () => {
         }
       },
     },
+  );
+  return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 광역시도 지역 목록 조회
+export const useRegions = () => {
+  const { data, error, mutate } = useSWR<StandardSettingRegionsResponse>(
+    `${BASE_URL}/api/v1/web/regions`,
+    fetchWithTokens,
+  );
+  return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 광역시도 지역 목록 조회
+export const useRegionsDetail = (regionId: number) => {
+  const { data, error, mutate } = useSWR<StandardSettingRegionsResponse>(
+    `${BASE_URL}/api/v1/web/regions/${regionId}`,
+    fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
 };
@@ -40,7 +58,31 @@ export const postStandard = async (StandardSettingInformation: StandardSettingRe
       sameSmoke: StandardSettingInformation.sameSmoke,
       sameTerm: StandardSettingInformation.sameTerm,
       entrancePledge: StandardSettingInformation.entrancePledge,
-      distanceScoreResList: StandardSettingInformation.distanceScoreReqList,
+      distanceScoreReqList: StandardSettingInformation.distanceScoreReqList,
+    }),
+  });
+  return res;
+};
+
+export const patchStandard = async (StandardSettingInformation: StandardSettingRequest, standardSettingId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/standardSetting/${standardSettingId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      minScore: StandardSettingInformation.minScore,
+      scoreRatio: StandardSettingInformation.scoreRatio,
+      distanceRatio: StandardSettingInformation.distanceRatio,
+      pointReflection: StandardSettingInformation.pointReflection,
+      tiePriority: StandardSettingInformation.tiePriority,
+      freshmanStandard: StandardSettingInformation.freshmanStandard,
+      prioritySelection: StandardSettingInformation.prioritySelection,
+      movePassSelection: StandardSettingInformation.movePassSelection,
+      sameSmoke: StandardSettingInformation.sameSmoke,
+      sameTerm: StandardSettingInformation.sameTerm,
+      entrancePledge: StandardSettingInformation.entrancePledge,
+      distanceScoreReqList: StandardSettingInformation.distanceScoreReqList,
     }),
   });
   return res;

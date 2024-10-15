@@ -6,6 +6,11 @@ export type passMemberResponse = {
   };
 };
 
+export type passMemberSearchResponse = {
+  check: boolean;
+  information: passMemberResponseInformation[];
+};
+
 export type passMemberResponseInformation = {
   dormitoryApplicationId: number;
   studentName: string;

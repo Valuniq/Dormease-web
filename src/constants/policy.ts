@@ -50,3 +50,10 @@ export const POL_DORM = {
     maxLength: 200, //메모 최대 길이
   },
 };
+
+// 기준 설정
+export const POL_STANDARD = {
+  pledgeWriting: {
+    maxLength: 5000, // 입사 서약서 최대 글자수
+  },
+};
