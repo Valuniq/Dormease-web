@@ -2,10 +2,12 @@
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import LoginBtn from '@/components/atoms/AllBtn/LoginBtn/LoginBtn';
 import LoginInputText from '@/components/atoms/InputText/LoginInputText/LoginInputText';
+import SecureConfirmPrompt from '@/components/templates/Accounts/SecureConfirmPrompt';
 import { accountsModalState } from '@/recoil/account';
 import { UserLoginRequest } from '@/types/user';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
+import BackDrop from '../BackDrop/Backdrop';
 
 type Props = {
   loginId: string;
@@ -19,6 +21,8 @@ type Props = {
   setNewPassword: (value: string) => void;
   confirmedPassword: string;
   setConfirmedPassword: (value: string) => void;
+  isPWEditMode: boolean;
+  setIsPWEditMode: (value: boolean) => void;
 };
 
 const LoginForm = ({
@@ -32,13 +36,33 @@ const LoginForm = ({
   setNewPassword,
   confirmedPassword,
   setConfirmedPassword,
-
   errorMessage,
+  isPWEditMode,
+  setIsPWEditMode,
 }: Props) => {
-  const [isPWEditMode, setIsPWEditMode] = useState(false);
+  const [secure, setSecure] = useState('');
   const [modalState, setModalState] = useRecoilState(accountsModalState);
+  // 비밀번호 편집 모드 활성화 함수
+  const activatePasswordEdit = () => {
+    setIsPWEditMode(true); // 비밀번호 편집 모드를 활성화
+  };
   return (
     <>
+      {modalState.passwordSecure && (
+        <BackDrop isOpen={modalState.passwordSecure}>
+          <SecureConfirmPrompt
+            variant={'red'}
+            label={'비밀번호 변경을 위해 보안코드를 입력해주세요'}
+            onClose={() => {
+              setModalState((prev) => ({ ...prev, passwordSecure: false })), setSecure('');
+            }}
+            secure={secure}
+            setSecure={setSecure}
+            activatePasswordEdit={activatePasswordEdit}
+          />
+        </BackDrop>
+      )}
+
       <div className='w-510 h-485 bg-white rounded-[12.35px] shadow-lg flex flex-col items-center justify-center'>
         {isPWEditMode ? (
           <>
@@ -93,7 +117,10 @@ const LoginForm = ({
                   />
                   <span className='alert-cap text-black'>자동 로그인</span>
                 </div>
-                <div onClick={() => setIsPWEditMode(true)} className='H4 text-blue-blue30'>
+                <div
+                  onClick={() => setModalState((prev) => ({ ...prev, passwordSecure: true }))}
+                  className='cursor-pointer H4 text-blue-blue30'
+                >
                   비밀번호 찾기
                 </div>
               </div>
