@@ -1,4 +1,4 @@
-import { studentIdState } from '@/recoil/studentManagement';
+import { studentIdState } from '@/recoil/student';
 import { StudentListResponseDataList } from '@/types/student';
 import { useRouter } from 'next/navigation';
 import React, { forwardRef, ForwardRefRenderFunction } from 'react';
