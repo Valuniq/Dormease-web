@@ -8,8 +8,10 @@ import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 import { useRouter } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
-import { useStudentDetail } from '@/apis/student';
+import { deleteStudentBlackList, deleteStudentResign, putStudentPrivateInfo, useStudentDetail } from '@/apis/student';
 import { studentIdState } from '@/recoil/student';
+import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
+import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 
 const Page = () => {
   const router = useRouter();
@@ -17,10 +19,68 @@ const Page = () => {
   const id = useRecoilValue(studentIdState);
   const [isEdit, setIsEdit] = useState(false);
   const [isBuilding, setIsBuilding] = useState(false);
-  const { data, error, isLoading, mutate } = useStudentDetail(id);
-
+  const { data, error, isLoading } = useStudentDetail(id);
   const [studentData, setStudentData] = useState(data);
+  const [fileName, setFileName] = useState({
+    copy: '',
+    prioritySelectionCopy: '',
+  });
+  const [file, setFile] = useState<{ copy: File | null; prioritySelectionCopy: File | null }>({
+    copy: null,
+    prioritySelectionCopy: null,
+  });
+  const [isEditModal, setIsEditModal] = useState(false); //수정 모달
+  const [isAddBlackListModal, setIsAddBlackListModal] = useState(false); //블랙리스트 모달
+  const [isBlackListModal, setIsBlackListModal] = useState(false); //블랙리스트 페이지 이동 모달
+  const [isAddResignModal, setIsAddResignModal] = useState(false); //퇴사처리 모달
 
+  useEffect(() => {
+    if (data) {
+      setStudentData(data);
+      setFileName({
+        copy: data.information.residentPrivateInfoRes.copy,
+        prioritySelectionCopy: data.information.residentPrivateInfoRes.prioritySelectionCopy,
+      });
+    }
+  }, [data]);
+
+  if (isLoading) return <div></div>;
+
+  //파일 변경
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.log('파일이 선택되지 않았습니다.');
+      return;
+    }
+
+    const file = e.target.files[0];
+    const fileUrl = URL.createObjectURL(file);
+    const fileName = file.name;
+
+    setFileName((prevData) => ({
+      ...prevData,
+      [field]: fileName,
+    }));
+
+    setStudentData((prevData) => {
+      if (!prevData) return prevData;
+
+      return {
+        ...prevData,
+        information: {
+          ...prevData.information,
+          residentPrivateInfoRes: {
+            ...prevData.information.residentPrivateInfoRes,
+            ...prevData.information.residentDormitoryInfoRes,
+            [field]: fileUrl,
+          },
+        },
+        check: prevData.check ?? false,
+      };
+    });
+  };
+
+  //수정 시 보여지는 데이터 변경
   const handleInputChange = (resKey: string, field: string, value: string | number | boolean) => {
     setStudentData((prevData) => {
       if (!prevData) return prevData;
@@ -40,13 +100,47 @@ const Page = () => {
     });
   };
 
-  useEffect(() => {
-    if (data) {
-      setStudentData(data);
-    }
-  }, [data]);
+  //수정 완료 버튼 클릭 시
+  const handleEdit = async () => {
+    if (!studentData || !studentData.information) return null;
 
-  if (isLoading) return <div></div>;
+    const residentPrivateInfoReq = {
+      dormitoryPayment: studentData.information.residentPrivateInfoRes.dormitoryPayment,
+      hasKey: studentData.information.residentPrivateInfoRes.hasKey,
+      bankName: studentData.information.residentPrivateInfoRes.bankName,
+      accountNumber: studentData.information.residentPrivateInfoRes.accountNumber,
+      emergencyContact: studentData.information.residentPrivateInfoRes.emergencyContact,
+      emergencyRelation: studentData.information.residentPrivateInfoRes.emergencyRelation,
+    };
+
+    const response = await putStudentPrivateInfo(id, file.copy, file.prioritySelectionCopy, residentPrivateInfoReq);
+
+    if (response.check) {
+      setEditState(false);
+      router.push(`/dashboard/students`);
+    }
+  };
+
+  //블랙리스트
+  const handleBlackList = async () => {
+    const response = await deleteStudentBlackList(id);
+
+    if (response.check) {
+      setEditState(false);
+      setIsAddBlackListModal(false);
+      setIsBlackListModal(true);
+    }
+  };
+
+  //퇴사처리
+  const handleResign = async () => {
+    const response = await deleteStudentResign(id);
+
+    if (response.check) {
+      setEditState(false);
+      router.push(`/dashboard/students`);
+    }
+  };
 
   return (
     <div className='flex flex-col relative w-[1200px]'>
@@ -115,15 +209,17 @@ const Page = () => {
             label='등본'
             isEdit={isEdit}
             type='file'
-            text={studentData?.information.residentPrivateInfoRes.copy}
+            text={fileName.copy}
             value={studentData?.information.residentPrivateInfoRes.copy}
+            handleFileChange={(e) => handleFileChange(e, 'copy')}
           />
           <StudentManagement
             label='우선선발'
             isEdit={isEdit}
             type='file'
-            text={studentData?.information.residentPrivateInfoRes.prioritySelectionCopy}
+            text={fileName.prioritySelectionCopy}
             value={studentData?.information.residentPrivateInfoRes.prioritySelectionCopy}
+            handleFileChange={(e) => handleFileChange(e, 'prioritySelectionCopy')}
           />
           <StudentManagement
             label='식수'
@@ -295,22 +391,75 @@ const Page = () => {
         <>
           <div className='relative mt-16'>
             <div className='flex gap-13 absolute right-0 -top-8'>
-              <BlackListBtn label='블랙리스트' />
-              <ResignBtn label='퇴사처리' />
+              <BlackListBtn label='블랙리스트' onClick={() => setIsAddBlackListModal(true)} />
+              <ResignBtn label='퇴사처리' onClick={() => setIsAddResignModal(true)} />
             </div>
           </div>
           <div className='flex justify-center mt-9'>
-            <BtnMidVariant
-              label='수정완료'
-              disabled={false}
-              variant='blue'
-              onClick={() => {
-                setEditState(false);
-                router.push(`/dashboard/students`);
-              }}
-            />
+            <BtnMidVariant label='수정완료' disabled={false} variant='blue' onClick={() => setIsEditModal(true)} />
           </div>
         </>
+      )}
+      {isEditModal && (
+        <BackDrop isOpen={isEditModal}>
+          <ConfirmPrompt
+            variant='blue'
+            label='수정을 완료하시겠습니까?'
+            onCancel={() => {
+              setIsEditModal(false);
+            }}
+            onConfirm={() => {
+              setIsEditModal(false);
+              handleEdit();
+            }}
+          />
+        </BackDrop>
+      )}
+      {isAddBlackListModal && (
+        <BackDrop isOpen={isAddBlackListModal}>
+          <ConfirmPrompt
+            variant='blue'
+            label='블랙리스트로 추가하시겠습니까?'
+            onCancel={() => {
+              setIsAddBlackListModal(false);
+            }}
+            onConfirm={() => {
+              setIsAddBlackListModal(false);
+              handleBlackList();
+            }}
+          />
+        </BackDrop>
+      )}
+      {isBlackListModal && (
+        <BackDrop isOpen={isBlackListModal}>
+          <ConfirmPrompt
+            variant='blue'
+            label='블랙리스트 페이지로 이동하시겠습니까?'
+            onCancel={() => {
+              setIsBlackListModal(false);
+              router.push(`/dashboard/students`);
+            }}
+            onConfirm={() => {
+              setIsBlackListModal(false);
+              router.push(`/dashboard/students/blacklists`);
+            }}
+          />
+        </BackDrop>
+      )}
+      {isAddResignModal && (
+        <BackDrop isOpen={isAddResignModal}>
+          <ConfirmPrompt
+            variant='red'
+            label='퇴사처리를 하시겠습니까?'
+            onCancel={() => {
+              setIsAddResignModal(false);
+            }}
+            onConfirm={() => {
+              setIsAddResignModal(false);
+              handleResign();
+            }}
+          />
+        </BackDrop>
       )}
     </div>
   );

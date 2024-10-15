@@ -62,5 +62,55 @@ export const useStudentDetail = (residentId: number) => {
     `${BASE_URL}/api/v1/web/residents/${residentId}`,
     fetchWithTokens,
   );
-  return { data, error, isLoading: !error && !data, mutate };
+  return { data, error, isLoading: !error && !data };
+};
+
+//사생 정보 수정(개인정보)
+export const putStudentPrivateInfo = async (
+  residentId: number,
+  copy: File | null,
+  prioritySelectionCopy: File | null,
+  residentPrivateInfoReq: any,
+) => {
+  const formData = new FormData();
+
+  if (copy) {
+    formData.append('copy', copy);
+  }
+  if (prioritySelectionCopy) {
+    formData.append('prioritySelectionCopy', prioritySelectionCopy);
+  }
+
+  formData.append(
+    'residentPrivateInfoReq',
+    new Blob([JSON.stringify(residentPrivateInfoReq)], { type: 'application/json' }),
+  );
+
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/${residentId}`, {
+    method: 'PUT',
+    body: formData,
+  });
+  return res;
+};
+
+//사생 블랙리스트 처리
+export const deleteStudentBlackList = async (residentId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/${residentId}/blackList`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
+};
+
+//사생 퇴사 처리
+export const deleteStudentResign = async (residentId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/${residentId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return res;
 };

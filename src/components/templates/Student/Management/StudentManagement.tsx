@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import CheckFileBtn from '@/components/atoms/AllBtn/CheckFileBtn/CheckFileBtn';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import MediumInputText from '@/components/atoms/InputText/MediumInputText/MediumInputText';
@@ -24,13 +24,28 @@ type Props = {
   select?: string;
   setSelect?: (isOn: string) => void;
   setIsOn?: (isOn: boolean) => void;
+  handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const FileEdit = ({ text }: Props) => {
+const FileEdit = ({ text, handleFileChange }: Props) => {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
+  const onAddFile = () => {
+    inputFileRef.current?.click();
+  };
+
   return (
     <>
-      <CheckFileBtn label='파일수정' />
-      <div className='border-b-1 h-30 border-gray-grayscale40 ml-10 w-123 H4 text-gray-grayscale50 overflow-hidden text-nowrap'>
+      <CheckFileBtn label='파일수정' onClick={onAddFile} />
+      <input
+        id='fileInput'
+        type='file'
+        accept='*'
+        style={{ display: 'none', visibility: 'hidden' }}
+        ref={inputFileRef}
+        onChange={handleFileChange}
+      />
+      <div className='border-b-1 h-30 border-gray-grayscale40 ml-10 overflow-x-auto overflow-y-hidden w-123 H4 text-gray-grayscale50 text-nowrap noscrollbar-table'>
         {text}
       </div>
     </>
@@ -125,12 +140,13 @@ const StudentManagement = ({
   select,
   setSelect,
   setIsOn,
+  handleFileChange,
 }: Props) => {
   const renderContent = () => {
     if (isEdit) {
       switch (type) {
         case 'file':
-          return <FileEdit text={text} />;
+          return <FileEdit text={text} handleFileChange={handleFileChange} />;
         case 'checkbox':
           return <CheckboxEdit text={text} value={value} setIsChecked={setIsChecked} />;
         case 'string':
@@ -156,7 +172,18 @@ const StudentManagement = ({
           return null;
       }
     } else if (type === 'file') {
-      return <CheckFileBtn label='파일보기' />;
+      return (
+        <>
+          {value && (
+            <CheckFileBtn
+              label='파일보기'
+              onClick={() => {
+                typeof value === 'string' && window.open(value, '_blank');
+              }}
+            />
+          )}
+        </>
+      );
     } else {
       return <h4 className='H4 text-gray-grayscale50'>{text}</h4>;
     }
