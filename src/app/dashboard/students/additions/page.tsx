@@ -11,7 +11,7 @@ import { handleFileChange } from '../details/page';
 import { BuildingList, TermResponse, TermResponseInformation } from '@/types/student';
 import TermList from '@/components/templates/Student/Addition/TermList';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
-import { useDormTermList } from '@/apis/student';
+import { getDormList, getRoomManual, useDormTermList } from '@/apis/student';
 
 const Page = () => {
   const router = useRouter();
@@ -20,6 +20,25 @@ const Page = () => {
   const [isBuilding, setIsBuilding] = useState(false);
   const [isCreateModal, setIsCreateModal] = useState(false); //생성 모달
   const [isRoomNotNullModal, setIsRoomNotNullModal] = useState(false); //호실에 빈자리가 없는 경우 모달
+  const [fileName, setFileName] = useState({
+    copy: '',
+    prioritySelectionCopy: '',
+  }); //등본, 우선선발 파일 이름
+  const [file, setFile] = useState<{ copy: File | null; prioritySelectionCopy: File | null }>({
+    copy: null,
+    prioritySelectionCopy: null,
+  }); //등본, 우선선발 파일
+  const [selectedBuilding, setSelectedBuilding] = useState({
+    isModal: false,
+    dormitoryId: 0,
+    dormitoryName: '',
+    roomSize: 0,
+  }); //선택된 건물 저장 및 모달
+  const [buildingList, setBuildingList] = useState<BuildingList[]>([]); //건물 목록
+  const [isTermListModal, setIsTermListModal] = useState(false); //입사 신청 목록 모달
+  const [termList, setTermList] = useState<TermResponse['information']>([]); //입사 신청 목록
+  const [availableTermRes, setAvailableTermRes] = useState<TermResponseInformation['availableTermRes']>([]); //거주 기간 목록
+  const { data, error, isLoading } = useDormTermList(); //입사신청 및 거주기간 목록 조회
   const [input, setInput] = useState({
     residentPrivateInfoRes: {
       name: '',
@@ -49,33 +68,14 @@ const Page = () => {
       dormitoryId: 0,
       dormitoryName: '',
       roomSize: 0,
-      roomNumber: null,
+      roomNumber: 0,
       bedNumber: null,
-      termId: null,
+      termId: 0,
       termName: '',
       isApplyRoommate: false,
       roommateNames: [''],
     },
   });
-  const [fileName, setFileName] = useState({
-    copy: '',
-    prioritySelectionCopy: '',
-  }); //등본, 우선선발 파일 이름
-  const [file, setFile] = useState<{ copy: File | null; prioritySelectionCopy: File | null }>({
-    copy: null,
-    prioritySelectionCopy: null,
-  }); //등본, 우선선발 파일
-  const [selectedBuilding, setSelectedBuilding] = useState({
-    isModal: false,
-    dormitoryId: 0,
-    dormitoryName: '',
-    roomSize: 0,
-  }); //선택된 건물 저장 및 모달
-  const [buildingList, setBuildingList] = useState<BuildingList[]>([]); //건물 목록
-  const [isTermListModal, setIsTermListModal] = useState(false); //입사 신청 목록 모달
-  const [termList, setTermList] = useState<TermResponse['information']>([]); //입사 신청 목록
-  const [availableTermRes, setAvailableTermRes] = useState<TermResponseInformation['availableTermRes']>([]); //거주 기간 목록
-  const { data, error, isLoading } = useDormTermList(); //입사신청 및 거주기간 목록 조회
 
   useEffect(() => {
     if (data) {
@@ -83,42 +83,31 @@ const Page = () => {
     }
   }, [data]);
 
-  //호실 재배치
-  const handleRoomNumber = () => {
-    console.log(input.residentDormitoryInfoRes.roomNumber);
-    setIsRoomNotNullModal(true);
-    handleInputChange('residentDormitoryInfoRes', 'bedNumber', 0);
-    handleInputChange('residentDormitoryInfoRes', 'roommateNames', ['하하', '하하']);
-  };
-
   //거주기간 변경
   const handleTerm = async (id: number) => {
     handleInputChange('residentDormitoryInfoRes', 'termId', id);
     const selectedTerm = availableTermRes.find((data) => data.termId === id);
     if (selectedTerm) handleInputChange('residentDormitoryInfoRes', 'termName', selectedTerm.termName);
 
-    setBuildingList([
-      {
-        dormitoryId: 1,
-        dormitoryName: '명덕관',
-        roomSize: 2,
-      },
-      {
-        dormitoryId: 2,
-        dormitoryName: '건물명2',
-        roomSize: 3,
-      },
-      {
-        dormitoryId: 3,
-        dormitoryName: '명덕관2',
-        roomSize: 4,
-      },
-      {
-        dormitoryId: 4,
-        dormitoryName: '명덕관이라고합니다요',
-        roomSize: 4,
-      },
-    ]);
+    //사생 성별 + 거주기간 id에 맞는 기숙사 조회 (사생 id를 알 수 없어서 추후 수정 필요)
+    const response = await getDormList(13, input.residentDormitoryInfoRes.termId);
+    if (response.check) {
+      setBuildingList(response.information);
+    }
+  };
+
+  //호실 배치
+  const handleRoomNumber = async () => {
+    const response = await getRoomManual(
+      input.residentDormitoryInfoRes.dormitoryId,
+      input.residentDormitoryInfoRes.roomNumber,
+    );
+    if (response.check && response.information.possible) {
+      handleInputChange('residentDormitoryInfoRes', 'bedNumber', response.information.bedNumber);
+      handleInputChange('residentDormitoryInfoRes', 'roommateNames', response.information.roommateNames);
+    } else {
+      setIsRoomNotNullModal(true);
+    }
   };
 
   //보이는 데이터 변경
@@ -395,7 +384,9 @@ const Page = () => {
                 label='호실'
                 text={input.residentDormitoryInfoRes.roomNumber ? `${input.residentDormitoryInfoRes.roomNumber}호` : ''}
                 value={input.residentDormitoryInfoRes.roomNumber}
-                input={input.residentDormitoryInfoRes.roomNumber}
+                input={
+                  input.residentDormitoryInfoRes.roomNumber ? input.residentDormitoryInfoRes.roomNumber.toString() : ''
+                }
                 setInput={(value) => handleInputChange('residentDormitoryInfoRes', 'roomNumber', value)}
                 handleRoomNumber={handleRoomNumber}
               />

@@ -140,3 +140,17 @@ export const getDormList = async (residentId: number, termId: number) => {
   });
   return res;
 };
+
+//호실 배정 시 침대번호 및 룸메이트 정보 조회
+export const getRoomManual = async (dormitoryId: number, roomNumber: number) => {
+  const res = await fetchWithTokens(
+    `${BASE_URL}/api/v1/web/residents/manual?dormitoryId=${dormitoryId}&roomNumber=${roomNumber}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  return res;
+};

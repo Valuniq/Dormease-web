@@ -93,7 +93,7 @@ const TermNameEdit = ({ availableTermRes, handleTermList, handleTerm }: Props) =
   return (
     <>
       {availableTermRes?.length === 0 ? (
-        <div className='pl-160'>
+        <div className='pl-[280px]'>
           <BtnMiniVariant
             label='기간 불러오기'
             disabled={false}
@@ -179,7 +179,7 @@ const RoomNumberEdit = ({ input, setInput, handleRoomNumber, readOnly }: Props) 
     <div className='flex items-center'>
       {setInput && <PointBar input={input || ''} setInput={setInput} maxLength={4} readonly={readOnly} />}
       <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>호</h4>
-      <BtnMiniVariant label='재배치' disabled={!input} selected={false} variant='blue' onClick={handleRoomNumber} />
+      <BtnMiniVariant label='배치' disabled={!input} selected={false} variant='blue' onClick={handleRoomNumber} />
     </div>
   );
 };

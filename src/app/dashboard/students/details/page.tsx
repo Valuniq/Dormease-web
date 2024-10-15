@@ -12,6 +12,7 @@ import {
   deleteStudentBlackList,
   deleteStudentResign,
   getDormList,
+  getRoomManual,
   putStudentInfo,
   useStudentDetail,
 } from '@/apis/student';
@@ -165,12 +166,20 @@ const Page = () => {
     router.push(`/dashboard/students`);
   };
 
-  //호실 재배치
-  const handleRoomNumber = () => {
-    console.log(studentData?.information.residentDormitoryInfoRes.roomNumber);
-    setIsRoomNotNullModal(true);
-    handleInputChange('residentDormitoryInfoRes', 'bedNumber', 0);
-    handleInputChange('residentDormitoryInfoRes', 'roommateNames', ['하하', '하하']);
+  //호실 배치
+  const handleRoomNumber = async () => {
+    if (!studentData) return null;
+
+    const response = await getRoomManual(
+      studentData.information.residentDormitoryInfoRes.dormitoryId,
+      studentData.information.residentDormitoryInfoRes.roomNumber,
+    );
+    if (response.check && response.information.possible) {
+      handleInputChange('residentDormitoryInfoRes', 'bedNumber', response.information.bedNumber);
+      handleInputChange('residentDormitoryInfoRes', 'roommateNames', response.information.roommateNames);
+    } else {
+      setIsRoomNotNullModal(true);
+    }
   };
 
   //블랙리스트
@@ -437,11 +446,6 @@ const Page = () => {
                   : ''
               }
               value={studentData?.information.residentDormitoryInfoRes.bedNumber}
-              input={
-                studentData?.information.residentDormitoryInfoRes.bedNumber
-                  ? studentData?.information.residentDormitoryInfoRes.bedNumber.toString()
-                  : ''
-              }
             />
           </div>
           <div className='flex-1 flex flex-col'>
