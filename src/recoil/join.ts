@@ -120,7 +120,7 @@ export const nowJoinApplicationState = atom<nowJoinResponseInformation>({
     depositStartDate: '',
     depositEndDate: '',
     securityDeposit: 0,
-    applicationStatue: 'NOW',
+    applicationStatus: 'NOW',
     dormitorySettingTermResList: [],
     termResList: [],
     mealTicketResList: [],
@@ -140,7 +140,7 @@ export const termResListState = atom<nowJoinResponseTermResList[]>({
         {
           dormitoryRoomTypeId: 0,
           dormitoryTermId: 0,
-          price: 0,
+          price: null,
         },
       ],
     },

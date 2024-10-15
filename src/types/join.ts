@@ -94,7 +94,7 @@ export type nowJoinResponseInformation = {
   depositStartDate: string; //입금 시작일
   depositEndDate: string; //입금 마감일
   securityDeposit: number | null; //보증금
-  applicationStatue: 'BEFORE' | 'NOW' | 'READY' | 'DEPOSIT' | 'PASS ';
+  applicationStatus: 'BEFORE' | 'NOW' | 'READY' | 'DEPOSIT' | 'PASS ';
 
   dormitorySettingTermResList: nowJoinResponseDormitorySettingTermResList[]; // 기숙사 정보 리스트
   termResList: nowJoinResponseTermResList[]; //거주 기간 리스트
@@ -123,7 +123,7 @@ export type nowJoinResponseTermResList = {
 export type nowJoinResponseTermResListDormitoryTermResList = {
   dormitoryTermId: number;
   dormitoryRoomTypeId: number;
-  price: number;
+  price: number | null;
 };
 
 // 식권 정보 리스트
