@@ -176,6 +176,7 @@ const Page = () => {
               label='이름'
               isEdit={isEdit}
               type='string'
+              maxLength={8}
               text={input.residentPrivateInfoRes.name}
               value={input.residentPrivateInfoRes.name}
               input={input.residentPrivateInfoRes.name}
@@ -185,6 +186,7 @@ const Page = () => {
               label='학번'
               isEdit={isEdit}
               type='string'
+              maxLength={12}
               text={input.residentPrivateInfoRes.studentNumber}
               value={input.residentPrivateInfoRes.studentNumber}
               input={input.residentPrivateInfoRes.studentNumber}

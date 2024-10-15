@@ -31,6 +31,7 @@ type Props = {
   handleTermList?: () => void;
   handleTerm?: (selectedTermId: number) => void;
   readOnly?: boolean;
+  maxLength?: number;
 };
 
 const FileEdit = ({ text, handleFileChange }: Props) => {
@@ -51,8 +52,8 @@ const FileEdit = ({ text, handleFileChange }: Props) => {
         ref={inputFileRef}
         onChange={handleFileChange}
       />
-      <div className='border-b-1 h-30 border-gray-grayscale40 ml-10 overflow-x-auto overflow-y-hidden w-123 H4 text-gray-grayscale50 text-nowrap noscrollbar-table'>
-        {text}
+      <div className='border-b-1 h-30 border-gray-grayscale40 ml-10 overflow-x-auto overflow-y-hidden w-160 H4 text-gray-grayscale50 text-nowrap noscrollbar-table'>
+        {typeof text === 'string' && text.replace('https://dormease-s3-bucket.s3.amazonaws.com/', '')}
       </div>
     </>
   );
@@ -67,8 +68,10 @@ const CheckboxEdit = ({ text, value, setIsChecked }: Props) => {
   );
 };
 
-const StringEdit = ({ input, setInput }: Props) => {
-  return <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} />}</>;
+const StringEdit = ({ input, setInput, maxLength }: Props) => {
+  return (
+    <>{setInput && <MediumInputText placeholder='' input={input || ''} setInput={setInput} maxLength={maxLength} />}</>
+  );
 };
 
 const RadioEdit = ({ value, setIsOn }: Props) => {
@@ -206,6 +209,7 @@ const StudentManagement = ({
   handleTermList,
   handleTerm,
   readOnly,
+  maxLength,
 }: Props) => {
   const renderContent = () => {
     if (isEdit) {
@@ -215,7 +219,7 @@ const StudentManagement = ({
         case 'checkbox':
           return <CheckboxEdit text={text} value={value} setIsChecked={setIsChecked} />;
         case 'string':
-          return <StringEdit input={input} setInput={setInput} />;
+          return <StringEdit input={input} setInput={setInput} maxLength={maxLength} />;
         case 'radio':
           return <RadioEdit value={value} setIsOn={setIsOn} />;
         case 'termName':
@@ -265,7 +269,7 @@ const StudentManagement = ({
       <h4
         className={`H4-caption text-gray-grayscale50 relative ${label === '거주기간' && isEdit ? 'min-w-90' : 'min-w-205'}`}
       >
-        {isEdit && (label === '이름' || label === '성별' || label === '거주기간') ? (
+        {isEdit && (label === '이름' || label === '성별' || label === '거주기간' || label === '건물') ? (
           <>
             {label}
             <p className='H4 text-red-red20 inline-block absolute bottom-3 ml-2'>*</p>

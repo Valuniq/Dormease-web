@@ -392,11 +392,12 @@ const Page = () => {
               }}
               label='건물'
               text={
-                studentData?.information.residentDormitoryInfoRes.dormitoryName &&
-                studentData?.information.residentDormitoryInfoRes.dormitoryName +
-                  '(' +
-                  studentData?.information.residentDormitoryInfoRes.roomSize +
-                  '인실)'
+                studentData?.information.residentDormitoryInfoRes.dormitoryName
+                  ? studentData?.information.residentDormitoryInfoRes.dormitoryName +
+                    (studentData?.information.residentDormitoryInfoRes.roomSize
+                      ? '(' + studentData?.information.residentDormitoryInfoRes.roomSize + '인실)'
+                      : '')
+                  : ''
               }
               value={studentData?.information.residentDormitoryInfoRes.dormitoryName}
             />
@@ -410,7 +411,11 @@ const Page = () => {
                   : ''
               }
               value={studentData?.information.residentDormitoryInfoRes.roomNumber}
-              input={studentData?.information.residentDormitoryInfoRes.roomNumber.toString()}
+              input={
+                studentData?.information.residentDormitoryInfoRes.roomNumber
+                  ? studentData?.information.residentDormitoryInfoRes.roomNumber.toString()
+                  : ''
+              }
               setInput={(value) => handleInputChange('residentDormitoryInfoRes', 'roomNumber', value)}
               handleRoomNumber={handleRoomNumber}
             />
@@ -423,7 +428,11 @@ const Page = () => {
                   : ''
               }
               value={studentData?.information.residentDormitoryInfoRes.bedNumber}
-              input={studentData?.information.residentDormitoryInfoRes.bedNumber.toString()}
+              input={
+                studentData?.information.residentDormitoryInfoRes.bedNumber
+                  ? studentData?.information.residentDormitoryInfoRes.bedNumber.toString()
+                  : ''
+              }
             />
           </div>
           <div className='flex-1 flex flex-col'>

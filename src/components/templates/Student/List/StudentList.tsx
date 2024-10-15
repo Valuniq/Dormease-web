@@ -1,11 +1,9 @@
 'use client';
 import React from 'react';
 import StudentListBody from './StudentListBody';
-import ArrowDown from '@public/images/ArrowDown.svg';
 import NoneList from '../../../organisms/NoneList/NoneList';
 import { StudentListResponseDataList } from '@/types/student';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import SortIcon from '@/components/atoms/AllBtn/SortBtn/SortBtn';
 import SortableHeader from './SortableHeader';
 
 type Props = {

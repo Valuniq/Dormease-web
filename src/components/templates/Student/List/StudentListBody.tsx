@@ -29,9 +29,9 @@ const StudentListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = ({
         <td className='w-[13%]'>{list.studentNumber}</td>
         <td className='w-[13%]'>{genderText[list.gender]}</td>
         <td className='w-[15%]'>
-          {list.dormitoryName}({list.roomSize}인실)
+          {list.dormitoryName && list.dormitoryName + (list.roomSize && `(${list.roomSize}인실)`)}
         </td>
-        <td className='w-[13%]'>{list.roomNumber}호</td>
+        <td className='w-[13%]'>{list.roomNumber && list.roomNumber + '호'}</td>
         <td className='w-[10%]'>{list.bonusPoint}</td>
         <td className='w-[10%]'>{list.minusPoint}</td>
         <td className='w-[8%]'>{statusText[list.schoolStatus]}</td>
