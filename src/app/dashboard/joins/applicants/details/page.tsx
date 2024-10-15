@@ -6,7 +6,7 @@ import { prevApplicants } from '@/constants/navigation';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   return (
     <div className='w-[1305px] flex flex-col gap-30'>
@@ -26,4 +26,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
