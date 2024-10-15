@@ -8,7 +8,7 @@ import ResignBtn from '@/components/atoms/AllBtn/ResignBtn/ResignBtn';
 import { useRouter } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
-import { deleteStudentBlackList, deleteStudentResign, putStudentPrivateInfo, useStudentDetail } from '@/apis/student';
+import { deleteStudentBlackList, deleteStudentResign, putStudentInfo, useStudentDetail } from '@/apis/student';
 import { studentIdState } from '@/recoil/student';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
@@ -144,20 +144,28 @@ const Page = () => {
   const handleEdit = async () => {
     if (!studentData || !studentData.information) return null;
 
-    if (data?.information.residentPrivateInfoRes !== studentData?.information.residentPrivateInfoRes) {
-      const residentPrivateInfoReq = {
-        dormitoryPayment: studentData.information.residentPrivateInfoRes.dormitoryPayment,
-        hasKey: studentData.information.residentPrivateInfoRes.hasKey,
-        bankName: studentData.information.residentPrivateInfoRes.bankName,
-        accountNumber: studentData.information.residentPrivateInfoRes.accountNumber,
-        emergencyContact: studentData.information.residentPrivateInfoRes.emergencyContact,
-        emergencyRelation: studentData.information.residentPrivateInfoRes.emergencyRelation,
-      };
+    const residentDormitoryInfoReq = {
+      dormitoryId: studentData.information.residentDormitoryInfoRes.dormitoryId,
+      roomSize: studentData.information.residentDormitoryInfoRes.roomSize,
+      roomNumber: studentData.information.residentDormitoryInfoRes.roomNumber,
+      bedNumber: studentData.information.residentDormitoryInfoRes.bedNumber,
+      termId: studentData.information.residentDormitoryInfoRes.termId,
+    };
 
-      await putStudentPrivateInfo(id, file.copy, file.prioritySelectionCopy, residentPrivateInfoReq);
-    } else if (data.information.residentDormitoryInfoRes !== studentData.information.residentDormitoryInfoRes) {
-      console.log('건물 수정');
-    }
+    const residentPrivateInfoReq = {
+      dormitoryPayment: studentData.information.residentPrivateInfoRes.dormitoryPayment,
+      hasKey: studentData.information.residentPrivateInfoRes.hasKey,
+      bankName: studentData.information.residentPrivateInfoRes.bankName,
+      accountNumber: studentData.information.residentPrivateInfoRes.accountNumber,
+      emergencyContact: studentData.information.residentPrivateInfoRes.emergencyContact,
+      emergencyRelation: studentData.information.residentPrivateInfoRes.emergencyRelation,
+    };
+
+    await putStudentInfo(id, file.copy, file.prioritySelectionCopy, {
+      residentDormitoryInfoReq,
+      residentPrivateInfoReq,
+    });
+
     setEditState(false);
     router.push(`/dashboard/students`);
   };

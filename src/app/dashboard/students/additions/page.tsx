@@ -50,6 +50,7 @@ const Page = () => {
       roomSize: null,
       roomNumber: null,
       bedNumber: null,
+      termId: null,
       termName: '',
       isApplyRoommate: false,
       roommateNames: [''],
@@ -118,6 +119,7 @@ const Page = () => {
 
   //거주기간 변경
   const handleTerm = (id: number) => {
+    handleInputChange('residentDormitoryInfoRes', 'termId', id);
     const selectedTerm = availableTermRes.find((data) => data.termId === id);
     if (selectedTerm) handleInputChange('residentDormitoryInfoRes', 'termName', selectedTerm.termName);
     setBuildingList([

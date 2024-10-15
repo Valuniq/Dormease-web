@@ -1,5 +1,10 @@
 import { BASE_URL } from '@/constants/path';
-import { StudentDetailResponse, StudentListResponse, StudentListResponseDataList } from '@/types/student';
+import {
+  StudentDetailResponse,
+  StudentInfoEditRequest,
+  StudentListResponse,
+  StudentListResponseDataList,
+} from '@/types/student';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
@@ -58,19 +63,19 @@ export const useStudentSearchList = (keyword: string, sortBy: string, isAscendin
 
 //사생 상세 조회
 export const useStudentDetail = (residentId: number) => {
-  const { data, error, mutate } = useSWR<StudentDetailResponse>(
+  const { data, error } = useSWR<StudentDetailResponse>(
     `${BASE_URL}/api/v1/web/residents/${residentId}`,
     fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data };
 };
 
-//사생 정보 수정(개인정보)
-export const putStudentPrivateInfo = async (
+//사생 정보 수정
+export const putStudentInfo = async (
   residentId: number,
   copy: File | null,
   prioritySelectionCopy: File | null,
-  residentPrivateInfoReq: any,
+  updateResidentInfoReq: StudentInfoEditRequest,
 ) => {
   const formData = new FormData();
 
@@ -82,8 +87,8 @@ export const putStudentPrivateInfo = async (
   }
 
   formData.append(
-    'residentPrivateInfoReq',
-    new Blob([JSON.stringify(residentPrivateInfoReq)], { type: 'application/json' }),
+    'updateResidentInfoReq',
+    new Blob([JSON.stringify(updateResidentInfoReq)], { type: 'application/json' }),
   );
 
   const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/${residentId}`, {

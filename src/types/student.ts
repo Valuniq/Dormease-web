@@ -61,6 +61,7 @@ export type StudentDetailResponseInformationResidentDormitoryInfoRes = {
   roomSize: number;
   roomNumber: number;
   bedNumber: number;
+  termId: number;
   termName: string;
   isApplyRoommate: boolean;
   roommateNames: string[];
@@ -84,4 +85,22 @@ export type TermResponseInformation = {
     termId: number;
     termName: string;
   }[];
+};
+
+export type StudentInfoEditRequest = {
+  residentDormitoryInfoReq: {
+    dormitoryId: number;
+    roomSize: number;
+    roomNumber: number;
+    bedNumber: number;
+    termId: number;
+  };
+  residentPrivateInfoReq: {
+    dormitoryPayment: boolean;
+    hasKey: boolean;
+    bankName: string;
+    accountNumber: string;
+    emergencyContact: string;
+    emergencyRelation: string;
+  };
 };
