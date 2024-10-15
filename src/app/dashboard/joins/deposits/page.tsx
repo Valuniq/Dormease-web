@@ -6,7 +6,7 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import DepositList from '@/components/templates/Deposit/DepositList';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import { editState } from '@/recoil/nav';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useDepositList } from '@/apis/deposits';
 
@@ -16,8 +16,15 @@ const Page = () => {
   const [saveModal, setSaveModal] = useState(false);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelected] = useState<number[]>([]); //입금 확인된 학생들 id 배열 더미 값
+  const [filteredData, setFilteredData] = useState<DepositListResponseInformation[]>([]);
 
   const { data, error, isLoading, mutate } = useDepositList();
+
+  useEffect(() => {
+    if (data?.information) {
+      setFilteredData(data.information);
+    }
+  }, [data]);
 
   //입금 내역 확인 파일 선택
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,14 +52,32 @@ const Page = () => {
     //추후 저장 API 연동 필요
   };
 
+  //검색
+  const handleSearch = () => {
+    if (input.trim() === '') {
+      setFilteredData(data?.information || []);
+    } else {
+      const filtered = data?.information.filter(
+        (item) => item.studentName.toLowerCase().includes(input.toLowerCase()) || item.studentNumber.includes(input),
+      );
+      setFilteredData(filtered || []);
+    }
+  };
+
+  useEffect(() => {
+    if (input.trim() === '') {
+      setFilteredData(data?.information || []);
+    }
+  }, [input, data]);
+
   return (
     <>
       <div className='w-[1339px]'>
         <div className='flex items-center justify-end mb-32'>
           <h1 className='H0 text-gray-grayscale50 mr-180'>입금 확인 명단</h1>
-          <SearchTextBox input={input} setInput={setInput} placeholder='이름 또는 학번' />
+          <SearchTextBox input={input} setInput={setInput} placeholder='이름 또는 학번' handleSearch={handleSearch} />
         </div>
-        <DepositList list={data?.information || []} selectedId={selectedId} isLoading={isLoading ?? false} />
+        <DepositList list={filteredData} selectedId={selectedId} isLoading={isLoading ?? false} />
         <hr className='border-gray-grayscale30' />
         <div className='flex mt-12 justify-between'>
           <div className='flex-1'></div>

@@ -47,7 +47,7 @@ const DepositList = ({ list, selectedId, isLoading }: Props) => {
       ) : isLoading ? (
         <tbody className='h-696'></tbody>
       ) : (
-        <tbody>
+        <tbody className='h-696'>
           <NoneList colspan={6} />
           <tr className='border-b-1' />
         </tbody>
