@@ -45,7 +45,6 @@ const Page = () => {
         isLoading={isLoading ?? false}
         isEndReached={isEndReached}
         setSize={setSize}
-        isSearch={isSearch}
       />
     </div>
   );

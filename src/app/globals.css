@@ -225,6 +225,7 @@
 
   .noscrollbar-table::-webkit-scrollbar {
     width: 0px;
+    height: 0px;
   }
 
   .noscrollbar-table::-webkit-scrollbar-track {
