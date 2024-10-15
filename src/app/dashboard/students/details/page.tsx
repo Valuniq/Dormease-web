@@ -12,6 +12,7 @@ import { deleteStudentBlackList, deleteStudentResign, putStudentPrivateInfo, use
 import { studentIdState } from '@/recoil/student';
 import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPrompt';
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
+import { genderText, statusText } from '@/constants/student';
 
 const Page = () => {
   const router = useRouter();
@@ -54,6 +55,13 @@ const Page = () => {
     }
 
     const file = e.target.files[0];
+    const sizeInMB = file.size / (1024 * 1024);
+
+    if (sizeInMB > 15) {
+      alert('파일 용량은 15MB를 초과할 수 없습니다.');
+      return;
+    }
+
     const fileUrl = URL.createObjectURL(file);
     const fileName = file.name;
 
@@ -159,8 +167,8 @@ const Page = () => {
           />
         </div>
       )}
-      <div className='flex border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
-        <div className='flex-1 flex flex-col pr-170'>
+      <div className='flex justify-between gap-100 border-t-1 border-t-gray-grayscale50 pt-31 px-46 h-590'>
+        <div className='flex-1 flex flex-col'>
           <StudentManagement
             label='이름'
             text={studentData?.information.residentPrivateInfoRes.name}
@@ -187,13 +195,13 @@ const Page = () => {
           />
           <StudentManagement
             label='학적'
-            text={studentData?.information.residentPrivateInfoRes.schoolStatus}
-            value={studentData?.information.residentPrivateInfoRes.schoolStatus}
+            text={studentData && statusText[studentData?.information.residentPrivateInfoRes.schoolStatus]}
+            value={studentData && statusText[studentData?.information.residentPrivateInfoRes.schoolStatus]}
           />
           <StudentManagement
             label='성별'
-            text={studentData?.information.residentPrivateInfoRes.gender}
-            value={studentData?.information.residentPrivateInfoRes.gender}
+            text={studentData && genderText[studentData.information.residentPrivateInfoRes.gender]}
+            value={studentData && genderText[studentData.information.residentPrivateInfoRes.gender]}
           />
           <StudentManagement
             label='휴대전화'
@@ -326,8 +334,8 @@ const Page = () => {
         <h3 className='H3 text-gray-grayscale50 text-center mb-6 border-b-1 border-b-gray-grayscale50 pb-8'>
           기숙사 정보
         </h3>
-        <div className='flex h-136'>
-          <div className='flex-1 flex flex-col pr-170 pl-46'>
+        <div className='flex justify-between gap-100 h-136 px-46'>
+          <div className='flex-1 flex flex-col'>
             <StudentManagement
               isEdit={isEdit}
               type='building'
@@ -367,7 +375,7 @@ const Page = () => {
               setInput={(value) => handleInputChange('residentDormitoryInfoRes', 'bedNumber', value)}
             />
           </div>
-          <div className='flex-1 flex flex-col pr-46'>
+          <div className='flex-1 flex flex-col'>
             <StudentManagement
               label='거주기간'
               text={studentData?.information.residentDormitoryInfoRes.termName}
@@ -381,8 +389,8 @@ const Page = () => {
             />
             <StudentManagement
               label='인원 정보'
-              text={studentData?.information.residentDormitoryInfoRes.roommateNames[0]}
-              value={studentData?.information.residentDormitoryInfoRes.roommateNames[0]}
+              text={studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')}
+              value={studentData?.information.residentDormitoryInfoRes.roommateNames.join(' ')}
             />
           </div>
         </div>

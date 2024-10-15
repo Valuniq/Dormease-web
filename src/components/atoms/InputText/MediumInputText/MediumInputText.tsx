@@ -22,6 +22,7 @@ const MediumInputText = ({ placeholder, input, setInput, readOnly }: Props) => {
       onChange={handleChange}
       style={{ backgroundColor: 'inherit' }}
       readOnly={readOnly}
+      spellCheck={false}
     />
   );
 };

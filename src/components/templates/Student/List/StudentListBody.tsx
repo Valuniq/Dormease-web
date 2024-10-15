@@ -1,3 +1,4 @@
+import { genderText, statusText } from '@/constants/student';
 import { studentIdState } from '@/recoil/student';
 import { StudentListResponseDataList } from '@/types/student';
 import { useRouter } from 'next/navigation';
@@ -7,12 +8,6 @@ import { useSetRecoilState } from 'recoil';
 type Props = {
   index: number;
   list: StudentListResponseDataList;
-};
-
-const statusText: { [key: string]: string } = {
-  ENROLLMENT: '재학',
-  LEAVE_OF_ABSENCE: '휴학',
-  EXPULSION: '제적',
 };
 
 const StudentListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = ({ index, list }, ref) => {
@@ -32,7 +27,7 @@ const StudentListBody: ForwardRefRenderFunction<HTMLTableRowElement, Props> = ({
         <td className='w-[5%]'>{index + 1}</td>
         <td className='w-[13%]'>{list.name}</td>
         <td className='w-[13%]'>{list.studentNumber}</td>
-        <td className='w-[13%]'>{list.gender === 'MALE' ? '남성' : '여성'}</td>
+        <td className='w-[13%]'>{genderText[list.gender]}</td>
         <td className='w-[15%]'>
           {list.dormitoryName}({list.roomSize}인실)
         </td>

@@ -185,7 +185,7 @@ const StudentManagement = ({
         </>
       );
     } else {
-      return <h4 className='H4 text-gray-grayscale50'>{text}</h4>;
+      return <h4 className='H4 text-gray-grayscale50 max-w-300 break-words'>{text}</h4>;
     }
   };
 
