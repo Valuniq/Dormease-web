@@ -39,7 +39,7 @@ const Distance = () => {
       </div>
       <div className='flex flex-col items-end mt-36 mb-28 mx-15'>
         {distanceScoreResList.map((score, index) => (
-          <div onClick={() => handleOpenModal(score.distanceScore)} className={`flex mb-19`} key={index}>
+          <div onClick={() => handleOpenModal(score.distanceScore!!)} className={`flex mb-19`} key={index}>
             <h1 className='w-54 text-right H3 text-gray-grayscale40 ml-84'>{score.distanceScore}점</h1>
             <div className='w-920 ml-56'>
               <MediumInputText

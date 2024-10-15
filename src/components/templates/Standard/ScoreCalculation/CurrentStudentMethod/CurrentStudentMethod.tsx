@@ -15,10 +15,22 @@ const CurrentStudentMethod = ({ standard, setStandard }: Props) => {
   const { minScore, scoreRatio, pointReflection, tiePriority } = standard;
 
   const handleScoreRatioChange = (value: string) => {
-    setStandard({
-      ...standard,
-      scoreRatio: parseFloat(value),
-    });
+    // 빈 문자열일 경우 0으로 처리
+    if (value === '') {
+      setStandard({
+        ...standard,
+        scoreRatio: 0,
+      });
+      return;
+    }
+
+    const numericValue = parseFloat(value);
+    if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 100) {
+      setStandard({
+        ...standard,
+        scoreRatio: numericValue,
+      });
+    }
   };
 
   return (

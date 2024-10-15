@@ -11,6 +11,13 @@ const Grade = ({ initialGrade, setGrade }: Props) => {
 
   // 사용자가 학점을 변경할 때 호출
   const handleGradeChange = (value: string) => {
+    // 빈 문자열일 경우 0으로 처리
+    if (value === '') {
+      setGradeState(0); // 로컬 상태를 0으로 업데이트
+      setGrade(0); // 상위 상태도 0으로 업데이트
+      return;
+    }
+
     const numericValue = parseFloat(value);
     if (!isNaN(numericValue)) {
       setGradeState(numericValue); // 로컬 상태 업데이트

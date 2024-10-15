@@ -6,7 +6,7 @@ export type standardSettingModalState = {
     isOpened: boolean;
     regionScore: number;
   };
-  standardWriting: boolean;
+  standardWritingEdit: boolean;
 };
 
 export const standardSettingModalState = atom<standardSettingModalState>({
@@ -16,7 +16,7 @@ export const standardSettingModalState = atom<standardSettingModalState>({
       isOpened: false,
       regionScore: 0,
     },
-    standardWriting: false,
+    standardWritingEdit: false,
   },
 });
 
@@ -46,6 +46,26 @@ export const distanceScoreState = atom<DistanceScoreResList[]>({
     {
       distanceScoreId: 5,
       distanceScore: 2.5,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 6,
+      distanceScore: 3,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 7,
+      distanceScore: 3.5,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 8,
+      distanceScore: 4,
+      regionResList: [],
+    },
+    {
+      distanceScoreId: 9,
+      distanceScore: 4.5,
       regionResList: [],
     },
   ],
