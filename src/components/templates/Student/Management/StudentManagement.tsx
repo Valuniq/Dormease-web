@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import CheckFileBtn from '@/components/atoms/AllBtn/CheckFileBtn/CheckFileBtn';
 import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
 import MediumInputText from '@/components/atoms/InputText/MediumInputText/MediumInputText';
@@ -7,14 +7,14 @@ import RelocationDropdown from '@/components/atoms/Dropdown/RelocationDropdown/R
 import PointBar from '@/components/atoms/InputText/PointBar/PointBar';
 import BtnMiniVariant from '@/components/atoms/AllBtn/BtnMiniVariant/BtnMiniVariant';
 import RadioBtn from '@/components/atoms/AllBtn/RadioBtn/RadioBtn';
-import { BuildingList } from '@/types/student';
+import { BuildingList, TermResponseInformation } from '@/types/student';
 
 type Props = {
   isEdit?: boolean;
   label?: string;
   text?: string | number | null;
   value?: string | number | boolean | File | null;
-  type?: 'file' | 'checkbox' | 'string' | 'radio' | 'building' | 'roomNumber' | 'bedNumber';
+  type?: 'file' | 'checkbox' | 'string' | 'radio' | 'termName' | 'building' | 'roomNumber' | 'bedNumber';
   setIsChecked?: (isChecked: boolean) => void;
   input?: string | null;
   setInput?: (id: string) => void;
@@ -27,6 +27,10 @@ type Props = {
   setIsOn?: (isOn: boolean) => void;
   handleFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRoomNumber?: () => void;
+  availableTermRes?: TermResponseInformation['availableTermRes'];
+  handleTermList?: () => void;
+  handleTerm?: (selectedTermId: number) => void;
+  readOnly?: boolean;
 };
 
 const FileEdit = ({ text, handleFileChange }: Props) => {
@@ -80,6 +84,54 @@ const RadioEdit = ({ value, setIsOn }: Props) => {
   );
 };
 
+const TermNameEdit = ({ availableTermRes, handleTermList, handleTerm }: Props) => {
+  const [selectedTermId, setSelectedTermId] = useState(0);
+
+  return (
+    <>
+      {availableTermRes?.length === 0 ? (
+        <div className='pl-160'>
+          <BtnMiniVariant
+            label='기간 불러오기'
+            disabled={false}
+            selected={false}
+            variant='blue'
+            isPadding={true}
+            onClick={handleTermList}
+          />
+        </div>
+      ) : (
+        <>
+          <BtnMiniVariant
+            label='변경'
+            disabled={!selectedTermId}
+            selected={false}
+            variant='blue'
+            isPadding={true}
+            onClick={() => {
+              handleTerm && handleTerm(selectedTermId);
+            }}
+          />
+          <div className='flex gap-6 pl-17 overflow-x-auto max-w-350 noscrollbar-table'>
+            {availableTermRes?.map((data, index) => {
+              return (
+                <RadioBtn
+                  key={index}
+                  isOn={selectedTermId === data.termId}
+                  setIsOn={() => {
+                    setSelectedTermId(data.termId);
+                  }}
+                  label={data.termName}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
 const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, dormitoryId, handleSelectedId }: Props) => {
   return (
     <div className='flex relative cursor-pointer'>
@@ -113,10 +165,10 @@ const BuildingEdit = ({ text, isBuilding, setIsBuilding, list, dormitoryId, hand
   );
 };
 
-const RoomNumberEdit = ({ input, setInput, handleRoomNumber }: Props) => {
+const RoomNumberEdit = ({ input, setInput, handleRoomNumber, readOnly }: Props) => {
   return (
     <div className='flex items-center'>
-      {setInput && <PointBar input={input || ''} setInput={setInput} maxLength={4} />}
+      {setInput && <PointBar input={input || ''} setInput={setInput} maxLength={4} readonly={readOnly} />}
       <h4 className='H4 text-gray-grayscale50 ml-6 mr-12'>호</h4>
       <BtnMiniVariant label='재배치' disabled={!input} selected={false} variant='blue' onClick={handleRoomNumber} />
     </div>
@@ -150,6 +202,10 @@ const StudentManagement = ({
   setIsOn,
   handleFileChange,
   handleRoomNumber,
+  availableTermRes,
+  handleTermList,
+  handleTerm,
+  readOnly,
 }: Props) => {
   const renderContent = () => {
     if (isEdit) {
@@ -162,6 +218,10 @@ const StudentManagement = ({
           return <StringEdit input={input} setInput={setInput} />;
         case 'radio':
           return <RadioEdit value={value} setIsOn={setIsOn} />;
+        case 'termName':
+          return (
+            <TermNameEdit availableTermRes={availableTermRes} handleTermList={handleTermList} handleTerm={handleTerm} />
+          );
         case 'building':
           return (
             <BuildingEdit
@@ -174,7 +234,9 @@ const StudentManagement = ({
             />
           );
         case 'roomNumber':
-          return <RoomNumberEdit input={input} setInput={setInput} handleRoomNumber={handleRoomNumber} />;
+          return (
+            <RoomNumberEdit input={input} setInput={setInput} handleRoomNumber={handleRoomNumber} readOnly={readOnly} />
+          );
         case 'bedNumber':
           return <BedNumberEdit input={input} setInput={setInput} />;
         default:
@@ -200,7 +262,9 @@ const StudentManagement = ({
 
   return (
     <div className='flex text-left items-center flex-grow'>
-      <h4 className='H4-caption min-w-205 text-gray-grayscale50 relative'>
+      <h4
+        className={`H4-caption text-gray-grayscale50 relative ${label === '거주기간' && isEdit ? 'min-w-90' : 'min-w-205'}`}
+      >
         {isEdit && (label === '이름' || label === '성별' || label === '거주기간') ? (
           <>
             {label}

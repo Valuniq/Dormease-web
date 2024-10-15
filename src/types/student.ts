@@ -71,3 +71,17 @@ export type BuildingList = {
   dormitoryName: string;
   roomSize: number;
 };
+
+export type TermResponse = {
+  check: boolean;
+  information: TermResponseInformation[];
+};
+
+export type TermResponseInformation = {
+  dormitoryApplicationSettingId: number;
+  title: string;
+  availableTermRes: {
+    termId: number;
+    termName: string;
+  }[];
+};

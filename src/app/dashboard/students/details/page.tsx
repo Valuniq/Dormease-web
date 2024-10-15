@@ -14,6 +14,7 @@ import ConfirmPrompt from '@/components/organisms/Prompt/ConfirmPrompt/ConfirmPr
 import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { genderText, statusText } from '@/constants/student';
 import { BuildingList } from '@/types/student';
+import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 
 //파일 변경
 export const handleFileChange = async (
@@ -77,6 +78,7 @@ const Page = () => {
   const [isAddBlackListModal, setIsAddBlackListModal] = useState(false); //블랙리스트 모달
   const [isBlackListModal, setIsBlackListModal] = useState(false); //블랙리스트 페이지 이동 모달
   const [isAddResignModal, setIsAddResignModal] = useState(false); //퇴사처리 모달
+  const [isRoomNotNullModal, setIsRoomNotNullModal] = useState(false); //호실에 빈자리가 없는 경우 모달
   const [selectedBuilding, setSelectedBuilding] = useState({
     isModal: false,
     dormitoryId: 0,
@@ -119,7 +121,7 @@ const Page = () => {
   if (isLoading) return <div></div>;
 
   //수정 시 보여는 데이터 변경
-  const handleInputChange = (resKey: string, field: string, value: string | number | boolean) => {
+  const handleInputChange = (resKey: string, field: string, value: string | number | boolean | string[]) => {
     setStudentData((prevData) => {
       if (!prevData) return prevData;
 
@@ -163,6 +165,9 @@ const Page = () => {
   //호실 재배치
   const handleRoomNumber = () => {
     console.log(studentData?.information.residentDormitoryInfoRes.roomNumber);
+    setIsRoomNotNullModal(true);
+    handleInputChange('residentDormitoryInfoRes', 'bedNumber', 0);
+    handleInputChange('residentDormitoryInfoRes', 'roommateNames', ['하하', '하하']);
   };
 
   //블랙리스트
@@ -548,6 +553,15 @@ const Page = () => {
               handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');
             }}
+          />
+        </BackDrop>
+      )}
+      {isRoomNotNullModal && (
+        <BackDrop isOpen={isRoomNotNullModal}>
+          <AlertPrompt
+            variant='red'
+            label='해당 호실에는 현재 빈 자리가 없습니다.'
+            onConfirm={() => setIsRoomNotNullModal(false)}
           />
         </BackDrop>
       )}

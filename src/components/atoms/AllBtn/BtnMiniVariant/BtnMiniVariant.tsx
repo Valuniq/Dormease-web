@@ -5,6 +5,7 @@ type Props = {
   disabled: boolean;
   selected: boolean;
   variant: 'blue' | 'red';
+  isPadding?: boolean;
 };
 
 const BtnMiniVariant = ({
@@ -12,6 +13,7 @@ const BtnMiniVariant = ({
   disabled,
   selected = false,
   variant,
+  isPadding,
   ...props
 }: Props & React.HtmlHTMLAttributes<HTMLButtonElement>) => {
   const bgColorClass = (variant: string) => {
@@ -29,7 +31,7 @@ const BtnMiniVariant = ({
     <button
       {...props}
       disabled={disabled}
-      className={`H4 w-79 h-34 rounded-full text-white hover:hover-transition ${bgColorClass(variant)}`}
+      className={`H4 w-79 h-34 rounded-full text-white hover:hover-transition whitespace-nowrap ${bgColorClass(variant)} ${isPadding && 'w-auto px-13'}`}
     >
       {label}
     </button>

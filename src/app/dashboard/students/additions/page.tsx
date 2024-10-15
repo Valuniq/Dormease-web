@@ -8,7 +8,9 @@ import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
 import { handleFileChange } from '../details/page';
-import { BuildingList } from '@/types/student';
+import { BuildingList, TermResponse, TermResponseInformation } from '@/types/student';
+import TermList from '@/components/templates/Student/Addition/TermList';
+import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 
 const Page = () => {
   const router = useRouter();
@@ -16,6 +18,7 @@ const Page = () => {
   const isEdit = true;
   const [isBuilding, setIsBuilding] = useState(false);
   const [isCreateModal, setIsCreateModal] = useState(false); //생성 모달
+  const [isRoomNotNullModal, setIsRoomNotNullModal] = useState(false); //호실에 빈자리가 없는 경우 모달
   const [input, setInput] = useState({
     residentPrivateInfoRes: {
       name: '',
@@ -62,14 +65,87 @@ const Page = () => {
   }); //등본, 우선선발 파일
   const [selectedBuilding, setSelectedBuilding] = useState({ isModal: false, dormitoryId: 0 }); //선택된 건물 저장 및 모달
   const [buildingList, setBuildingList] = useState<BuildingList[]>([]); //건물 목록
+  const [isTermListModal, setIsTermListModal] = useState(false); //입사 신청 목록 모달
+  const [termList, setTermList] = useState<TermResponse['information']>([]); //입사 신청 목록
+  const [availableTermRes, setAvailableTermRes] = useState<TermResponseInformation['availableTermRes']>([]); //거주 기간 목록
 
   //호실 재배치
   const handleRoomNumber = () => {
     console.log(input.residentDormitoryInfoRes.roomNumber);
+    setIsRoomNotNullModal(true);
+    handleInputChange('residentDormitoryInfoRes', 'bedNumber', 0);
+    handleInputChange('residentDormitoryInfoRes', 'roommateNames', ['하하', '하하']);
+  };
+
+  //거주기간 불러오기
+  const handleTermList = () => {
+    setTermList([
+      {
+        dormitoryApplicationSettingId: 1,
+        title: '2024-1학기 명지대학교 자연 생활관 재학생 2차 입사 신청',
+        availableTermRes: [
+          {
+            termId: 1,
+            termName: '학기',
+          },
+          {
+            termId: 2,
+            termName: '6개월',
+          },
+        ],
+      },
+      {
+        dormitoryApplicationSettingId: 2,
+        title: '2024-2학기 명지대학교 자연 생활관 재학생 2차 입사 신청입니다 반가워요',
+        availableTermRes: [
+          {
+            termId: 3,
+            termName: '2개월',
+          },
+          {
+            termId: 4,
+            termName: '6개월',
+          },
+          {
+            termId: 5,
+            termName: '12개월',
+          },
+        ],
+      },
+    ]);
+    setIsTermListModal(true);
+  };
+
+  //거주기간 변경
+  const handleTerm = (id: number) => {
+    const selectedTerm = availableTermRes.find((data) => data.termId === id);
+    if (selectedTerm) handleInputChange('residentDormitoryInfoRes', 'termName', selectedTerm.termName);
+    setBuildingList([
+      {
+        dormitoryId: 1,
+        dormitoryName: '명덕관',
+        roomSize: 2,
+      },
+      {
+        dormitoryId: 2,
+        dormitoryName: '건물명2',
+        roomSize: 3,
+      },
+      {
+        dormitoryId: 3,
+        dormitoryName: '명덕관2',
+        roomSize: 4,
+      },
+      {
+        dormitoryId: 4,
+        dormitoryName: '명덕관이라고합니다요',
+        roomSize: 4,
+      },
+    ]);
   };
 
   //보이는 데이터 변경
-  const handleInputChange = (resKey: string, field: string, value: string | number | boolean) => {
+  const handleInputChange = (resKey: string, field: string, value: string | number | boolean | string[]) => {
     setInput((prevData) => {
       if (!prevData) return prevData;
 
@@ -325,6 +401,7 @@ const Page = () => {
               />
               <StudentManagement
                 isEdit={isEdit}
+                readOnly={!input.residentDormitoryInfoRes.dormitoryName}
                 type='roomNumber'
                 label='호실'
                 text={input.residentDormitoryInfoRes.roomNumber ? `${input.residentDormitoryInfoRes.roomNumber}호` : ''}
@@ -343,12 +420,12 @@ const Page = () => {
             <div className='flex-1 flex flex-col'>
               <StudentManagement
                 isEdit={isEdit}
-                type='string'
+                type='termName'
                 label='거주기간'
                 text={input.residentDormitoryInfoRes.termName}
-                value={input.residentDormitoryInfoRes.termName}
-                input={input.residentDormitoryInfoRes.termName}
-                setInput={(value) => handleInputChange('residentDormitoryInfoRes', 'termName', value)}
+                availableTermRes={availableTermRes}
+                handleTermList={handleTermList}
+                handleTerm={handleTerm}
               />
               <StudentManagement
                 label='룸메이트 신청'
@@ -373,7 +450,9 @@ const Page = () => {
             disabled={
               !input.residentPrivateInfoRes.name ||
               !input.residentPrivateInfoRes.gender ||
-              !input.residentDormitoryInfoRes.termName
+              !input.residentDormitoryInfoRes.termName ||
+              !input.residentDormitoryInfoRes.dormitoryId ||
+              !input.residentDormitoryInfoRes.dormitoryName
             }
             variant='blue'
             onClick={() => {
@@ -393,6 +472,20 @@ const Page = () => {
             onConfirm={() => {
               setIsCreateModal(false);
               handleCreate();
+            }}
+          />
+        </BackDrop>
+      )}
+      {isTermListModal && (
+        <BackDrop isOpen={isTermListModal}>
+          <TermList
+            list={termList}
+            onCancel={() => {
+              setIsTermListModal(false);
+            }}
+            onClick={(availableTermRes) => {
+              setIsTermListModal(false);
+              setAvailableTermRes(availableTermRes);
             }}
           />
         </BackDrop>
@@ -425,6 +518,15 @@ const Page = () => {
               handleInputChange('residentDormitoryInfoRes', 'bedNumber', '');
               handleInputChange('residentDormitoryInfoRes', 'roommateNames', '');
             }}
+          />
+        </BackDrop>
+      )}
+      {isRoomNotNullModal && (
+        <BackDrop isOpen={isRoomNotNullModal}>
+          <AlertPrompt
+            variant='red'
+            label='해당 호실에는 현재 빈 자리가 없습니다.'
+            onConfirm={() => setIsRoomNotNullModal(false)}
           />
         </BackDrop>
       )}
