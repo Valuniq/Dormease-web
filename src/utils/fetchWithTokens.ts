@@ -26,7 +26,10 @@ const fetchWithTokens = async (url: string, options: RequestInit = {}) => {
       // next/router의 useRouter를 사용하여 /로 리디렉션
       // const router = useRouter();
       // router.push('/');
-      alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
+      if (typeof window !== 'undefined') {
+        alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
+        window.location.href = '/'; // '/'로 리디렉션
+      }
     }
     throw new Error('Failed to fetch data');
   }
