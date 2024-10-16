@@ -7,7 +7,7 @@ import BackDrop from '@/components/organisms/BackDrop/Backdrop';
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { editState } from '@/recoil/nav';
-import { BuildingList, TermResponse, TermResponseInformation } from '@/types/student';
+import { BuildingList, StudentDetailResponse, TermResponse, TermResponseInformation } from '@/types/student';
 import TermList from '@/components/templates/Student/Addition/TermList';
 import AlertPrompt from '@/components/organisms/Prompt/AlertPrompt/AlertPrompt';
 import { getDormList, getRoomManual, postAddStudent, useDormTermList } from '@/apis/student';
@@ -38,8 +38,9 @@ const Page = () => {
   const [termList, setTermList] = useState<TermResponse['information']>([]); //입사 신청 목록
   const [availableTermRes, setAvailableTermRes] = useState<TermResponseInformation['availableTermRes']>([]); //거주 기간 목록
   const { data, error, isLoading } = useDormTermList(); //입사신청 및 거주기간 목록 조회
-  const [input, setInput] = useState({
+  const [input, setInput] = useState<StudentDetailResponse['information']>({
     residentPrivateInfoRes: {
+      residentId: 0,
       name: '',
       studentNumber: '',
       major: '',
@@ -66,9 +67,9 @@ const Page = () => {
     residentDormitoryInfoRes: {
       dormitoryId: 0,
       dormitoryName: '',
-      roomSize: 0,
-      roomNumber: 0,
-      bedNumber: 0,
+      roomSize: null,
+      roomNumber: null,
+      bedNumber: null,
       termId: 0,
       termName: '',
       isApplyRoommate: false,
@@ -115,8 +116,8 @@ const Page = () => {
     const selectedTerm = availableTermRes.find((data) => data.termId === id);
     if (selectedTerm) handleInputChange('residentDormitoryInfoRes', 'termName', selectedTerm.termName);
 
-    //사생 성별 + 거주기간 id에 맞는 기숙사 조회 (사생 id를 알 수 없어서 추후 수정 필요)
-    const response = await getDormList(13, id);
+    //사생 성별 + 거주기간 id에 맞는 기숙사 조회
+    const response = await getDormList(input.residentPrivateInfoRes.gender, id);
     if (response.check) {
       setBuildingList(response.information);
     }
@@ -126,6 +127,7 @@ const Page = () => {
   const handleRoomNumber = async () => {
     const response = await getRoomManual(
       input.residentDormitoryInfoRes.dormitoryId,
+      input.residentDormitoryInfoRes.roomSize,
       input.residentDormitoryInfoRes.roomNumber,
     );
     if (response.check && response.information.possible) {
@@ -213,7 +215,7 @@ const Page = () => {
               type='string'
               text={input?.residentPrivateInfoRes.schoolYear ? `${input.residentPrivateInfoRes.schoolYear}학년` : ''}
               value={input.residentPrivateInfoRes.schoolYear}
-              input={input.residentPrivateInfoRes.schoolYear}
+              input={input.residentPrivateInfoRes.schoolYear ? input.residentPrivateInfoRes.schoolYear.toString() : ''}
               setInput={(value) => handleInputChange('residentPrivateInfoRes', 'schoolYear', value)}
             />
             <StudentManagement
@@ -275,7 +277,11 @@ const Page = () => {
                 input.residentPrivateInfoRes.mealTicketCount ? `${input.residentPrivateInfoRes.mealTicketCount}식` : ''
               }
               value={input.residentPrivateInfoRes.mealTicketCount}
-              input={input.residentPrivateInfoRes.mealTicketCount}
+              input={
+                input.residentPrivateInfoRes.mealTicketCount
+                  ? input.residentPrivateInfoRes.mealTicketCount.toString()
+                  : ''
+              }
               setInput={(value) => handleInputChange('residentPrivateInfoRes', 'mealTicketCount', Number(value))}
             />
           </div>
@@ -396,7 +402,7 @@ const Page = () => {
                 dormInfo={{
                   dormitoryId: input.residentDormitoryInfoRes.dormitoryId,
                   dormitoryName: input.residentDormitoryInfoRes.dormitoryName,
-                  roomSize: input.residentDormitoryInfoRes.roomSize,
+                  roomSize: input.residentDormitoryInfoRes.roomSize || 0,
                 }}
                 handleSelectedDorm={(value) => {
                   setSelectedBuilding({
@@ -410,7 +416,7 @@ const Page = () => {
                 text={
                   input.residentDormitoryInfoRes.dormitoryName
                     ? input.residentDormitoryInfoRes.dormitoryName +
-                      (input.residentDormitoryInfoRes.roomSize !== 0
+                      (input.residentDormitoryInfoRes.roomSize
                         ? '(' + input.residentDormitoryInfoRes.roomSize + '인실)'
                         : '')
                     : ''

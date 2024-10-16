@@ -132,8 +132,8 @@ export const useDormTermList = () => {
 };
 
 //사생 성별에 맞는 기숙사 조회
-export const getDormList = async (residentId: number, termId: number) => {
-  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/${residentId}/dormitory/${termId}`, {
+export const getDormList = async (gender: string, termId: number) => {
+  const res = await fetchWithTokens(`${BASE_URL}/api/v1/web/residents/dormitory?gender=${gender}&termId=${termId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -143,9 +143,9 @@ export const getDormList = async (residentId: number, termId: number) => {
 };
 
 //호실 배정 시 침대번호 및 룸메이트 정보 조회
-export const getRoomManual = async (dormitoryId: number, roomNumber: number) => {
+export const getRoomManual = async (dormitoryId: number, roomSize: number | null, roomNumber: number | null) => {
   const res = await fetchWithTokens(
-    `${BASE_URL}/api/v1/web/residents/manual?dormitoryId=${dormitoryId}&roomNumber=${roomNumber}`,
+    `${BASE_URL}/api/v1/web/residents/manual?dormitoryId=${dormitoryId}&roomSize=${roomSize}&roomNumber=${roomNumber}`,
     {
       method: 'GET',
       headers: {
