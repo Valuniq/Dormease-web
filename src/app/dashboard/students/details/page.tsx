@@ -62,7 +62,10 @@ const Page = () => {
         });
 
         //사생 성별 + 거주기간 id에 맞는 기숙사 조회
-        const response = await getDormList(id, data.information.residentDormitoryInfoRes.termId);
+        const response = await getDormList(
+          data.information.residentPrivateInfoRes.gender,
+          data.information.residentDormitoryInfoRes.termId,
+        );
         if (response.check) {
           setBuildingList(response.information);
         }
@@ -157,6 +160,7 @@ const Page = () => {
 
     const response = await getRoomManual(
       studentData.information.residentDormitoryInfoRes.dormitoryId,
+      studentData.information.residentDormitoryInfoRes.roomSize,
       studentData.information.residentDormitoryInfoRes.roomNumber,
     );
     if (response.check && response.information.possible) {
@@ -290,7 +294,7 @@ const Page = () => {
             type='checkbox'
             label='생활관비 납부'
             text={studentData?.information.residentPrivateInfoRes.dormitoryPayment ? 'O' : 'X'}
-            value={studentData?.information.residentPrivateInfoRes.dormitoryPayment}
+            value={studentData?.information.residentPrivateInfoRes.dormitoryPayment ? true : false}
             setIsChecked={(isChecked) => handleInputChange('residentPrivateInfoRes', 'dormitoryPayment', isChecked)}
           />
           <StudentManagement
@@ -299,20 +303,20 @@ const Page = () => {
             label='열쇠 수령 여부'
             type='checkbox'
             text={studentData?.information.residentPrivateInfoRes.hasKey ? '수령' : '미수령'}
-            value={studentData?.information.residentPrivateInfoRes.hasKey}
+            value={studentData?.information.residentPrivateInfoRes.hasKey ? true : false}
             setIsChecked={(isChecked) => handleInputChange('residentPrivateInfoRes', 'hasKey', isChecked)}
           />
           <StudentManagement
             right={isEdit}
             label='상점'
-            text={studentData?.information.residentPrivateInfoRes.bonusPoint}
-            value={studentData?.information.residentPrivateInfoRes.bonusPoint}
+            text={studentData?.information.residentPrivateInfoRes.bonusPoint || 0}
+            value={studentData?.information.residentPrivateInfoRes.bonusPoint || 0}
           />
           <StudentManagement
             right={isEdit}
             label='벌점'
-            text={studentData?.information.residentPrivateInfoRes.minusPoint}
-            value={studentData?.information.residentPrivateInfoRes.minusPoint}
+            text={studentData?.information.residentPrivateInfoRes.minusPoint || 0}
+            value={studentData?.information.residentPrivateInfoRes.minusPoint || 0}
           />
           <StudentManagement
             right={isEdit}
@@ -397,7 +401,7 @@ const Page = () => {
               text={
                 studentData?.information.residentDormitoryInfoRes.dormitoryName
                   ? studentData?.information.residentDormitoryInfoRes.dormitoryName +
-                    (studentData?.information.residentDormitoryInfoRes.roomSize !== 0
+                    (studentData?.information.residentDormitoryInfoRes.roomSize
                       ? '(' + studentData?.information.residentDormitoryInfoRes.roomSize + '인실)'
                       : '')
                   : ''
