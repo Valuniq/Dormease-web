@@ -15,3 +15,10 @@ export const nowApplicationIdState = atom<number>({
   default: 0,
   effects_UNSTABLE: [persistAtom],
 });
+
+// 디테일 제목 관리
+export const detailApplicatoinNameState = atom<string>({
+  key: 'detailApplicatoinNameState',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});
