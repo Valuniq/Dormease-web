@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import React, { useMemo, useState, forwardRef } from 'react';
+import React, { useMemo, useState, forwardRef, useEffect } from 'react';
 
 import { ImageResize } from 'quill-image-resize-module-ts';
 import 'react-quill/dist/quill.snow.css';
@@ -34,7 +34,9 @@ const QuillEditor = forwardRef<HTMLDivElement, Props>(({ width, height, setEdito
       setEditorHtml(truncatedContent); // 부모 컴포넌트에 자른 내용 전달
     }
   };
-
+  useEffect(() => {
+    setEditorContent(initialContent || '');
+  }, [initialContent]);
   const modules = useMemo(
     () => ({
       toolbar: {
