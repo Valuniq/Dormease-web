@@ -46,7 +46,7 @@ const RefundList = ({ list, clickRefund, onDeleteRefund, onStudentClick }: Props
           })}
         </div>
       ) : (
-        <table className='w-full'>
+        <table className='w-full h-693'>
           <tbody>
             <NoneList colspan={11} />
           </tbody>
