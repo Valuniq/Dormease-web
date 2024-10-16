@@ -45,7 +45,7 @@ const DormList = ({ roomList, studentList, listClick, onListClick, onStudentClic
           })}
         </tbody>
       ) : (
-        <tbody>
+        <tbody className='h-693'>
           <NoneList colspan={4} />
         </tbody>
       )}

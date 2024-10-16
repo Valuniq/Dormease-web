@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   ];
 
   return (
-    <>
+    <div className='w-full mb-50'>
       <div className='z-header fixed top-0 w-full'>
         <Header />
       </div>
@@ -25,13 +25,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         className={`flex align-start ml-19 ${
           pathname !== '/dashboard/schedules' &&
           !quillPaths.includes(pathname) &&
-          'xxl:scale-80 xl:scale-65 lg:scale-65 md:scale-50 sm:scale-40'
+          `${
+            pathname === '/dashboard'
+              ? // 메인 화면
+                'xxl:scale-90 xl:scale-75 llg:scale-75 lg:scale-65 md:scale-50 sm:scale-40'
+              : // 기본 페이지
+                'xxl:scale-95 xl:scale-80 llg:scale-75 lg:scale-65 md:scale-50 sm:scale-40'
+          }`
+          // 나머지 quill, 일정
         } transform-origin-top-left mt-132 xxl:mt-132 xl:mt-120 lg:mt-120 md:mt-100 sm:mt-80`}
       >
         <nav
           className={`${
             pathname === '/dashboard/schedules' || quillPaths.includes(pathname)
-              ? 'transform-origin-top-left xxl:scale-80 xl:scale-65 lg:scale-65 md:scale-50 sm:scale-40 mr-50'
+              ? 'transform-origin-top-left xxl:scale-95 xl:scale-80 llg:scale-75 lg:scale-65 md:scale-50 sm:scale-40 mr-50'
               : 'mr-101'
           }`}
         >
@@ -39,6 +46,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
         {children}
       </div>
-    </>
+    </div>
   );
 }
