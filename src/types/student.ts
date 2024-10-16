@@ -34,14 +34,14 @@ export type StudentDetailResponseInformationResidentPrivateInfoRes = {
   name: string;
   studentNumber: string;
   major: string;
-  schoolYear: number;
-  schoolStatus: 'ENROLLMENT' | 'LEAVE_OF_ABSENCE' | 'EXPULSION';
+  schoolYear: number | null;
+  schoolStatus: 'ENROLLMENT' | 'LEAVE_OF_ABSENCE' | 'EXPULSION' | '';
   gender: 'MALE' | 'FEMALE';
   phoneNumber: string;
   address: string;
   copy: string;
   prioritySelectionCopy: string;
-  mealTicketCount: number;
+  mealTicketCount: number | null;
   isSmoking: boolean;
   dormitoryPayment: boolean;
   hasKey: boolean;
@@ -58,9 +58,9 @@ export type StudentDetailResponseInformationResidentPrivateInfoRes = {
 export type StudentDetailResponseInformationResidentDormitoryInfoRes = {
   dormitoryId: number;
   dormitoryName: string;
-  roomSize: number;
-  roomNumber: number;
-  bedNumber: number;
+  roomSize: number | null;
+  roomNumber: number | null;
+  bedNumber: number | null;
   termId: number;
   termName: string;
   isApplyRoommate: boolean;
@@ -90,9 +90,9 @@ export type TermResponseInformation = {
 export type StudentInfoEditRequest = {
   residentDormitoryInfoReq: {
     dormitoryId: number;
-    roomSize: number;
-    roomNumber: number;
-    bedNumber: number;
+    roomSize: number | null;
+    roomNumber: number | null;
+    bedNumber: number | null;
     termId: number;
   };
   residentPrivateInfoReq: {
@@ -111,9 +111,9 @@ export type AddStudentRequest = {
   hasKey: boolean;
   residentDormitoryInfoReq: {
     dormitoryId: number;
-    roomSize: number;
-    roomNumber: number;
-    bedNumber: number;
+    roomSize: number | null;
+    roomNumber: number | null;
+    bedNumber: number | null;
     termId: number;
   };
 };
