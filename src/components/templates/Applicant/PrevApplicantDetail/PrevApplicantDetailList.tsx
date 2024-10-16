@@ -43,11 +43,11 @@ const PrevApplicantDetailList = ({ applicantLists }: Props) => {
                   name={i.studentName}
                   studentId={i.studentNumber}
                   gender={i.gender}
-                  applicationBuilding={i.applicationDormitoryRoomTypeRes.dormitoryName || ''}
+                  applicationBuilding={i.applicationDormitoryRoomTypeRes?.dormitoryName || ''}
                   residence={i.address}
                   certifiedFile={i.copy}
                   prioritySelection={i.prioritySelectionCopy}
-                  assignedBuilding={i.resultDormitoryRoomTypeRes.dormitoryName || ''}
+                  assignedBuilding={i.resultDormitoryRoomTypeRes?.dormitoryName || ''}
                   isPassed={i.dormitoryApplicationResult}
                 />
                 <tr className='h-15' />
