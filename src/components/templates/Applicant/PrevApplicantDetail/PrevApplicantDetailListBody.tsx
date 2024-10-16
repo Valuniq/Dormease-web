@@ -1,4 +1,5 @@
-import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+'use client';
+
 import React from 'react';
 
 export type Props = {
@@ -14,6 +15,16 @@ export type Props = {
   isPassed: 'PASS' | 'NON_PASS' | 'MOVE_PASS' | 'WAIT';
 };
 
+// 파일 이름을 추출하고 6글자로 제한하는 함수
+const getLimitedFileName = (url: string | null) => {
+  if (!url || typeof url !== 'string') {
+    return null; // url이 null이거나 문자열이 아닌 경우 null 반환
+  }
+  const fileName = url.substring(url.lastIndexOf('/') + 1);
+  const [name, extension] = fileName.split('.');
+  return name.length > 6 ? name.substring(0, 6) + '...' + extension : fileName;
+};
+
 const PrevApplicationDetailListBody = ({
   name,
   studentId,
@@ -25,6 +36,9 @@ const PrevApplicationDetailListBody = ({
   assignedBuilding,
   isPassed,
 }: Props) => {
+  // 각 파일의 이름을 제한된 길이로 표시
+  const limitedCertifiedFileName = certifiedFile ? getLimitedFileName(certifiedFile as string) : null;
+  const limitedPrioritySelectionFileName = prioritySelection ? getLimitedFileName(prioritySelection as string) : null;
   const statusText =
     isPassed === 'PASS' ? '합격' : isPassed === 'NON_PASS' ? '탈락' : isPassed === 'MOVE_PASS' ? '이동합격' : '-';
   const statusColor = isPassed === 'PASS' ? 'text-blue-blue30' : isPassed === 'NON_PASS' ? 'text-red-red20' : '';
@@ -44,8 +58,24 @@ const PrevApplicationDetailListBody = ({
           </h1>
         </div>
       </td>
-      <td className='text-center'>{certifiedFile ? certifiedFile : '-'}</td>
-      <td className='text-center'>{prioritySelection ? 'O' : 'X'}</td>
+      <td className='text-center'>
+        {limitedCertifiedFileName ? (
+          <a href={certifiedFile as string} target='_blank' rel='noopener noreferrer'>
+            {limitedCertifiedFileName}
+          </a>
+        ) : (
+          'X'
+        )}
+      </td>
+      <td className='text-center'>
+        {limitedPrioritySelectionFileName ? (
+          <a href={prioritySelection as string} target='_blank' rel='noopener noreferrer'>
+            {limitedPrioritySelectionFileName}
+          </a>
+        ) : (
+          'X'
+        )}
+      </td>
       <td className='text-center'>{assignedBuilding && assignedBuilding.length > 0 ? assignedBuilding : '-'}</td>
       <td className={`text-center ${statusColor}`}>{statusText}</td>
     </tr>
