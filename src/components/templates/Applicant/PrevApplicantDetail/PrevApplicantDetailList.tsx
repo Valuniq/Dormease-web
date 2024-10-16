@@ -11,20 +11,21 @@ type Props = {
 };
 
 const PrevApplicantDetailList = ({ applicantLists }: Props) => {
+  console.log(applicantLists);
   return (
     <div className='w-fit h-693 overflow-y-scroll overflow-x-visible border-b-1 border-b-gray-grayscale50'>
       <table className='w-[1305px]'>
         <thead className='w-full h-36 bg-white sticky top-0 z-1'>
           <tr className='text-gray-grayscale50'>
-            <th className='H4'>이름</th>
-            <th className='H4'>학번</th>
-            <th className='H4'>성별</th>
-            <th className='H4'>신청건물</th>
-            <th className='H4'>본거주지</th>
-            <th className='H4'>등본파일</th>
-            <th className='H4'>우선선발</th>
-            <th className='H4'>배정건물</th>
-            <th className='H4'>합격여부</th>
+            <th className='H4 w-[8%]'>이름</th>
+            <th className='H4 w-[8%]'>학번</th>
+            <th className='H4 w-[8%]'>성별</th>
+            <th className='H4 w-[8%]'>신청건물</th>
+            <th className='H4 w-[20%]'>본거주지</th>
+            <th className='H4 w-[12%]'>등본파일</th>
+            <th className='H4 w-[12%]'>우선선발</th>
+            <th className='H4 w-[8%]'>배정건물</th>
+            <th className='H4 w-[8%]'>합격여부</th>
           </tr>
           <tr>
             <th colSpan={9}>
@@ -54,7 +55,7 @@ const PrevApplicantDetailList = ({ applicantLists }: Props) => {
             ))}
           </tbody>
         ) : (
-          <tbody>
+          <tbody className='h-693'>
             <NoneList colspan={10} />
           </tbody>
         )}
