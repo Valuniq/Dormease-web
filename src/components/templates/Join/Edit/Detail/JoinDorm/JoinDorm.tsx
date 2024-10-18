@@ -37,6 +37,17 @@ const JoinDorm = () => {
         };
       });
 
+      // 비활성화 필드 설정
+      const updatedDisabledFields: Record<number, boolean> = initialRoomTypeResList.reduce(
+        (acc, room) => {
+          acc[room.dormitoryRoomTypeId] = room.acceptLimit === 0;
+          return acc;
+        },
+        {} as Record<number, boolean>,
+      ); // 빈 객체로 초기화
+
+      setDisabledFields(updatedDisabledFields);
+
       setApplicationData((prev) => ({
         ...prev,
         dormitorySettingTermResList: initialRoomTypeResList as nowJoinResponseDormitorySettingTermResList[],
@@ -48,6 +59,7 @@ const JoinDorm = () => {
     applicationData.dormitorySettingTermResList,
     setDormitoryRoomTypes,
     setApplicationData,
+    setDisabledFields,
   ]);
 
   const groupDormitories = (dormitories: joinDormitoriesResponseInformation[]) => {
@@ -76,6 +88,12 @@ const JoinDorm = () => {
       return room;
     });
 
+    // 비활성화 필드 업데이트
+    setDisabledFields((prev) => ({
+      ...prev,
+      [roomTypeId]: parsedLimit === 0,
+    }));
+
     setApplicationData((prev) => ({
       ...prev,
       dormitorySettingTermResList: newRoomTypeReqList,
@@ -86,11 +104,6 @@ const JoinDorm = () => {
           price: dormitoryTerm.dormitoryRoomTypeId === roomTypeId && parsedLimit === 0 ? 0 : dormitoryTerm.price,
         })),
       })),
-    }));
-
-    setDisabledFields((prev) => ({
-      ...prev,
-      [roomTypeId]: parsedLimit === 0,
     }));
   };
 
