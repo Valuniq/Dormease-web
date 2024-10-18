@@ -92,7 +92,7 @@ const NoticeList = ({ list, isLoading, isEndReached, setSize }: Props) => {
             })}
           </tbody>
         ) : (
-          <tbody className='h-full'>
+          <tbody className='h-693'>
             <NoneList colspan={6} />
           </tbody>
         )}

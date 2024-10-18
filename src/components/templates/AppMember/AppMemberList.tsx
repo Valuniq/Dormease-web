@@ -50,12 +50,12 @@ const AppMemberList = ({
       <table className='w-[1305px]'>
         <thead className=' w-full h-36 bg-white text-gray-grayscale50 sticky top-0 z-1'>
           <tr className=''>
-            <th className='H4'>번호</th>
-            <th className='H4'>이름</th>
-            <th className='H4'>학번</th>
-            <th className='H4'>휴대전화</th>
+            <th className='H4 w-[10%]'>번호</th>
+            <th className='H4 w-[15%]'>이름</th>
+            <th className='H4 w-[15%] '>학번</th>
+            <th className='H4 w-[20%]'>휴대전화</th>
             <th
-              className='h-30 rounded-8  cursor-pointer'
+              className='h-30 rounded-8  cursor-pointer w-[10%]'
               onClick={() => handleSort('bonusPoint')}
               style={{ backgroundColor: sortConfig.sortBy === 'bonusPoint' ? '#DAE9FF' : 'transparent' }}
             >
@@ -70,7 +70,7 @@ const AppMemberList = ({
               </div>
             </th>
             <th
-              className='h-30 rounded-8  cursor-pointer'
+              className='h-30 rounded-8  cursor-pointer w-[10%]'
               onClick={() => handleSort('minusPoint')}
               style={{ backgroundColor: sortConfig.sortBy === 'minusPoint' ? '#DAE9FF' : 'transparent' }}
             >
@@ -85,7 +85,7 @@ const AppMemberList = ({
               </div>
             </th>
             <th
-              className='h-30 rounded-8 cursor-pointer'
+              className='h-30 rounded-8 cursor-pointer w-[20%]'
               onClick={() => handleSort('createdDate')}
               style={{ backgroundColor: sortConfig.sortBy === 'createdDate' ? '#DAE9FF' : 'transparent' }}
             >
@@ -149,7 +149,7 @@ const AppMemberList = ({
             })}
           </tbody>
         ) : (
-          <tbody>
+          <tbody className='h-693'>
             <NoneList colspan={7} />
           </tbody>
         )}

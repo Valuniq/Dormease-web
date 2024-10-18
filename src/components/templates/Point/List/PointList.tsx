@@ -253,7 +253,7 @@ const PointList = ({
               ))}
             </tbody>
           ) : (
-            <tbody className='h-full'>
+            <tbody className='h-693'>
               <NoneList colspan={9} />
             </tbody>
           )}

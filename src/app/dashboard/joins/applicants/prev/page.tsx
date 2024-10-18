@@ -10,7 +10,6 @@ const Page = () => {
   const { data: historyList, isLoading, error, mutate } = useHistoryList();
 
   const router = useRouter();
-  console.log(historyList?.information);
 
   return (
     <div className='w-[1250px]'>
