@@ -19,10 +19,8 @@ const fetchWithTokens = async (url: string, options: RequestInit = {}) => {
     ...options,
     headers,
   });
-  console.log('Initial fetch response status:', response.status);
 
   if (response.status === 401 && refreshToken) {
-    console.log('페치위드토큰 만료tv');
     // Access Token이 만료되었고 Refresh Token이 있을 경우 토큰 갱신
     const newAccessToken = await reissueToken(refreshToken); // 기존의 reissueToken 함수 재사용
 
@@ -39,7 +37,6 @@ const fetchWithTokens = async (url: string, options: RequestInit = {}) => {
         ...options,
         headers: retryHeaders,
       });
-      console.log('그치만 다시 발급받았tv');
     } else {
       // 리프레시 토큰도 만료된 경우 로그아웃 처리
       handleSessionExpiration();
