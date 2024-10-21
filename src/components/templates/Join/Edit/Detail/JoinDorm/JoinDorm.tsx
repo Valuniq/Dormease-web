@@ -44,7 +44,7 @@ const JoinDorm = () => {
           return acc;
         },
         {} as Record<number, boolean>,
-      ); // 빈 객체로 초기화
+      );
 
       setDisabledFields(updatedDisabledFields);
 
@@ -79,7 +79,7 @@ const JoinDorm = () => {
   };
 
   const handleAcceptLimitChange = (roomTypeId: number, newLimit: string) => {
-    const parsedLimit = newLimit === '' ? 0 : parseInt(newLimit, 10);
+    const parsedLimit = newLimit === '' ? null : parseInt(newLimit, 10);
 
     const newRoomTypeReqList = applicationData.dormitorySettingTermResList.map((room) => {
       if (room.dormitoryRoomTypeId === roomTypeId) {
@@ -91,7 +91,7 @@ const JoinDorm = () => {
     // 비활성화 필드 업데이트
     setDisabledFields((prev) => ({
       ...prev,
-      [roomTypeId]: parsedLimit === 0,
+      [roomTypeId]: parsedLimit === 0 || parsedLimit === null,
     }));
 
     setApplicationData((prev) => ({
@@ -134,13 +134,7 @@ const JoinDorm = () => {
                     const sanitizedValue = inputValue.replace(/[^0-9]/g, '');
                     handleAcceptLimitChange(group.male?.dormitoryRoomTypeId || 0, sanitizedValue);
                   }}
-                  placeholder={
-                    applicationData.dormitorySettingTermResList.find(
-                      (room) => room.dormitoryRoomTypeId === group.male?.dormitoryRoomTypeId,
-                    )?.acceptLimit === 0
-                      ? group.male?.dormitorySize?.toString()
-                      : undefined
-                  } // placeholder에 dormitorySize 표시
+                  placeholder={group.male?.dormitorySize?.toString()} // 항상 dormitorySize 표시
                   className='H4-caption placeholder:text-gray-grayscale30 text-gray-grayscale50 outline-none w-76 h-34 p-2 bg-white border border-gray-grayscale30 rounded-8 text-center'
                 />
                 <span>명</span>
@@ -161,13 +155,7 @@ const JoinDorm = () => {
                     const sanitizedValue = inputValue.replace(/[^0-9]/g, '');
                     handleAcceptLimitChange(group.female?.dormitoryRoomTypeId || 0, sanitizedValue);
                   }}
-                  placeholder={
-                    applicationData.dormitorySettingTermResList.find(
-                      (room) => room.dormitoryRoomTypeId === group.female?.dormitoryRoomTypeId,
-                    )?.acceptLimit === 0
-                      ? group.female?.dormitorySize?.toString()
-                      : undefined
-                  } // placeholder에 dormitorySize 표시
+                  placeholder={group.female?.dormitorySize?.toString()} // 항상 dormitorySize 표시
                   className='H4-caption placeholder:text-gray-grayscale30 text-gray-grayscale50 outline-none w-76 h-34 p-2 bg-white border border-gray-grayscale30 rounded-8 text-center'
                 />
                 <span>명</span>

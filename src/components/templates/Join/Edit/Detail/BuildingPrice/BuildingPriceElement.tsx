@@ -18,22 +18,21 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
   const [dormitoryRoomType] = useRecoilState(dormitoryRoomTypeState);
   const [disabledFields] = useRecoilState(disabledFieldsState);
 
-  // Ensure each term has entries for all dormitory room types
   useEffect(() => {
     const newTermResList = [...termResList];
     const currentTerm = newTermResList[index];
 
     // 기존의 dormitoryTermResList를 복제하여 유지
-    const updatedDormitoryTermResList = [...currentTerm.dormitoryTermResList];
+    let updatedDormitoryTermResList = [...currentTerm.dormitoryTermResList];
 
-    // 모든 dormitoryRoomType을 반복하면서 누락된 항목을 추가
+    // 모든 dormitoryRoomType을 반복하면서 누락된 항목만 추가
     dormitoryRoomType.forEach((room) => {
       const existingEntry = updatedDormitoryTermResList.find(
         (dorm) => dorm.dormitoryRoomTypeId === room.dormitoryRoomTypeId,
       );
 
       if (!existingEntry) {
-        // 누락된 항목을 추가
+        // 누락된 항목만 추가
         updatedDormitoryTermResList.push({
           dormitoryRoomTypeId: room.dormitoryRoomTypeId,
           dormitoryTermId: currentTerm.termId,
@@ -41,6 +40,13 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
         });
       }
     });
+
+    // 중복된 잘못된 데이터가 있으면 필터링
+    updatedDormitoryTermResList = updatedDormitoryTermResList.filter(
+      (item, index, self) =>
+        item.dormitoryRoomTypeId !== 0 && // 잘못된 기본값 제거
+        index === self.findIndex((d) => d.dormitoryRoomTypeId === item.dormitoryRoomTypeId),
+    );
 
     // 현재 상태와 비교하여 다를 때만 업데이트
     if (JSON.stringify(currentTerm.dormitoryTermResList) !== JSON.stringify(updatedDormitoryTermResList)) {
@@ -51,6 +57,7 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
       setTermResList(newTermResList);
     }
   }, [dormitoryRoomType, index, termResList, setTermResList]);
+
   const handleIsActive = () => {
     const newIsActiveState = [...termResIsActive];
     newIsActiveState[index] = !newIsActiveState[index];
