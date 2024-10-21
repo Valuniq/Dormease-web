@@ -17,7 +17,7 @@ export const joinApplicationState = atom<joinPostRequest>({
     endDate: '',
     depositStartDate: '',
     depositEndDate: '',
-    securityDepoist: null,
+    securityDeposit: null,
     dormitoryRoomTypeReqList: [
       { dormitoryRoomTypeId: 0, acceptLimit: null }, // 기본값 설정
     ],
