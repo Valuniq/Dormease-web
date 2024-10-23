@@ -7,14 +7,15 @@ import AddPeriodBtn from '@/components/atoms/AllBtn/AddPeriodBtn/AddPeriodBtn';
 import { useRecoilState } from 'recoil';
 import { disabledFieldsState, dormitoryRoomTypeState, termReqIsActiveState, termReqListState } from '@/recoil/join';
 import { todayDate } from '@/utils/dateUtils';
+import DeleteBtn from '@/components/atoms/AllBtn/DeleteBtn/DeleteBtn';
 
 type Props = {
   index: number;
   isActive: boolean;
+  onToggleActive: (index: number) => void;
 };
 
-const BuildingPriceElement = ({ index, isActive }: Props) => {
-  const [termReqIsActive, setTermReqIsActive] = useRecoilState(termReqIsActiveState);
+const BuildingPriceElement = ({ index, isActive, onToggleActive }: Props) => {
   const [termReqList, setTermReqList] = useRecoilState(termReqListState);
   const [dormitoryRoomType] = useRecoilState(dormitoryRoomTypeState);
   const [disabledFields] = useRecoilState(disabledFieldsState);
@@ -32,13 +33,6 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
       setTermReqList(updatedTermReqList);
     }
   }, [dormitoryRoomType, setTermReqList]);
-
-  // isActive 상태 토글
-  const handleIsActive = () => {
-    const newIsActiveState = [...termReqIsActive];
-    newIsActiveState[index] = !newIsActiveState[index];
-    setTermReqIsActive(newIsActiveState);
-  };
 
   // 기간 데이터 변경 핸들러
   const handleTermChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
@@ -64,7 +58,7 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
   return (
     <div className='relative'>
       {!isActive && (
-        <div onClick={handleIsActive} className='absolute top-110 left-50 z-joinSettingAddPeriodBtn'>
+        <div onClick={() => onToggleActive(index)} className='absolute top-110 left-50 z-joinSettingAddPeriodBtn'>
           <AddPeriodBtn />
         </div>
       )}
@@ -74,6 +68,12 @@ const BuildingPriceElement = ({ index, isActive }: Props) => {
           isActive ? 'opacity-100' : 'opacity-50 pointer-events-none'
         }`}
       >
+        {/* 두 번째, 세 번째, 네 번째 기간이 활성화되어 있을 때만 DeleteBtn 표시 */}
+        {isActive && index > 0 && (
+          <div onClick={() => onToggleActive(index)} className='w-fit absolute right-5 top-5'>
+            <DeleteBtn />
+          </div>
+        )}
         <div className='flex flex-col items-center'>
           <div className='w-112 flex items-center justify-around mb-20'>
             이름
