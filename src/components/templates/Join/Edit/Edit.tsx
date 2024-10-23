@@ -106,42 +106,57 @@ const Edit = () => {
   };
 
   const handleConfirmSubmit = async () => {
-    // 서버에서 받은 기존 데이터 가져오기
-    const existingTerms = data?.information?.dormitorySettingTermResList ?? [];
-
     // 기숙사 정보 + 수용 인원 리스트 변환
     const modifyDormitorySettingTermReqList = applicationData.dormitorySettingTermResList
       .map((term) => {
-        // 기존 데이터에서 동일한 dormitoryRoomTypeId를 가진 항목 찾기
-        const existingTerm = existingTerms.find(
-          (existing) => existing?.dormitoryRoomTypeId === term.dormitoryRoomTypeId,
+        // 서버에서 받은 기존 데이터인지 확인
+        const existingTerm = data?.information?.dormitorySettingTermResList.find(
+          (existing) => existing.dormitoryRoomTypeId === term.dormitoryRoomTypeId,
         );
 
-        // 기존 term이 있으면 ID 사용
+        if (term.acceptLimit === 0) {
+          // 수용 가능 인원이 0명으로 설정되었다면 전송하지 않음
+          return null;
+        }
+
         if (existingTerm) {
+          // 기존 서버 데이터인 경우, 수정한 값 그대로 전송
           return {
             dormitorySettingTermId: existingTerm.dormitorySettingTermId,
             dormitoryRoomTypeId: term.dormitoryRoomTypeId,
             acceptLimit: term.acceptLimit ?? 0,
           };
+        } else {
+          // 서버 데이터가 아닌 새 항목은 termId를 null로 설정
+          return {
+            dormitorySettingTermId: null,
+            dormitoryRoomTypeId: term.dormitoryRoomTypeId,
+            acceptLimit: term.acceptLimit ?? 0,
+          };
         }
-        return null; // 조건에 맞지 않으면 null 반환
       })
-      // null 값 및 dormitorySettingTermId가 undefined인 항목 필터링
-      .filter((term) => term !== null && term.dormitorySettingTermId !== undefined);
-    // 거주 기간 리스트 변환
-    const modifyTermReqList = applicationData.termResList.map((term) => ({
-      termId: term.termId,
-      termName: term.termName,
-      startDate: term.startDate,
-      endDate: term.endDate,
-      modifyDormitoryTermReqList: term.dormitoryTermResList.map((dorm) => ({
-        dormitoryTermId: dorm.dormitoryTermId, // 서버에서 받은 값을 사용
-        dormitoryRoomTypeId: dorm.dormitoryRoomTypeId,
-        price: dorm.price,
-      })),
-    }));
+      // null 값 제거 (전송하지 않을 항목들)
+      .filter((term) => term !== null);
 
+    // 거주 기간 리스트 변환
+    const modifyTermReqList = applicationData.termResList
+      .filter((term, index) => termResIsActive[index]) // 활성화된 항목만 필터링
+      .map((term) => {
+        // 기존 서버 데이터에서 가져온 항목인지 확인
+        const existingTerm = data?.information?.termResList.find((existing) => existing.termId === term.termId);
+
+        return {
+          termId: existingTerm ? existingTerm.termId : null, // 기존 항목이면 termId 유지, 새로운 항목이면 null
+          termName: term.termName,
+          startDate: term.startDate,
+          endDate: term.endDate,
+          modifyDormitoryTermReqList: term.dormitoryTermResList.map((dorm) => ({
+            dormitoryTermId: dorm.dormitoryTermId < 0 ? null : dorm.dormitoryTermId, // 서버에서 받은 값을 사용
+            dormitoryRoomTypeId: dorm.dormitoryRoomTypeId,
+            price: dorm.price,
+          })),
+        };
+      });
     // 식권 리스트 변환
     const modifyMealTicketReqList = applicationData.mealTicketResList.map((ticket) => ({
       mealTicketId: ticket.id, // 서버에서 받은 값을 사용
