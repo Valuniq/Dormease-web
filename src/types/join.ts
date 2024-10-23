@@ -128,7 +128,7 @@ export type nowJoinResponseTermResListDormitoryTermResList = {
 
 // 식권 정보 리스트
 export type nowJoinResponseMealTicketResList = {
-  id: number;
+  id: number | null;
   count: number;
   price: number;
 };
@@ -170,7 +170,7 @@ export type ModifyDormitoryTermReq = {
 
 // 식권 정보 리스트
 export type ModifyMealTicketReq = {
-  mealTicketId: number;
+  mealTicketId: number | null;
   count: number;
   price: number;
 };
