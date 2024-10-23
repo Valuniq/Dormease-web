@@ -15,7 +15,7 @@ import JoinDorm from './Detail/JoinDorm/JoinDorm';
 import BuildingPrice from './Detail/BuildingPrice/BuildingPrice';
 import TicketPrice from './TicketPrice/TicketPrice';
 import { putDormitoryApplicationSetting, useNowJoin } from '@/apis/join';
-import { ModifyDormitoryApplicationSettingReq, ModifyDormitorySettingTermReq } from '@/types/join';
+import { ModifyDormitoryApplicationSettingReq, ModifyDormitorySettingTermReq, ModifyMealTicketReq } from '@/types/join';
 
 const Edit = () => {
   const { data, error, isLoading } = useNowJoin();
@@ -157,12 +157,22 @@ const Edit = () => {
           })),
         };
       });
+
     // 식권 리스트 변환
-    const modifyMealTicketReqList = applicationData.mealTicketResList.map((ticket) => ({
-      mealTicketId: ticket.id, // 서버에서 받은 값을 사용
-      count: ticket.count,
-      price: ticket.price,
-    }));
+    const modifyMealTicketReqList = applicationData.mealTicketResList
+      .map((ticket) => {
+        const existingTicket = data?.information?.mealTicketResList.find((existing) => existing.id === ticket.id);
+        if (!existingTicket && (!ticket.count || !ticket.price)) {
+          return null; // 삭제된 항목은 null 처리
+        }
+
+        return {
+          mealTicketId: existingTicket ? existingTicket.id : null, // 수정 or 새로 생성된 항목 처리
+          count: ticket.count,
+          price: ticket.price,
+        };
+      })
+      .filter((ticket) => ticket !== null) as ModifyMealTicketReq[]; // 여기서 null 값 제거
 
     // 최종 요청 데이터
     const modifiedData: ModifyDormitoryApplicationSettingReq = {
@@ -184,10 +194,12 @@ const Edit = () => {
         modifiedData,
       );
       console.log('Response:', response);
+      setModalState((prevState) => ({ ...prevState, isPostChecked: false }));
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
   return (
     <>
       {modalState.isPostChecked && (
