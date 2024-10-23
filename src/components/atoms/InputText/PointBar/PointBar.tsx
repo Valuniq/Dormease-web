@@ -2,10 +2,14 @@ type Props = {
   input: string;
   setInput: (id: string) => void;
   readonly?: boolean;
+  maxLength?: number;
 };
 
-const PointBar = ({ input, setInput, readonly }: Props) => {
+const PointBar = ({ input, setInput, readonly, maxLength }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (maxLength) {
+      e.target.value = e.target.value.slice(0, maxLength);
+    }
     setInput(e.target.value);
   };
 
@@ -16,6 +20,7 @@ const PointBar = ({ input, setInput, readonly }: Props) => {
       value={input}
       onChange={handleChange}
       readOnly={readonly}
+      maxLength={maxLength}
     />
   );
 };

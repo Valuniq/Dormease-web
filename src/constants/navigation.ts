@@ -19,7 +19,12 @@ export const schedules = '/dashboard/schedules';
 // 요청 사항
 export const requests = '/dashboard/requests';
 export const requestsDetail = '/dashboard/requests/details';
-
+// 신청자 명단
+export const applicants = '/dashboard/joins/applicants';
+// 이전 입사 신청 설정 내역
+export const prevApplicants = '/dashboard/joins/applicants/prev';
+// 이전 입사 신청 설정 디테일
+export const prevApplicantDetail = '/dashboard/joins/applicants/details';
 // 공지사항
 export const noticesRoutes = '/dashboard/notices';
 export const noticesWritingRoutes = '/dashboard/notices/writings';

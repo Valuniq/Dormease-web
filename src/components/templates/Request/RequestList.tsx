@@ -53,7 +53,7 @@ const RequestList = ({ list, onRequestClick, isLoading, isEndReached, setSize }:
       ) : isLoading ? (
         <tbody></tbody>
       ) : (
-        <tbody>
+        <tbody className='h-693'>
           <NoneList colspan={5} />
         </tbody>
       )}

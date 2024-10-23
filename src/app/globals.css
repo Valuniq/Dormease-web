@@ -3,8 +3,17 @@
 @tailwind utilities;
 
 @layer utilities {
+  .scale-95 {
+    transform: scale(0.95);
+  }
+  .scale-90 {
+    transform: scale(0.9);
+  }
   .scale-80 {
     transform: scale(0.8);
+  }
+  .scale-75 {
+    transform: scale(0.75);
   }
   .scale-65 {
     transform: scale(0.65);
@@ -225,6 +234,7 @@
 
   .noscrollbar-table::-webkit-scrollbar {
     width: 0px;
+    height: 0px;
   }
 
   .noscrollbar-table::-webkit-scrollbar-track {

@@ -11,7 +11,7 @@ type Props = {
   onClose: () => void;
   secure: string;
   setSecure: (secure: string) => void;
-  activatePasswordEdit: () => void;
+  activatePasswordEdit?: () => void;
 };
 
 const SecureConfirmPrompt = ({ variant, label, onClose, secure, setSecure, activatePasswordEdit }: Props) => {
@@ -22,7 +22,7 @@ const SecureConfirmPrompt = ({ variant, label, onClose, secure, setSecure, activ
       const data = await checkSecurityCode(secure);
       if (data.check && data.information.checked) {
         setSecure('');
-        activatePasswordEdit(); // 비밀번호 편집 모드 활성화
+        activatePasswordEdit && activatePasswordEdit(); // 비밀번호 편집 모드 활성화
         onClose();
       } else {
         throw new Error('보안코드가 일치하지 않습니다.');

@@ -1,5 +1,5 @@
 'use client';
-import Checkbox from '@/components/atoms/AllBtn/Checkbox/Checkbox';
+
 import React from 'react';
 
 export type Props = {
@@ -8,12 +8,11 @@ export type Props = {
   gender: string;
   applicationBuilding: string;
   residence: string;
+  // File은 임시로 null로 해둠
   certifiedFile: null | string;
   prioritySelection: null | string;
   assignedBuilding: string | null;
   isPassed: 'PASS' | 'NON_PASS' | 'MOVE_PASS' | 'WAIT';
-  isChecked: boolean;
-  setIsChecked: (isChecked: boolean) => void;
 };
 
 // 파일 이름을 추출하고 6글자로 제한하는 함수
@@ -26,7 +25,7 @@ const getLimitedFileName = (url: string | null) => {
   return name.length > 6 ? name.substring(0, 6) + '...' + extension : fileName;
 };
 
-const ApplicantListBody = ({
+const PrevApplicationDetailListBody = ({
   name,
   studentId,
   gender,
@@ -36,8 +35,6 @@ const ApplicantListBody = ({
   prioritySelection,
   assignedBuilding,
   isPassed,
-  isChecked,
-  setIsChecked,
 }: Props) => {
   // 각 파일의 이름을 제한된 길이로 표시
   const limitedCertifiedFileName = certifiedFile ? getLimitedFileName(certifiedFile as string) : null;
@@ -81,11 +78,8 @@ const ApplicantListBody = ({
       </td>
       <td className='text-center'>{assignedBuilding && assignedBuilding.length > 0 ? assignedBuilding : '-'}</td>
       <td className={`text-center ${statusColor}`}>{statusText}</td>
-      <td className='flex justify-center'>
-        <Checkbox isChecked={isChecked} setIsChecked={setIsChecked} />
-      </td>
     </tr>
   );
 };
 
-export default ApplicantListBody;
+export default PrevApplicationDetailListBody;

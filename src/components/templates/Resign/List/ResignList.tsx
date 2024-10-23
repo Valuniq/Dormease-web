@@ -87,7 +87,7 @@ const ResignList = ({ list, checkedItems, handleCheckboxChange, isLoading, isEnd
           })}
         </tbody>
       ) : (
-        <tbody>
+        <tbody className='h-693'>
           <NoneList colspan={9} />
         </tbody>
       )}

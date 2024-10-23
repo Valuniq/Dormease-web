@@ -98,7 +98,7 @@ const BlackList = ({ blackLists, isLoading, isEndReached, setSize, onReasonChang
             ))}
           </tbody>
         ) : (
-          <tbody>
+          <tbody className='h-693 '>
             <NoneList colspan={8} />
           </tbody>
         )}
