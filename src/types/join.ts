@@ -155,7 +155,7 @@ export type ModifyDormitorySettingTermReq = {
 
 // 거주 기간 리스트
 export type ModifyTermReq = {
-  termId: number;
+  termId: number | null;
   termName: string;
   startDate: string;
   endDate: string;
