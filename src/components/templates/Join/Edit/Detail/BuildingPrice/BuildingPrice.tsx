@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { nowJoinApplicationState, termResIsActiveState, termResListState } from '@/recoil/join';
@@ -11,12 +12,12 @@ const BuildingPrice = () => {
   useEffect(() => {
     if (applicationData) {
       const receivedTerms = applicationData.termResList;
+      const updatedIsActive = receivedTerms.map((term, index) => term.termName !== '');
 
-      const updatedIsActive = receivedTerms.map((term, index) => isActive[index] || term.termName !== '');
-
-      if (receivedTerms.length < 4) {
-        const additionalTerms = Array.from({ length: 4 - receivedTerms.length }, (_, idx) => ({
-          termId: -(idx + 1), // 클라이언트 측에서만 사용할 임시 ID
+      const additionalTermsCount = 4 - receivedTerms.length;
+      if (additionalTermsCount > 0) {
+        const additionalTerms = Array.from({ length: additionalTermsCount }, (_, idx) => ({
+          termId: -(idx + 1),
           termName: '',
           startDate: '',
           endDate: '',
@@ -24,24 +25,25 @@ const BuildingPrice = () => {
         }));
 
         setTermResList([...receivedTerms, ...additionalTerms]);
-
-        const additionalIsActive = [...updatedIsActive, ...Array(4 - receivedTerms.length).fill(false)];
-
-        if (JSON.stringify(isActive) !== JSON.stringify(additionalIsActive)) {
-          setIsActive(additionalIsActive);
-        }
+        setIsActive([...updatedIsActive, ...Array(additionalTermsCount).fill(false)]);
       } else {
-        if (JSON.stringify(isActive) !== JSON.stringify(updatedIsActive)) {
-          setIsActive(updatedIsActive);
-        }
+        setIsActive(updatedIsActive);
       }
     }
-  }, [applicationData, setTermResList, setIsActive, isActive]);
+  }, [applicationData, setTermResList, setIsActive]);
+  const toggleIsActive = (index: number) => {
+    setIsActive((prev) => {
+      const updated = [...prev];
+      updated[index] = !updated[index];
+      console.log(`Toggling isActive for index ${index}:`, updated);
+      return updated;
+    });
+  };
 
   return (
     <>
       {termResList.map((_, index) => (
-        <BuildingPriceElement key={index} index={index} isActive={isActive[index]} />
+        <BuildingPriceElement key={index} index={index} isActive={isActive[index]} onToggleActive={toggleIsActive} />
       ))}
     </>
   );
