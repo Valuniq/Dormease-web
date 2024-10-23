@@ -16,7 +16,7 @@ const BuildingPrice = () => {
 
       if (receivedTerms.length < 4) {
         const additionalTerms = Array.from({ length: 4 - receivedTerms.length }, (_, idx) => ({
-          termId: idx + receivedTerms.length + 1,
+          termId: -(idx + 1), // 클라이언트 측에서만 사용할 임시 ID
           termName: '',
           startDate: '',
           endDate: '',
