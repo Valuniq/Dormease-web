@@ -1,12 +1,12 @@
 import { BASE_URL } from '@/constants/path';
-import fetchWithTokens from '@/utils/fetchWithTokens';
-import useSWR from 'swr';
 import {
   applicantResponse,
   applicationDetailResponse,
   applicationSearchResponse,
   historyResponse,
-} from './../types/applicant';
+} from '@/types/applicant';
+import fetchWithTokens from '@/utils/fetchWithTokens';
+import useSWR from 'swr';
 
 //현재 입사 신청 설정에 대한 입사 신청 목록 조회
 export const useNowApplicant = () => {
@@ -43,4 +43,24 @@ export const useApplicantById = (dormitoryApplicationSettingId: number) => {
     fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 합격자 검사 API
+export const postApplicationInspection = async (
+  dormitoryApplicationSettingId: number,
+  dormitoryApplicationIds: number[],
+) => {
+  const res = await fetchWithTokens(
+    `${BASE_URL}/api/v1/web/dormitoryApplication/inspection/${dormitoryApplicationSettingId}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        dormitoryApplicationIds,
+      }),
+    },
+  );
+  return res;
 };
