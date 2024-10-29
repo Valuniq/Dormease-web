@@ -4,14 +4,14 @@ import BackBtn from '@/components/atoms/AllBtn/BackBtn/BackBtn';
 import SearchTextBox from '@/components/atoms/InputText/SearchTextBox/SearchTextBox';
 import PrevApplicantDetailList from '@/components/templates/Applicant/PrevApplicantDetail/PrevApplicantDetailList';
 import { prevApplicants } from '@/constants/navigation';
-import { detailApplicatoinNameState, nowApplicationIdState } from '@/recoil/applicant';
+import { detailApplicatoinNameState, nowApplicationSettingIdState } from '@/recoil/applicant';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 const Page = () => {
-  const [applicationIdState] = useRecoilState(nowApplicationIdState);
-  const { data, isLoading, error } = useApplicantById(applicationIdState);
+  const [applicationSettingIdState] = useRecoilState(nowApplicationSettingIdState);
+  const { data, isLoading, error } = useApplicantById(applicationSettingIdState);
   const [detailNameState, setDetailNameState] = useRecoilState(detailApplicatoinNameState);
   const [loaded, setLoaded] = useState(false); // 클라이언트에서 로드 여부 확인
 
@@ -26,7 +26,7 @@ const Page = () => {
     error: searchDataError,
     isLoading: isLoadingSearch,
   } = useApplicantSearchById(
-    applicationIdState,
+    applicationSettingIdState,
     searchKeyword && searchKeyword.trim() !== '' ? searchKeyword : null, // 검색어가 있을 때만 API 호출
   );
 
