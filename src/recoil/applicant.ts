@@ -10,8 +10,8 @@ export const applicantCheckBoxIdState = atom<number>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const nowApplicationIdState = atom<number>({
-  key: 'nowApplicationIdState',
+export const nowApplicationSettingIdState = atom<number>({
+  key: 'nowApplicationSettingIdState',
   default: 0,
   effects_UNSTABLE: [persistAtom],
 });
@@ -21,4 +21,18 @@ export const detailApplicatoinNameState = atom<string>({
   key: 'detailApplicatoinNameState',
   default: '',
   effects_UNSTABLE: [persistAtom],
+});
+
+// 모달
+export type applicantModalState = {
+  inspectionStart: boolean;
+  inspectionCompleted: boolean;
+};
+
+export const applicantModalState = atom<applicantModalState>({
+  key: 'applicantModalState',
+  default: {
+    inspectionCompleted: false,
+    inspectionStart: false,
+  },
 });
