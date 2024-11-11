@@ -1,6 +1,6 @@
 'use client';
 import { prevApplicantDetail } from '@/constants/navigation';
-import { detailApplicatoinNameState, nowApplicationIdState } from '@/recoil/applicant';
+import { detailApplicatoinNameState, nowApplicationSettingIdState } from '@/recoil/applicant';
 import { historyResponseInformation } from '@/types/applicant';
 import { useRouter } from 'next/navigation';
 import React, { Fragment } from 'react';
@@ -13,7 +13,7 @@ type Props = {
 
 const PrevApplicantList = ({ prevApplicantLists }: Props) => {
   const [detailNameState, setDetailNameState] = useRecoilState(detailApplicatoinNameState);
-  const [applicationIdState, setApplicationIdState] = useRecoilState(nowApplicationIdState);
+  const [applicationIdState, setApplicationIdState] = useRecoilState(nowApplicationSettingIdState);
   // 클릭 시 Recoil에 id 저장 및 페이지 이동 처리
   const handlePrevApplicantClick = (applicationId: number, title: string) => {
     setApplicationIdState(applicationId); // applicationId를 Recoil 상태에 저장
