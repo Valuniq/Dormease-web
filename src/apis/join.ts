@@ -9,6 +9,7 @@ import {
   joinTopThreeListResponse,
   joinTopThreeListResponseInformation,
   nowJoinResponse,
+  ModifyDormitoryApplicationSettingReq,
 } from '@/types/join';
 import fetchWithTokens from '@/utils/fetchWithTokens';
 import useSWR from 'swr';
@@ -78,4 +79,23 @@ export const useNowJoin = () => {
     fetchWithTokens,
   );
   return { data, error, isLoading: !error && !data, mutate };
+};
+
+// 입사 신청 설정 수정
+export const putDormitoryApplicationSetting = async (
+  dormitoryApplicationSettingId: number,
+  applicationData: ModifyDormitoryApplicationSettingReq,
+) => {
+  const res = await fetchWithTokens(
+    `${BASE_URL}/api/v1/web/dormitoryApplicationSetting/${dormitoryApplicationSettingId}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(applicationData),
+    },
+  );
+
+  return res;
 };

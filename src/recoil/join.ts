@@ -1,3 +1,4 @@
+import { nowJoinResponse, nowJoinResponseInformation, nowJoinResponseTermResList } from './../types/join';
 import { joinDormitoriesResponseInformation, joinPostRequest, joinPostRequestTermReqList } from '@/types/join';
 import { atom } from 'recoil';
 
@@ -16,7 +17,7 @@ export const joinApplicationState = atom<joinPostRequest>({
     endDate: '',
     depositStartDate: '',
     depositEndDate: '',
-    securityDepoist: null,
+    securityDeposit: null,
     dormitoryRoomTypeReqList: [
       { dormitoryRoomTypeId: 0, acceptLimit: null }, // 기본값 설정
     ],
@@ -106,4 +107,86 @@ export const joinModalState = atom<JoinModalState>({
     isEmptyAlert: false,
     isPostChecked: false,
   },
+});
+
+// NowJoin 관련 recoil
+export const nowJoinApplicationState = atom<nowJoinResponseInformation>({
+  key: 'nowJoinApplicationState',
+  default: {
+    dormitoryApplicationSettingId: 0,
+    title: '',
+    startDate: '',
+    endDate: '',
+    depositStartDate: '',
+    depositEndDate: '',
+    securityDeposit: 0,
+    applicationStatus: 'NOW',
+    dormitorySettingTermResList: [],
+    termResList: [],
+    mealTicketResList: [],
+  },
+});
+
+// 기간별로 금액 입력 필드를 관리하기 위한 상태
+export const termResListState = atom<nowJoinResponseTermResList[]>({
+  key: 'termResListState',
+  default: [
+    {
+      termId: 0,
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermResList: [
+        {
+          dormitoryRoomTypeId: 0,
+          dormitoryTermId: 0,
+          price: null,
+        },
+      ],
+    },
+    {
+      termId: 0,
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermResList: [
+        {
+          dormitoryRoomTypeId: 0,
+          dormitoryTermId: 0,
+          price: 0,
+        },
+      ],
+    },
+    {
+      termId: 0,
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermResList: [
+        {
+          dormitoryRoomTypeId: 0,
+          dormitoryTermId: 0,
+          price: 0,
+        },
+      ],
+    },
+    {
+      termId: 0,
+      termName: '',
+      startDate: '',
+      endDate: '',
+      dormitoryTermResList: [
+        {
+          dormitoryRoomTypeId: 0,
+          dormitoryTermId: 0,
+          price: 0,
+        },
+      ],
+    },
+  ],
+});
+
+export const termResIsActiveState = atom<boolean[]>({
+  key: 'termResIsActiveState',
+  default: [true, false, false, false],
 });
