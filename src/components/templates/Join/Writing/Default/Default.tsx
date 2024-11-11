@@ -29,7 +29,7 @@ const Default = () => {
   const updateSecurityDeposit = (newDeposit: number) => {
     setApplicationData({
       ...applicationData,
-      securityDepoist: newDeposit,
+      securityDeposit: newDeposit,
     });
   };
 
@@ -50,7 +50,7 @@ const Default = () => {
       />
 
       {/* 보증금 */}
-      <Deposit input={applicationData.securityDepoist} setInput={updateSecurityDeposit} />
+      <Deposit input={applicationData.securityDeposit} setInput={updateSecurityDeposit} />
     </div>
   );
 };
